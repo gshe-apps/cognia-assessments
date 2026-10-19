@@ -1,0 +1,274 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "MOD-AltAssessments.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA · Alt Assessments (coming soon)",
+      "w": 1440,
+      "x": 1520,
+      "y": 3060
+    },
+    "MOD-DataReporting.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "Data & Reporting hub (coming soon)",
+      "w": 1440,
+      "x": 3040,
+      "y": 3060
+    },
+    "MOD-Formative.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA 5 · Formative",
+      "w": 1440,
+      "x": 0,
+      "y": 1530
+    },
+    "MOD-Interim.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA 6 · Interim · Assessments",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "MOD-Screeners.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA · Screeners (coming soon)",
+      "w": 1440,
+      "x": 0,
+      "y": 3060
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 1090,
+      "is_interactive": true,
+      "title": "SA 1 · Home",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "PA-AltAssessments.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School · Alt Assessments (coming soon)",
+      "w": 1440,
+      "x": 1520,
+      "y": 8060
+    },
+    "PA-Formative.dc.html": {
+      "expand": "fill",
+      "h": 1060,
+      "is_interactive": true,
+      "title": "School 5 · Formative",
+      "w": 1440,
+      "x": 0,
+      "y": 6530
+    },
+    "PA-Interim.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School 6 · Interim · Assessments",
+      "w": 1440,
+      "x": 6080,
+      "y": 5000
+    },
+    "PA-Overview.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School 2 · Interim · Overview",
+      "w": 1440,
+      "x": 1520,
+      "y": 5000
+    },
+    "PA-Screeners.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School · Screeners (coming soon)",
+      "w": 1440,
+      "x": 0,
+      "y": 8060
+    },
+    "PA1-Home.dc.html": {
+      "expand": "fill",
+      "h": 1090,
+      "is_interactive": true,
+      "title": "School 1 · Home",
+      "w": 1440,
+      "x": 0,
+      "y": 5000
+    },
+    "PA3-Trends.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School 3 · Interim · Analytics",
+      "w": 1440,
+      "x": 3040,
+      "y": 5000
+    },
+    "PA5-Followup.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "School 4 · Interim · Follow-up",
+      "w": 1440,
+      "x": 4560,
+      "y": 5000
+    },
+    "SA2-Hub.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA 2 · Interim · Overview",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "SA3-Dashboard.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA 3 · Interim · Analytics",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "SA6-Respond.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "SA 4 · Interim · Follow-up",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-14T22:45:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/GimYA4sv7QmWBfrra4Bwxo",
+      "copiedAt": "2026-10-14T23:58:00Z",
+      "namespace": "cognia",
+      "title": "Cognia Design System",
+      "version": "1789625802-bb57"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "t1": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "System Administrator, district oversight",
+      "w": 240,
+      "x": 0,
+      "y": -620
+    },
+    "s1": {
+      "x": 0,
+      "y": -220,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Interim flow, starting from Home",
+      "size": "xl",
+      "bold": true,
+      "fill": "blue"
+    },
+    "s2": {
+      "x": 0,
+      "y": 1310,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Formative flow",
+      "size": "xl",
+      "bold": true,
+      "fill": "teal"
+    },
+    "s3": {
+      "x": 0,
+      "y": 2840,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Coming soon",
+      "size": "xl",
+      "bold": true,
+      "fill": "gray"
+    },
+    "t2": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "School Administrator, building-level review",
+      "w": 240,
+      "x": 0,
+      "y": 4380
+    },
+    "s4": {
+      "x": 0,
+      "y": 4780,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Interim flow, starting from Home",
+      "size": "xl",
+      "bold": true,
+      "fill": "blue"
+    },
+    "s5": {
+      "x": 0,
+      "y": 6310,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Formative flow",
+      "size": "xl",
+      "bold": true,
+      "fill": "teal"
+    },
+    "s6": {
+      "x": 0,
+      "y": 7840,
+      "w": 1440,
+      "maxH": 140,
+      "text": "Coming soon",
+      "size": "xl",
+      "bold": true,
+      "fill": "gray"
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "SA2-Hub.dc.html",
+    "SA3-Dashboard.dc.html",
+    "SA6-Respond.dc.html",
+    "MOD-Interim.dc.html",
+    "MOD-Formative.dc.html",
+    "MOD-Screeners.dc.html",
+    "MOD-AltAssessments.dc.html",
+    "MOD-DataReporting.dc.html",
+    "PA1-Home.dc.html",
+    "PA-Overview.dc.html",
+    "PA3-Trends.dc.html",
+    "PA5-Followup.dc.html",
+    "PA-Interim.dc.html",
+    "PA-Formative.dc.html",
+    "PA-Screeners.dc.html",
+    "PA-AltAssessments.dc.html"
+  ],
+  "pages": [],
+  "title": "Assessment Hub – Admin Wireframes"
+}

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Interim – Follow-up</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/cognia/colors_and_type.css">
+<link rel="stylesheet" href="cognia-skin.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f4f4f2}
+*{box-sizing:border-box}
+a{color:#1f1f1f}a:hover{color:#000}
+.wf{font-family:'IBM Plex Sans',system-ui,sans-serif;color:#1f1f1f;background:#f4f4f2;font-size:14px;line-height:1.45}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:#fff;border-bottom:1.5px solid #cfcfcf}
+.logo{width:96px;height:28px;background:#d9d9d9;border-radius:4px;font:500 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;justify-content:center;color:#444}
+.navl{display:flex;gap:20px;flex-wrap:wrap;flex:1}
+.navl a{text-decoration:none;color:#555;padding:6px 0;border-bottom:2px solid transparent}
+.navl a.on{color:#1f1f1f;font-weight:600;border-bottom-color:#1f1f1f}
+.role{font:500 12px 'IBM Plex Mono',monospace;border:1.5px solid #bdbdbd;border-radius:999px;padding:4px 10px;color:#444}
+.main{max-width:1240px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.crumb{font:12px 'IBM Plex Mono',monospace;color:#5c5c5c}
+h1{margin:0;font-size:26px;font-weight:600}
+h2{margin:0;font-size:16px;font-weight:600}
+p{margin:0}
+.sub{color:#5c5c5c}
+.card{background:#fff;border:1.5px solid #c9c9c9;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ln{height:10px;background:#e4e4e2;border-radius:3px}
+.cond{background:#fffaf0}
+.ai{border:1.5px dashed #5a5a9a;background:#f6f6fc}
+.tag{display:inline-block;font:500 11px 'IBM Plex Mono',monospace;padding:2px 6px;border-radius:4px;border:1px solid #9a9a9a;color:#444;text-transform:uppercase;white-space:nowrap}
+.tag.c{border-color:#b07a1a;color:#7a5200;background:#fff3dc}
+.tag.a{border-color:#5a5a9a;color:#3d3d7a;background:#ececf8}
+.tag.f{border-color:#1f1f1f;color:#1f1f1f;background:#fff}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:6px;border:1.5px solid #1f1f1f;background:#fff;color:#1f1f1f;font:500 14px 'IBM Plex Sans',sans-serif;text-decoration:none;cursor:pointer}
+.btn.p{background:#1f1f1f;color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.sp{justify-content:space-between}
+.tabs{display:flex;gap:4px;border-bottom:1.5px solid #cfcfcf;flex-wrap:wrap}
+.tabs a{padding:10px 14px;text-decoration:none;color:#555}
+.tabs a.on{color:#1f1f1f;font-weight:600;border-bottom:2px solid #1f1f1f;margin-bottom:-1.5px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:500;color:#5c5c5c;font-size:12px;padding:8px;border-bottom:1.5px solid #cfcfcf}
+td{padding:10px 8px;border-bottom:1px solid #e4e4e2;vertical-align:middle}
+.scroll{overflow-x:auto}
+.cols{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.cols > .body{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.cols > .side{flex:1 1 300px;max-width:380px;display:flex;flex-direction:column;gap:16px}
+.chk{display:flex;align-items:center;gap:10px;min-height:36px}
+.chk input{width:18px;height:18px}
+.seg{display:flex;border:1.5px solid #bdbdbd;border-radius:6px;overflow:hidden}
+.seg label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;font-size:13px;border-right:1px solid #bdbdbd}
+.seg label:last-child{border-right:0}
+.navl{align-items:center}
+.navl .cond{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:6px;background:#fffaf0;color:#5c5c5c}
+.tag.c{border-color:#b07a1a;color:#7a5200;background:#fff3dc}
+</style>
+</helmet>
+<div class="wf theme-assessments">
+  <header class="top">
+    <div class="brand"><a class="logo" href="Main.dc.html" aria-label="Go to Home" style="text-decoration: none"><img src="/_blob/03b113a3dc2e610eb61ccc911bd46d5e" alt="Cognia"></a><span class="modname">Interim</span></div>
+    <nav class="navl" aria-label="Interim"><a href="SA2-Hub.dc.html">Overview</a><a href="SA3-Dashboard.dc.html">Analytics</a><a href="MOD-Interim.dc.html">Assessments</a></nav>
+    <div class="topr"><span class="tag st-wip hdrbadge">Design incomplete</span><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome" href="Main.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap: 12px; align-items: center"><span class="tag st-ok">Ready for review</span><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><a class="appt d-Fm" href="MOD-Formative.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span><span>Formative</span></a><a class="appt on d-In" href="SA2-Hub.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim</span></a><a class="appt d-Sc" href="MOD-Screeners.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span><span class="tag c">If approved</span></a><a class="appt" href="MOD-AltAssessments.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span><span class="tag c">Future</span></a></div><div class="appdesc d-Fm" aria-hidden="true"><strong>Formative</strong><p>Build from the multiple-choice item bank or start with a ready-to-use assessment. Add enhanced tools with Classroom+.</p></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners</strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></a></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></a></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></a></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Data and Reporting"><h3>Data and Reporting</h3><p class="appsoon">Coming soon</p></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Interim Assessment</span></a><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><span class="appqab locked" aria-disabled="true" title="Included in Classroom Plus"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Formative Assessment</span></span></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Formative Assessment</span></a></sc-if></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></a><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></a></div></div></sc-if></div></div></sc-if></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: Jordan Ellis" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">JE</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">JE</span><div><p class="acctname">Jordan Ellis</p><p class="acctrole">System Administrator · District</p></div></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><span class="acctplanb">{{planName}}</span></div><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom Plus.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
+  </header>
+  <main class="main wiphold"><section class="wipnote" aria-label="Design incomplete"><div class="wipgrid"><div class="wipgrp"><h3>Coordinate the district response</h3><ul><li>Follow-up priorities for principals, by school</li><li>Available reports to prepare district data reviews</li><li>Share results through approved reporting or existing channels</li><li>Support is coordinated outside the platform unless collaboration tools are approved</li></ul></div><div class="wipgrp"><h3>Share</h3><ul><li>Role-appropriate shared views, if approved</li><li>Downloadable reports where supported</li><li>Possible AI summaries to inform, not decide</li></ul></div><div class="wipgrp"><h3>Monitor over time</h3><ul><li>Participation and completion across assessment windows</li><li>Results from the next comparable administration</li><li>Follow-up evidence after instructional changes</li><li>Whether more investigation or support is needed</li></ul></div></div></section><!--/wipnote-->
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="SA3-Dashboard.dc.html">Analytics</a><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg><span aria-current="page">Follow-up</span></nav>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h1>Follow-up</h1>
+      <p class="sub">Set follow-up priorities for principals and prepare your district data review.</p>
+    </div>
+
+    <div class="cols">
+      <div class="body">
+        <section class="card ghost" aria-labelledby="fl">
+          <div class="row sp"><h2 id="fl">Follow-up (6)</h2><a class="btn" href="SA3-Dashboard.dc.html">+ Add from Analytics</a></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th scope="col">School</th><th scope="col">Why flagged</th><th scope="col">Principal</th><th scope="col">Review</th><th scope="col">Since Jan 12 window</th><th scope="col">Status</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Northside Elementary</strong></td><td>Low participation · Grades 4–5</td><td>Dana Reyes</td><td>Jan 23</td><td class="evcell"><strong>38%</strong> completion, was 31%<span class="evtr">Improving</span></td><td><span class="tag">Overdue</span></td></tr>
+                <tr><td><strong>Riverbend Elementary</strong></td><td>Grade 4 reading down</td><td>Marcus Hill</td><td>Feb 2</td><td class="evcell"><strong>49%</strong> at or above benchmark, was 50%<span class="evtr">No change yet</span></td><td><span class="tag below">Due soon</span></td></tr>
+                <tr><td><strong>Hillcrest Elementary</strong></td><td>Low participation · Grade 3</td><td>Ana Lopez</td><td>Feb 13</td><td class="evcell"><strong>41%</strong> completion, was 33%<span class="evtr">Improving</span></td><td><span class="fuopen">Open</span></td></tr>
+                <tr><td><strong>Lakeview Middle</strong></td><td>Grade 7 interim completion</td><td>Tom Becker</td><td>Feb 20</td><td class="evcell"><span class="evnone">No new window yet</span></td><td><span class="fuopen">Open</span></td></tr>
+                <tr><td><strong>Maple Ridge Middle</strong></td><td>Students with disabilities · completion</td><td>Grace Kim</td><td>Mar 6</td><td class="evcell"><span class="evnone">No new window yet</span></td><td><span class="fuopen">Open</span></td></tr>
+                <tr><td><strong>Cedar Grove Elementary</strong></td><td>English learners · Grade 4 reading</td><td>Priya Shah</td><td>Mar 6</td><td class="evcell"><span class="evnone">No new window yet</span></td><td><span class="fuopen">Open</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="sub" style="font-size: 12px">Support and coaching are arranged through your existing district processes.</p>
+        </section>
+      </div>
+
+      <aside class="side">
+        <section class="card" aria-labelledby="rb">
+          <h2 id="rb">Build district data review</h2>
+          <label class="chk"><input type="checkbox" checked="">District overview</label>
+          <label class="chk"><input type="checkbox" checked="">Performance trends</label>
+          <label class="chk"><input type="checkbox" checked="">School comparisons</label>
+          <label class="chk"><input type="checkbox">Standards-level results</label>
+          <label class="chk"><input type="checkbox" checked="">Follow-up priorities</label>
+          <label class="chk"><input type="checkbox">Include AI summary (draft)</label>
+          <div class="seg" role="radiogroup" aria-label="Format">
+            <label><input type="radio" name="fmt" checked="">PDF</label>
+            <label><input type="radio" name="fmt">CSV</label>
+            <label><input type="radio" name="fmt">Slides</label>
+          </div>
+          <a class="btn p" href="#" style="justify-content: center">Download report</a>
+        </section>
+        <section class="card cond" aria-labelledby="sh">
+          <div class="row sp"><h2 id="sh">Share with principals</h2><span class="tag c">If approved</span></div>
+          <p class="sub" style="font-size: 13px">Role-appropriate view each principal sees for their own school.</p>
+          <a class="btn" href="#">Share view</a>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <div class="aifab">
+    <sc-if value="{{aiOpen}}" hint-placeholder-val="{{ false }}"><div class="aipop" role="dialog" aria-labelledby="aih">
+      <div class="aipophd"><h2 id="aih">AI summary</h2><button type="button" class="appx" aria-label="Close" onClick="{{closeAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div>
+      <span><span class="tag a">AI-generated · draft</span></span>
+      <p>6 schools are flagged for follow-up. 2 review dates fall in the next two weeks, and Northside's follow-up is overdue.</p>
+      <p class="aipopnote">Subject to validation. Use to inform, not decide.</p>
+    </div></sc-if>
+    <button type="button" class="aibtn" aria-label="AI summary" aria-expanded="{{aiOpen}}" onClick="{{toggleAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"></polygon></svg></button>
+  </div>
+  <footer style="display: flex; flex-wrap: wrap; gap: 24px; padding: 16px 32px; border-top: 1px solid #EDEDEF; background: #FFFFFF; font: 600 14px 'Open Sans', system-ui, sans-serif"><nav aria-label="Footer" style="display: flex; gap: 24px"><a href="#" style="color: #000012">Help and support</a></nav></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1024}, "plan": {"editor": "enum", "options": ["Basic", "Classroom Plus"], "default": "Classroom Plus"}}'>
+class Component extends DCLogic {
+  extraVals(st) {
+    const a = !!st.acctOpen;
+    const plan = this.props.plan ?? 'Classroom Plus';
+    return {
+      acctOpen: a,
+      toggleAcct: () => this.setState({ acctOpen: !a, appsOpen: false }),
+      closeAcct: () => this.setState({ acctOpen: false }),
+      planName: plan,
+      planBasic: plan === 'Basic',
+      planPlus: plan !== 'Basic'
+    };
+  }
+  renderVals() {
+    const st = this.state || {};
+    const open = !!st.appsOpen;
+    const h = st.appsHub || 'As';
+    const v = { appsOpen: open,
+      toggleApps: () => this.setState({ appsOpen: !open, appsHub: 'As', acctOpen: false }),
+      closeApps: () => this.setState({ appsOpen: false, appsHub: 'As' }),
+      stopApps: (e) => { if (e) e.stopPropagation(); } };
+    ['As','Os','Ln','Pf','Dr'].forEach((k) => {
+      v['hub' + k] = h === k;
+      v['hub' + k + 'On'] = h === k ? 'true' : 'false';
+      v['pick' + k] = () => this.setState({ appsHub: k });
+    });
+    if (this.extraVals) Object.assign(v, this.extraVals(st));
+    return v;
+  }
+}
+</script>
+</body>
+</html>

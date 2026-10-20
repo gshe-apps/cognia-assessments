@@ -184,3 +184,46 @@ html body .hublang{display:inline-flex;align-items:center;gap:var(--space-2);min
 
 /* Account menu: a click anywhere outside it closes it (transparent layer under the menu) */
 .acctscrim{position:fixed;inset:0;z-index:55;background:transparent;cursor:default}
+
+/* Status colours (Cognia DS status tokens): good results green, results that need attention red */
+html body .theme-assessments span.tag.above{background:var(--success-light) !important;color:var(--success) !important;border:0 !important}
+html body .theme-assessments span.tag.below,html body .theme-assessments span.tag.overdue{background:var(--destructive-light) !important;color:var(--destructive) !important;border:0 !important}
+html body .theme-assessments span.tag.soon{background:var(--warning-light) !important;color:var(--warning) !important;border:0 !important}
+html body .theme-assessments svg:has(> polyline[points="3 17 9 11 13 15 21 7"]){color:var(--success)}
+html body .theme-assessments svg:has(> polyline[points="3 7 9 13 13 9 21 17"]){color:var(--destructive)}
+/* Download: ghost icon button */
+html body .theme-assessments .btn.anicon.ghosticon{background:transparent;border-color:transparent}
+html body .theme-assessments .btn.anicon.ghosticon:hover{background:var(--hover-overlay)}
+
+/* My Hubs: each product tile takes its hub colour (Cognia DS theme accent-200), icon in primary */
+.theme-assessments .apppane[aria-label="Assessments"]{--hubtile:#8690D3}
+.theme-assessments .apppane[aria-label="Observations and Surveys"]{--hubtile:#FCE086}
+.theme-assessments .apppane[aria-label="Learning"]{--hubtile:#9DBF9E}
+.theme-assessments .apppane[aria-label="Performance"]{--hubtile:#D085B1}
+.theme-assessments .apppane[aria-label="Data and Reporting"]{--hubtile:#FF928D}
+html body .theme-assessments .apppane .appt .appic{background:var(--hubtile,var(--secondary));border-color:transparent;color:var(--primary)}
+html body .theme-assessments .apppane .appt.applocked .appic{background:var(--secondary);color:var(--muted-foreground)}
+/* current product: neutral highlight so the hub colour stays on the icon */
+html body .theme-assessments .apppane .appt.on{background:var(--hover-overlay);color:var(--foreground)}
+html body .theme-assessments .apppane .appt.on .appic{border-color:transparent}
+/* Home in My Hubs: neutral ghost button */
+html body .theme-assessments .apphome,html body .theme-assessments .apphome.on{background:transparent;color:var(--foreground);outline:0;border:0}
+html body .theme-assessments .apphome:hover,html body .theme-assessments .apphome.on:hover{background:var(--hover-overlay);outline:0}
+/* My Hubs: product description sits at the bottom of the panel, not under the tiles */
+html body .theme-assessments .appdlg.split .appright{display:flex;flex-direction:column}
+html body .theme-assessments .appdlg.split .appright > sc-if{display:contents}
+html body .theme-assessments .appdlg.split .apppane{flex:1 1 auto}
+html body .theme-assessments .appdlg.split .appdesc{margin-top:auto}
+/* My Hubs: availability badges live in the hover description, not on the tiles */
+.theme-assessments .apppane:has(.appt.d-Al:hover,.appt.d-Al:focus-visible) .appdesc.d-Al{display:flex}
+html body .theme-assessments .appdesc strong{display:flex;align-items:center;gap:var(--space-2)}
+html body .theme-assessments .appdesc strong .tag{font:600 var(--text-body-small)/1.2 var(--font-sans);padding:2px 8px;border:0;border-radius:var(--radius-full);background:var(--warning-light);color:var(--warning)}
+/* My Hubs: hover is the light overlay, selected (current hub and current product) is one shade darker */
+html body .theme-assessments .apppane .appt:hover,html body .theme-assessments .apppane .appt:focus-visible{outline:0;background:var(--hover-overlay)}
+html body .theme-assessments .apphub:hover{background:var(--hover-overlay)}
+html body .theme-assessments .apphub[aria-pressed="true"],html body .theme-assessments .apphub[aria-pressed="true"]:hover,
+html body .theme-assessments .apppane .appt.on,html body .theme-assessments .apppane .appt.on:hover{background:var(--secondary);color:var(--foreground)}
+/* My Hubs: products not available yet (Screeners, Alt Assessments), hover still shows the description */
+html body .theme-assessments .apppane .appt.appdis{cursor:not-allowed;color:var(--muted-foreground);opacity:.5}
+html body .theme-assessments .apppane .appt.appdis:hover,html body .theme-assessments .apppane .appt.appdis:focus-visible{background:transparent}
+html body .theme-assessments .apppane .appt.appdis .appic{background:var(--secondary)}

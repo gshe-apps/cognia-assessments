@@ -1,0 +1,54 @@
+/* Square-corner, black-and-white review mode for the admin wireframes.
+   Removed from cognia-skin.css on 2026-10-20 so the screens show the full Cognia Design System.
+   To bring review mode back, paste this block back at the top of cognia-skin.css. */
+
+/* Square corners everywhere: delete this line to bring rounding back */
+html body *,html body *::before,html body *::after{border-radius:0 !important}
+
+/* Black-and-white review mode: everything greyscale EXCEPT unscoped / not-yet-approved items
+   (amber "If approved", "If available", "Future", "placement TBC" badges and AI summaries).
+   Delete this block to bring the full colour back. */
+html .theme-assessments{
+  --accent-100:#FFFFFF;--accent-200:#000000;--accent-300:#000000;--accent-400:#000000;--accent-500:#000000;
+  --brand-coral:#000000;--destructive-light:#000000;--background:#FFFFFF;--card:#FFFFFF;--secondary:#FFFFFF;
+  --foreground:#000000;--primary:#000000;--border:#000000;--input:#000000;--hover-overlay:transparent;
+}
+html body .wf,html body{background:#FFFFFF !important}
+html body .theme-assessments :is(.sub,.lbl,.d,th,.sel,.navl a,.tabs a,.navl .cond){color:#000000 !important}
+html body .theme-assessments .logo img{filter:grayscale(100%) contrast(200%)}
+/* Controls and neutral badges: white with a black outline, or solid black */
+html body .theme-assessments .btn{background:#FFFFFF;border:1px solid #000000;color:#000000}
+html body .theme-assessments .btn.p{background:#000000;color:#FFFFFF}
+html body .theme-assessments .btn.ghost{border-color:transparent}
+html body .theme-assessments .sel select,html body .theme-assessments .chip{background:#FFFFFF;border:1px solid #000000;color:#000000}
+html body .theme-assessments .chip button{background:#000000;color:#FFFFFF}
+html body .theme-assessments .tag:not(.c):not(.a){background:#000000;color:#FFFFFF}
+html body .theme-assessments .role{background:#FFFFFF;border:1px solid #000000;color:#000000}
+/* Stat tiles and nested cards: white with a black outline */
+html body .theme-assessments :is(.grid > .card:has(.n), .grid > .card.tint, .kpis > .kpi){--sbg:#FFFFFF !important;--sfg:#000000 !important;--strack:#FFFFFF !important;--sfill:#000000 !important;border:1px solid #000000 !important}
+html body .theme-assessments .card .card:not(.ai){background:#FFFFFF;border:1px solid #000000}
+html body .theme-assessments .win{border:1px solid #000000}
+html body .theme-assessments .win.now{border:2px solid #000000}
+/* Charts */
+html body .theme-assessments .bar{background:#FFFFFF;border:1px solid #000000}
+html body .theme-assessments .bar i{background:#000000}
+html body .theme-assessments .vb i.prev{background:#FFFFFF;border:1px solid #000000}
+html body .theme-assessments .c2,html body .theme-assessments .c3{color:#FFFFFF}
+html body .theme-assessments .c0,html body .theme-assessments .c1{border:1px solid #000000 !important}
+html body .theme-assessments tr.hl td{background:#FFFFFF}
+html body .theme-assessments .ln,html body .theme-assessments .ph{background:#FFFFFF;border:1px solid #000000}
+html body .theme-assessments .ai .ln{background:#FCE086;border:0}
+/* Home: existing platform chrome in black and white */
+html body .top,html body .menu,html body .side{background:#000000}
+html body .side a.on{background:transparent;color:#FFFFFF;font-weight:700}
+html body .side .ic,html body .avatar{border-color:#FFFFFF}
+html body .logo:not(.theme-assessments .logo),html body .wav{background:#000000;color:#FFFFFF}
+html body .newtag{background:#FFFFFF !important;color:#000000 !important}
+html body .welcome{background:#FFFFFF;border-bottom:1px solid #000000}
+html body .existing{opacity:1}
+html body .ex{background:#FFFFFF;border:1px solid #000000}
+html body .ex .ph,html body .ex .ln{background:#FFFFFF;border:1px solid #000000}
+html body .exlbl,html body .sub{color:#000000}
+html body .theme-assessments .alert{background:#FFFFFF;border:1px solid #000000}
+/* Home: border around the Assessment Hub preview container */
+html body .theme-assessments .card.preview{border:1px solid #000000}

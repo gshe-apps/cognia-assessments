@@ -1,0 +1,75 @@
+/* Prototype-only role switcher: the Switch button in every account menu and the Switch role modal.
+   Built only from Cognia Design System tokens (ds/cognia/colors_and_type.css): no raw colours,
+   fonts, radii or shadows. Linked from every screen; delete the <link> lines to hide it everywhere. */
+
+/* Account menu header: name and role, with the Switch button beside the role */
+.acctmenu .accthd{align-items:center}
+.acctmenu .acctwho{flex:1;min-width:0}
+html body .acctmenu:has(.acctswitch){width:340px}
+
+/* Switch: Button, secondary, small */
+html body .acctmenu .acctswitch{display:inline-flex;align-items:center;gap:var(--space-1);flex-shrink:0;min-height:32px;padding:0 var(--space-3);
+  border:1px solid var(--secondary);border-radius:var(--radius);background:var(--secondary);color:var(--secondary-foreground);
+  font:var(--weight-semibold) var(--text-body-small) var(--font-sans);cursor:pointer}
+html body .acctmenu .acctswitch:hover{background:var(--hover-overlay);border-color:var(--border)}
+.acctswitch:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.acctswitch svg{width:14px;height:14px}
+
+/* Dialog */
+.rolemodal{position:fixed;inset:0;z-index:1100;background:var(--backdrop-overlay);display:flex;align-items:center;justify-content:center;padding:var(--space-4);font-family:var(--font-sans)}
+.roledlg{background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+  width:min(640px,100%);max-height:calc(100vh - 32px);overflow:auto;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-6);text-align:left}
+.roledlghd{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.roledlghd h2{margin:0;font:var(--weight-semibold) var(--text-subheading)/var(--lh-snug) var(--font-sans);color:var(--foreground)}
+
+/* Close: Button, ghost, icon */
+.rolex{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:transparent;border:0;border-radius:var(--radius);cursor:pointer;color:var(--foreground)}
+.rolex:hover{background:var(--hover-overlay)}
+.rolex:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.rolex svg{width:20px;height:20px}
+
+/* Prototype note: Alert, info */
+.rolenote{display:flex;gap:var(--space-3);align-items:flex-start;margin:0;padding:var(--space-3) var(--space-4);background:var(--info-light);color:var(--foreground);
+  border-radius:var(--radius);font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
+.rolenote svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:var(--info)}
+
+/* Role options: Card; selected follows the DS selection pattern (2px primary border, accent tint) */
+.rolelist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+@media (max-width:520px){.rolelist{grid-template-columns:1fr}}
+.roleopt{display:flex;flex-direction:column;gap:var(--space-1);padding:var(--space-4);min-height:96px;position:relative;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);
+  color:var(--foreground) !important;text-decoration:none}
+a.roleopt:hover{box-shadow:var(--shadow-md);border-color:var(--ring)}
+a.roleopt:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.roleopt strong{font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);padding-right:72px}
+.roleopt span{font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
+.roleopt[aria-current="page"]{border:2px solid var(--primary);background:var(--accent-100);padding:calc(var(--space-4) - 1px)}
+
+/* Current: Badge, default */
+.roleopt .rolecur{position:absolute;top:var(--space-3);right:var(--space-3);background:var(--primary);color:var(--primary-foreground);
+  font:var(--weight-semibold) var(--text-body-small)/1.4 var(--font-sans);padding:3px 11px;border-radius:var(--radius-full)}
+
+/* Account menu on the teacher and student screens: same Popover as the admin menu */
+.capacct{position:relative;display:flex;align-items:center}
+.capacct .acctmenu{position:absolute;top:calc(100% + 12px);right:0;z-index:60;width:340px;background:var(--popover);color:var(--popover-foreground);
+  border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;
+  display:flex;flex-direction:column;padding:var(--space-2) 0;font-family:var(--font-sans);text-align:left}
+.capacct .accthd{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-2) var(--space-4) var(--space-3);border-bottom:1px solid var(--border);margin-bottom:var(--space-1)}
+.capacct .acctav{border-radius:var(--radius-full);width:40px;height:40px;flex-shrink:0;background:var(--primary);color:var(--primary-foreground);
+  display:flex;align-items:center;justify-content:center;font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
+.capacct .acctname{margin:0;font:var(--weight-bold) var(--text-body-base) var(--font-sans);color:var(--foreground)}
+.capacct .acctrole{margin:2px 0 0;font-size:var(--text-body-small);color:var(--muted-foreground)}
+.capacct .acctmenu > a{display:flex;align-items:center;min-height:40px;padding:0 var(--space-4);color:var(--foreground);text-decoration:none;
+  font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
+.capacct .acctmenu > a:hover{background:var(--hover-overlay)}
+.capacct .profile-trigger[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ring)}
+
+/* Plan switch in the account menu (prototype only): segmented control, DS tokens only */
+.acctmenu .planseg{display:inline-flex;gap:2px;padding:var(--space-1);background:var(--secondary);border-radius:var(--radius)}
+html body .acctmenu .planseg button{min-height:28px;padding:0 var(--space-2);border:0;border-radius:calc(var(--radius) - 2px);background:transparent;color:var(--foreground);
+  font:var(--weight-semibold) var(--text-body-small) var(--font-sans);cursor:pointer;white-space:nowrap}
+html body .acctmenu .planseg button:hover{background:var(--hover-overlay)}
+html body .acctmenu .planseg button[aria-pressed="true"]{background:var(--card);box-shadow:var(--shadow-sm)}
+.acctmenu .planseg button:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.capacct .accthd + .acctplan{border-top:0}
+.acctmenu .plannote{margin:0;font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans);color:var(--muted-foreground)}

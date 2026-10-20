@@ -1,0 +1,139 @@
+/* Cognia Design System layer for the CAP teacher and student screens.
+   Loaded after cap-prototype.css. Maps the prototype's components to the
+   shadcn-based Cognia tokens in ds/cognia/colors_and_type.css (Assessments theme).
+   Remove the <link> to this file to see the original v22 styling again. */
+
+.cap-root.theme-assessments{
+  --paper:var(--background);--white:var(--card);--ink:var(--foreground);--muted:var(--foreground);
+  --line:var(--border);--soft:var(--secondary);--dark:var(--primary);--radius:var(--radius-lg);--shadow:var(--shadow-md);
+  font-family:var(--font-sans);color:var(--foreground);background:var(--background);font-size:var(--text-body-small);line-height:var(--lh-base)
+}
+.cap-root.theme-assessments :is(h1,h2,h3,h4,p,button,input,select,textarea,legend,label,table),.cap-root.theme-assessments :is(h1,h2,h3,h4,p,a:where(.xbtn),input,select,textarea,legend,label,table){font-family:var(--font-sans);letter-spacing:0}
+.cap-root.theme-assessments :is(.workspace,.student-workspace,.main){background:var(--background)}
+
+/* Type scale: heading 24, subheading 20, body base 16, body small 14. Sentence case only. */
+.cap-root.theme-assessments h1,
+.cap-root.theme-assessments :is(.overview-heading,.assessment-heading,.main-page-heading,.head,.student-title,.success) h1{font-size:var(--text-heading);font-weight:var(--weight-semibold);line-height:var(--lh-snug);letter-spacing:0;color:var(--foreground)}
+.cap-root.theme-assessments h2,
+.cap-root.theme-assessments :is(.assessment-create,.assessment-tasks,.assessment-drafts-heading,.next-action,.panelhead,.student-panel,.student-work-card,.drawerhead) h2,
+.cap-root.theme-assessments .overview-dashboard .pathway-card h2{font-size:var(--text-subheading);font-weight:var(--weight-semibold);line-height:var(--lh-snug);letter-spacing:0}
+.cap-root.theme-assessments :is(.formcard h2,.overview-stat h2,.student-reading h2){font-size:var(--text-body-base);font-weight:var(--weight-semibold);letter-spacing:0}
+.cap-root.theme-assessments :is(h3,h4,.overview-links b,.overview-dashboard .overview-links b,.overview-dashboard .resume-strip b,.overview-assessment-info b,.assessments-dashboard .draftcard h3,.recent-heading h3,.journey-links b){font-size:var(--text-body-base);font-weight:var(--weight-semibold);letter-spacing:0;line-height:var(--lh-snug)}
+.cap-root.theme-assessments .student-question-card legend{font-size:var(--text-subheading);font-weight:var(--weight-semibold);line-height:var(--lh-snug)}
+.cap-root.theme-assessments :is(p,.muted,small,.tiny,.hint,.note,.qmeta,.head > div > p,.assessment-subtitle p,.student-title p,.overview-stat p,.pathway-card > p,.student-support){color:var(--foreground)}
+.cap-root.theme-assessments :is(.eyebrow,.context-label,.hub-current,.pill,th,.hub-brand small){text-transform:none;letter-spacing:0}
+.cap-root.theme-assessments th{font-size:var(--text-body-small);font-weight:var(--weight-semibold);color:var(--foreground)}
+.cap-root.theme-assessments td{border-bottom-color:var(--border)}
+.cap-root.theme-assessments .successstats b,.cap-root.theme-assessments .insight-number,.cap-root.theme-assessments .metric-grid b,.cap-root.theme-assessments .overview-stat strong{font-family:var(--font-sans);font-weight:var(--weight-bold);letter-spacing:0}
+
+/* Top bar: Cognia logo, module name, centred nav with underline on the current page */
+.cap-root.theme-assessments .global-header{background:var(--card);border-bottom:1px solid var(--border);box-shadow:none;height:64px;min-height:64px;padding:0 var(--space-8)}
+.cap-root.theme-assessments .hub-brand{gap:var(--space-3);font:var(--weight-bold) 16px var(--font-sans);color:var(--foreground);letter-spacing:0}
+.cap-root.theme-assessments .cap-logo{height:28px;width:auto;display:block}
+.cap-root.theme-assessments .cap-modname{font:var(--weight-bold) 16px/24px var(--font-sans);color:var(--foreground);white-space:nowrap}
+.cap-root.theme-assessments .primary-nav button,.cap-root.theme-assessments .primary-nav a:where(.xbtn){font:var(--weight-semibold) 14px var(--font-sans);color:var(--foreground);padding:var(--space-2) var(--space-3);border-radius:var(--radius)}
+.cap-root.theme-assessments .primary-nav button:hover,.cap-root.theme-assessments .primary-nav a:where(.xbtn):hover{background:var(--hover-overlay);color:var(--foreground)}
+.cap-root.theme-assessments .primary-nav button.current,.cap-root.theme-assessments .primary-nav a:where(.xbtn).current{color:var(--foreground)}
+.cap-root.theme-assessments .primary-nav button:after,.cap-root.theme-assessments .primary-nav a:where(.xbtn):after{background:var(--accent-300);height:2px;left:var(--space-3);right:var(--space-3);bottom:-12px}
+.cap-root.theme-assessments .hub-trigger{width:40px;height:40px;border-radius:var(--radius);color:var(--foreground)}
+.cap-root.theme-assessments .hub-trigger:hover{background:var(--hover-overlay);border-color:transparent}
+.cap-root.theme-assessments .profile-trigger{width:36px;height:36px;border-radius:var(--radius-full);background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
+.cap-root.theme-assessments .student-header .plain{font:var(--weight-semibold) 14px var(--font-sans);color:var(--foreground)}
+
+/* Buttons: secondary by default, primary for the one main action, ghost for tertiary */
+.cap-root.theme-assessments .btn{font:var(--weight-semibold) 14px var(--font-sans);letter-spacing:0;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius);border:1px solid var(--secondary);background:var(--secondary);color:var(--secondary-foreground);box-shadow:none;transform:none}
+.cap-root.theme-assessments .btn:hover:not(:disabled){background:var(--secondary);border-color:var(--border);box-shadow:none;transform:none}
+.cap-root.theme-assessments .btn.solid{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);box-shadow:none}
+.cap-root.theme-assessments .btn.solid:hover:not(:disabled){background:var(--primary);border-color:var(--primary)}
+.cap-root.theme-assessments .btn.ghost{background:transparent;border-color:transparent}
+.cap-root.theme-assessments .btn.ghost:hover:not(:disabled){background:var(--hover-overlay);border-color:transparent}
+.cap-root.theme-assessments .btn.small{min-height:32px;padding:0 var(--space-3);font-size:var(--text-body-small)}
+.cap-root.theme-assessments .btn:disabled{opacity:.5}
+.cap-root.theme-assessments :is(.plain,.qpreview,.details-toggle){color:var(--foreground);font-weight:var(--weight-semibold)}
+.cap-root.theme-assessments .iconbtn{border-radius:var(--radius);color:var(--foreground)}
+
+/* Membership switch: shadcn segmented control */
+.cap-root.theme-assessments .plan-control > div{background:var(--secondary);border:0;border-radius:var(--radius);padding:var(--space-1);box-shadow:none}
+.cap-root.theme-assessments .plan-control button,.cap-root.theme-assessments .plan-control a:where(.xbtn){font:var(--weight-semibold) var(--text-body-small) var(--font-sans);border-radius:var(--radius);color:var(--foreground);padding:var(--space-2) var(--space-3)}
+.cap-root.theme-assessments .plan-control button[aria-pressed=true],.cap-root.theme-assessments .plan-control a:where(.xbtn)[aria-pressed=true]{background:var(--card);color:var(--foreground);box-shadow:var(--shadow-sm)}
+
+/* Cards: white, 1px border, 8px radius, small shadow; hover lifts to medium */
+.cap-root.theme-assessments :is(.card,.formcard,.student-panel,.student-work-card,.student-reading,.student-question-card,.student-review-row,.resume-strip,.question-card,.metric-grid > div,.journey-links > button,.plan-comparison section,.hub-tile),.cap-root.theme-assessments :is(.card,.formcard,.student-panel,.student-work-card,.student-reading,.student-question-card,.student-review-row,.resume-strip,.question-card,.metric-grid > div,.journey-links > a:where(.xbtn),.plan-comparison section,.hub-tile){background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.cap-root.theme-assessments :is(.journey-links > button,.draftcard,.student-review-row,.question-card):hover,.cap-root.theme-assessments :is(.journey-links > a:where(.xbtn),.draftcard,.student-review-row,.question-card):hover{box-shadow:var(--shadow-md);border-color:var(--border);transform:none}
+.cap-root.theme-assessments .overview-dashboard .overview-links > button,.cap-root.theme-assessments .overview-dashboard .overview-links > a:where(.xbtn){background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.cap-root.theme-assessments .overview-dashboard .overview-links > button:hover,.cap-root.theme-assessments .overview-dashboard .overview-links > a:where(.xbtn):hover{background:var(--card);border-color:var(--border);box-shadow:var(--shadow-md)}
+.cap-root.theme-assessments .overview-dashboard .resume-strip{border-color:var(--border)}
+.cap-root.theme-assessments :is(.task-section,.assessment-tasks,.assessment-create){border-radius:var(--radius)}
+/* Folder-shaped cards keep their silhouette, with Cognia border and fill */
+.cap-root.theme-assessments .folder-outline path{fill:var(--card);stroke:var(--border)}
+.cap-root.theme-assessments .overview-dashboard .pathway-card.featured .folder-outline path{stroke:var(--primary);stroke-width:2}
+.cap-root.theme-assessments .overview-dashboard .pathway-card:hover .folder-outline path,
+.cap-root.theme-assessments .assessments-dashboard .draftcard.card:hover .folder-outline path{stroke:var(--border)}
+.cap-root.theme-assessments .emptydraft{border:1px solid var(--border);background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+
+/* Icon containers: tinted with the Assessments accent */
+.cap-root.theme-assessments :is(.pathway-icon,.overview-tile-icon,.overview-assessment-icon,.circle-icon,.student-symbol,.student-review-index,.hub-tile-icon,.qnum,.flow-stage b,.stepper .num){background:var(--accent-100);color:var(--accent-400);border-color:transparent;border-radius:var(--radius)}
+.cap-root.theme-assessments .overview-dashboard :is(.pathway-icon,.overview-tile-icon,.overview-assessment-icon){background:var(--accent-100);color:var(--accent-400);border-radius:var(--radius)}
+.cap-root.theme-assessments :is(.stepper .active .num,.flow-stage .active b){background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}
+.cap-root.theme-assessments .stepper .done .num{background:var(--success-light);color:var(--success)}
+.cap-root.theme-assessments .stepper .line{background:var(--border)}
+.cap-root.theme-assessments .student-account-avatar{background:var(--primary);color:var(--primary-foreground)}
+
+/* Stat tiles: themed cards on the accent ramp */
+.cap-root.theme-assessments :is(.overview-stat,.metric-grid > div){background:var(--accent-100);border:1px solid transparent;box-shadow:none;border-radius:var(--radius)}
+.cap-root.theme-assessments .overview-stat:nth-child(4n+2){background:var(--accent-200)}
+.cap-root.theme-assessments .overview-stat:nth-child(4n+3){background:var(--accent-300)}
+.cap-root.theme-assessments .overview-stat:nth-child(4n+4){background:var(--accent-400)}
+.cap-root.theme-assessments .overview-stat :is(h2,strong,p,svg){color:var(--accent-400)}
+.cap-root.theme-assessments .overview-stat:nth-child(4n+2) :is(h2,strong,p,svg){color:var(--accent-500)}
+.cap-root.theme-assessments .overview-stat:is(:nth-child(4n+3),:nth-child(4n+4)) :is(h2,strong,p,svg){color:var(--primary-foreground)}
+
+/* Badges: pills, two-word status labels, status colour plus text */
+.cap-root.theme-assessments .tag,
+.cap-root.theme-assessments .overview-dashboard .pathway-card-top .tag,
+.cap-root.theme-assessments .student-page .tag{font:var(--weight-semibold) var(--text-body-small)/1.4 var(--font-sans);letter-spacing:0;text-transform:none;border:0;border-radius:var(--radius-full);padding:3px 11px;background:var(--secondary);color:var(--foreground)}
+.cap-root.theme-assessments .tag.addon,
+.cap-root.theme-assessments .overview-dashboard .pathway-card-top .tag.addon{background:var(--info-light);color:var(--info)}
+.cap-root.theme-assessments .countbadge{background:var(--secondary);color:var(--foreground);border-radius:var(--radius-full);font-weight:var(--weight-semibold)}
+
+/* Segmented tabs and filters */
+.cap-root.theme-assessments :is(.tabs,.student-filters){background:var(--secondary);border-radius:var(--radius);padding:var(--space-1)}
+.cap-root.theme-assessments :is(.tabs button,.student-filters button),.cap-root.theme-assessments :is(.tabs a:where(.xbtn),.student-filters a:where(.xbtn)){font:var(--weight-semibold) var(--text-body-small) var(--font-sans);color:var(--foreground);border-radius:var(--radius);border:0}
+.cap-root.theme-assessments :is(.tabs .selected,.student-filters button[aria-pressed=true]),.cap-root.theme-assessments :is(.tabs .selected,.student-filters a:where(.xbtn)[aria-pressed=true]){background:var(--card);color:var(--foreground);box-shadow:var(--shadow-sm)}
+
+/* Form controls */
+.cap-root.theme-assessments :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--card);border:1px solid var(--ring);border-radius:var(--radius);color:var(--foreground);font-size:14px}
+.cap-root.theme-assessments :is(input,select,textarea):focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--ring);outline:none}
+.cap-root.theme-assessments :is(input[type=checkbox],input[type=radio]){accent-color:var(--primary)}
+.cap-root.theme-assessments .field label{font-weight:var(--weight-semibold);font-size:14px;color:var(--foreground)}
+
+/* Selectable options: selected uses a 2px primary border */
+.cap-root.theme-assessments :is(.standard-option,.student-answer,.option){background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:none;transform:none}
+.cap-root.theme-assessments :is(.standard-option,.student-answer,.option):hover{background:var(--card);border-color:var(--ring);transform:none}
+.cap-root.theme-assessments :is(.standard-option,.student-answer,.option):has(input:checked){background:var(--accent-100);border:2px solid var(--primary);box-shadow:none}
+.cap-root.theme-assessments .answer-options span{background:var(--background);border-radius:var(--radius)}
+.cap-root.theme-assessments :is(.question-card.added,.locked-item){background:var(--background);border-style:solid}
+.cap-root.theme-assessments .sample-response{border:1px solid var(--border);border-radius:var(--radius);background:var(--background)}
+
+/* Progress */
+.cap-root.theme-assessments .progressline{background:var(--secondary);border-radius:var(--radius-full)}
+.cap-root.theme-assessments .progressline > span{background:var(--accent-300);border-radius:var(--radius-full)}
+
+/* Alerts and feedback */
+.cap-root.theme-assessments .infobox{background:var(--info-light);color:var(--foreground);border-radius:var(--radius)}
+.cap-root.theme-assessments .infobox svg{color:var(--info)}
+.cap-root.theme-assessments .error{background:var(--destructive-light);color:var(--destructive);border:1px solid var(--brand-coral);border-radius:var(--radius)}
+.cap-root.theme-assessments .next-action{background:var(--accent-100);border:1px solid transparent;border-radius:var(--radius)}
+.cap-root.theme-assessments .next-action p{color:var(--accent-400)}
+.cap-root.theme-assessments :is(.success-icon,.student-success-icon){background:var(--success-light);color:var(--success);border-color:transparent;border-radius:var(--radius-full)}
+.cap-root.theme-assessments .successcard:before{background:var(--accent-300)}
+.cap-root.theme-assessments .readiness li:before{color:var(--success)}
+.cap-root.theme-assessments .disclosure{border-color:var(--border);border-radius:var(--radius);background:var(--card)}
+.cap-root.theme-assessments .formcard blockquote{background:var(--background);border-left:0;border:1px solid var(--border);border-radius:var(--radius)}
+
+/* Rows, dividers and sticky bars */
+.cap-root.theme-assessments :is(.listline,.recent-assessment,.recent-heading,.summary-list > div,.reviewrow,.selected-q,.roster-list label,.overview-assessment-group,.actionbar,.panelhead,.assemblyfoot,.successstats){border-color:var(--border)}
+.cap-root.theme-assessments .assemblyfoot{background:var(--background)}
+.cap-root.theme-assessments .stickybottom{background:var(--background)}
+.cap-root.theme-assessments .overview-assessment-group .overview-assessment-info{border-left-color:var(--border)}
+.cap-root.theme-assessments .overview-dashboard .resume-strip > div{border-left-color:var(--border)}

@@ -337,7 +337,7 @@
     },
     "PA-Overview.dc.html": {
       "expand": "fill",
-      "h": 1024,
+      "h": 1150,
       "is_interactive": true,
       "title": "School 2 · Interim · Overview",
       "w": 1440,
@@ -380,9 +380,18 @@
       "x": 4560,
       "y": 5000
     },
+    "SA2-Combined.dc.html": {
+      "expand": "fill",
+      "h": 2040,
+      "is_interactive": true,
+      "title": "SA 2 + 3 · Interim · Overview (combined)",
+      "w": 1440,
+      "x": 10720,
+      "y": -1334
+    },
     "SA2-Hub.dc.html": {
       "expand": "fill",
-      "h": 1024,
+      "h": 1180,
       "is_interactive": true,
       "title": "SA 2 · Interim · Overview",
       "w": 1440,
@@ -397,6 +406,15 @@
       "w": 1440,
       "x": 3040,
       "y": 0
+    },
+    "SA3-Mockup.dc.html": {
+      "expand": "fill",
+      "h": 2000,
+      "is_interactive": true,
+      "title": "SA 3 · Interim · Analytics (data mock-up)",
+      "w": 1440,
+      "x": 9200,
+      "y": -1334
     },
     "SA6-Respond.dc.html": {
       "expand": "fill",
@@ -431,8 +449,8 @@
       "kind": "image",
       "src": "/_blob/8e7b88db227afbdaf9584b1076a69b19",
       "w": 752,
-      "x": 1690,
-      "y": 6094
+      "x": 1691,
+      "y": 6530
     },
     "image-j6ymp3": {
       "alt": "Pasted image",
@@ -440,8 +458,8 @@
       "kind": "image",
       "src": "/_blob/bfca68985693b64b76611d6cdd701525",
       "w": 752,
-      "x": 2563,
-      "y": 6094
+      "x": 2490,
+      "y": 6530
     },
     "s1": {
       "bold": true,
@@ -610,6 +628,8 @@
     "Main.dc.html",
     "SA2-Hub.dc.html",
     "SA3-Dashboard.dc.html",
+    "SA3-Mockup.dc.html",
+    "SA2-Combined.dc.html",
     "SA6-Respond.dc.html",
     "MOD-Interim.dc.html",
     "MOD-Formative.dc.html",

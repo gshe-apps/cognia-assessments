@@ -1,0 +1,86 @@
+# Publishes the wireframe prototype in project/ to GitHub Pages on every push to main.
+# One-time setup: Settings > Pages > Build and deployment > Source: GitHub Actions.
+name: Deploy prototype to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build static site
+        run: |
+          rm -rf _site
+          cp -R project _site
+          node - <<'EOF'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const site = '_site';
+          const assets = path.join(site, 'assets');
+          fs.mkdirSync(assets, { recursive: true });
+
+          // Images stored on the Claude Design canvas (/_blob/<id>) are not in the repo.
+          // Use a committed logo if one exists, otherwise a simple wordmark, and a
+          // labelled placeholder for any other canvas image.
+          const LOGO_ID = '03b113a3dc2e610eb61ccc911bd46d5e';
+          const logoFile = ['cognia-logo.svg', 'cognia-logo.png'].find(f => fs.existsSync(path.join(assets, f)));
+          if (!logoFile) {
+            fs.writeFileSync(path.join(assets, 'cognia-logo.svg'),
+              '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40" viewBox="0 0 160 40">' +
+              '<text x="0" y="30" font-family="Open Sans, Arial, sans-serif" font-size="30" font-weight="700" fill="#FF554D">cognia</text></svg>');
+          }
+          const logo = 'assets/' + (logoFile || 'cognia-logo.svg');
+          fs.writeFileSync(path.join(assets, 'image-unavailable.svg'),
+            '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="170" viewBox="0 0 400 170">' +
+            '<rect width="400" height="170" fill="#EDEDEF"/>' +
+            '<text x="200" y="90" text-anchor="middle" font-family="Open Sans, Arial, sans-serif" font-size="16" fill="#000012">Image available on the design canvas</text></svg>');
+
+          // Rewrite canvas image links to relative paths (Pages serves from /<repo>/, so root paths break).
+          let changed = 0;
+          for (const name of fs.readdirSync(site)) {
+            if (!/\.(html|css|js)$/.test(name)) continue;
+            const file = path.join(site, name);
+            const src = fs.readFileSync(file, 'utf8');
+            const out = src.replace(/\/_blob\/([0-9a-f]{32})/g, (_, id) => id === LOGO_ID ? logo : 'assets/image-unavailable.svg');
+            if (out !== src) { fs.writeFileSync(file, out); changed++; }
+          }
+          console.log(`Rewrote canvas image links in ${changed} files`);
+
+          // Front page: same entry point as serve.cjs.
+          fs.writeFileSync(path.join(site, 'index.html'),
+            '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Cognia Assessment Hub prototype</title>' +
+            '<meta http-equiv="refresh" content="0; url=Main.dc.html"></head>' +
+            '<body><a href="Main.dc.html">Open the prototype</a></body></html>');
+          // Serve files as-is (no Jekyll processing).
+          fs.writeFileSync(path.join(site, '.nojekyll'), '');
+          EOF
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

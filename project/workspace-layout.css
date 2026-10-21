@@ -1,0 +1,6 @@
+/* One content frame for the five teacher workspace destinations. */
+.cap-root.theme-assessments .workspace>.main{width:100%;max-width:1680px;box-sizing:border-box;margin-left:auto;margin-right:auto;padding-left:40px;padding-right:40px}
+.cap-root.theme-assessments .workspace>.main>.page{width:100%;max-width:1600px;box-sizing:border-box;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+@media(max-width:900px){.cap-root.theme-assessments .workspace>.main{padding-left:18px;padding-right:18px}}
+html{scrollbar-gutter:stable}
+.cap-root.theme-assessments .workspace>.main.classes-main{margin-top:0;margin-bottom:0}

@@ -1,0 +1,5 @@
+/* Shared icon-tile roles, based on the Cognia Assessments indigo palette. */
+:root{--icon-tile-background:#D1D5EE;--icon-tile-foreground:#262E67}
+.theme-assessments{--icon-tile-background:var(--accent-100);--icon-tile-foreground:var(--accent-400)}
+html body :is(.reference-icon,.assessment-reference-icon,.review-add-icon,.overview-tile-icon,.overview-assessment-icon,.pathway-icon,.circle-icon,.hub-tile-icon,.emptyicon,.hic,.prodic,.swicon,.appic,.reference-kpi .reference-icon){background:var(--icon-tile-background)!important;color:var(--icon-tile-foreground)!important;border-color:transparent!important}
+html body :is(.student-symbol,.assessment-reference-arrow,.assessment-reference-new-icon){background:var(--icon-tile-background)!important;color:var(--icon-tile-foreground)!important;border-color:transparent!important}

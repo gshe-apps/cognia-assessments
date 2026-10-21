@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="40" viewBox="0 0 150 40" role="img" aria-label="Cognia">
+  <path d="M28.6 11.2A14 14 0 1 0 30.4 27" fill="none" stroke="#1A1A1A" stroke-width="6.5"/>
+  <circle cx="29" cy="8.6" r="4.6" fill="#FF554D"/>
+  <text x="42" y="28.5" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="-0.5" fill="#1A1A1A">cognia</text>
+</svg>

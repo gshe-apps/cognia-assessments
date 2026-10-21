@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Interim – Subgroup patterns</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/cognia/colors_and_type.css">
+<link rel="stylesheet" href="cognia-skin.css">
+<link rel="stylesheet" href="hub-header.css">
+<link rel="stylesheet" href="prototype-roles.css">
+<link rel="stylesheet" href="icon-tiles.css"><link rel="stylesheet" href="prototype-interactions.css"></head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:var(--secondary)}
+*{box-sizing:border-box}
+a{color:var(--foreground)}a:hover{color:var(--foreground)}
+.wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:14px;line-height:1.45}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
+.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
+.navl{display:flex;gap:20px;flex-wrap:wrap;flex:1}
+.navl a{text-decoration:none;color:var(--foreground);padding:6px 0;border-bottom:2px solid transparent}
+.navl a.on{color:var(--foreground);font-weight:600;border-bottom-color:var(--border)}
+.role{font:500 var(--text-body-small) var(--font-sans);border:1.5px solid var(--ring);border-radius:var(--radius-full);padding:4px 10px;color:var(--foreground)}
+.main{max-width:1240px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.crumb{font:var(--text-body-small) var(--font-sans);color:var(--foreground)}
+h1{margin:0;font-size:26px;font-weight:600}
+h2{margin:0;font-size:16px;font-weight:600}
+p{margin:0}
+.sub{color:var(--foreground)}
+.card{background:var(--card);border:1.5px solid var(--ring);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px}
+.n{font:600 28px var(--font-sans)}
+.lbl{font-size:var(--text-body-small);color:var(--foreground);text-transform:uppercase;letter-spacing:.04em}
+.ph{background:var(--secondary);border-radius:var(--radius)}
+.ln{height:10px;background:var(--secondary);border-radius:var(--radius)}
+.cond{background:var(--warning-light)}
+.ai{border:1.5px dashed var(--accent-300);background:var(--accent-100)}
+.tag{display:inline-block;font:500 var(--text-body-small) var(--font-sans);padding:2px 6px;border-radius:var(--radius);border:1px solid var(--ring);color:var(--foreground);text-transform:uppercase;white-space:nowrap}
+.tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
+.tag.a{border-color:var(--accent-300);color:var(--accent-400);background:var(--accent-100)}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:var(--radius);border:1.5px solid var(--primary);background:var(--card);color:var(--foreground);font:500 14px var(--font-sans);text-decoration:none;cursor:pointer}
+.btn.p{background:var(--primary);color:var(--primary-foreground)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.sp{justify-content:space-between}
+.bar{height:8px;background:var(--secondary);border-radius:var(--radius);overflow:hidden;flex:1;min-width:80px}.bar i{display:block;height:100%;background:var(--primary)}
+.tile{text-decoration:none;color:var(--foreground);min-height:150px}
+.tile:hover{border-color:var(--border)}
+.tile.primary{border:2px solid var(--primary)}
+.icon{width:36px;height:36px;border-radius:var(--radius);background:var(--secondary)}
+ul.li{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.navl{align-items:center}
+.navl .cond{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:var(--radius);background:var(--warning-light);color:var(--foreground)}
+.tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
+/* No outline on school cards or the summary list: white fill on the page background is enough */
+html body .theme-assessments .schcard,html body .theme-assessments .sumlist{border:0}
+/* text stays primary or muted: status tags keep their tint, not a coloured label */
+html body .theme-assessments .tag.below{color:var(--foreground) !important}
+.sideact{justify-self:end;gap:var(--space-2);flex-wrap:nowrap}.btn > svg{width:18px;height:18px;flex-shrink:0}.btn{white-space:nowrap}.btn.anicon{padding:0;width:44px;justify-content:center}
+.sumlink{text-decoration:none;color:var(--foreground)}
+html body .theme-assessments .btn.ghostbtn{min-height:40px;padding:0 var(--space-3);border:0;border-radius:var(--radius);background:transparent;color:var(--foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);text-decoration:none}
+html body .theme-assessments .btn.ghostbtn:hover{background:var(--hover-overlay)}
+.btn.ghostbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+html body .theme-assessments .topfive{margin-top:var(--space-12)}
+html body .theme-assessments .topfive .schgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:900px){html body .theme-assessments .topfive .schgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.topfive .schtop{flex-direction:column;align-items:flex-start;gap:var(--space-2)}.topfive .schlogo{width:36px;height:36px}
+.anfbtn{justify-self:end;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:0;border-radius:var(--radius);background:transparent;color:var(--foreground);cursor:pointer}.anfbtn svg{width:20px;height:20px}
+.anfbtn:hover{background:var(--hover-overlay)}.anfbtn[aria-expanded="true"]{background:var(--accent-100);color:var(--accent-400)}.anfbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.anfilters.anside{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-4);background:var(--card);border-radius:var(--radius)}
+.anf{display:flex;flex-direction:column;gap:var(--space-1);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);color:var(--foreground)}
+.anf select{width:100%;min-height:36px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius);background:var(--card);font:var(--weight-regular) var(--text-body-small) var(--font-sans);color:var(--foreground)}
+.anf select:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.anfhd{display:flex;align-items:center;justify-content:space-between;font:var(--weight-bold) var(--text-body-base) var(--font-sans)}
+.anfdone{justify-content:center;margin-top:var(--space-2)}
+.snapside > sc-if{display:contents}
+html body .theme-assessments .topfive .schlogo.schava{width:44px;height:44px;border:0;border-radius:var(--radius-full);background:var(--secondary);color:var(--foreground)}
+html body .theme-assessments .topfive .schcard:hover .schlogo.schava{background:var(--secondary);color:var(--foreground)}
+/* Reserve room for the filter panel so the schools section never moves when Filters opens */
+html body .theme-assessments .card.ghost > .snaprow{height:640px;min-height:0;align-items:flex-start}
+.anfhd{justify-content:flex-start !important;gap:var(--space-1)}
+.anback{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin-left:calc(-1 * var(--space-2));padding:0;border:0;border-radius:var(--radius);background:transparent;color:var(--foreground);cursor:pointer}
+.anback svg{width:20px;height:20px}.anback:hover{background:var(--hover-overlay)}.anback:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.anflive{margin:0;font-size:var(--text-body-small);color:var(--muted-foreground)}
+.anreset{align-self:flex-start;margin-left:calc(-1 * var(--space-3))}
+html body .theme-assessments .topfive .schcard{cursor:pointer;transition:box-shadow .15s,background .15s}html body .theme-assessments .topfive .schcard:hover{background:var(--card);box-shadow:var(--shadow-md)}html body .theme-assessments .topfive .schcard .schnm,html body .theme-assessments .topfive .schcard:hover .schnm{text-decoration:none}
+.svl{font-family:var(--font-sans);line-height:20px;color:var(--foreground);white-space:nowrap}
+.svr{text-align:right}.svc{text-align:center}
+.svax{font-size:12px;line-height:18px;color:var(--muted-foreground)}
+.svpt{font-size:13px;font-weight:700}.svpt.svbig{font-size:16px}
+.svtip{box-sizing:border-box;height:100%;padding:8px 12px;border-radius:8px;background:var(--primary);color:var(--primary-foreground);font:400 13px/18px var(--font-sans)}
+.svtip .svtb{font-weight:700;margin-bottom:1px}
+html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(--space-4);margin-top:var(--space-12);padding:0;background:transparent}
+.bubhd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-3)}
+.bubttl{display:flex;flex-direction:column;gap:var(--space-2)}
+.bubttl h2{margin:0;font:var(--weight-bold) var(--text-subheading) var(--font-sans)}
+.bubleg{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small)}
+.bubleg svg{width:56px;height:8px;flex-shrink:0}
+.bubgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:900px){.bubgrid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
+.bubcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-1);padding:var(--space-4) var(--space-2);border-radius:var(--radius);color:var(--foreground);text-decoration:none;transition:background .15s}
+.bubcard:hover{background:var(--hover-overlay);color:var(--foreground)}
+.bubcard:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+.bubsvg{width:160px;height:160px;max-width:100%;margin-bottom:var(--space-2);overflow:visible}
+.bubring{fill:none;stroke:var(--foreground);stroke-opacity:.5;stroke-width:2.5;stroke-dasharray:8 6}
+.bubfill{stroke-width:3}
+.bubfill.up{fill:var(--success-light);stroke:var(--success)}
+.bubfill.dn{fill:var(--destructive-light);stroke:var(--destructive)}
+.bubval{font:var(--weight-semibold) 18px var(--font-sans);fill:var(--foreground)}
+.bubnm{font:var(--weight-semibold) var(--text-body-base) var(--font-sans)}
+.bubsub{font-size:var(--text-body-small)}
+.bubchg{display:inline-flex;align-items:center;gap:var(--space-1);margin-top:var(--space-1);font-size:var(--text-body-small)}
+.bubchg svg{width:16px;height:16px;flex-shrink:0}
+.bubtr.up{color:var(--success)}.bubtr.dn{color:var(--destructive)}
+
+.backlnk{display:inline-flex;align-items:center;gap:var(--space-1);min-height:40px;margin-left:calc(-1 * var(--space-2));padding:0 var(--space-2);border-radius:var(--radius);color:var(--foreground);text-decoration:none;font:var(--weight-semibold) var(--text-body-small) var(--font-sans);align-self:flex-start}
+.backlnk:hover{background:var(--hover-overlay);color:var(--foreground)}.backlnk:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}.backlnk svg{width:18px;height:18px}
+.pghd{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--space-4)}
+.pghd h1{font:var(--weight-bold) var(--text-heading) var(--font-sans)}
+.pgsub{margin-top:var(--space-1);font-size:var(--text-body-small)}
+.pgact{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-3)}
+.pgact .anf{min-width:220px}
+.note{display:flex;align-items:flex-start;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-radius:var(--radius);background:var(--info-light);font-size:var(--text-body-small)}
+.note svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--info)}
+.tblsec{display:flex;flex-direction:column;gap:var(--space-3)}
+.tblsec h2{font:var(--weight-bold) var(--text-subheading) var(--font-sans)}
+.tblwrap{background:var(--card);border-radius:var(--radius);overflow-x:auto}
+table.dt{width:100%;min-width:900px;border-collapse:collapse;font-size:var(--text-body-small)}
+.dt caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.dt th,.dt td{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
+.dt thead th{font-weight:var(--weight-semibold);white-space:nowrap}
+.dt .num{text-align:right;white-space:nowrap}
+.dt tr.grp th{padding-top:var(--space-4);background:var(--secondary);font-weight:var(--weight-semibold)}
+.dt tbody tr:last-child td{border-bottom:0}
+.dt a.rowlnk{color:var(--foreground);font-weight:var(--weight-semibold);text-decoration:none}
+.dt a.rowlnk:hover{text-decoration:underline}
+.dt a.rowlnk:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring);border-radius:2px}
+.cbar{display:flex;align-items:center;gap:var(--space-2);min-width:180px}
+.cbar .bar{max-width:120px}
+.cbar b{font-weight:var(--weight-semibold);min-width:36px}
+.trd{display:inline-flex;align-items:center;gap:var(--space-1)}
+.trd svg{width:16px;height:16px}
+.trd.up svg{color:var(--success)}.trd.dn svg{color:var(--destructive)}.trd.fl svg{color:var(--foreground)}
+.dt .hidden{display:inline-flex;align-items:center;gap:var(--space-1)}
+.dt .hidden svg{width:16px;height:16px}
+.gapv{font-weight:var(--weight-semibold)}
+</style>
+</helmet>
+<div class="wf theme-assessments">
+  <header class="top">
+    <div class="brand"><a class="logo" href="Main.dc.html" aria-label="Go to Home" style="text-decoration:none"><img src="/_blob/03b113a3dc2e610eb61ccc911bd46d5e" alt="Cognia"></a><span class="modname">Interim</span></div>
+    <nav class="navl" aria-label="Interim"><a class="on" aria-current="page" href="SA2-Hub.dc.html">Overview</a><a href="MOD-Interim.dc.html">Assessments</a></nav>
+    <div class="topr"><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome" href="Main.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap:12px; align-items:center"><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><a class="appt d-Fm" href="MOD-Formative.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span><span>Formative</span></a><a class="appt on d-In" href="SA2-Hub.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim</span></a><span class="appt d-Sc appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span></span><span class="appt d-Al appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span></span></div><div class="appdesc d-Fm" aria-hidden="true"><strong>Formative</strong><p>Build from the multiple-choice item bank or start with a ready-to-use assessment. Add enhanced tools with Classroom+.</p></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners <span class="tag c">If approved</span></strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div><div class="appdesc d-Al" aria-hidden="true"><strong>Alt Assessments <span class="tag c">Future</span></strong><p>Alternate assessments for students with significant cognitive disabilities.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></a></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></a></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></a></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Data and Reporting"><h3>Data and Reporting</h3><p class="appsoon">Coming soon</p></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Interim Assessment</span></a><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><span class="appqab locked" aria-disabled="true" title="Included in Classroom+"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Formative Assessment</span></span></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Formative Assessment</span></a></sc-if></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></a><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></a></div></div></sc-if></div></div></sc-if></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: Jordan Ellis" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">JE</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctscrim" aria-hidden="true" onClick="{{closeAcct}}"></div></sc-if><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">JE</span><div class="acctwho"><p class="acctname">Jordan Ellis</p><p class="acctrole">System Administrator · District</p></div><button type="button" class="acctswitch" aria-haspopup="dialog" onClick="{{openRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Switch</button></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><div class="planseg" role="group" aria-label="Preview plan"><button type="button" aria-pressed="{{planBasicOn}}" onClick="{{pickBasic}}">Basic</button><button type="button" aria-pressed="{{planPlusOn}}" onClick="{{pickPlus}}">Classroom+</button></div></div><p class="plannote">Prototype only: switch to preview each plan.</p><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom+.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
+  </header>
+  <sc-if value="{{rolesOpen}}" hint-placeholder-val="{{ false }}"><div class="rolemodal" onClick="{{closeRoles}}"><div class="roledlg" role="dialog" aria-modal="true" aria-labelledby="roledlgh" onClick="{{stopRoles}}"><div class="roledlghd"><h2 id="roledlgh">Switch role</h2><button type="button" class="rolex" aria-label="Close" onClick="{{closeRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div><p class="rolenote"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>This role switcher is for this prototype only. It lets reviewers move between each role's flow and will not appear in the product. Choose a role to go to the start of its flow.</span></p><div class="rolelist"><a class="roleopt" href="Main.dc.html" onClick="{{closeRoles}}" aria-current="page"><span class="rolecur">Current</span><strong>System Administrator</strong><span>District oversight across all schools</span></a><a class="roleopt" href="PA1-Home.dc.html" onClick="{{closeRoles}}"><strong>School Administrator</strong><span>Building-level review for one school</span></a><a class="roleopt" href="CAP-T01-Overview.dc.html" onClick="{{closeRoles}}"><strong>Teacher</strong><span>Create, assign and review classroom assessments</span></a><a class="roleopt" href="CAP-S01-SignIn.dc.html" onClick="{{closeRoles}}"><strong>Student</strong><span>Sign in and complete assigned work</span></a></div></div></div></sc-if>
+  <main class="main">
+    <a class="backlnk" href="SA2-Hub.dc.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>Overview</a>
+    <div class="pghd"><div><h1>Subgroup patterns</h1><p class="pgsub">Reading · All grades · Winter ’27 window, Jan 12 to Feb 6 · Window open</p></div>
+      <div class="pgact"><button type="button" class="btn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download</button></div></div>
+    <p class="note"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>Patterns show where to look further. They don’t explain why results differ. Results are hidden for any group with fewer than 10 students completed.</span></p>
+    <section class="tblsec" aria-labelledby="sgh"><h2 id="sgh">District student groups</h2>
+      <div class="tblwrap" tabindex="0" role="region" aria-labelledby="sgh"><table class="dt"><caption>Student groups compared with all students</caption>
+        <thead><tr><th scope="col">Student group</th><th scope="col" class="num">Students completed</th><th scope="col" class="num">At or above benchmark</th><th scope="col" class="num">All students</th><th scope="col" class="num">Difference</th><th scope="col">Since Fall ’26</th></tr></thead>
+        <tbody><tr><th scope="row">English learners</th><td class="num">1,140</td><td class="num">41%</td><td class="num">54%</td><td class="num gapv">-13 pts</td><td><span class="trd up" aria-label="Up 3 points"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline><polyline points="15 7 21 7 21 13"></polyline></svg>+3</span></td></tr><tr><th scope="row">Students with disabilities</th><td class="num">980</td><td class="num">39%</td><td class="num">54%</td><td class="num gapv">-15 pts</td><td><span class="trd dn" aria-label="Down 1 points"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 7 9 13 13 9 21 17"></polyline><polyline points="15 17 21 17 21 11"></polyline></svg>-1</span></td></tr><tr><th scope="row">Economically disadvantaged</th><td class="num">3,420</td><td class="num">50%</td><td class="num">54%</td><td class="num gapv">-4 pts</td><td><span class="trd up" aria-label="Up 5 points"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline><polyline points="15 7 21 7 21 13"></polyline></svg>+5</span></td></tr></tbody></table></div>
+    </section>
+    <section class="tblsec" aria-labelledby="sch2"><h2 id="sch2">Schools to look into</h2>
+      <div class="tblwrap" tabindex="0" role="region" aria-labelledby="sch2"><table class="dt"><caption>Schools where a student group differs most from the school overall</caption>
+        <thead><tr><th scope="col">School</th><th scope="col">Student group</th><th scope="col" class="num">Students completed</th><th scope="col" class="num">At or above benchmark</th><th scope="col" class="num">School overall</th><th scope="col" class="num">Difference</th></tr></thead>
+        <tbody><tr><th scope="row"><a class="rowlnk" href="#">Lincoln High</a></th><td>English learners</td><td class="num">212</td><td class="num">31%</td><td class="num">53%</td><td class="num gapv">-22 pts</td></tr><tr><th scope="row"><a class="rowlnk" href="#">Northside Elementary</a></th><td>Students with disabilities</td><td class="num">46</td><td class="num">28%</td><td class="num">46%</td><td class="num gapv">-18 pts</td></tr><tr><th scope="row"><a class="rowlnk" href="#">Cedar Grove Elementary</a></th><td>English learners</td><td class="num">58</td><td class="num">33%</td><td class="num">48%</td><td class="num gapv">-15 pts</td></tr><tr><th scope="row"><a class="rowlnk" href="#">Riverbend Elementary</a></th><td>Economically disadvantaged</td><td class="num">180</td><td class="num">41%</td><td class="num">49%</td><td class="num gapv">-8 pts</td></tr><tr><th scope="row"><a class="rowlnk" href="#">Hillcrest Elementary</a></th><td>Students with disabilities</td><td class="num">Fewer than 10</td><td colspan="3"><span class="hidden"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Hidden to protect student privacy</span></td></tr></tbody></table></div>
+    </section>
+  </main>
+  <div class="aifab">
+    <sc-if value="{{aiOpen}}" hint-placeholder-val="{{ false }}"><div class="aipop" role="dialog" aria-labelledby="aih">
+      <div class="aipophd"><h2 id="aih">AI summary</h2><button type="button" class="appx" aria-label="Close" onClick="{{closeAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div>
+      <span><span class="tag a">AI-generated · draft</span></span>
+      <p>District results at or above benchmark rose from 48% in the fall window to 54% in the winter window, and are up on last winter (49%). 62% of students have completed the interim. Northside and Riverbend Elementary are below benchmark and down since September, and 5 schools have participation gaps.</p>
+      <p class="aipopnote">Subject to validation. Use to inform, not decide.</p>
+    </div></sc-if>
+    <button type="button" class="aibtn" aria-label="AI summary" aria-expanded="{{aiOpen}}" onClick="{{toggleAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"></polygon></svg></button>
+  </div>
+  <footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1200}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}}'>
+class Component extends DCLogic {
+  planStored() {
+    try { const v = window.localStorage.getItem('cogniaProtoPlan'); return (v === 'Basic' || v === 'Classroom+') ? v : null; } catch (e) { return null; }
+  }
+  setPlan(v) {
+    try { window.localStorage.setItem('cogniaProtoPlan', v); } catch (e) {}
+    this.setState({ plan: v });
+  }
+  trendVals(st) {
+    const base = [46, 49, 52, 48, 54], comp = [94, 91, 89, 96, 62];
+    const ca = st.fCa || 'Reading', gb = st.fGb || 'All grades', sc = st.fSc || 'All schools', sg = st.fSg || 'All students';
+    const SCH = { 'Westfield Elementary': [60, 63, 66, 66, 74], 'Northside Elementary': [52, 54, 55, 53, 46], 'Pinecrest Middle': [58, 61, 64, 63, 70], 'Riverbend Elementary': [53, 55, 57, 55, 49], 'Brookside Elementary': [51, 54, 58, 57, 62], 'Cedar Grove Elementary': [49, 51, 54, 52, 48], 'Jefferson Middle': [48, 50, 52, 53, 57], 'Lakeview Middle': [50, 52, 54, 55, 52], 'Lincoln High': [45, 47, 49, 50, 53], 'Hillcrest Elementary': [47, 49, 50, 51, 51], 'Maple Ridge Middle': [50, 52, 54, 55, 55], 'Oak Hill Middle': [54, 56, 57, 58, 58] };
+    let v = sc !== 'All schools' ? SCH[sc].slice() : base.slice();
+    const off = ({ 'All grades': 0, 'K–2': 3, '3–5': -2, '6–8': -1, '9–12': 1 })[gb] + ({ 'All students': 0, 'English learners': -13, 'Students with disabilities': -15, 'Economically disadvantaged': -4 })[sg] + (ca === 'Math' ? -3 : 0);
+    v = v.map((x) => Math.max(20, Math.min(90, x + off)));
+    const mn = Math.min(...v), mx = Math.max(...v);
+    let lo = Math.floor((mn - 3) / 5) * 5; lo = Math.max(Math.min(lo, 40), Math.min(lo, 30));
+    if (mx > lo + 18) lo = Math.floor((mx - 17) / 5) * 5;
+    lo = Math.min(lo, 40); if (lo + 20 < 50) lo = 30;
+    const Y = (x) => Math.round(424 - (x - lo) * 19.7);
+    const xs = [90, 270, 450, 630, 810], names = ['Fall 2025 window', 'Winter 2026 window', 'Spring 2026 window', 'Fall 2026 window', 'Winter 2027 window'];
+    const bench = Y(50);
+    const out = { benchY: bench, benchLY: bench - 8, trPts: xs.map((x, i) => x + ',' + Y(v[i])).join(' '), trPoly: '90,424 ' + xs.map((x, i) => x + ',' + Y(v[i])).join(' ') + ' 810,424' };
+    for (let k = 0; k < 5; k++) out['ax' + k] = (lo + 5 * k) + '%';
+    v.forEach((x, i) => {
+      const y = Y(x), h = i === 4 ? 90 : 72, ry = y - h - 14;
+      out['p' + i + 'y'] = y; out['p' + i + 'v'] = x; out['p' + i + 'ly'] = x < 50 ? y + 28 : y - 16; out['p' + i + 'ry'] = ry;
+      out['p' + i + 'lab'] = x + '%'; out['p' + i + 'fy'] = (x < 50 ? y + 28 : y - 16) - (i === 4 ? 18 : 16);
+      const c = i === 4 ? comp[i] + '% of students have completed so far' : comp[i] + '% of students completed the interim';
+      const t = [names[i], x + '% of students at or above benchmark', c, 'Window open, closes Feb 6'];
+      for (let j = 1; j <= 4; j++) { out['p' + i + 't' + j] = t[j - 1]; out['p' + i + 'ty' + j] = ry + 21 + 18 * (j - 1) + (j > 1 ? 1 : 0); }
+      out['p' + i + 'aria'] = t.slice(0, i === 4 ? 4 : 3).join('; ');
+    });
+    const scope = (sc !== 'All schools' ? sc : 'District') + (sg !== 'All students' ? ', ' + sg.toLowerCase() : '') + (gb !== 'All grades' ? ', grades ' + gb : '') + (ca === 'Math' ? ', math' : '');
+    out.trTitle = sc !== 'All schools' ? sc + ' performance trend' : 'District performance trend';
+    out.trAria = 'Line chart: ' + scope + ', share of students at or above benchmark by interim window, ' + v.map((x, i) => names[i] + ' ' + x + '%').join(', ') + '. Benchmark is 50%.';
+    out.hVal = v[4]; out.hAbove = v[4] >= 50; out.hBelow = v[4] < 50; out.hUp = v[4] >= v[3]; out.hDown = v[4] < v[3];
+    out.fCa = ca; out.fGb = gb; out.fSc = sc; out.fSg = sg;
+    out.onCa = (e) => this.setState({ fCa: e.target.value }); out.onGb = (e) => this.setState({ fGb: e.target.value });
+    out.onSc = (e) => this.setState({ fSc: e.target.value }); out.onSg = (e) => this.setState({ fSg: e.target.value });
+    out.resetF = () => this.setState({ fCa: null, fGb: null, fSc: null, fSg: null });
+    return out;
+  }
+  extraVals(st) {
+    const a = !!st.acctOpen;
+    const plan = st.plan ?? this.planStored() ?? this.props.plan ?? 'Classroom+';
+    return {
+      acctOpen: a,
+      toggleAcct: () => this.setState({ acctOpen: !a, appsOpen: false }),
+      closeAcct: () => this.setState({ acctOpen: false }),
+      rolesOpen: !!st.rolesOpen,
+      openRoles: () => this.setState({ rolesOpen: true, acctOpen: false, appsOpen: false }),
+      closeRoles: () => this.setState({ rolesOpen: false }),
+      stopRoles: (e) => { if (e) e.stopPropagation(); },
+      planName: plan,
+      planBasic: plan === 'Basic',
+      planPlus: plan !== 'Basic',
+      planBasicOn: plan === 'Basic' ? 'true' : 'false',
+      planPlusOn: plan !== 'Basic' ? 'true' : 'false',
+      pickBasic: () => this.setPlan('Basic'),
+      pickPlus: () => this.setPlan('Classroom+'),
+      sfOpen: !!st.sfOpen, sfClosed: !st.sfOpen, sfOn: st.sfOpen ? 'true' : 'false',
+      toggleSf: () => this.setState({ sfOpen: !st.sfOpen }),
+      ...this.trendVals(st),
+      expInt: !!st.expInt, expIntOn: st.expInt ? 'true' : 'false',
+      toggleInt: () => this.setState({ expInt: !st.expInt }),
+      expBen: !!st.expBen, expBenOn: st.expBen ? 'true' : 'false',
+      toggleBen: () => this.setState({ expBen: !st.expBen }),
+      expFu: !!st.expFu, expFuOn: st.expFu ? 'true' : 'false',
+      toggleFu: () => this.setState({ expFu: !st.expFu }),
+      expSch: !!st.expSch, expSchOff: !st.expSch, expSchOn: st.expSch ? 'true' : 'false',
+      toggleSch: () => this.setState({ expSch: !st.expSch }),
+      expSg: !!st.expSg, expSgOn: st.expSg ? 'true' : 'false',
+      toggleSg: () => this.setState({ expSg: !st.expSg }),
+      aiOpen: !!st.aiOpen,
+      toggleAi: () => this.setState({ aiOpen: !st.aiOpen }),
+      closeAi: () => this.setState({ aiOpen: false })
+    };
+  }
+  renderVals() {
+    const st = this.state || {};
+    const open = !!st.appsOpen;
+    const h = st.appsHub || 'As';
+    const v = { appsOpen: open,
+      toggleApps: () => this.setState({ appsOpen: !open, appsHub: 'As', acctOpen: false }),
+      closeApps: () => this.setState({ appsOpen: false, appsHub: 'As' }),
+      stopApps: (e) => { if (e) e.stopPropagation(); } };
+    ['As','Os','Ln','Pf','Dr'].forEach((k) => {
+      v['hub' + k] = h === k;
+      v['hub' + k + 'On'] = h === k ? 'true' : 'false';
+      v['pick' + k] = () => this.setState({ appsHub: k });
+    });
+    if (this.extraVals) Object.assign(v, this.extraVals(st));
+    return v;
+  }
+}
+</script>
+</body>
+</html>

@@ -398,15 +398,6 @@
       "x": 4560,
       "y": 5000
     },
-    "SA2-Combined.dc.html": {
-      "expand": "fill",
-      "h": 2040,
-      "is_interactive": true,
-      "title": "SA 2 + 3 · Interim · Overview (combined)",
-      "w": 1440,
-      "x": 10720,
-      "y": -1334
-    },
     "SA2-Hub.dc.html": {
       "expand": "fill",
       "h": 1142,
@@ -424,15 +415,6 @@
       "w": 1440,
       "x": 3040,
       "y": 0
-    },
-    "SA3-Mockup.dc.html": {
-      "expand": "fill",
-      "h": 2000,
-      "is_interactive": true,
-      "title": "SA 3 · Interim · Analytics (data mock-up)",
-      "w": 1440,
-      "x": 9200,
-      "y": -1334
     },
     "SA6-Respond.dc.html": {
       "expand": "fill",
@@ -663,8 +645,6 @@
     "Main.dc.html",
     "SA2-Hub.dc.html",
     "SA2-Schools.dc.html",
-    "SA3-Mockup.dc.html",
-    "SA2-Combined.dc.html",
     "SA6-Respond.dc.html",
     "MOD-Interim.dc.html",
     "MOD-Formative.dc.html",

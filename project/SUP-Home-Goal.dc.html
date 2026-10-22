@@ -37,7 +37,7 @@ html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
 .sg-district .sg-nm{font-size:var(--text-subheading);font-weight:var(--weight-semibold)}
 .sg-district .sg-meta{font-size:var(--text-body-base);display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--space-3);align-items:center}
 .sg-dot{width:4px;height:4px;border-radius:var(--radius-full);background:var(--foreground)}
-.sg-main{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-12);align-items:stretch}
+.sg-main{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-8);align-items:stretch}
 .sg-col-l{flex:0 1 384px;min-width:0;display:flex;flex-direction:column;gap:var(--space-3)}
 .sg-col-c{flex:1 1 440px;min-width:0;position:relative}
 .sg-col-r{flex:0 1 256px;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8)}
@@ -62,7 +62,10 @@ html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
 .sg-insight-row{display:flex;gap:var(--space-4);align-items:flex-start}
 .sg-insight p{margin:0;font-size:var(--text-body-small);line-height:var(--lh-base)}
 .sg-btn{align-self:flex-end;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-6);border-radius:var(--radius);border:0;background:var(--primary);color:var(--primary-foreground);font:var(--weight-semibold) var(--text-body-base) var(--font-sans);cursor:pointer}
-.sg-chart{width:100%;height:auto;display:block}
+.sg-pg .sg-head,.sg-pg .sg-main{width:100%;max-width:1320px;margin-left:auto;margin-right:auto}
+.sg-col-c{container-type:inline-size}
+.sg-stage{position:relative;width:min(calc(70vh * 945 / 980), calc(100cqw + 88px));aspect-ratio:945 / 980;left:50%;transform:translateX(-50%)}
+.sg-chart{width:100%;height:100%;display:block}
 .sg-chart .sg-t{stroke:var(--card);stroke-width:1;stroke-linejoin:round}
 .sg-chart .sg-l,.sg-chart .sg-r{stroke:none}
 .sg-g.sg-t{fill:color-mix(in srgb,var(--success) 22%,var(--card))}
@@ -182,7 +185,7 @@ html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
 </article>
 </div>
 
-<div class="sg-col-c">
+<div class="sg-col-c"><div class="sg-stage">
 <svg class="sg-chart" viewBox="700 200 945 980" role="img" aria-label="Schools by level and status: elementary, middle and high schools shown as leading, on track or needs attention">
 <polygon class="sg-pe sg-l" points="1049,685 1173,757 1173,785 1049,713"></polygon>
 <polygon class="sg-pe sg-r" points="1297,685 1173,757 1173,785 1297,713"></polygon>
@@ -243,7 +246,7 @@ html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
 <p>12 middle schools</p>
 <span class="sg-badge sg-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path></svg>Leading</span>
 </div>
-</div>
+</div></div>
 
 <div class="sg-col-r">
 <section class="sg-card sg-week" aria-labelledby="wk">

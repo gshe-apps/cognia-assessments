@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    document.querySelectorAll('[data-action="ai"]').forEach(button=>{button.disabled=!enabled;button.setAttribute('aria-disabled',String(!enabled));button.title=enabled?'Generate draft questions with Classroom+':'Classroom+ required';});
    const model=testModel(),test=model?.tests.find(t=>t.id===model.active);const chosen=test?.state?.chosen||['g5a1','g5a2','g5a3'];
    document.querySelectorAll('[data-action="catalogUse"]').forEach(button=>{
-     const premium=/[ab][56]$/.test(button.dataset.id),added=chosen.includes(button.dataset.id),full=chosen.length>=(enabled?10:4);
+     const premium=/[ab][56]$/.test(button.dataset.id),added=chosen.includes(button.dataset.id),full=false;
      button.disabled=added||(!enabled&&premium)||full;
      button.textContent=added?'Added to assessment':!enabled&&premium?'Classroom+ required':full?'Test full':'Use in assessment';
      button.setAttribute('aria-disabled',String(button.disabled));
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded',()=>{
    dialog.querySelector('[data-add-ai]').onclick=()=>{
      if(!plus())return;const indexes=[...dialog.querySelectorAll('[data-ai-choice]:checked')].map(el=>Number(el.dataset.aiChoice));if(!indexes.length)return;
      const state=instance.state||{},bank=instance.bankItems?.()||[],chosen=state.chosen??bank.slice(0,3).map(q=>q.id);
-     if(chosen.length+indexes.length>10){dialog.querySelector('.plan-ai-notice').textContent='A test can hold up to 10 questions on Classroom+. Select fewer questions or remove an existing question.';return;}
      const written={...state.written},ids=[];indexes.forEach((i,k)=>{const id='ai-'+Date.now()+'-'+k,[stem,options,correct]=drafts[i];written[id]={id,stem,options,correct,marks:1,type:'Multiple choice',source:'AI draft'};ids.push(id);});
      instance.setState({written,chosen:chosen.concat(ids)});dialog.close();
    };
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded',()=>{
      const model=testModel();if(!model)return;const test=model.tests.find(t=>t.id===model.active)||model.tests[0],id=use.dataset.id,premium=/[ab][56]$/.test(id);if(premium&&!plus())return;
      const row=use.closest('.listline'),description=row.querySelector('p')?.textContent||'',stem=row.querySelector('b')?.textContent||'Library question';
      const q={id,stem,type:/Extended text/.test(description)?'Extended text':/Text entry/.test(description)?'Text entry':'Multiple choice',marks:Number(description.match(/(\d+) marks?/)?.[1]||1),options:[],correct:null,source:'Library'};
-     test.state||={chosen:['g5a1','g5a2','g5a3'],written:{},edits:{}};test.state.written||={};if(test.state.chosen.length>=(plus()?10:4))return;if(!test.state.chosen.includes(id)){test.state.chosen.push(id);test.state.written[id]=q;test.questions||=[];test.questions.push(q);}localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));apply();
+     test.state||={chosen:['g5a1','g5a2','g5a3'],written:{},edits:{}};test.state.written||={};if(!test.state.chosen.includes(id)){test.state.chosen.push(id);test.state.written[id]=q;test.questions||=[];test.questions.push(q);}localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));apply();
    }
  });
 });

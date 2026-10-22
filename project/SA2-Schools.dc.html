@@ -128,7 +128,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .tblsec{display:flex;flex-direction:column;gap:var(--space-3)}
 .tblsec h2{font:var(--weight-bold) var(--text-subheading) var(--font-sans)}
 .tblwrap{background:var(--card);border-radius:var(--radius);overflow-x:auto}
-table.dt{width:100%;min-width:900px;border-collapse:collapse;font-size:var(--text-body-base)}
+table.dt{width:100%;min-width:900px;border-collapse:collapse;font-size:var(--text-body-small)}
 .segwrap{position:relative;display:inline-flex}
 .seginfo{display:inline-flex;color:inherit}
 .showchips{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center}
@@ -161,7 +161,7 @@ html body .theme-assessments .srch input:focus-visible{outline:none;box-shadow:0
 .gt{display:flex;flex-direction:column}
 .gr{display:grid;grid-template-columns:minmax(200px,1.6fr) minmax(82px,.5fr) minmax(264px,2fr) minmax(178px,1fr) minmax(122px,.6fr);align-items:center}
 .gch{overflow:visible}
-.gc{padding:var(--space-4) var(--space-2);min-width:0;font-size:var(--text-body-base)}
+.gc{padding:var(--space-4) var(--space-2);min-width:0;font-size:var(--text-body-small)}
 .gc.num{text-align:right;white-space:nowrap}
 .gh{border-bottom:1px solid var(--border)}
 .gch{padding-top:var(--space-3);padding-bottom:var(--space-3)}
@@ -184,7 +184,7 @@ html body .theme-assessments .srch input:focus-visible{outline:none;box-shadow:0
 .gt .schcell{gap:var(--space-2)}
 .gt .schname{white-space:nowrap}
 .gt .schname{font-weight:var(--weight-semibold);color:var(--foreground)}
-.gempty{padding:var(--space-8) var(--space-4);text-align:center;font-size:var(--text-body-base)}
+.gempty{padding:var(--space-8) var(--space-4);text-align:center;font-size:var(--text-body-small)}
 .fset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:var(--space-3)}
 .fset legend{padding:0;margin-bottom:var(--space-2);font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
 .ckrow{display:flex;align-items:flex-start;gap:var(--space-2);cursor:pointer;font-size:var(--text-body-small)}
@@ -210,7 +210,7 @@ html body .theme-assessments .srch input:focus-visible{outline:none;box-shadow:0
 .schfilt .fset{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 .schfilt .fset .fsetlbl{grid-column:1 / -1;margin-bottom:calc(-1 * var(--space-1))}
 .schfilt .selwrap{position:relative;min-width:0}
-.schfilt .selcard{min-width:0;aspect-ratio:1 / 1;justify-content:space-between;gap:var(--space-2);padding:var(--space-3);border:1px solid var(--accent-100);background:var(--card)}
+.schfilt .selcard{min-width:0;aspect-ratio:1 / 1;justify-content:space-between;gap:var(--space-2);padding:var(--space-3);border:1px solid var(--border);background:var(--card)}
 .schfilt .selcard:hover{border-color:transparent;background:var(--secondary)}
 .schfilt .selcard[aria-pressed="true"]{border-color:transparent;background:var(--accent-100);box-shadow:none}
 .schfilt .selcard[aria-pressed="true"]:focus-visible{box-shadow:0 0 0 3px var(--ring)}
@@ -248,7 +248,7 @@ html body .theme-assessments .srch input:focus-visible{outline:none;box-shadow:0
 .dt caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .dt th,.dt td{padding:var(--space-4);border-bottom:0;text-align:left;vertical-align:middle}
 .dt thead th{border-bottom:1px solid var(--border)}
-html body .dt tbody th{font-size:var(--text-body-base)}
+html body .dt tbody th{font-size:var(--text-body-small)}
 .dt .schname{font-weight:var(--weight-semibold);color:var(--foreground)}
 .schcell{display:inline-flex;align-items:center;gap:var(--space-3)}
 .schlg{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex-shrink:0;border-radius:var(--radius-full);background:var(--secondary);color:var(--foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
@@ -362,7 +362,7 @@ class Component extends DCLogic {
       tgGap: () => this.setState({ fGap: !fGap }), tgBel: () => this.setState({ fBel: !fBel }),
       onGr: (e) => this.setState({ fGr: e.target.value }),
       onQ: (e) => this.setState({ q: e.target.value }),
-      anyF, clearF: () => this.setState({ fGap: false, fBel: false, fGr: 'All grades' }),
+      anyF, clearF: () => this.setState({ fGap: false, fBel: false, fGr: 'All grades', fOpen: false }),
       fOpen: st.fOpen ?? (start === 'gaps' || start === 'below'),
       fOpenOn: (st.fOpen ?? (start === 'gaps' || start === 'below')) ? 'true' : 'false',
       toggleF: () => this.setState({ fOpen: !(st.fOpen ?? (start === 'gaps' || start === 'below')) }),

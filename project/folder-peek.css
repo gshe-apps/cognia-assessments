@@ -1,0 +1,21 @@
+/* Subtle paper peek, scoped to the overview assessment-builder folder. */
+.cap-root .reference-content>.reference-folder{overflow:visible;isolation:isolate;transition:transform 320ms cubic-bezier(.2,.7,.2,1),filter 350ms;}
+.cap-root .reference-content>.reference-folder::before,.cap-root .reference-content>.reference-folder::after{content:"";position:absolute;pointer-events:none;z-index:-1;left:8%;top:27px;width:84%;height:150px;border:1px solid #d6d9e9;border-radius:9px;background:linear-gradient(#e1e3ee,#e1e3ee) 20px 17px/55% 3px no-repeat,linear-gradient(#eef0f6,#eef0f6) 20px 26px/55% 3px no-repeat,linear-gradient(#eef0f6,#eef0f6) 20px 35px/55% 3px no-repeat,#fff;transform:translateY(0) rotate(0);transition:transform 440ms cubic-bezier(.22,.8,.3,1),box-shadow 440ms;}
+.cap-root .reference-content>.reference-folder::before{left:12%;width:77%;background-color:#eeeefa;}
+.cap-root .reference-content>.reference-folder:is(:hover,:focus-within){transform:translateY(-4px);filter:drop-shadow(0 12px 14px #20244a12);}
+.cap-root .reference-content>.reference-folder:is(:hover,:focus-within)::before{transform:translateY(-43px) rotate(-3deg);}
+.cap-root .reference-content>.reference-folder:is(:hover,:focus-within)::after{transform:translateY(-29px) rotate(2deg);box-shadow:0 -4px 16px #282b5720;}
+@media(prefers-reduced-motion:reduce){.cap-root .reference-content>.reference-folder,.cap-root .reference-content>.reference-folder::before,.cap-root .reference-content>.reference-folder::after{transition:none!important}.cap-root .reference-content>.reference-folder:is(:hover,:focus-within){transform:none}}
+
+/* Draft folder paper peek */
+/* Subtle paper peek, scoped to the overview assessment-builder folder. */
+.cap-root .manage-draft-grid>.manage-folder{overflow:visible;isolation:isolate;transition:transform 320ms cubic-bezier(.2,.7,.2,1),filter 350ms;}
+.cap-root .manage-draft-grid>.manage-folder::before,.cap-root .manage-draft-grid>.manage-folder::after{content:"";position:absolute;pointer-events:none;z-index:-2;left:8%;top:27px;width:84%;height:150px;border:1px solid #d6d9e9;border-radius:9px;background:linear-gradient(#e1e3ee,#e1e3ee) 20px 17px/55% 3px no-repeat,linear-gradient(#eef0f6,#eef0f6) 20px 26px/55% 3px no-repeat,linear-gradient(#eef0f6,#eef0f6) 20px 35px/55% 3px no-repeat,#fff;transform:translateY(0) rotate(0);transition:transform 440ms cubic-bezier(.22,.8,.3,1),box-shadow 440ms;}
+.cap-root .manage-draft-grid>.manage-folder::before{left:12%;width:77%;background-color:#eeeefa;}
+.cap-root .manage-draft-grid>.manage-folder:is(:hover,:focus-within){transform:translateY(-4px);filter:drop-shadow(0 12px 14px #20244a12);}
+.cap-root .manage-draft-grid>.manage-folder:is(:hover,:focus-within)::before{transform:translateY(-43px) rotate(-3deg);}
+.cap-root .manage-draft-grid>.manage-folder:is(:hover,:focus-within)::after{transform:translateY(-29px) rotate(2deg);box-shadow:0 -4px 16px #282b5720;}
+@media(prefers-reduced-motion:reduce){.cap-root .manage-draft-grid>.manage-folder,.cap-root .manage-draft-grid>.manage-folder::before,.cap-root .manage-draft-grid>.manage-folder::after{transition:none!important}.cap-root .manage-draft-grid>.manage-folder:is(:hover,:focus-within){transform:none}}
+
+.cap-root .manage-draft-grid>.manage-folder .manage-folder-top .tag{margin-left:auto}
+.cap-root .reference-folder>img.overview-folder-hd{object-fit:cover;object-position:center bottom;filter:grayscale(1);mask-image:linear-gradient(to bottom,transparent 0%,#000 12%);border-radius:0 0 12px 12px}

@@ -42,3 +42,8 @@
 @media(max-width:800px){.cap-root .client-form-grid{grid-template-columns:1fr}.cap-root .client-library-filters{grid-template-columns:1fr}.cap-root .client-library-entry,.cap-root .client-saved-row{align-items:flex-start;flex-direction:column}.cap-root .hubnav{overflow-x:auto}.client-dialog{padding:22px}}
 @media(prefers-reduced-motion:reduce){.cap-root .client-form-card{transition:none}}
 .cap-root .client-library-link{display:block;width:fit-content;margin-top:14px;font-size:13px;text-underline-offset:4px}.cap-root .client-bank-list .grow{flex:1;min-width:0}
+.cap-root #client-bank-list .client-saved-row{display:grid;grid-template-columns:44px minmax(0,1fr) 112px 160px;align-items:center;justify-content:normal;column-gap:16px}
+.cap-root #client-bank-list .client-saved-row .grow{min-width:0;text-align:left;justify-self:stretch}
+.cap-root #client-bank-list .client-saved-row .client-icon{justify-self:start;flex-shrink:0}
+.cap-root #client-bank-list .client-saved-row>.btn{justify-self:end;white-space:nowrap}
+@media(max-width:800px){.cap-root #client-bank-list .client-saved-row{grid-template-columns:44px minmax(0,1fr);row-gap:12px}.cap-root #client-bank-list .client-saved-row>.btn{grid-column:2;justify-self:start}.cap-root #client-bank-list .client-saved-row .client-icon{align-self:start}}

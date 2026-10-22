@@ -1,0 +1,18 @@
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.hubnav a[href="CAP-T21-AssessmentLibrary.dc.html"]').forEach(a=>a.remove());
+ if(!location.pathname.endsWith('CAP-T03-Assessments.dc.html')||new URLSearchParams(location.search).get('view')==='banked')return;
+ const host=document.querySelector('.manage-banked');if(!host)return;
+ document.getElementById('client-library-entry')?.remove();host.className='assessment-library-panel';
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const icon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/></svg>';
+ host.innerHTML='<div class="alp-heading"><div><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/></svg>Assessment Library</h2><p>Ready-made assessments and your completed work, ready to reuse.</p></div><a class="alp-full" href="CAP-T21-AssessmentLibrary.dc.html">View full library <span>→</span></a></div><div class="alp-controls"><div class="alp-tabs" role="tablist" aria-label="Assessment collections"><button id="alp-ready" role="tab" aria-selected="true" aria-controls="alp-results" tabindex="0" data-library-tab="ready">Ready-to-use</button><button id="alp-banked" role="tab" aria-selected="false" aria-controls="alp-results" tabindex="-1" data-library-tab="banked">Banked assessments</button></div><p>Banked assessments are completed assessments you’ve saved for reuse.</p></div><div id="alp-results" role="tabpanel" aria-labelledby="alp-ready"></div>';
+ let active='ready';
+ function draw(){const banked=active==='banked';let entries=[];try{entries=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]').filter(e=>e.status==='banked');}catch{}
+ const forms=window.cogniaAssessmentForms||[];const list=banked?entries:forms.slice(0,3);
+ host.querySelector('.alp-full').href=banked?'CAP-T03-Assessments.dc.html?view=banked':'CAP-T21-AssessmentLibrary.dc.html';
+ host.querySelectorAll('[role=tab]').forEach(b=>{const selected=b.dataset.libraryTab===active;b.setAttribute('aria-selected',selected);b.tabIndex=selected?0:-1;});
+ const panel=host.querySelector('#alp-results');panel.setAttribute('aria-labelledby',banked?'alp-banked':'alp-ready');
+ panel.innerHTML=list.length?list.map(f=>{const tests=f.model?.tests||[],qs=banked?tests.flatMap(t=>t.questions||[]):f.questions||[],grade=banked?tests[0]?.grade:f.grade,subject=banked?tests[0]?.subject:f.subject;return '<article class="alp-row"><span class="alp-icon">'+icon+'</span><b>'+esc(f.title)+'</b><span class="alp-meta">Grade '+esc(grade)+' · '+esc(subject)+'</span><span class="alp-badge">'+(banked?'Banked assessment':'Cognia assessment')+'</span><span class="alp-meta">'+qs.length+' questions · '+qs.reduce((n,q)=>n+Number(q.marks||0),0)+' marks</span><button type="button" class="btn ghost" '+(banked?'data-restore-work="'+esc(f.id)+'"':'data-preview-form="'+esc(f.id)+'"')+'>'+(banked?'Use assessment':'Preview')+' <span aria-hidden="true">→</span></button></article>';}).join(''):'<div class="alp-empty"><b>No banked assessments yet</b><p>Choose “Bank assessment for later” when reviewing an assessment to save it here.</p></div>';
+ }
+ host.querySelectorAll('[role=tab]').forEach(b=>{b.onclick=()=>{active=b.dataset.libraryTab;draw();};b.onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();active=e.key==='Home'?'ready':e.key==='End'?'banked':active==='ready'?'banked':'ready';draw();host.querySelector('[aria-selected=true]').focus();}};});draw();
+});

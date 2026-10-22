@@ -8,6 +8,7 @@ http.createServer((req,res) => {
   if (pathname.startsWith('/_blob/')) {
     res.writeHead(200, {'Content-Type':'image/svg+xml'});
     const logo = pathname.endsWith('03b113a3dc2e610eb61ccc911bd46d5e');
+    if (logo) return res.end(fs.readFileSync(path.join(root, 'assets/cognia-logo.svg')));
     return res.end(logo ? '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40"><text x="0" y="30" font-family="Arial" font-size="32" fill="white">cognia</text></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="170"><rect width="400" height="170" fill="#eee9f0"/><text x="200" y="85" text-anchor="middle" font-family="Arial" fill="#66596b">Image unavailable in export</text></svg>');
   }
   const file = path.resolve(root, '.' + (pathname === '/' ? '/Main.dc.html' : pathname));

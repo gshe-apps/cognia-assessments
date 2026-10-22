@@ -79,6 +79,7 @@ html body .theme-assessments .topfive .schgrid{display:grid;grid-template-column
 .anfact .anreset{align-self:center}
 html body .theme-assessments .btn.p.anapply{min-height:40px;padding:0 var(--space-4)}
 .fchips{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-left:var(--space-4)}
+html body .theme-assessments .fchips .fchip{border:0}
 .fchip{display:inline-flex;align-items:center;gap:var(--space-1);min-height:32px;padding:0 var(--space-1) 0 var(--space-3);background:var(--card);color:var(--foreground);border-radius:var(--radius-full);font:var(--weight-regular) var(--text-body-small) var(--font-sans);white-space:nowrap}
 .fchipx{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;padding:0;border:0;border-radius:var(--radius-full);background:transparent;color:var(--foreground);cursor:pointer}
 .fchipx svg{width:14px;height:14px}
@@ -217,7 +218,7 @@ class Component extends DCLogic {
     const dr = (k) => st['d' + k] || ap(k);
     ks.forEach((k) => { out['d' + k] = dr(k); out['on' + k] = (e) => this.setState({ ['d' + k]: e.target.value }); });
     const clearDrafts = () => { const o = {}; ks.forEach((k) => { o['d' + k] = null; }); return o; };
-    out.applyF = () => { const o = clearDrafts(); ks.forEach((k) => { o['f' + k] = dr(k) === D[k] ? null : dr(k); }); this.setState(o); };
+    out.applyF = () => { const o = clearDrafts(); ks.forEach((k) => { o['f' + k] = dr(k) === D[k] ? null : dr(k); }); o.sfOpen = false; this.setState(o); };
     out.resetF = () => { const o = {}; ks.forEach((k) => { o['d' + k] = D[k]; }); this.setState(o); };
     const lab = { Wn: (v) => v.split(' · ')[0] + ' window', Ca: (v) => v, Gb: (v) => 'Grades ' + v, Sc: (v) => v, Sg: (v) => v };
     out.chips = ks.filter((k) => ap(k) !== D[k]).map((k) => {

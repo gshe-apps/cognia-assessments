@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="cap-cognia.css">
 <link rel="stylesheet" href="hub-header.css">
 <link rel="stylesheet" href="prototype-roles.css">
-<link rel="stylesheet" href="screen-updates.css"><script defer src="screen-updates.js"></script><link rel="stylesheet" href="icon-tiles.css"><link rel="stylesheet" href="assessment-progress.css"><link rel="stylesheet" href="assessment-tests.css"><script defer src="assessment-tests.js"></script><link rel="stylesheet" href="prototype-interactions.css"><link rel="stylesheet" href="plan-features.css"><script defer src="plan-features.js"></script></head>
+<link rel="stylesheet" href="screen-updates.css"><script defer src="screen-updates.js"></script><link rel="stylesheet" href="icon-tiles.css"><link rel="stylesheet" href="assessment-progress.css"><link rel="stylesheet" href="assessment-tests.css"><script defer src="assessment-tests.js"></script><link rel="stylesheet" href="prototype-interactions.css"><link rel="stylesheet" href="plan-features.css"><script defer src="plan-features.js"></script><link rel="stylesheet" href="client-feedback.css"><script defer src="assessment-library-data.js"></script><script defer src="client-feedback.js"></script></head>
 <body>
 <x-dc>
 <helmet>
@@ -42,7 +42,7 @@ class Component extends DCLogic {
     const edits = st.edits || {};
     const byId = (id) => edits[id] || written[id] || bank.find((b) => b.id === id);
     const chosenIds = (st.chosen || ["g5a1","g5a2","g5a3","g5a4"]).filter((id) => byId(id));
-    const limit = plan === 'Basic' ? 4 : 10;
+    const limit = Infinity; // Commercial question limits are not confirmed.
     const full = chosenIds.length >= limit;
     const mk = (n) => n + (n === 1 ? ' mark' : ' marks');
     const set = (patch) => this.setState(patch);

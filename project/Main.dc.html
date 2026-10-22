@@ -17,121 +17,255 @@ body{margin:0;background:var(--secondary)}
 *{box-sizing:border-box}
 a{color:var(--foreground)}a:hover{color:var(--foreground)}
 .wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:14px;line-height:1.45}
-.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 0 0 32px;background:var(--primary);color:var(--primary-foreground);min-height:64px}
-.logo{width:150px;height:30px;background:var(--primary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--muted-foreground)}
-.menu{display:flex;align-items:center;gap:16px;background:var(--primary);min-height:64px;padding:0 24px;color:var(--primary-foreground)}
-.menu button{background:none;border:0;color:var(--primary-foreground);font:500 15px var(--font-sans);min-height:44px;cursor:pointer}
-.avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--border)}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
+html body .theme-assessments .top{grid-template-columns:1fr auto}
+html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
+.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
 .wf{min-height:100vh;display:flex;flex-direction:column}
-.shell{display:flex;flex-wrap:wrap;align-items:stretch;flex:1}
-.side a{white-space:nowrap}
-.side{flex:1 1 300px;max-width:300px;background:var(--primary);padding:20px 0;display:flex;flex-direction:column;gap:2px;min-height:1036px}
-.side a{display:flex;align-items:center;gap:12px;padding:12px 24px;min-height:48px;color:var(--muted-foreground);text-decoration:none;font-size:15px}
-.side a.on{background:var(--primary)}
-.side .ic{width:20px;height:20px;border:1.5px solid var(--ring);border-radius:50%;flex-shrink:0}
-.newtag{font:500 var(--text-body-small) var(--font-sans);background:var(--warning-light);color:var(--warning);padding:2px 6px;border-radius:var(--radius);margin-left:auto}
-.content{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
-.welcome{display:flex;align-items:center;gap:20px;background:var(--card);padding:20px 40px}
-.wav{width:72px;height:72px;background:var(--primary);border-radius:var(--radius)}
-.welcome h1{margin:0;font:400 30px var(--font-sans)}
-.body{padding:32px 40px 48px;display:flex;flex-direction:column;gap:28px;max-width:1180px}
-h2{margin:0;font-size:18px;font-weight:600}
-p{margin:0}
-.sub{color:var(--foreground)}
-.card{background:var(--card);border:1.5px solid var(--ring);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.preview{border:2px solid var(--primary);box-shadow:0 0 0 3px var(--ring)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.kpi{border:1.5px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--foreground)}
-.kpi:hover{border-color:var(--border)}
-.n{font:600 26px var(--font-sans)}
-.lbl{font-size:var(--text-body-small);color:var(--foreground);text-transform:uppercase;letter-spacing:.04em}
-.bar{height:6px;background:var(--secondary);border-radius:var(--radius);overflow:hidden}.bar i{display:block;height:100%;background:var(--primary)}
-.tag{display:inline-block;font:500 var(--text-body-small) var(--font-sans);padding:2px 6px;border-radius:var(--radius);border:1px solid var(--ring);color:var(--foreground);text-transform:uppercase;white-space:nowrap}
-.tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
-.tag.f{border-color:var(--border);color:var(--foreground);background:var(--card)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 18px;border-radius:var(--radius);border:1.5px solid var(--primary);background:var(--card);color:var(--foreground);font:500 14px var(--font-sans);text-decoration:none;cursor:pointer}
-.btn.p{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}
-.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.sp{justify-content:space-between}
-.alert{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--radius);background:var(--secondary)}
-.existing{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;opacity:.55}
-.ex{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:12px}
-.ph{background:var(--secondary);border-radius:var(--radius)}
-.ln{height:10px;background:var(--secondary);border-radius:var(--radius)}
-.exlbl{font:500 var(--text-body-small) var(--font-sans);color:var(--foreground);text-transform:uppercase}
+
+.sg-pg{flex:1;font-family:var(--font-sans);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);padding:var(--space-4) var(--space-16) var(--space-12)}
+.sg-pg .sg-head{margin-top:var(--space-6)}
+.sg-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:var(--space-6);margin-top:var(--space-8)}
+.sg-goal{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2)}
+.sg-goal-btn{display:inline-flex;align-items:center;gap:var(--space-3);background:none;border:0;padding:0;cursor:pointer;color:var(--foreground);text-align:left}
+.sg-goal-btn h1{margin:0;font-size:var(--text-subtitle);font-weight:var(--weight-regular);line-height:var(--lh-snug)}
+.sg-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);font-size:var(--text-body-small);font-weight:var(--weight-semibold);line-height:var(--lh-base)}
+.sg-badge.sg-bad{background:var(--destructive-light);color:var(--destructive)}
+.sg-badge.sg-good{background:var(--success-light);color:var(--success)}
+.sg-district{text-align:right;display:flex;flex-direction:column;gap:var(--space-1)}
+.sg-district p{margin:0}
+.sg-district .sg-nm{font-size:var(--text-subheading);font-weight:var(--weight-semibold)}
+.sg-district .sg-meta{font-size:var(--text-body-base);display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--space-3);align-items:center}
+.sg-dot{width:4px;height:4px;border-radius:var(--radius-full);background:var(--foreground)}
+.sg-main{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-12);align-items:stretch}
+.sg-col-l{flex:0 1 384px;min-width:0;display:flex;flex-direction:column;gap:var(--space-3)}
+.sg-col-c{flex:1 1 440px;min-width:0;position:relative}
+.sg-col-r{flex:0 1 256px;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8)}
+.sg-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:var(--space-4)}
+.sg-mhead{display:flex;align-items:flex-start;gap:var(--space-4);width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left;color:var(--foreground);font-family:var(--font-sans)}
+.sg-mval{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:var(--lh-snug);flex-shrink:0;min-width:56px}
+.sg-mttl{flex:1;font-size:var(--text-body-base);line-height:var(--lh-snug);padding-top:2px}
+.sg-chev{flex-shrink:0;margin-top:4px;color:var(--foreground)}
+.sg-mbody{display:flex;flex-direction:column;gap:var(--space-6);margin-top:var(--space-8)}
+.sg-lbl{font-weight:var(--weight-semibold);margin:0}
+.sg-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2)}
+.sg-prog{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-1)}
+.sg-seg{height:6px;border-radius:var(--radius-full);background:var(--ring);overflow:hidden}
+.sg-seg i{display:block;height:100%;background:var(--primary)}
+.sg-stds{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--space-3);margin-top:var(--space-3)}
+.sg-grp{display:flex;align-items:center;gap:var(--space-2)}
+.sg-chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 var(--space-2);border-radius:var(--radius);font-size:var(--text-body-base);font-weight:var(--weight-semibold)}
+.sg-chip.sg-core{background:var(--primary);color:var(--primary-foreground)}
+.sg-chip.sg-sup{background:var(--secondary);color:var(--secondary-foreground)}
+.sg-ev p{margin:0}
+.sg-insight{background:var(--secondary);border-radius:var(--radius);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4)}
+.sg-insight-row{display:flex;gap:var(--space-4);align-items:flex-start}
+.sg-insight p{margin:0;font-size:var(--text-body-small);line-height:var(--lh-base)}
+.sg-btn{align-self:flex-end;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-6);border-radius:var(--radius);border:0;background:var(--primary);color:var(--primary-foreground);font:var(--weight-semibold) var(--text-body-base) var(--font-sans);cursor:pointer}
+.sg-chart{width:100%;height:auto;display:block}
+.sg-chart .sg-t{stroke:var(--card);stroke-width:1;stroke-linejoin:round}
+.sg-chart .sg-l,.sg-chart .sg-r{stroke:none}
+.sg-g.sg-t{fill:color-mix(in srgb,var(--success) 22%,var(--card))}
+.sg-g.sg-l{fill:color-mix(in srgb,var(--success) 45%,var(--card))}
+.sg-g.sg-r{fill:color-mix(in srgb,var(--success) 30%,var(--card))}
+.sg-g.sg-hot.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card))}
+.sg-g.sg-hot.sg-l{fill:color-mix(in srgb,var(--success) 88%,var(--foreground))}
+.sg-g.sg-hot.sg-r{fill:color-mix(in srgb,var(--success) 78%,var(--card))}
+.sg-a.sg-t{fill:color-mix(in srgb,var(--warning) 12%,var(--card))}
+.sg-a.sg-l{fill:color-mix(in srgb,var(--warning) 34%,var(--card))}
+.sg-a.sg-r{fill:color-mix(in srgb,var(--warning) 22%,var(--card))}
+.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 22%,var(--card))}
+.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 62%,var(--card))}
+.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 32%,var(--card))}
+.sg-pe.sg-t{fill:color-mix(in srgb,var(--primary) 55%,var(--card))}
+.sg-pe.sg-l{fill:color-mix(in srgb,var(--primary) 70%,var(--card))}
+.sg-pe.sg-r{fill:color-mix(in srgb,var(--primary) 62%,var(--card))}
+.sg-pm.sg-t{fill:color-mix(in srgb,var(--primary) 18%,var(--card))}
+.sg-pm.sg-l{fill:color-mix(in srgb,var(--primary) 30%,var(--card))}
+.sg-pm.sg-r{fill:color-mix(in srgb,var(--primary) 24%,var(--card))}
+.sg-ph.sg-t{fill:var(--secondary)}
+.sg-ph.sg-l{fill:color-mix(in srgb,var(--primary) 16%,var(--card))}
+.sg-ph.sg-r{fill:color-mix(in srgb,var(--primary) 10%,var(--card))}
+.sg-tip{position:absolute;left:38%;top:31.5%;background:var(--popover);color:var(--popover-foreground);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:var(--space-2) var(--space-3);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);min-width:168px}
+.sg-tip p{margin:0;font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
+.sg-week h2{margin:0 0 var(--space-4);font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
+.sg-week ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.sg-week li{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);border-radius:var(--radius);font-size:var(--text-body-small);line-height:var(--lh-snug)}
+.sg-week li.sg-up{background:var(--success-light)}
+.sg-week li.sg-up svg{color:var(--success)}
+.sg-week li.sg-down{background:var(--destructive-light)}
+.sg-week li.sg-down svg{color:var(--destructive)}
+.sg-week b{font-weight:var(--weight-semibold);display:block}
+.sg-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3)}
+.sg-legend li{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small)}
+.sg-sw{width:14px;height:14px;border-radius:2px}
+.sg-sw.sg-e{background:color-mix(in srgb,var(--primary) 70%,var(--card))}
+.sg-sw.sg-m{background:color-mix(in srgb,var(--primary) 30%,var(--card))}
+.sg-sw.sg-h{background:color-mix(in srgb,var(--primary) 12%,var(--card))}
+
 </style>
 </helmet>
-<div class="wf realhome">
+<div class="wf theme-assessments">
   <header class="top">
-    <a class="logo homelogo" href="Main.dc.html" aria-label="Go to Home" style="text-decoration:none"><img src="/_blob/03b113a3dc2e610eb61ccc911bd46d5e" alt="Cognia"></a>
-    <div class="menu" style="background-color: #2e1d2e"><div class="theme-assessments homeapps" style="font-family:var(--font-sans)"><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome on" aria-current="page" href="Main.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap:12px; align-items:center"><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><a class="appt d-Fm" href="MOD-Formative.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span><span>Formative</span></a><a class="appt d-In" href="SA2-Hub.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim</span></a><span class="appt d-Sc appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span></span><span class="appt d-Al appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span></span></div><div class="appdesc d-Fm" aria-hidden="true"><strong>Formative</strong><p>Build from the multiple-choice item bank or start with a ready-to-use assessment. Add enhanced tools with Classroom+.</p></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners <span class="tag c">If approved</span></strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div><div class="appdesc d-Al" aria-hidden="true"><strong>Alt Assessments <span class="tag c">Future</span></strong><p>Alternate assessments for students with significant cognitive disabilities.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></a></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></a></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></a></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane" aria-label="Data and Reporting"><h3>Data and Reporting</h3><p class="appsoon">Coming soon</p></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Interim Assessment</span></a><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><span class="appqab locked" aria-disabled="true" title="Included in Classroom+"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Formative Assessment</span></span></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Formative Assessment</span></a></sc-if></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></a><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></a></div></div></sc-if></div></div></sc-if></div></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: Jordan Ellis" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">JE</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctscrim" aria-hidden="true" onClick="{{closeAcct}}"></div></sc-if><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">JE</span><div class="acctwho"><p class="acctname">Jordan Ellis</p><p class="acctrole">System Administrator · District</p></div><button type="button" class="acctswitch" aria-haspopup="dialog" onClick="{{openRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Switch</button></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><div class="planseg" role="group" aria-label="Preview plan"><button type="button" aria-pressed="{{planBasicOn}}" onClick="{{pickBasic}}">Basic</button><button type="button" aria-pressed="{{planPlusOn}}" onClick="{{pickPlus}}">Classroom+</button></div></div><p class="plannote">Prototype only: switch to preview each plan.</p><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom+.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
+    <div class="brand"><a class="logo" href="Main.dc.html" aria-label="Go to Home" style="text-decoration:none"><img src="/_blob/03b113a3dc2e610eb61ccc911bd46d5e" alt="Cognia"></a><span class="modname">Home</span></div>
+    <div class="topr"><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome on" aria-current="page" href="Main.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap:12px; align-items:center"><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><a class="appt d-Fm" href="MOD-Formative.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span><span>Formative</span></a><a class="appt d-In" href="SA2-Hub.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim</span></a><span class="appt d-Sc appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span></span><span class="appt d-Al appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span></span></div><div class="appdesc d-Fm" aria-hidden="true"><strong>Formative</strong><p>Build from the multiple-choice item bank or start with a ready-to-use assessment. Add enhanced tools with Classroom+.</p></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners <span class="tag c">If approved</span></strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div><div class="appdesc d-Al" aria-hidden="true"><strong>Alt Assessments <span class="tag c">Future</span></strong><p>Alternate assessments for students with significant cognitive disabilities.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-observations-surveys" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></a></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-learn" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></a></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-performance" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></a><a class="appt" href="#" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></a></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-data-reporting" aria-label="Data and Reporting"><h3>Data and Reporting</h3><p class="appsoon">Coming soon</p></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Interim Assessment</span></a></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></a><a class="appqab" href="#" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></a></div></div></sc-if></div></div></sc-if></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: Jordan Ellis" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">JE</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctscrim" aria-hidden="true" onClick="{{closeAcct}}"></div></sc-if><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">JE</span><div class="acctwho"><p class="acctname">Jordan Ellis</p><p class="acctrole">System Administrator · District</p></div><button type="button" class="acctswitch" aria-haspopup="dialog" onClick="{{openRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Switch</button></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><div class="planseg" role="group" aria-label="Preview plan"><button type="button" aria-pressed="{{planBasicOn}}" onClick="{{pickBasic}}">Basic</button><button type="button" aria-pressed="{{planPlusOn}}" onClick="{{pickPlus}}">Classroom+</button></div></div><p class="plannote">Prototype only: switch to preview each plan.</p><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom+.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
   </header>
   <sc-if value="{{rolesOpen}}" hint-placeholder-val="{{ false }}"><div class="rolemodal" onClick="{{closeRoles}}"><div class="roledlg" role="dialog" aria-modal="true" aria-labelledby="roledlgh" onClick="{{stopRoles}}"><div class="roledlghd"><h2 id="roledlgh">Switch role</h2><button type="button" class="rolex" aria-label="Close" onClick="{{closeRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div><p class="rolenote"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>This role switcher is for this prototype only. It lets reviewers move between each role's flow and will not appear in the product. Choose a role to go to the start of its flow.</span></p><div class="rolelist"><a class="roleopt" href="Main.dc.html" onClick="{{closeRoles}}" aria-current="page"><span class="rolecur">Current</span><strong>System Administrator</strong><span>District oversight across all schools</span></a><a class="roleopt" href="PA1-Home.dc.html" onClick="{{closeRoles}}"><strong>School Administrator</strong><span>Building-level review for one school</span></a><a class="roleopt" href="CAP-T01-Overview.dc.html" onClick="{{closeRoles}}"><strong>Teacher</strong><span>Create, assign and review classroom assessments</span></a><a class="roleopt" href="CAP-S01-SignIn.dc.html" onClick="{{closeRoles}}"><strong>Student</strong><span>Sign in and complete assigned work</span></a></div></div></div></sc-if>
-  <div class="shell">
-    <div class="content">
-      <div class="welcome">
-        <div class="wav" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg></div>
-        <div><div class="row" style="gap:12px; align-items:center"><h1>Welcome back!</h1></div><p>Jordan Ellis</p></div>
-      </div>
-      <main class="body">
-        <div class="theme-assessments" style="font-family:var(--font-sans)">
-        <a class="card preview homeprev" href="SA2-Hub.dc.html" aria-label="Assessments, Interim: district performance 54% at or above benchmark, up over the last 6 months. Go to the Interim overview.">
-          <div class="row" style="gap:8px; align-items:center"><h2 id="ahp">Assessments</h2><span class="tag">Interim</span></div>
-          <span class="hpsub">District performance · last 6 months</span>
-          <div class="row" style="gap:8px; align-items:center"><span class="hpn">54%</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px"><polyline points="3 17 9 11 13 15 21 7"></polyline><polyline points="15 7 21 7 21 13"></polyline></svg><span class="tag" style="color:var(--foreground); background-color:var(--card); border-style:solid; border-width:1px; border-color:var(--border)">Above benchmark</span></div>
-          <svg aria-hidden="true" viewBox="0 0 380 100" style="width:100%; height:100px">
-            <line x1="10" y1="37.0" x2="370" y2="37.0" stroke-width="1" stroke-dasharray="4 4" style="stroke:var(--chart-1)"></line>
-            <polyline points="20,48.0 88,42.5 156,31.5 224,37.0 292,26.0 360,15.0" fill="none" stroke-width="2.5" style="stroke:var(--chart-1)"></polyline><circle cx="20" cy="48.0" r="2.5" style="fill:var(--chart-1)"></circle><circle cx="88" cy="42.5" r="2.5" style="fill:var(--chart-1)"></circle><circle cx="156" cy="31.5" r="2.5" style="fill:var(--chart-1)"></circle><circle cx="224" cy="37.0" r="2.5" style="fill:var(--chart-1)"></circle><circle cx="292" cy="26.0" r="2.5" style="fill:var(--chart-1)"></circle><circle cx="360" cy="15.0" r="4" style="fill:var(--chart-1)"></circle><text x="20" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Sep</text><text x="88" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Oct</text><text x="156" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Nov</text><text x="224" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Dec</text><text x="292" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Jan</text><text x="360" y="96" font-size="10" text-anchor="middle" font-family="Open Sans, sans-serif" style="fill:var(--chart-1)">Feb</text>
-          </svg>
-        </a>
-        </div>
+<div class="sg-pg">
+<section class="sg-head">
+<div class="sg-goal">
+<button type="button" class="sg-goal-btn" aria-label="Switch goal">
+<h1 style="font-weight: 700">Increase Student Engagement &amp; Learner Agency</h1>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+</button>
+<span class="sg-badge sg-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>Needs attention</span>
+</div>
+<div class="sg-district">
+<p class="sg-nm">Oceanside Unified School District</p>
+<p class="sg-meta"><span>124 Schools</span><span class="sg-dot" aria-hidden="true"></span><span>79 800 Students</span><span class="sg-dot" aria-hidden="true"></span><span>California</span></p>
+</div>
+</section>
 
-        <div class="hc-grid" aria-label="From the Cognia network">
-          <section class="hc" aria-labelledby="hcnl">
-            <h2 id="hcnl">Network Newsletter</h2>
-            <img class="hc-img" src="/_blob/90dd299e54a28dad07fb31784b50e14d" alt="Cognia Insider newsletter" width="249" height="155">
-            <a class="hc-btn" href="#">Read the Latest Issue</a>
-          </section>
-          <section class="hc" aria-labelledby="hcju">
-            <h2 id="hcju">Join us</h2>
-            
-            <div class="hc-meta"><span>October 21, 2026</span><span class="hc-badge">Chile</span></div>
-            <p class="hc-title">AMISA LeadCon26</p>
-            <p class="hc-clamp">Cognia Lead Evaluators are the crucial connection between Cognia and the institutions engaging in an Accreditation or Certification…</p>
-            <a class="hc-btn" href="#">View Event Calendar</a>
-          </section>
-          <section class="hc hc-video" aria-labelledby="hcsv" style="height: 281px">
-            <h2 id="hcsv">Spotlight Videos</h2>
-            <div class="hc-vrow" style="height: 205px">
-              <div class="hc-thumb" style="height: 199px">
-                <img class="hc-img" src="/_blob/3337933511f3795622ea79d61f396592" alt="" width="385" height="164" style="height: 198px; width: 321px">
-                <button type="button" class="hc-play" aria-label="Play video: A New Approach to Professional Learning, 1 minute 17 seconds"><span><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></span></button>
-                <span class="hc-dur" aria-hidden="true">1:17</span>
-              </div>
-              <div style="display:flex; flex-direction:column; gap:8px">
-                <p class="hc-title">A New Approach to Professional Learning</p>
-                <p class="hc-clamp" style="height: 144px">Watch our video and see how Cognia Professional Learning builds capacity and leads to real change in…</p>
-              </div>
-            </div>
-          </section>
-        </div>
-        <section class="hc hc-feature" aria-labelledby="hcfm">
-          <div class="hc-fhd"><h2 id="hcfm">Featured Member</h2><a class="hc-link" href="#">Read the case study</a></div>
-          <div class="hc-frow">
-            <img class="hc-img" src="/_blob/f8cbb4ece247dab0cbd4f1c63c3105cb" alt="Two Richmond County students working on a robotics project" width="135" height="135">
-            <div style="display:flex; flex-direction:column; gap:6px; min-width:0">
-              <p class="hc-kicker">Community Story</p>
-              <p class="hc-title">Richmond County: Reimagining Continuous Improvement</p>
-              <p>The best schools run on a plan. But crafting an effective school improvement plan requires in-depth analysis that can be daunting for administrators already neck-deep in federal mandates, state requirements, and local demands. Richmond County School System (RCSS) in Augusta, Georgia, needed a data-driven continuous improvement planning process that would not overburden administrators. See how Cognia helped them build a data-driven five-year…</p>
-            </div>
-          </div>
-        </section>
-      </main>    </div>
-  </div>
-  <footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
+<div class="sg-main">
+<div class="sg-col-l">
+<article class="sg-card">
+<button type="button" class="sg-mhead" aria-expanded="true">
+<span class="sg-mval">3.2+</span>
+<span class="sg-mttl">Active &amp; Engaged Learning Environment (eleot)</span>
+<svg class="sg-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg>
+</button>
+<div class="sg-mbody">
+<div>
+<div class="sg-prog-row"><p class="sg-lbl">System Progress</p><span>2.2</span></div>
+<div class="sg-prog" role="img" aria-label="System progress 2.2 of 4">
+<span class="sg-seg"><i style="width:100%"></i></span>
+<span class="sg-seg"><i style="width:100%"></i></span>
+<span class="sg-seg"><i style="width:25%"></i></span>
+<span class="sg-seg"><i style="width:0%"></i></span>
+</div>
+</div>
+<div>
+<p class="sg-lbl">Standards</p>
+<div class="sg-stds">
+<div class="sg-grp"><span>Core</span><span class="sg-chip sg-core">19</span></div>
+<div class="sg-grp"><span>Supporting</span><span class="sg-chip sg-sup">18</span><span class="sg-chip sg-sup">21</span></div>
+</div>
+</div>
+<div class="sg-ev">
+<p class="sg-lbl">Connected Evidence</p>
+<p style="margin-top: 8px">eleot walkthrough observations</p>
+</div>
+<div class="sg-insight">
+<div class="sg-insight-row">
+<svg width="40" height="40" viewBox="0 0 40 40" style="flex-shrink: 0" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="color-mix(in srgb,var(--brand-coral) 45%,var(--foreground))"></circle><circle cx="20" cy="20" r="14" fill="var(--destructive-light)"></circle><path d="M26 14 22 22 14 26 18 18z" fill="var(--brand-coral)"></path></svg>
+<p>Middle school Active &amp; Engaged Learning scores are trending below the district average</p>
+</div>
+<button type="button" class="sg-btn">Show me where</button>
+</div>
+</div>
+</article>
+
+<article class="sg-card">
+<button type="button" class="sg-mhead" aria-expanded="false">
+<span class="sg-mval">10%</span>
+<span class="sg-mttl">Annual reduction in chronic absenteeism</span>
+<svg class="sg-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+</article>
+
+<article class="sg-card">
+<button type="button" class="sg-mhead" aria-expanded="false">
+<span class="sg-mval">85%</span>
+<span class="sg-mttl">Favorable student responses to bi-annual student surveys</span>
+<svg class="sg-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+</article>
+</div>
+
+<div class="sg-col-c">
+<svg class="sg-chart" viewBox="700 200 945 980" role="img" aria-label="Schools by level and status: elementary, middle and high schools shown as leading, on track or needs attention">
+<polygon class="sg-pe sg-l" points="1049,685 1173,757 1173,785 1049,713"></polygon>
+<polygon class="sg-pe sg-r" points="1297,685 1173,757 1173,785 1297,713"></polygon>
+<polygon class="sg-pe sg-t" points="1173,613 1297,685 1173,757 1049,685"></polygon>
+<polygon class="sg-pm sg-l" points="884,780 1008,852 1008,880 884,808"></polygon>
+<polygon class="sg-pm sg-r" points="1132,780 1008,852 1008,880 1132,808"></polygon>
+<polygon class="sg-pm sg-t" points="1008,709 1132,780 1008,852 884,780"></polygon>
+<polygon class="sg-pe sg-l" points="1214,780 1338,852 1338,880 1214,808"></polygon>
+<polygon class="sg-pe sg-r" points="1462,780 1338,852 1338,880 1462,808"></polygon>
+<polygon class="sg-pe sg-t" points="1338,709 1462,780 1338,852 1214,780"></polygon>
+<polygon class="sg-ph sg-l" points="719,876 843,947 843,975 719,904"></polygon>
+<polygon class="sg-ph sg-r" points="967,876 843,947 843,975 967,904"></polygon>
+<polygon class="sg-ph sg-t" points="843,804 967,876 843,947 719,876"></polygon>
+<polygon class="sg-pm sg-l" points="1049,876 1173,947 1173,975 1049,904"></polygon>
+<polygon class="sg-pm sg-r" points="1297,876 1173,947 1173,975 1297,904"></polygon>
+<polygon class="sg-pm sg-t" points="1173,804 1297,876 1173,947 1049,876"></polygon>
+<polygon class="sg-pe sg-l" points="1379,876 1503,947 1503,975 1379,904"></polygon>
+<polygon class="sg-pe sg-r" points="1627,876 1503,947 1503,975 1627,904"></polygon>
+<polygon class="sg-pe sg-t" points="1503,804 1627,876 1503,947 1379,876"></polygon>
+<polygon class="sg-ph sg-l" points="884,971 1008,1042 1008,1070 884,999"></polygon>
+<polygon class="sg-ph sg-r" points="1132,971 1008,1042 1008,1070 1132,999"></polygon>
+<polygon class="sg-ph sg-t" points="1008,899 1132,971 1008,1042 884,971"></polygon>
+<polygon class="sg-pm sg-l" points="1214,971 1338,1042 1338,1070 1214,999"></polygon>
+<polygon class="sg-pm sg-r" points="1462,971 1338,1042 1338,1070 1462,999"></polygon>
+<polygon class="sg-pm sg-t" points="1338,899 1462,971 1338,1042 1214,971"></polygon>
+<polygon class="sg-ph sg-l" points="1049,1066 1173,1138 1173,1166 1049,1094"></polygon>
+<polygon class="sg-ph sg-r" points="1297,1066 1173,1138 1173,1166 1297,1094"></polygon>
+<polygon class="sg-ph sg-t" points="1173,994 1297,1066 1173,1138 1049,1066"></polygon>
+<polygon class="sg-g sg-l" points="1083,267 1173,319 1173,737 1083,685"></polygon>
+<polygon class="sg-g sg-r" points="1263,267 1173,319 1173,737 1263,685"></polygon>
+<polygon class="sg-g sg-t" points="1173,215 1263,267 1173,319 1083,267"></polygon>
+<polygon class="sg-g sg-hot sg-l" points="918,412 1008,464 1008,832 918,780"></polygon>
+<polygon class="sg-g sg-hot sg-r" points="1098,412 1008,464 1008,832 1098,780"></polygon>
+<polygon class="sg-g sg-hot sg-t" points="1008,360 1098,412 1008,464 918,412"></polygon>
+<polygon class="sg-a sg-l" points="1248,517 1338,569 1338,832 1248,780"></polygon>
+<polygon class="sg-a sg-r" points="1428,517 1338,569 1338,832 1428,780"></polygon>
+<polygon class="sg-a sg-t" points="1338,465 1428,517 1338,569 1248,517"></polygon>
+<polygon class="sg-g sg-l" points="753,638 843,689 843,927 753,876"></polygon>
+<polygon class="sg-g sg-r" points="933,638 843,689 843,927 933,876"></polygon>
+<polygon class="sg-g sg-t" points="843,586 933,638 843,689 753,638"></polygon>
+<polygon class="sg-a sg-l" points="1083,541 1173,592 1173,927 1083,876"></polygon>
+<polygon class="sg-a sg-r" points="1263,541 1173,592 1173,927 1263,876"></polygon>
+<polygon class="sg-a sg-t" points="1173,489 1263,541 1173,592 1083,541"></polygon>
+<polygon class="sg-n sg-l" points="1413,503 1503,554 1503,927 1413,876"></polygon>
+<polygon class="sg-n sg-r" points="1593,503 1503,554 1503,927 1593,876"></polygon>
+<polygon class="sg-n sg-t" points="1503,451 1593,503 1503,554 1413,503"></polygon>
+<polygon class="sg-a sg-l" points="918,708 1008,760 1008,1023 918,971"></polygon>
+<polygon class="sg-a sg-r" points="1098,708 1008,760 1008,1023 1098,971"></polygon>
+<polygon class="sg-a sg-t" points="1008,656 1098,708 1008,760 918,708"></polygon>
+<polygon class="sg-n sg-l" points="1248,771 1338,823 1338,1023 1248,971"></polygon>
+<polygon class="sg-n sg-r" points="1428,771 1338,823 1338,1023 1428,971"></polygon>
+<polygon class="sg-n sg-t" points="1338,719 1428,771 1338,823 1248,771"></polygon>
+<polygon class="sg-n sg-l" points="1083,928 1173,980 1173,1118 1083,1066"></polygon>
+<polygon class="sg-n sg-r" points="1263,928 1173,980 1173,1118 1263,1066"></polygon>
+<polygon class="sg-n sg-t" points="1173,876 1263,928 1173,980 1083,928"></polygon>
+</svg>
+<div class="sg-tip">
+<p>12 middle schools</p>
+<span class="sg-badge sg-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path></svg>Leading</span>
+</div>
+</div>
+
+<div class="sg-col-r">
+<section class="sg-card sg-week" aria-labelledby="wk">
+<h2 id="wk">This week</h2>
+<ul>
+<li class="sg-up"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.5 8.5-5-5L2 17"></path><path d="M16 7h6v6"></path></svg><span><b>2 Middle schools</b>moved to leading</span></li>
+<li class="sg-up"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.5 8.5-5-5L2 17"></path><path d="M16 7h6v6"></path></svg><span><b>5 Elementary schools</b>moved to leading</span></li>
+<li class="sg-down"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 17-8.5-8.5-5 5L2 7"></path><path d="M16 17h6v-6"></path></svg><span><b>10 High schools</b>moved to needs attention</span></li>
+</ul>
+</section>
+<ul class="sg-legend" aria-label="School levels">
+<li>72 Elementary Schools <span class="sg-sw sg-e" aria-hidden="true"></span></li>
+<li>28 Middle Schools <span class="sg-sw sg-m" aria-hidden="true"></span></li>
+<li>24 High Schools <span class="sg-sw sg-h" aria-hidden="true"></span></li>
+</ul>
+</div>
+</div>
+</div>
+<footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1090}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1024}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}}'>
 class Component extends DCLogic {
   planStored() {
     try { const v = window.localStorage.getItem('cogniaProtoPlan'); return (v === 'Basic' || v === 'Classroom+') ? v : null; } catch (e) { return null; }

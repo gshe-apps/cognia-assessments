@@ -119,6 +119,15 @@
       "x": 4560,
       "y": 12004
     },
+    "CAP-T05-Algebra.dc.html": {
+      "expand": "fill",
+      "h": 2297,
+      "is_interactive": true,
+      "title": "Teacher · Create · Questions (Algebra)",
+      "w": 1440,
+      "x": 10640,
+      "y": 12004
+    },
     "CAP-T05-Questions.dc.html": {
       "expand": "fill",
       "h": 2297,
@@ -126,6 +135,15 @@
       "title": "Teacher · Create · Questions",
       "w": 1440,
       "x": 6080,
+      "y": 12004
+    },
+    "CAP-T05-Reading.dc.html": {
+      "expand": "fill",
+      "h": 2297,
+      "is_interactive": true,
+      "title": "Teacher · Create · Questions (Reading)",
+      "w": 1440,
+      "x": 12160,
       "y": 12004
     },
     "CAP-T06-Review.dc.html": {
@@ -301,7 +319,7 @@
     },
     "Main.dc.html": {
       "expand": "fill",
-      "h": 1090,
+      "h": 1024,
       "is_interactive": true,
       "title": "SA 1 · Home",
       "w": 1440,
@@ -355,7 +373,7 @@
     },
     "PA1-Home.dc.html": {
       "expand": "fill",
-      "h": 1090,
+      "h": 1024,
       "is_interactive": true,
       "title": "School 1 · Home",
       "w": 1440,
@@ -391,18 +409,18 @@
     },
     "SA2-Hub.dc.html": {
       "expand": "fill",
-      "h": 1180,
+      "h": 1142,
       "is_interactive": true,
       "title": "SA 2 · Interim · Overview",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "SA3-Dashboard.dc.html": {
+    "SA2-Schools.dc.html": {
       "expand": "fill",
-      "h": 1024,
+      "h": 1142,
       "is_interactive": true,
-      "title": "SA 3 · Interim · Analytics",
+      "title": "SA 2a · Interim · All schools",
       "w": 1440,
       "x": 3040,
       "y": 0
@@ -424,6 +442,15 @@
       "w": 1440,
       "x": 4560,
       "y": 0
+    },
+    "SUP-Home-Goal.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "Superintendent · Home · Strategic goal",
+      "w": 1440,
+      "x": 0,
+      "y": 20700
     }
   },
   "createdOnFiles": {
@@ -573,6 +600,14 @@
       "x": 0,
       "y": 18300
     },
+    "t5": {
+      "kind": "title1",
+      "maxW": 1440,
+      "text": "Superintendent, strategic goals",
+      "w": 240,
+      "x": 0,
+      "y": 20380
+    },
     "ts1": {
       "bold": true,
       "fill": "blue",
@@ -627,7 +662,7 @@
   "order": [
     "Main.dc.html",
     "SA2-Hub.dc.html",
-    "SA3-Dashboard.dc.html",
+    "SA2-Schools.dc.html",
     "SA3-Mockup.dc.html",
     "SA2-Combined.dc.html",
     "SA6-Respond.dc.html",
@@ -651,6 +686,8 @@
     "CAP-T05-Questions.dc.html",
     "CAP-T06-Review.dc.html",
     "CAP-T07-DraftSaved.dc.html",
+    "CAP-T05-Algebra.dc.html",
+    "CAP-T05-Reading.dc.html",
     "CAP-T08-AudienceDelivery.dc.html",
     "CAP-T09-ConfirmAssignment.dc.html",
     "CAP-T10-Scheduled.dc.html",
@@ -671,7 +708,8 @@
     "CAP-S06-ReviewAnswers.dc.html",
     "CAP-S07-Submit.dc.html",
     "CAP-S08-Submitted.dc.html",
-    "CAP-S09-AccessHelp.dc.html"
+    "CAP-S09-AccessHelp.dc.html",
+    "SUP-Home-Goal.dc.html"
   ],
   "pages": [],
   "title": "Assessment Hub – Admin Wireframes"

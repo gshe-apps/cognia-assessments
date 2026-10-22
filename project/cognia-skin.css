@@ -528,7 +528,7 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 /* Analytics: filters replace the side tiles */
 .theme-assessments .snapside .filtbtn{justify-self:end;display:inline-flex;align-items:center;gap:6px}
 .theme-assessments .snapside .filtbtn svg{width:18px;height:18px}
-.theme-assessments .snapside .filtbtn[aria-expanded="true"]{background:var(--accent-100);color:var(--accent-400);border-color:var(--accent-100)}
+.theme-assessments .snapside .filtbtn[aria-expanded="true"]{background:var(--secondary);color:var(--foreground);border-color:var(--secondary)}
 .theme-assessments .sidestack{display:grid;grid-template-columns:1fr;gap:var(--space-4)}
 .theme-assessments .filtpanel{display:flex;flex-direction:column;gap:var(--space-4);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:var(--space-4);background:var(--card)}
 .theme-assessments .filtpanel .sel.stack{width:100%}
@@ -540,7 +540,7 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 .theme-assessments .filtlbl{color:var(--foreground);font-weight:600;margin-right:4px}
 .theme-assessments .filtsum .filtbtn{display:inline-flex;align-items:center;gap:6px;flex:none}
 .theme-assessments .filtsum .filtbtn svg{width:18px;height:18px}
-.theme-assessments .filtsum .filtbtn[aria-expanded="true"]{background:var(--accent-100);color:var(--accent-400);border-color:var(--accent-100)}
+.theme-assessments .filtsum .filtbtn[aria-expanded="true"]{background:var(--secondary);color:var(--foreground);border-color:var(--secondary)}
 .theme-assessments .scope{margin:0;font:400 var(--text-body-small) var(--font-sans);color:var(--foreground)}
 .theme-assessments .sel.inline{flex-direction:row;align-items:center;gap:6px}
 .theme-assessments .sel.inline select{min-height:32px;padding:0 var(--space-3);font-size:var(--text-body-small)}

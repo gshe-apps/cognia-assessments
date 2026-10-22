@@ -18,3 +18,5 @@
 body :is(a,button,summary,input,select,textarea):focus-visible{outline:2px solid var(--accent-300,#4f5cbe);outline-offset:3px}
 body :is(button:disabled,[aria-disabled=true]){cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+/* Header icon buttons (My Hubs grid, account): neutral hover, no product tint */
+html body :is(.profile-trigger,.acctbtn,.appgrid):not(:disabled):hover{background-color:var(--hover-overlay)}

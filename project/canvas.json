@@ -2,15 +2,6 @@
   "v": 3,
   "attachments": {},
   "boards": {
-    "SUP-Home-Goal.dc.html": {
-      "expand": "fill",
-      "h": 1060,
-      "is_interactive": true,
-      "title": "Superintendent · Home · Strategic goal",
-      "w": 1440,
-      "x": 0,
-      "y": 20700
-    },
     "CAP-S01-SignIn.dc.html": {
       "expand": "fill",
       "h": 1024,
@@ -128,6 +119,15 @@
       "x": 4560,
       "y": 12004
     },
+    "CAP-T05-Algebra.dc.html": {
+      "expand": "fill",
+      "h": 2297,
+      "is_interactive": true,
+      "title": "Teacher · Create · Questions (Algebra)",
+      "w": 1440,
+      "x": 10640,
+      "y": 12004
+    },
     "CAP-T05-Questions.dc.html": {
       "expand": "fill",
       "h": 2297,
@@ -135,6 +135,15 @@
       "title": "Teacher · Create · Questions",
       "w": 1440,
       "x": 6080,
+      "y": 12004
+    },
+    "CAP-T05-Reading.dc.html": {
+      "expand": "fill",
+      "h": 2297,
+      "is_interactive": true,
+      "title": "Teacher · Create · Questions (Reading)",
+      "w": 1440,
+      "x": 12160,
       "y": 12004
     },
     "CAP-T06-Review.dc.html": {
@@ -310,7 +319,7 @@
     },
     "Main.dc.html": {
       "expand": "fill",
-      "h": 1090,
+      "h": 1024,
       "is_interactive": true,
       "title": "SA 1 · Home",
       "w": 1440,
@@ -364,7 +373,7 @@
     },
     "PA1-Home.dc.html": {
       "expand": "fill",
-      "h": 1090,
+      "h": 1024,
       "is_interactive": true,
       "title": "School 1 · Home",
       "w": 1440,
@@ -400,7 +409,7 @@
     },
     "SA2-Hub.dc.html": {
       "expand": "fill",
-      "h": 1253,
+      "h": 1142,
       "is_interactive": true,
       "title": "SA 2 · Interim · Overview",
       "w": 1440,
@@ -409,27 +418,9 @@
     },
     "SA2-Schools.dc.html": {
       "expand": "fill",
-      "h": 1240,
+      "h": 1142,
       "is_interactive": true,
       "title": "SA 2a · Interim · All schools",
-      "w": 1440,
-      "x": 3040,
-      "y": 1253
-    },
-    "SA2-Subgroups.dc.html": {
-      "expand": "fill",
-      "h": 1200,
-      "is_interactive": true,
-      "title": "SA 2b · Interim · Subgroup patterns",
-      "w": 1440,
-      "x": 4640,
-      "y": 1253
-    },
-    "SA3-Dashboard.dc.html": {
-      "expand": "fill",
-      "h": 1024,
-      "is_interactive": true,
-      "title": "SA 3 · Interim · Analytics",
       "w": 1440,
       "x": 3040,
       "y": 0
@@ -452,23 +443,14 @@
       "x": 4560,
       "y": 0
     },
-    "CAP-T05-Algebra.dc.html": {
+    "SUP-Home-Goal.dc.html": {
       "expand": "fill",
-      "h": 2297,
+      "h": 1024,
       "is_interactive": true,
-      "title": "Teacher · Create · Questions (Algebra)",
+      "title": "Superintendent · Home · Strategic goal",
       "w": 1440,
-      "x": 10640,
-      "y": 12004
-    },
-    "CAP-T05-Reading.dc.html": {
-      "expand": "fill",
-      "h": 2297,
-      "is_interactive": true,
-      "title": "Teacher · Create · Questions (Reading)",
-      "w": 1440,
-      "x": 12160,
-      "y": 12004
+      "x": 0,
+      "y": 20700
     }
   },
   "createdOnFiles": {
@@ -610,14 +592,6 @@
       "x": 0,
       "y": 9500
     },
-    "t5": {
-      "kind": "title1",
-      "maxW": 1440,
-      "text": "Superintendent, strategic goals",
-      "w": 240,
-      "x": 0,
-      "y": 20380
-    },
     "t4": {
       "kind": "title1",
       "maxW": 7520,
@@ -625,6 +599,14 @@
       "w": 240,
       "x": 0,
       "y": 18300
+    },
+    "t5": {
+      "kind": "title1",
+      "maxW": 1440,
+      "text": "Superintendent, strategic goals",
+      "w": 240,
+      "x": 0,
+      "y": 20380
     },
     "ts1": {
       "bold": true,
@@ -681,8 +663,6 @@
     "Main.dc.html",
     "SA2-Hub.dc.html",
     "SA2-Schools.dc.html",
-    "SA2-Subgroups.dc.html",
-    "SA3-Dashboard.dc.html",
     "SA3-Mockup.dc.html",
     "SA2-Combined.dc.html",
     "SA6-Respond.dc.html",

@@ -6,7 +6,7 @@
 .theme-assessments .apps{position:relative}
 .theme-assessments .apps > summary{list-style:none}
 .theme-assessments .apps > summary::-webkit-details-marker{display:none}
-.theme-assessments .appgrid[aria-expanded="true"]{background:var(--accent-100);color:var(--accent-400)}
+.theme-assessments .appgrid[aria-expanded="true"]{background:var(--secondary);color:var(--foreground)}
 .theme-assessments .appmenu{position:absolute;top:calc(100% + 8px);right:0;z-index:50;width:340px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)}
 .theme-assessments .apphd{font:700 16px var(--font-sans);color:var(--foreground);text-decoration:none;display:flex;align-items:center;gap:4px}
 .theme-assessments .apphd svg{width:20px;height:20px;margin-left:-4px}
@@ -157,8 +157,8 @@ html body .theme-assessments .acctplanb{border-radius:var(--radius-full) !import
 /* ============================================================
    Footer, every screen (Figma: CAP file, node 1279:841)
    ============================================================ */
-.hubfoot{display:flex;justify-content:center;padding:var(--space-3) var(--space-6);background:var(--background);font-family:var(--font-sans)}
-.hubfootin{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);width:100%;max-width:1320px}
+.hubfoot{display:flex;justify-content:center;padding:var(--space-3) var(--space-8);background:var(--background);border-top:1px solid var(--border);font-family:var(--font-sans)}
+.hubfootin{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);width:100%}
 .hubcopy{margin:0;font:var(--weight-semibold) var(--text-body-small)/1.4 var(--font-sans);color:var(--muted-foreground)}
 .hubfootnav{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-4)}
 .hubfootnav a{font:var(--weight-regular) var(--text-body-small)/1.4 var(--font-sans);color:var(--muted-foreground);text-decoration:none}

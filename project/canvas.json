@@ -433,6 +433,15 @@
       "w": 1440,
       "x": 0,
       "y": 20700
+    },
+    "CAP-T21-AssessmentLibrary.dc.html": {
+      "expand": "fill",
+      "h": 1024,
+      "is_interactive": true,
+      "title": "Teacher · Assessment library",
+      "w": 1440,
+      "x": 7600,
+      "y": 14701
     }
   },
   "createdOnFiles": {
@@ -673,6 +682,7 @@
     "CAP-T10-Scheduled.dc.html",
     "CAP-T11-Classes.dc.html",
     "CAP-T12-QuestionLibrary.dc.html",
+    "CAP-T21-AssessmentLibrary.dc.html",
     "CAP-T13-Results.dc.html",
     "CAP-T14-ScoringQueue.dc.html",
     "CAP-T15-ScoreResponse.dc.html",

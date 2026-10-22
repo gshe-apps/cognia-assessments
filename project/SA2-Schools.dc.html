@@ -293,6 +293,16 @@ class Component extends DCLogic {
       let v = null;
       try { v = window.localStorage.getItem('cogniaSchoolsShow'); window.localStorage.removeItem('cogniaSchoolsShow'); } catch (e) {}
       this._showStart = (v === 'gaps' || v === 'below' || v === 'sub') ? v : 'all';
+      // If this screen is already open (e.g. on the canvas), apply a new hand-off from the Overview when it arrives.
+      try {
+        window.addEventListener('storage', (e) => {
+          if (e.key !== 'cogniaSchoolsShow' || !e.newValue) return;
+          const s = e.newValue;
+          try { window.localStorage.removeItem('cogniaSchoolsShow'); } catch (err) {}
+          if (s === 'sub') this.setState({ tab: 'sub' });
+          else if (s === 'gaps' || s === 'below') this.setState({ tab: 'all', fGap: s === 'gaps', fBel: s === 'below', fGr: 'All grades', q: '' });
+        });
+      } catch (e) {}
     }
     return this._showStart;
   }

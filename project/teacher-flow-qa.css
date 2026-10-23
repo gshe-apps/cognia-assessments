@@ -25,3 +25,10 @@ html body .cap-root.theme-assessments .workspace main.main :is(h1,h2,h3,h4,h5,h6
 /* Keep fixed launcher overlays anchored to the viewport and preserve the brand mark. */
 html body .cap-root .hubnav a.on{border-bottom-color:#111}
 html body .cap-root .hublogo img{display:block;width:28px;height:28px;object-fit:contain;filter:none}
+/* Full-bleed header artwork: retain the image ratio and fade its lower edge. */
+html body .cap-root.theme-assessments .workspace .main .tf-hero{overflow:visible;isolation:isolate}
+html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{right:calc((100% - 100vw)/2);left:auto;bottom:auto;width:min(78vw,1100px);height:auto;aspect-ratio:3/1;background-size:contain;background-position:right top;background-repeat:no-repeat;mask-image:linear-gradient(to right,transparent,#000 42%),linear-gradient(to bottom,#000 72%,transparent);mask-composite:intersect;max-width:none;pointer-events:none}
+html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-85px}
+html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:-20px}
+html body .cap-root.theme-assessments .workspace .main .af-success:before{top:-24px}
+@media(max-width:700px){html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{width:100vw;max-width:none}html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-50px}html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:0}}

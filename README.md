@@ -17,12 +17,12 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 ## Flows
 
 **System Administrator, district oversight**
-- Interim: SA 1 Home, SA 2 Overview, SA 3 Analytics, SA 4 Follow-up, SA 6 Assessments
+- Interim: SA 1 Home, SA 2 Overview (Assign), SA 2a All schools, SA 2b Subgroups, SA 6 Library (preview and assign to schools)
 - Formative: SA 5 Formative (usage by school, school year picker, sort, share report)
 - Coming soon: Screeners, Alt Assessments
 
 **School Administrator, institution-level review**
-- Interim: School 1 Home, School 2 Overview (school trend and students), School 3 Analytics, School 4 Follow-up, School 6 Assessments
+- Interim: School 1 Home, School 2 Overview (Assign), School 2a All students, School 2b Subgroups, School 3 Analytics, School 6 Library (preview and assign to classes)
 - Formative: School 5 Formative (usage by grade, school stats, teachers with no recent activity; teacher clusters on Classroom+ only)
 - Coming soon: Screeners, Alt Assessments
 
@@ -37,7 +37,9 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 
 - **Switch role**: every account menu has a Switch button that opens a modal for System Administrator, School Administrator, Teacher and Student. Prototype only.
 - **Plan**: every account menu has a Basic / Classroom+ switch. On Basic, Classroom+ features are locked, and the teacher Interim hub shows as a paid add-on.
-- The Analytics tab is hidden in the Interim navigation; the Analytics screens stay on the canvas and are reachable from links on the Overview screens.
+- The Interim navigation has two tabs, Overview and Library. The Overview summary cards open All schools / All students (pre-filtered) and Subgroups.
+- **All schools / All students**: the selected row opens a side column with a water-fill completion card, a stack of detail cards (click one to bring it to the front) and a follow-up alert for anything below the 50% benchmark.
+- The Follow-up screens (SA 4, School 4) are off the canvas for now but kept here, as other screens still link to them.
 - **My Hubs**: product tiles take their hub colour (Cognia accent 200). Screeners and Alt Assessments are disabled for now; their status badges show in the hover description.
 
 ## Run the interactive browser prototype

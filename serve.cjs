@@ -18,4 +18,3 @@ http.createServer((req,res) => {
     res.end(error ? 'Not found' : data);
   });
 }).listen(4174, '127.0.0.1', () => console.log('Cognia preview: http://localhost:4174'));
-

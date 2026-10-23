@@ -3,3 +3,5 @@
 .cap-root.theme-assessments .workspace>.main>.page:has(.scheduled-design){width:100%;max-width:1600px;box-sizing:border-box;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
 @media(max-width:900px){.cap-root.theme-assessments .workspace>.main:has(.scheduled-design){padding-left:18px;padding-right:18px}}
 .cap-root.theme-assessments .scheduled-design{max-width:1600px}
+/* Continue the neutral reference-led teacher flow through confirmation. */
+.cap-root .scheduled-design{filter:grayscale(1)}.cap-root .scheduled-design .sd-hero{background:#f3f3f3}.cap-root .scheduled-design .sd-hero h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:36px}.cap-root .scheduled-design .sd-next{background:#f5f5f5}

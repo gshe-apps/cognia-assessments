@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded',()=>{
        box.innerHTML=`<div class="session-card-head"><b>Session ${index+1}</b>${data.sessions.length>1?'<button type="button" class="session-remove">Remove</button>':''}</div><div class="field"><label for="session-name-${index}">Session name</label><input id="session-name-${index}" maxlength="80" required></div><div class="field"><label for="session-opens-${index}">Opens</label><input id="session-opens-${index}" type="datetime-local" required></div><div class="field"><label for="session-due-${index}">Closes</label><input id="session-due-${index}" type="datetime-local" required></div>`;
        ['name','opens','due'].forEach(field=>{const input=box.querySelector('#session-'+field+'-'+index);input.value=session[field];input.addEventListener('input',()=>{session[field]=input.value;save();});});
        const remove=box.querySelector('button');if(remove){remove.setAttribute('aria-label','Remove session '+(index+1));remove.addEventListener('click',()=>{data.sessions.splice(index,1);save();render();document.getElementById('add-session').focus();});}
+       if(window.capReferenceSession)window.capReferenceSession(box,session,index,save);
        list.append(box);
      });
    }
@@ -40,12 +41,12 @@ document.addEventListener('DOMContentLoaded',()=>{
    const next=form.querySelector('a[href="CAP-T09-ConfirmAssignment.dc.html"]');
    next.addEventListener('click',event=>{
      sync();const error=document.getElementById('deliveryError');let message='';
-     if(!data.recipients.length)message='Select at least one student.';
+     if(!data.recipients.length)message='Select at least one student.';else if(data.sessions.some(s=>s.customRecipients&&!s.recipients?.length))message='Select at least one student for each session.';
      else if(!data.accommodations)message='Confirm that you have checked accommodations and recipient access.';
      else if(!form.reportValidity())message='Complete the session name and access times.';
-     else if(data.sessions.some(s=>!s.name.trim()||!s.opens||!s.due||s.due<=s.opens))message='Each session must have a name and close after it opens.';
+     else if(data.sessions.some(s=>!s.name.trim()||(!s.noLimit&&(!s.opens||!s.due||s.due<=s.opens))))message='Each session must have a name and close after it opens.';
      else {
-       const sorted=[...data.sessions].sort((a,b)=>a.opens.localeCompare(b.opens));
+       const sorted=data.sessions.filter(s=>!s.noLimit).sort((a,b)=>a.opens.localeCompare(b.opens));
        if(sorted.some((s,i)=>i&&s.opens<sorted[i-1].due))message='Session windows overlap. Adjust the times so each session has its own access window.';
      }
      error.textContent=message;if(message){event.preventDefault();error.tabIndex=-1;error.focus();}
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    const values={'Class':data.classId==='5b'?'Grade 5B':'Grade 5A','Recipients':data.recipients.length+' students','Attempts / time':data.attempts+' · '+(data.time==='None'?'No time limit':data.time)};
    [...summary.children].forEach(row=>{const name=row.querySelector('dt')?.textContent;if(name==='Opens'||name==='Due')row.remove();else if(values[name])row.querySelector('dd').textContent=values[name];});
    const row=document.createElement('div');const dt=document.createElement('dt');dt.textContent='Sessions ('+data.sessions.length+')';const dd=document.createElement('dd');dd.className='session-summary';
-   data.sessions.forEach(s=>{const item=document.createElement('div');item.className='session-summary-item';const name=document.createElement('b');name.textContent=s.name;item.append(name,document.createTextNode(format(s.opens)+' – '+format(s.due)));dd.append(item);});row.append(dt,dd);summary.append(row);
+   data.sessions.forEach(s=>{const item=document.createElement('div');item.className='session-summary-item';const name=document.createElement('b');name.textContent=s.name;item.append(name,document.createTextNode(s.noLimit?'Available at any time':format(s.opens)+' – '+format(s.due)));dd.append(item);});row.append(dt,dd);summary.append(row);
    const ready=document.querySelector('.readiness');if(ready)ready.children[1].textContent=data.recipients.length+' recipients selected';
    const schedule=document.querySelector('a[href="CAP-T10-Scheduled.dc.html"]');if(schedule)schedule.addEventListener('click',event=>{if(!data.accommodations||!data.recipients.length){event.preventDefault();document.getElementById('confirmError').textContent='Return to Audience & delivery to confirm recipients and accommodations.';}else{data.scheduled=true;save();}});
  }

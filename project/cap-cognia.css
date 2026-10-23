@@ -137,3 +137,8 @@
 .cap-root.theme-assessments .stickybottom{background:var(--background)}
 .cap-root.theme-assessments .overview-assessment-group .overview-assessment-info{border-left-color:var(--border)}
 .cap-root.theme-assessments .overview-dashboard .resume-strip > div{border-left-color:var(--border)}
+/* Artwork stays neutral even when a source render contains warm stone tones. */
+.cap-root img:is(.manage-hero-hd,.overview-folder-hd,.sd-hero-art,.student-submitted-art),
+.cap-root img[src*="teacher-flow-architecture"],
+.cap-root img[src*="assessment-hero-hd"],
+.cap-root img[src*="overview-folder-hd"]{filter:grayscale(1)!important}

@@ -362,3 +362,17 @@ window.cogniaAssessmentForms=[
     ]
   }
 ];
+// Additional illustrative ready-to-use form for the assessment catalogue.
+{
+ const items=[
+  ['How many sides does a triangle have?',['3','4','5','6'],0],
+  ['Which shape has four equal sides and four right angles?',['Square','Rectangle','Triangle','Circle'],0],
+  ['What is the size of a right angle?',['90 degrees','45 degrees','180 degrees','360 degrees'],0],
+  ['How many sides does a hexagon have?',['6','5','7','8'],0],
+  ['Which description fits parallel lines?',['They stay the same distance apart and never meet.','They meet at a right angle.','They always curve.','They meet at one point.'],0],
+  ['Which description fits perpendicular lines?',['They meet at a right angle.','They never meet.','They are always curved.','They form a circle.'],0],
+  ['Which triangle has one right angle?',['Right triangle','Equilateral triangle','Acute triangle','No triangle'],0],
+  ['How many lines of symmetry does a square have?',['4','1','2','3'],0]
+ ].map(([stem,options,correct],i)=>({id:'g4-shape-'+i,tier:'basic',type:'Multiple choice',stem,options,correct,marks:1,origin:'cognia'}));
+ window.cogniaAssessmentForms.push({id:'shapes',title:'Properties of shapes',grade:'4',subject:'Mathematics',standard:'4.G.A.1',page:'CAP-T05-Questions.dc.html',items,questions:items});
+}

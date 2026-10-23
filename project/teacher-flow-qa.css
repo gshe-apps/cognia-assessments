@@ -1,7 +1,7 @@
 /* Teacher draft design-system consistency and quiet header artwork. */
 html body .cap-root.theme-assessments{--primary:#111;--primary-foreground:#fff;--ring:#888;--accent:#eee;--accent-foreground:#222;--secondary:#f3f3f3;--secondary-foreground:#333;--border:#e5e5e5;--muted-foreground:#737373;--foreground:#171717;--background:#fafafa;--card:#fff;--font-sans:'Open Sans',Arial,sans-serif}
 html body .cap-root .tf-hero:after,html body .cap-root .ac-hero:before,html body .cap-root .af-success:before{opacity:.25!important}
-html body .cap-root .hubhdr,html body .cap-root .hubfoot{filter:grayscale(1)}
+html body .cap-root .hubhdr,html body .cap-root .hubfoot{filter:none}
 html body .cap-root .main h1{font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;letter-spacing:-.03em!important}
 html body .cap-root :is(button,input,select,textarea){font-family:var(--font-sans)!important}
 html body .cap-root :is(.btn.solid,.af-primary){background-color:#111!important;border-color:#111!important;color:#fff!important}
@@ -21,3 +21,7 @@ html body .cap-root .main h1{font-weight:600!important;letter-spacing:-.035em!im
 html body .cap-root .main :is(h2,h3,h4){line-height:1.4}
 html body .cap-root .rj-media-tools b{font-family:Georgia,serif!important}
 html body .cap-root.theme-assessments .workspace main.main :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:'Open Sans',Arial,sans-serif!important}
+
+/* Keep fixed launcher overlays anchored to the viewport and preserve the brand mark. */
+html body .cap-root .hubnav a.on{border-bottom-color:#111}
+html body .cap-root .hublogo img{display:block;width:28px;height:28px;object-fit:contain;filter:none}

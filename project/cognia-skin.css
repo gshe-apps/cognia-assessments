@@ -562,7 +562,7 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 .theme-assessments .fucard .topsch li .tsv .tag,.theme-assessments .fucard .topsch li .tsv .fuopen{font-size:var(--text-body-small)}
 
 .theme-assessments .card.expcard{cursor:pointer;transition:box-shadow .15s ease,transform .15s ease}
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:translate(-2px,-2px)}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-md) !important;transform:translate(-2px,-2px)}
 
 .theme-assessments .schgrid > sc-if{display:contents}
 .theme-assessments .linkbtn{background:none;border:0;padding:0;cursor:pointer;font:600 14px var(--font-sans);color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
@@ -969,7 +969,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 /* Sentence case labels, never all caps */
 .acctmenu .acctplanl,.acctmenu .acctadmh{text-transform:none;letter-spacing:0}
 /* Elevation uses the system shadow scale, no offset block shadows */
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:none}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-md) !important;transform:none}
 /* Status badges use the status tokens: colour plus text label */
 html body .tag.st-ok,html body .theme-assessments .tag.st-ok{background:var(--success-light) !important;color:var(--success) !important;border:0 !important}
 html body .tag.st-wip,html body .theme-assessments .tag.st-wip{background:var(--destructive-light) !important;color:var(--destructive) !important;border:0 !important}
@@ -981,7 +981,7 @@ html body .acctmenu .acctav{background:var(--primary);color:var(--primary-foregr
 
 /* Remaining leftovers on system tokens (2026-10-20) */
 html body .theme-assessments a.homeprev:hover{box-shadow:var(--shadow-md);transform:none}
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:none}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-md) !important;transform:none}
 .theme-assessments .fchip.on .fchipk{color:var(--accent-400)}
 .theme-assessments .gbfill.c1,.theme-assessments .gsw.c1{background:var(--accent-400)}
 .theme-assessments .gbfill.c2,.theme-assessments .gsw.c2{background:var(--accent-300)}

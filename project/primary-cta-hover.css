@@ -1,6 +1,6 @@
-/* Shared primary action feedback: dark ink to Cognia indigo. */
+/* Shared primary action feedback: dark ink lightens to slate on hover, no shadow. */
 html body .primary-cta-hover{transition:background-color 180ms ease,border-color 180ms ease,box-shadow 180ms ease,color 180ms ease!important}
-@media(hover:hover){html body .primary-cta-hover:not(:disabled):not([aria-disabled=true]):hover{background-color:#303b79!important;border-color:#303b79!important;color:#fff!important;filter:none!important;box-shadow:0 4px 12px #262e6729!important}}
-html body .primary-cta-hover:focus-visible{outline:2px solid #7580bd!important;outline-offset:3px!important}
-html body .primary-cta-hover:not(:disabled):active{background-color:#202858!important;box-shadow:0 1px 4px #262e6720!important}
+@media(hover:hover){html body .primary-cta-hover:not(:disabled):not([aria-disabled=true]):hover{background-color:color-mix(in srgb,var(--primary) 78%,var(--card))!important;border-color:color-mix(in srgb,var(--primary) 78%,var(--card))!important;color:var(--primary-foreground)!important;filter:none!important;box-shadow:none!important}}
+html body .primary-cta-hover:focus-visible{outline:2px solid var(--ring)!important;outline-offset:3px!important}
+html body .primary-cta-hover:not(:disabled):active{background-color:var(--primary)!important;box-shadow:none!important}
 @media(prefers-reduced-motion:reduce){html body .primary-cta-hover{transition:none!important}}

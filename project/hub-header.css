@@ -227,3 +227,11 @@ html body .theme-assessments .apppane .appt.on,html body .theme-assessments .app
 html body .theme-assessments .apppane .appt.appdis{cursor:not-allowed;color:var(--muted-foreground);opacity:.5}
 html body .theme-assessments .apppane .appt.appdis:hover,html body .theme-assessments .apppane .appt.appdis:focus-visible{background:transparent}
 html body .theme-assessments .apppane .appt.appdis .appic{background:var(--secondary)}
+
+/* Smooth change between screens: cross-fade where the browser supports page transitions, a short fade-in otherwise */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.3s;animation-timing-function:cubic-bezier(.22,.61,.36,1)}
+@keyframes hubPageIn{from{opacity:0}to{opacity:1}}
+body{animation:hubPageIn .3s cubic-bezier(.22,.61,.36,1)}
+html:active-view-transition body{animation:none}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}body{animation:none}}

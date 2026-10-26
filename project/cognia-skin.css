@@ -40,7 +40,7 @@
 .theme-assessments .grid,.theme-assessments .grid2{gap:var(--space-4)}
 
 /* Cards */
-.theme-assessments .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:var(--space-6);gap:var(--space-3)}
+.theme-assessments .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:var(--space-6);gap:var(--space-3)}
 .theme-assessments .card .card{box-shadow:none;padding:var(--space-4)}
 .theme-assessments .cond{background:var(--card)}
 /* Ghost variant: any card holding a chart or graph */
@@ -336,7 +336,7 @@ html body .theme-assessments .tag.below{background:var(--card) !important;color:
 /* Dashboard: trend left, stat tiles stacked right */
 .theme-assessments .snaprow{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:stretch}
 .theme-assessments .snaprow > .trendcard{flex:999 1 560px;min-width:0}
-.theme-assessments .snaprow > .grid.snapside{flex:1 1 260px;max-width:320px;display:grid;grid-template-columns:1fr;gap:var(--space-4);align-content:start}
+.theme-assessments .snaprow > .grid.snapside{flex:1 1 260px;max-width:384px;display:grid;grid-template-columns:1fr;gap:var(--space-4);align-content:start}
 /* Dashboard section spacing */
 .theme-assessments .snaprow + .schsec{margin-top:var(--space-8)}
 .theme-assessments .schsec + .card.ai{margin-top:var(--space-6)}
@@ -562,7 +562,7 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 .theme-assessments .fucard .topsch li .tsv .tag,.theme-assessments .fucard .topsch li .tsv .fuopen{font-size:var(--text-body-small)}
 
 .theme-assessments .card.expcard{cursor:pointer;transition:box-shadow .15s ease,transform .15s ease}
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-sm) !important;transform:translate(-2px,-2px)}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:translate(-2px,-2px)}
 
 .theme-assessments .schgrid > sc-if{display:contents}
 .theme-assessments .linkbtn{background:none;border:0;padding:0;cursor:pointer;font:600 14px var(--font-sans);color:var(--foreground);text-decoration:underline;text-underline-offset:3px}
@@ -644,10 +644,10 @@ html body .tag.st-wip{background:var(--destructive-light) !important;color:var(-
 .theme-assessments .sgcard .sgli:hover .tsn{text-decoration:underline;text-underline-offset:3px}
 
 /* Overview side: one summary list, rows expand */
-.theme-assessments .sumlist{display:flex;flex-direction:column;border-top:1px solid var(--border);background:var(--card)}
+.theme-assessments .sumlist{display:flex;flex-direction:column;border-top:1px solid var(--border);background:var(--card);overflow:hidden;border-radius:var(--radius);box-shadow:var(--shadow-md)}
 .theme-assessments .sumrow{border-bottom:1px solid var(--border)}
 .theme-assessments .sumhd{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;grid-template-areas:"lbl val ch" "sub sub ch";column-gap:var(--space-3);row-gap:2px;align-items:center;width:100%;padding:var(--space-4) var(--space-2);background:none;border:0;text-align:left;cursor:pointer;font-family:var(--font-sans);color:var(--foreground)}
-.theme-assessments .sumhd:hover{background:var(--background)}
+.theme-assessments .sumhd:hover{background:color-mix(in srgb,var(--foreground) 10%,var(--card))}
 .theme-assessments .sumlbl{grid-area:lbl;font:600 14px var(--font-sans)}
 .theme-assessments .sumval{grid-area:val;font:700 20px var(--font-sans);font-variant-numeric:tabular-nums}
 .theme-assessments .sumsub{grid-area:sub;font:400 var(--text-body-small) var(--font-sans);color:var(--foreground)}
@@ -969,7 +969,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 /* Sentence case labels, never all caps */
 .acctmenu .acctplanl,.acctmenu .acctadmh{text-transform:none;letter-spacing:0}
 /* Elevation uses the system shadow scale, no offset block shadows */
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-md) !important;transform:none}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:none}
 /* Status badges use the status tokens: colour plus text label */
 html body .tag.st-ok,html body .theme-assessments .tag.st-ok{background:var(--success-light) !important;color:var(--success) !important;border:0 !important}
 html body .tag.st-wip,html body .theme-assessments .tag.st-wip{background:var(--destructive-light) !important;color:var(--destructive) !important;border:0 !important}
@@ -981,7 +981,7 @@ html body .acctmenu .acctav{background:var(--primary);color:var(--primary-foregr
 
 /* Remaining leftovers on system tokens (2026-10-20) */
 html body .theme-assessments a.homeprev:hover{box-shadow:var(--shadow-md);transform:none}
-.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-md) !important;transform:none}
+.theme-assessments .card.expcard:hover{box-shadow:var(--shadow-xl) !important;transform:none}
 .theme-assessments .fchip.on .fchipk{color:var(--accent-400)}
 .theme-assessments .gbfill.c1,.theme-assessments .gsw.c1{background:var(--accent-400)}
 .theme-assessments .gbfill.c2,.theme-assessments .gsw.c2{background:var(--accent-300)}
@@ -1029,7 +1029,7 @@ html body .realhome .wav{width:60px;height:60px;border-radius:0;background:var(-
 .hc-grid{display:grid;grid-template-columns:minmax(220px,1fr) minmax(220px,1fr) minmax(380px,2fr);gap:22px;align-items:start}
 @media (max-width:1100px){.hc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hc-grid .hc-video{grid-column:1 / -1}}
 @media (max-width:640px){.hc-grid{grid-template-columns:1fr}}
-.hc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;padding:18px;display:flex;flex-direction:column;gap:12px;font-family:var(--font-sans);color:var(--foreground);min-width:0}
+.hc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden;padding:18px;display:flex;flex-direction:column;gap:12px;font-family:var(--font-sans);color:var(--foreground);min-width:0}
 .hc h2{margin:0;font:600 22px/1.2 var(--font-sans);color:var(--foreground)}
 .hc p{margin:0;font-size:14px;line-height:1.4}
 .hc-img{display:block;width:100%;height:auto;object-fit:cover}
@@ -1072,3 +1072,8 @@ html body .hc-event::after{content:"";position:absolute;right:-26px;bottom:-30px
 
 html body .hc-play span{border-radius:50% !important}
 html body .hc-badge{border-radius:var(--radius-full) !important}
+
+/* Back button in place of breadcrumbs */
+.theme-assessments .crumbs .backlink{display:inline-flex;align-items:center;gap:var(--space-1);min-height:32px;padding:0 var(--space-2) 0 var(--space-1);margin-left:calc(-1 * var(--space-1));border-radius:var(--radius);font:600 14px var(--font-sans);color:var(--foreground);text-decoration:none}
+.theme-assessments .crumbs .backlink:hover{background:var(--hover-overlay);text-decoration:none}
+.theme-assessments .crumbs .backlink svg{width:16px;height:16px;color:currentColor}

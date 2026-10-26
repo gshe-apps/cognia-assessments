@@ -23,7 +23,7 @@ a{color:var(--foreground)}a:hover{color:var(--foreground)}
 .navl a{text-decoration:none;color:var(--foreground);padding:6px 0;border-bottom:2px solid transparent}
 .navl a.on{color:var(--foreground);font-weight:600;border-bottom-color:var(--border)}
 .role{font:500 var(--text-body-small) var(--font-sans);border:1.5px solid var(--ring);border-radius:var(--radius-full);padding:4px 10px;color:var(--foreground)}
-.main{max-width:1240px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.main{max-width:1384px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px}
 .crumb{font:var(--text-body-small) var(--font-sans);color:var(--foreground)}
 h1{margin:0;font-size:26px;font-weight:600}
 h2{margin:0;font-size:16px;font-weight:600}
@@ -212,16 +212,7 @@ html body .theme-assessments .fxtab.fxlocked:hover{background:transparent}
       </div>
     </section></sc-if>
   </main>
-  <div class="aifab">
-    <sc-if value="{{aiOpen}}" hint-placeholder-val="{{ false }}"><div class="aipop" role="dialog" aria-labelledby="aih">
-      <div class="aipophd"><h2 id="aih">AI summary</h2><button type="button" class="appx" aria-label="Close" onClick="{{closeAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div>
-      <span><span class="tag a">AI-generated · draft</span></span>
-      <p>10 teachers administered 143 assessments this school year. Grade 5 teachers are the most active; Kindergarten has the fewest.</p>
-      <p class="aipopnote">Subject to validation. Use to inform, not decide.</p>
-    </div></sc-if>
-    <button type="button" class="aibtn" aria-label="AI summary" aria-expanded="{{aiOpen}}" onClick="{{toggleAi}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"></polygon></svg></button>
-  </div>
-  <footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
+    <footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1060}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}}'>

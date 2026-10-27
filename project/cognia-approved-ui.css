@@ -1,0 +1,497 @@
+
+
+/* ============================================================
+   DEFAULT LIGHT THEME
+   Unlayered so it always overrides any layered :root {} block
+   in the developer's local globals.css
+   ============================================================ */
+:root {
+
+  /* Font */
+  --font-family: Open Sans;
+
+  /* Border radius */
+  --radius: 8px;
+  --rounded-full: 9999px;
+
+  /* shadcn semantic colours */
+  --background: #F9F9F9;
+  --foreground: #000012;
+  --card: #FFFFFF;
+  --card-foreground: #000012;
+  --popover: #FFFFFF;
+  --popover-foreground: #000012;
+  --primary: #000012;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDEDEF;
+  --secondary-foreground: #000012;
+  --muted: #F9F9F9;
+  --muted-foreground: #3E3E4B;
+  --accent: #F9F9F9;
+  --accent-foreground: #000012;
+  --destructive: #DC2626;
+  --info: #007BBA;
+  --success: #0C8835;
+  --warning: #B95E04;
+  --border: #EDEDEF;
+  --input: #EDEDEF;
+  --ring: #C7C7CA;
+
+  /* Chart colours — default (data & reporting palette) */
+  --chart-1: #FFCFCD;
+  --chart-2: #FF928D;
+  --chart-3: #FF554D;
+  --chart-4: #800600;
+  --chart-5: #3F1513;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #000012;
+  --sidebar-primary: #000012;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDEDEF;
+  --sidebar-accent-foreground: #000012;
+  --sidebar-border: #EDEDEF;
+  --sidebar-ring: #FFFFFF;
+
+  /* Accent ramp — default (data & reporting palette) */
+  --accent-100: #FFCFCD;
+  --accent-200: #FF928D;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #3F1513;
+
+  /* Status surface colours */
+  --info-light: #E5F2F8;
+  --success-light: #E7F3EB;
+  --warning-light: #F8EFE6;
+  --destructive-light: #FBE9E9;
+
+  /* Utility overlays */
+  --backdrop-overlay: rgba(0, 0, 0, 0.6);
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --input-background: var(--background);
+
+  /* Opacity scales */
+  --opacity-primary-10: rgba(0, 0, 18, 0.1);
+  --opacity-primary-20: rgba(0, 0, 18, 0.2);
+  --opacity-primary-30: rgba(0, 0, 18, 0.3);
+  --opacity-secondary-10: rgba(237, 237, 239, 0.1);
+  --opacity-secondary-20: rgba(237, 237, 239, 0.2);
+  --opacity-secondary-30: rgba(237, 237, 239, 0.3);
+  --opacity-success-10: rgba(12, 136, 53, 0.1);
+  --opacity-success-20: rgba(12, 136, 53, 0.2);
+  --opacity-success-30: rgba(12, 136, 53, 0.3);
+  --opacity-info-10: rgba(0, 123, 186, 0.1);
+  --opacity-info-20: rgba(0, 123, 186, 0.2);
+  --opacity-info-30: rgba(0, 123, 186, 0.3);
+  --opacity-warning-10: rgba(185, 94, 4, 0.1);
+  --opacity-warning-20: rgba(185, 94, 4, 0.2);
+  --opacity-warning-30: rgba(185, 94, 4, 0.3);
+  --opacity-destructive-10: rgba(220, 38, 38, 0.1);
+  --opacity-destructive-20: rgba(220, 38, 38, 0.2);
+  --opacity-destructive-30: rgba(220, 38, 38, 0.3);
+  --opacity-neutral-10: rgba(62, 62, 75, 0.1);
+  --opacity-neutral-20: rgba(62, 62, 75, 0.2);
+  --opacity-neutral-30: rgba(62, 62, 75, 0.3);
+
+  /* Shadows — light mode */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================================
+   DEFAULT DARK THEME
+   ============================================================ */
+.dark {
+
+  /* shadcn semantic colours */
+  --background: #000012;
+  --foreground: #FFFFFF;
+  --card: #000012;
+  --card-foreground: #FFFFFF;
+  --popover: #000012;
+  --popover-foreground: #FFFFFF;
+  --primary: #F9F9F9;
+  --primary-foreground: #000000;
+  --secondary: #3E3E4B;
+  --secondary-foreground: #F9F9F9;
+  --muted: #000012;
+  --muted-foreground: #F9F9F9;
+  --accent: #000012;
+  --accent-foreground: #F9F9F9;
+  --destructive: #DC2626;
+  --info: #007BBA;
+  --success: #0C8835;
+  --warning: #B95E04;
+  --border: #7C7C85;
+  --input: #EDEDEF;
+  --ring: #7C7C85;
+
+  /* Chart colours — default dark (data & reporting palette) */
+  --chart-1: #3F1513;
+  --chart-2: #800600;
+  --chart-3: #FF554D;
+  --chart-4: #FF928D;
+  --chart-5: #FFCFCD;
+
+  /* Sidebar */
+  --sidebar: #000012;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #F9F9F9;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #000012;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #000012;
+  --sidebar-ring: #000012;
+
+  /* Accent ramp — default dark (data & reporting palette) */
+  --accent-100: #3F1513;
+  --accent-200: #FFCFCD;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #FFCFCD;
+
+  /* Utility overlays */
+  --backdrop-overlay: rgba(0, 0, 0, 0.6);
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --input-background: rgba(0, 0, 0, 0.3);
+
+  /* Opacity scales */
+  --opacity-primary-10: rgba(249, 249, 249, 0.1);
+  --opacity-primary-20: rgba(249, 249, 249, 0.2);
+  --opacity-primary-30: rgba(249, 249, 249, 0.3);
+  --opacity-secondary-10: rgba(62, 62, 75, 0.1);
+  --opacity-secondary-20: rgba(62, 62, 75, 0.2);
+  --opacity-secondary-30: rgba(62, 62, 75, 0.3);
+
+  /* Shadows — dark mode (white shadows on dark backgrounds) */
+  --shadow-xs: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(255, 255, 255, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(255, 255, 255, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================
+   PRODUCT THEME — ASSESSMENTS (light)
+   ============================================================ */
+.theme-assessments {
+  --accent-100: #D1D5EE;
+  --accent-200: #8690D3;
+  --accent-300: #4F5CBE;
+  --accent-400: #262E67;
+  --accent-500: #0B0D1C;
+  --chart-1: #262E67;
+  --chart-2: #4F5CBE;
+  --chart-3: #8690D3;
+  --chart-4: #D1D5EE;
+  --chart-5: #0B0D1C;
+}
+
+.theme-assessments.dark {
+  --accent-100: #0B0D1C;
+  --accent-200: #262E67;
+  --accent-300: #4F5CBE;
+  --accent-400: #8690D3;
+  --accent-500: #D1D5EE;
+  --chart-1: #8690D3;
+  --chart-2: #262E67;
+  --chart-3: #4F5CBE;
+  --chart-4: #8690D3;
+  --chart-5: #D1D5EE;
+}
+
+/* ============================================================
+   PRODUCT THEME — LEARNING (light)
+   ============================================================ */
+.theme-learn {
+  --accent-100: #DBE7DB;
+  --accent-200: #9DBF9E;
+  --accent-300: #507E6D;
+  --accent-400: #033D3C;
+  --accent-500: #111911;
+  --chart-1: #033D3C;
+  --chart-2: #507E6D;
+  --chart-3: #9DBF9E;
+  --chart-4: #DBE7DB;
+  --chart-5: #111911;
+}
+
+.theme-learn.dark {
+  --accent-100: #111911;
+  --accent-200: #033D3C;
+  --accent-300: #507E6D;
+  --accent-400: #9DBF9E;
+  --accent-500: #DBE7DB;
+  --chart-1: #9DBF9E;
+  --chart-2: #033D3C;
+  --chart-3: #507E6D;
+  --chart-4: #9DBF9E;
+  --chart-5: #DBE7DB;
+}
+
+/* ============================================================
+   PRODUCT THEME — PERFORMANCE (light)
+   ============================================================ */
+.theme-performance {
+  --accent-100: #ECCFE0;
+  --accent-200: #D085B1;
+  --accent-300: #AD4281;
+  --accent-400: #63264A;
+  --accent-500: #190A13;
+  --chart-1: #63264A;
+  --chart-2: #AD4281;
+  --chart-3: #D085B1;
+  --chart-4: #ECCFE0;
+  --chart-5: #190A13;
+}
+
+.theme-performance.dark {
+  --accent-100: #190A13;
+  --accent-200: #63264A;
+  --accent-300: #AD4281;
+  --accent-400: #D085B1;
+  --accent-500: #ECCFE0;
+  --chart-1: #D085B1;
+  --chart-2: #63264A;
+  --chart-3: #AD4281;
+  --chart-4: #D085B1;
+  --chart-5: #ECCFE0;
+}
+
+/* ============================================================
+   PRODUCT THEME — DATA & REPORTING (light)
+   ============================================================ */
+.theme-data-reporting {
+  --accent-100: #FFCFCD;
+  --accent-200: #FF928D;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #3F1513;
+  --chart-1: #800600;
+  --chart-2: #FF554D;
+  --chart-3: #FF928D;
+  --chart-4: #FFCFCD;
+  --chart-5: #3F1513;
+}
+
+.theme-data-reporting.dark {
+  --accent-100: #3F1513;
+  --accent-200: #800600;
+  --accent-300: #FF554D;
+  --accent-400: #FF928D;
+  --accent-500: #FFCFCD;
+  --chart-1: #FF928D;
+  --chart-2: #800600;
+  --chart-3: #FF554D;
+  --chart-4: #FF928D;
+  --chart-5: #FFCFCD;
+}
+
+/* ============================================================
+   PRODUCT THEME — OBSERVATIONS & SURVEYS (light)
+   ============================================================ */
+.theme-observations-surveys {
+  --accent-100: #FEF0C4;
+  --accent-200: #FCE086;
+  --accent-300: #F9C00A;
+  --accent-400: #B28804;
+  --accent-500: #4E3C02;
+  --chart-1: #B28804;
+  --chart-2: #F9C00A;
+  --chart-3: #FCE086;
+  --chart-4: #FEF0C4;
+  --chart-5: #4E3C02;
+}
+
+.theme-observations-surveys.dark {
+  --accent-100: #4E3C02;
+  --accent-200: #B28804;
+  --accent-300: #F9C00A;
+  --accent-400: #FCE086;
+  --accent-500: #FEF0C4;
+  --chart-1: #FCE086;
+  --chart-2: #B28804;
+  --chart-3: #F9C00A;
+  --chart-4: #FCE086;
+  --chart-5: #FEF0C4;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-family), sans-serif;
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+@layer utilities {
+  .text-title-hero  { font-size: 72px; line-height: 1.1; }
+  .text-title-page  { font-size: 48px; line-height: 1.2; }
+  .text-subtitle    { font-size: 30px; line-height: 1.3; }
+  .text-heading     { font-size: 24px; line-height: 1.3; }
+  .text-subheading  { font-size: 20px; line-height: 1.4; }
+  .text-body-base   { font-size: 16px; line-height: 1.5; }
+  .text-body-small  { font-size: 14px; line-height: 1.5; }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+[data-slot="tabs-content"]:not([hidden]) {
+  animation: tab-content-in 180ms ease-out both;
+}
+
+@keyframes tab-content-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE LAYOUT
+   Controlled by the design team — do not override these values
+   ============================================================ */
+
+@media (max-width: 767px) {
+  :root {
+    --horizontal-padding: 16px;
+    --vertical-padding: 32px;
+    --section-spacing: 48px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  :root {
+    --horizontal-padding: 24px;
+    --vertical-padding: 64px;
+    --section-spacing: 64px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --horizontal-padding: 32px;
+    --vertical-padding: 96px;
+    --section-spacing: 96px;
+  }
+}
+
+:root{--preview-foreground:#000012;--preview-primary:#000012;--preview-muted:#3E3E4B;--preview-background:#F9F9F9;--preview-border:#EDEDEF}
+/* Local approved visual layer. Existing scripts, content, controls and routes preserved. */
+html:not(#preview-root) body:not(#preview-body) .cap-root,html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root{--foreground:var(--preview-foreground);--primary:var(--preview-primary);--muted-foreground:var(--preview-muted);--background:var(--preview-background);--border:var(--preview-border);color:var(--foreground)!important;background:var(--background)!important}
+html:not(#preview-root) body:not(#preview-body),html:not(#preview-root) body:not(#preview-body).student-friendly,html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-workspace{background:var(--preview-background)!important;color:var(--preview-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .hubhdr,html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .hubhdr{background:var(--card)!important}
+html:not(#preview-root) body:not(#preview-body) .profile-trigger{background:var(--secondary)!important;color:var(--secondary-foreground)!important;font-weight:400!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root h1{font-size:48px!important;font-weight:700!important;line-height:1.2!important;color:var(--foreground)!important;letter-spacing:normal!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-folder h2{font-size:24px!important;font-weight:600!important;line-height:1.3!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-sectionhead h2{font-size:24px!important;font-weight:600!important;line-height:1.3!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-row h2{font-size:20px!important;font-weight:400!important;line-height:1.4!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-heading p,html:not(#preview-root) body:not(#preview-body) .cap-root .reference-folder p{font-size:16px!important;line-height:1.5!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-kpi b,html:not(#preview-root) body:not(#preview-body) .cap-root .reference-kpi p,html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-row p{font-size:14px!important;line-height:1.5!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-kpi{border-color:transparent!important;box-shadow:none!important;padding:24px 16px!important;gap:12px!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-icon{background:transparent!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-heading .solid,html:not(#preview-root) body:not(#preview-body) .cap-root .reference-folder .reference-create{min-height:48px!important;box-sizing:border-box!important;padding:12px 16px!important;min-width:64px!important;font-size:16px!important;border-radius:var(--radius)!important;background:var(--primary)!important;color:var(--primary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-actions .btn{min-height:40px!important;padding-left:16px!important;padding-right:16px!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-actions .solid{background:var(--primary)!important;color:var(--primary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-row{padding:24px!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-kind .folder-icon,html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-kind .reference-icon{background:transparent!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root #form-search,html:not(#preview-root) body:not(#preview-body) .cap-root #form-grade,html:not(#preview-root) body:not(#preview-body) .cap-root #form-subject{min-height:48px!important;font-size:16px!important;background:var(--card)!important;color:var(--foreground)!important;border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-title h1{font-size:48px!important;line-height:1.2!important;font-weight:700!important;letter-spacing:normal!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-title p{font-size:16px!important;line-height:1.5!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-signin-form>label{font-size:14px!important;font-weight:600!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-signin-form{gap:24px!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-signin-form input{font-size:16px!important;font-weight:400!important;border-radius:var(--radius)!important;color:var(--foreground)!important;background:var(--card)!important;border-color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .btn{border-radius:var(--radius)!important;font-size:16px!important;box-shadow:none!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .btn.solid{background:var(--primary)!important;border-color:var(--primary)!important;color:var(--primary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-support,html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-support a{color:var(--muted-foreground)!important;font-size:14px!important}
+/* Existing artwork, logo, folder silhouettes, dimensions and control order are retained. */
+
+
+/* Extend the approved visual treatment to existing screen families. */
+html:not(#preview-root) body:not(#preview-body) :is(.wf,.cap-root,.sj-root){--foreground:var(--preview-foreground);--primary:var(--preview-primary);--muted-foreground:var(--preview-muted);--background:var(--preview-background);--border:var(--preview-border);--radius:8px;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body) :is(.wf>.top,.global-header,.student-header){background:var(--card)!important}
+html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2){font-size:24px!important;font-weight:600!important;line-height:1.3!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(h3,h4){font-size:20px!important;font-weight:400!important;line-height:1.4!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-row h2{font-size:20px!important;font-weight:400!important}
+html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) .btn{border-radius:var(--radius)!important;box-shadow:none!important;transition-duration:200ms!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .btn:not(.small):not(.iconbtn):not(.ef-form-actions .btn):not(.hubhdr .btn):not(.sj-question-nav button):not(.sf-test-toolbar .btn):not(.reference-draft-row .btn){min-height:48px!important;padding-left:16px!important;padding-right:16px!important}
+html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(.btn.solid,.btn.p){background:var(--primary)!important;border-color:var(--primary)!important;color:var(--primary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),textarea,select){border-radius:var(--radius)!important;color:var(--foreground)!important;background-color:var(--card)!important;font-size:16px!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root :is(.field input:not([type=checkbox]):not([type=radio]),.field select,.sel select){min-height:48px!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root :is(.card,.formcard,.student-panel,.student-work-card,.question-card){box-shadow:none!important;border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root :is(.student-panel,.sj-test,.sj-readiness>div,.cf-context,.sj-review-row,.sj-choice,.sj-order label){border-radius:var(--radius)!important;background-color:var(--card)!important;color:var(--foreground)!important;border-color:var(--border)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root :is(.sj-test h2,.sj-readiness b,.sj-choice b,.sj-question-content h1){color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root :is(.sj-test p,.sj-readiness p,.sj-question-body,.sf-timing,.sj-save-status,.kid-answer,.sj-exam-context){color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-question-content h1{font-size:30px!important;line-height:1.3!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-choice:has(input:checked){background:var(--secondary)!important;border-color:var(--primary)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-choice input{accent-color:var(--primary)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root :is(.sj-badge,.student-avatar,.sj-review-number){background:var(--secondary)!important;color:var(--secondary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly dialog,html:not(#preview-root) body:not(#preview-body) .cf-dialog{border-radius:var(--radius)!important;background:var(--card)!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly dialog .btn{border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body).student-friendly dialog .btn.solid{background:var(--primary)!important;border-color:var(--primary)!important;color:var(--primary-foreground)!important}
+/* Preserve user font-size accommodations for answering content. */
+html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-question-content h1{font-size:calc(30px * var(--cf-student-scale,1))!important}
+@media(max-width:767px){html:not(#preview-root) body:not(#preview-body) .cap-root h1,html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .student-title h1{font-size:30px!important}html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .sj-question-content h1{font-size:calc(24px * var(--cf-student-scale,1))!important}}
+@media(prefers-reduced-motion:reduce){html:not(#preview-root) body:not(#preview-body) .btn{transition:none!important}}
+/* Requested local-only removal of decorative large-tile and banner imagery.
+   visibility preserves occupied space; no content or controls are removed. */
+html:not(#preview-root) body:not(#preview-body) :is(.reference-hero-image,.manage-hero-image,.assessment-reference-hero-image,.ac-art-photo,.ac-art-visual){visibility:hidden!important}
+html:not(#preview-root) body:not(#preview-body) :is(.tf-hero:after,.ac-hero:before,.af-success:before,.sj-hero-art){background-image:none!important}
+html:not(#preview-root) body:not(#preview-body) .tf-hero::after,
+html:not(#preview-root) body:not(#preview-body) .ac-hero::before,
+html:not(#preview-root) body:not(#preview-body) .af-success::before,
+html:not(#preview-root) body:not(#preview-body) .sj-hero-art{background-image:none!important}
+/* Overview entry cards fit their content after decorative imagery removal. */
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-start-grid .reference-folder{min-height:0!important;height:auto!important}
+html:not(#preview-root) body:not(#preview-body) .cap-root .ef-start-grid .reference-folder-content{padding:40px 24px 24px!important}
+/* Compact overview lists without decorative thumbnails. */
+html:not(#preview-root) body:not(#preview-body) .cap-root .reference-overview :is(.reference-draft-thumb,.reference-recent-thumb){display:none!important}
+/* Assessments: remove remaining decorative thumbnail slots, including SVG artwork. */
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-thumbnail,.ac-library-image){display:none!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-library-card-top{min-height:0!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-row{grid-template-columns:minmax(180px,2.7fr) minmax(85px,.8fr) minmax(110px,1.05fr) minmax(98px,.95fr) 38px 18px!important}
+@media(max-width:1100px){html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-row{grid-template-columns:minmax(160px,2fr) 90px minmax(90px,1fr) 36px 16px!important}}
+@media(max-width:700px){html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-row{grid-template-columns:minmax(0,1fr) 32px 14px!important}html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-row-info{grid-column:1!important}html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-row-menu{grid-column:3!important}}
+/* Cognia visual alignment for assessment collections; existing structure and handlers retained. */
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue{--ac-border:var(--border);--ac-muted:var(--muted-foreground);font-family:var(--font-sans);color:var(--foreground)}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-section-heading h2{font-size:24px!important;font-weight:600!important;line-height:1.3!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-draft-card h3,.ac-row h3,.ac-library-card h3){font-family:var(--font-sans)!important;font-size:20px!important;font-weight:400!important;line-height:1.4!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-section-heading p,.ac-row-info p,.ac-library-card p,.ac-draft-card>p,.ac-draft-meta,.ac-draft-footer small,.ac-attention-card small,.ac-hero>div>p:last-child){font-size:14px!important;line-height:1.5!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-attention-card b,.ac-create,.ac-use,.ac-draft-footer .btn){font-family:var(--font-sans)!important;font-size:16px!important;font-weight:600!important;line-height:1.5!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-attention-card{padding:24px!important;gap:16px!important;border-color:transparent!important;background:var(--card)!important;color:var(--foreground)!important;border-radius:var(--radius)!important;box-shadow:none;transition:box-shadow 200ms}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-attention-card>svg,html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-top>svg{background:transparent!important;color:var(--muted-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-attention-card:hover{background:var(--card)!important;box-shadow:var(--shadow-md)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs{padding:4px!important;gap:4px!important;background:var(--card)!important;border-color:var(--border)!important;border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs button{font-size:14px!important;padding:12px 16px!important;font-weight:400!important;color:var(--muted-foreground)!important;transition:background-color 200ms,color 200ms!important;border-radius:var(--radius)!important;box-shadow:none!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs button[aria-selected=true]{background:var(--secondary)!important;color:var(--secondary-foreground)!important;font-weight:600!important;border-color:transparent!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs button:not([aria-selected=true]):hover{background:var(--accent)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-toolbar>.ac-create{background:var(--primary)!important;border-color:var(--primary)!important;color:var(--primary-foreground)!important;min-height:48px!important;padding:12px 16px!important;box-sizing:border-box;box-shadow:none!important;border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-library-card,.ac-rows){background:var(--card)!important;border-color:transparent!important;box-shadow:none!important;border-radius:var(--radius)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-library-card{padding:16px!important;transition:box-shadow 200ms!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-library-card:hover{transform:none!important;box-shadow:var(--shadow-md)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-use{min-height:48px!important;padding:12px 16px!important;background:var(--secondary)!important;color:var(--secondary-foreground)!important;border:0!important;border-radius:var(--radius)!important;transition:background-color 200ms!important;transform:none!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-footer .btn{background:var(--secondary)!important;color:var(--secondary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-meta{padding:16px 0!important;border-color:var(--border)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue :is(.ac-status,.ac-draft-total){font-size:14px!important;line-height:1.5!important;border-radius:var(--rounded-full)!important;background:var(--secondary)!important;color:var(--secondary-foreground)!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-outline path{fill:var(--card)!important;stroke:var(--border)!important}
+@media(max-width:700px){html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs{max-width:100%;overflow-x:auto}html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-tabs button{flex:1 0 auto!important}html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-library-grid{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){html:not(#preview-root) body:not(#preview-body) .assessment-catalogue *{transition:none!important}}
+/* Draft-card CTAs match the primary action treatment. */
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-footer .btn{background:var(--primary)!important;border:1px solid var(--primary)!important;color:var(--primary-foreground)!important;text-decoration:none!important;box-shadow:none!important}
+html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-footer .btn :is(span,svg){color:inherit!important;text-decoration:none!important}

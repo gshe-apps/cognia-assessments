@@ -27,3 +27,58 @@ html body .modern-hubs .modern-featured .appic{width:64px!important;height:64px!
 html body .modern-hubs .appt.appdis,html body .modern-hubs .appt.applocked{opacity:1!important;color:var(--foreground)!important;background:var(--background)!important;cursor:not-allowed}
 html body .modern-hubs .appdis .modern-product-copy{color:var(--foreground)!important}
 html body .modern-hubs a.appt[href="#"] .modern-product-status.available{background:var(--secondary);color:var(--foreground)}html body .modern-hubs a.appt[href="#"] .modern-product-status.available:before{content:none}
+
+/* 27 Oct: simplified to the Cognia design system. Fixed height, equal tiles with no graphics or borders,
+   lighter header mark, ghost close button, badges without the dot. */
+html body .appdlg.split.modern-hubs{display:flex;flex-direction:column;height:min(680px,calc(100dvh - 48px));max-height:none;overflow:hidden}
+html body .modern-hubs .appsplit{min-height:0;overflow:hidden}
+html body .modern-hubs .apphubs{overflow:auto}
+html body .modern-hubs .appright{overflow:auto}
+html body .modern-hubs .appsgrid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr}
+html body .modern-hubs .appt,html body .modern-hubs .appt.modern-featured,html body .modern-hubs .appt.modern-featured.on{grid-row:auto;min-height:160px;padding:var(--space-6);border:0!important;background:var(--background)!important;box-shadow:none;transition:all .2s}
+html body .modern-hubs .appt:not([aria-disabled=true]):hover{border:0;box-shadow:var(--shadow-md)}
+html body .modern-hubs .appt .appic,html body .modern-hubs .modern-featured .appic,.modern-folder-art{display:none!important}
+html body .modern-hubs .modern-featured .modern-product-title{font-size:var(--text-body-base)}
+.modern-hubs-brand>span{background:var(--background)}
+html body .modern-hubs .appx{background:transparent;border-radius:var(--radius)}
+html body .modern-hubs .appx:hover{background:var(--secondary)}
+html body .modern-hubs .modern-product-status.available:before{content:none}
+.modern-access-note{display:none!important}
+@media(max-width:800px){html body .modern-hubs .appsgrid{grid-template-columns:1fr;grid-auto-rows:auto}}
+
+/* 27 Oct (2): header reads "Explore your Cognia workspaces" (no repeat inside), product icons back on each tile
+   (accent icon on a white chip, the design system's accent icon variant), no "Open workspace" link,
+   hub names on one line. */
+html body .modern-hubs .modern-hubs-title{display:none!important}
+html body .modern-hubs .appt .appic,html body .modern-hubs .modern-featured .appic{display:inline-flex!important;align-items:center;justify-content:center;width:40px!important;height:40px!important;min-width:40px!important;margin:0!important;border-radius:var(--radius);background:var(--card)!important;color:var(--accent-300)!important}
+html body .modern-hubs .appt .appic svg{width:24px;height:24px}
+html body .modern-hubs .appt.appdis .appic{color:var(--muted-foreground)!important}
+html body .modern-hubs .apphubs{flex:0 0 272px;max-width:272px}
+html body .modern-hubs .apphub{white-space:nowrap}
+.modern-open,.modern-open-link{display:none!important}
+
+/* 27 Oct (3): compact product cards, light accent chip behind each product icon, more room after hub names. */
+html body .modern-hubs .appt,html body .modern-hubs .appt.modern-featured,html body .modern-hubs .appt.modern-featured.on{min-height:0;padding:var(--space-4);gap:var(--space-1)}
+html body .modern-hubs .appt .appic,html body .modern-hubs .modern-featured .appic{margin:0 0 var(--space-2)!important;background:var(--accent-100)!important;color:var(--accent-400)!important}
+html body .modern-hubs .appt.appdis .appic{background:var(--secondary)!important;color:var(--muted-foreground)!important}
+html body .modern-hubs .appsgrid{grid-auto-rows:auto;gap:var(--space-3)}
+html body .modern-hubs .apphubs{flex:0 0 296px;max-width:296px}
+html body .modern-hubs .apphub{padding-right:var(--space-6)}
+
+/* 27 Oct (4): cards default to white with a light grey border; three products per row. */
+html body .modern-hubs .appt,html body .modern-hubs .appt.modern-featured,html body .modern-hubs .appt.modern-featured.on,
+html body .modern-hubs .appt.appdis,html body .modern-hubs .appt.applocked{background:var(--card)!important;border:1px solid var(--border)!important}
+html body .modern-hubs .appt:not([aria-disabled=true]):hover{border:1px solid var(--border)!important;box-shadow:var(--shadow-md)}
+html body .modern-hubs .appsgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1000px){html body .modern-hubs .appsgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){html body .modern-hubs .appsgrid{grid-template-columns:1fr}}
+
+/* 27 Oct (5): squarer (4:3) product cards (icon at the top, name and description at the bottom);
+   unavailable products look disabled: grey surface, muted text and icon, no hover lift. */
+html body .modern-hubs .appt{aspect-ratio:4/3;justify-content:flex-start}
+html body .modern-hubs .appt .modern-product-title{margin-top:auto}
+html body .modern-hubs .appt.appdis,html body .modern-hubs .appt.applocked{background:var(--secondary)!important;border-color:var(--secondary)!important;box-shadow:none!important}
+html body .modern-hubs .appt.appdis .modern-product-title,html body .modern-hubs .appt.appdis .modern-product-copy,
+html body .modern-hubs .appt.applocked .modern-product-title,html body .modern-hubs .appt.applocked .modern-product-copy{color:color-mix(in srgb,var(--foreground) 50%,var(--secondary))!important}
+html body .modern-hubs .appt.appdis .appic,html body .modern-hubs .appt.applocked .appic{background:var(--card)!important;color:color-mix(in srgb,var(--foreground) 45%,var(--card))!important}
+html body .modern-hubs .appt.appdis .modern-product-status,html body .modern-hubs .appt.applocked .modern-product-status{background:var(--card);color:color-mix(in srgb,var(--foreground) 60%,var(--card))}

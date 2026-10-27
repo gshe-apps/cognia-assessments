@@ -332,7 +332,7 @@
       "is_interactive": true,
       "title": "School 6 · Interim · Library",
       "w": 1440,
-      "x": 7600,
+      "x": 6160,
       "y": 3445
     },
     "PA-Overview.dc.html": {
@@ -353,11 +353,11 @@
       "x": 0,
       "y": 3445
     },
-    "PA2-Students.dc.html": {
+    "PA2-Grades.dc.html": {
       "expand": "fill",
       "h": 1190,
       "is_interactive": true,
-      "title": "School 2a · Interim · All students",
+      "title": "School 2a · Interim · Classrooms",
       "w": 1440,
       "x": 3040,
       "y": 3445
@@ -369,15 +369,6 @@
       "title": "School 2b · Interim · Subgroups",
       "w": 1440,
       "x": 4560,
-      "y": 3445
-    },
-    "PA3-Trends.dc.html": {
-      "expand": "fill",
-      "h": 1024,
-      "is_interactive": true,
-      "title": "School 3 · Interim · Analytics",
-      "w": 1440,
-      "x": 6080,
       "y": 3445
     },
     "SA2-Hub.dc.html": {
@@ -577,9 +568,8 @@
     "MOD-Formative.dc.html",
     "PA1-Home.dc.html",
     "PA-Overview.dc.html",
-    "PA2-Students.dc.html",
+    "PA2-Grades.dc.html",
     "PA2-Subgroups.dc.html",
-    "PA3-Trends.dc.html",
     "PA-Interim.dc.html",
     "PA-Formative.dc.html",
     "CAP-T20-Interim.dc.html",

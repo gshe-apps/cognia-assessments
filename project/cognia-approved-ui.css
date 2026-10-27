@@ -495,3 +495,141 @@ html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-
 /* Draft-card CTAs match the primary action treatment. */
 html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-footer .btn{background:var(--primary)!important;border:1px solid var(--primary)!important;color:var(--primary-foreground)!important;text-decoration:none!important;box-shadow:none!important}
 html:not(#preview-root) body:not(#preview-body) .assessment-catalogue .ac-draft-footer .btn :is(span,svg){color:inherit!important;text-decoration:none!important}
+
+/* Full educator/student visual review; neutral student palette, including SVG artwork. */
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .activity-status.assigned{background:var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .cap-root .reference-recent-row .reference-active{background:var(--success-light,var(--secondary))!important;color:var(--success,var(--foreground))!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .sd-success{background:var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly{background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root{color:var(--foreground)!important;background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .student-workspace{background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .hubhdr{background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .student-title p{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .btn.solid,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly dialog .btn.solid{background:var(--foreground)!important;border:2px solid var(--foreground)!important;box-shadow:0 4px 0 var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .btn.solid:hover{background:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .btn.ghost,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly dialog .btn.ghost{border:2px solid var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root :is(input,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly textarea,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly select){border:2px solid var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .student-panel{border:2px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .student-avatar{background:var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-test{border:2px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-test h2{color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-test p{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-test .sj-thumb{background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-badge{background:var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .kid-other,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .kid-demo,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .kid-jump{border-top:1px solid var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-readiness>div{border:1px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-readiness b{color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-readiness p{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-readiness>div>svg{background:var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .cf-context{border:1px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-exam-context{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-progress{background:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-progress>span{background:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sf-test-toolbar{border-color:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sf-timing{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-question-content h1{color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-question-body{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .main svg.sj-quarter{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-quarter path[fill]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice{border:2px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice:hover{border-color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice input{accent-color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice b{color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice>span{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice:has(input:checked){background:var(--secondary)!important;border-color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-choice:has(input:checked)>span{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-order legend{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-order label{border:1px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-order label span{background:var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-review-link{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-save-status{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-question-nav button{border:1px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-question-nav [aria-current]{background:var(--secondary)!important;border-color:var(--muted-foreground)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-review-row{border:2px solid var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-review-number{background:var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-review-summary{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly dialog{color:var(--foreground)!important;box-shadow:0 20px 80px var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly dialog::backdrop{background:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly dialog :is(input,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly textarea,html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly select){border:2px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .student-friendly .kid-answer{color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly.student-friendly .sj-root .sj-signin-form input{border:2px solid var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .student-friendly .kid-demo-switch{border:1px solid var(--secondary)!important;color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .cap-root .student-success-icon{background:var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#168448"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#168448"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#19934d"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#19934d"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#245153"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#245153"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#253e43"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#253e43"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#253e4330"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#253e4330"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#253e4355"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#253e4355"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#25674c"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#25674c"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#28613d"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#28613d"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#295b5d"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#295b5d"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#32696b"]{fill:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#32696b"]{stroke:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#4a7772"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#4a7772"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#587074"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#587074"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#59744c"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#59744c"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#719f98"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#719f98"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#83aaa6"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#83aaa6"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#9DBF9E"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#9DBF9E"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#9db8b0"]{fill:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#9db8b0"]{stroke:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#add"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#add"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#dcefe6"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#dcefe6"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#dcf3e6"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#dcf3e6"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#dcf8e6"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#dcf8e6"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#dde6e7"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#dde6e7"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#dff0e7"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#dff0e7"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#e1e9e8"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#e1e9e8"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#e6eddd"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#e6eddd"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#e6efec"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#e6efec"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#edf5f2"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#edf5f2"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [fill="#f7f9fa"]{fill:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly svg [stroke="#f7f9fa"]{stroke:var(--secondary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .btn{font-family:var(--font-sans)!important;font-size:16px!important;font-weight:600!important;line-height:1.5!important;text-decoration:none!important;border-radius:var(--radius)!important;transition-duration:200ms!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .btn.small,html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .ef-form-actions .btn,html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .sf-test-toolbar .btn{font-size:14px!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .btn.solid,html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .primary-cta-hover{background:var(--primary)!important;border-color:var(--primary)!important;color:var(--primary-foreground)!important;text-decoration:none!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .btn.solid *,html:not(#cap-a):not(#cap-b) body:not(#cap-c) .cap-root .primary-cta-hover *{color:inherit!important;text-decoration:none!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .sj-root{--success:var(--foreground);--success-light:var(--secondary)}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly :is(.sj-progress>span,.sj-success-check){background:var(--primary)!important;color:var(--primary-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .sj-root :is(.student-panel,.sj-test,.sj-review-row,.cf-context,.sj-choice){border-radius:var(--radius)!important;box-shadow:none!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .sj-root :is(.sj-choice:has(input:checked),.sj-question-nav [aria-current]){border-color:var(--primary)!important;background:var(--secondary)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly :is(dialog,.cf-dialog){font-family:var(--font-sans)!important;border-radius:var(--radius)!important;color:var(--foreground)!important;background:var(--card)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly dialog .btn.solid{background:var(--primary)!important;color:var(--primary-foreground)!important;border-color:var(--primary)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly :is(.kid-demo-switch,.sj-review-link,.kid-other,.kid-demo,.kid-jump){color:var(--muted-foreground)!important;border-color:var(--border)!important}
+/* Student informational panels and keyboard focus remain neutral too. */
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .infobox{background:var(--secondary)!important;color:var(--foreground)!important;border-color:var(--border)!important;border-radius:var(--radius)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly :is(a,button,input,select,textarea):focus-visible{outline-color:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .sj-root{--ring:var(--muted-foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly dialog::backdrop{background:var(--backdrop-overlay)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) :is(.cf-dialog,.ef-review-dialog) h2{font:600 24px/1.3 var(--font-sans)!important;color:var(--foreground)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c) :is(.cf-dialog,.ef-review-dialog) .btn{font:600 16px/1.5 var(--font-sans)!important;border-radius:var(--radius)!important;text-decoration:none!important;min-height:48px!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .hubhdr{background:var(--card)!important}
+/* Final neutral header and readable input boundaries. */
+html:not(#cap-a):not(#cap-b) body:not(#cap-c):not(#cap-d).student-friendly .sj-root .hubhdr{background:var(--card)!important}
+html:not(#cap-a):not(#cap-b) body:not(#cap-c):not(#cap-d).student-friendly .sj-root :is(input:not([type=radio]):not([type=checkbox]),textarea,select){border-color:var(--muted-foreground)!important}

@@ -633,3 +633,7 @@ html:not(#cap-a):not(#cap-b) body:not(#cap-c).student-friendly .hubhdr{backgroun
 /* Final neutral header and readable input boundaries. */
 html:not(#cap-a):not(#cap-b) body:not(#cap-c):not(#cap-d).student-friendly .sj-root .hubhdr{background:var(--card)!important}
 html:not(#cap-a):not(#cap-b) body:not(#cap-c):not(#cap-d).student-friendly .sj-root :is(input:not([type=radio]):not([type=checkbox]),textarea,select){border-color:var(--muted-foreground)!important}
+/* Newly added builder items enter without animating layout or delaying save. */
+.qc-item-enter{animation:qc-item-enter 200ms both}
+@keyframes qc-item-enter{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.qc-item-enter{animation:none!important}}

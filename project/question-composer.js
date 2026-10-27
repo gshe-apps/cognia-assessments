@@ -38,8 +38,24 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
  }
  function updateQuestions(chosen){inst.setState({chosen});inst.update()}
  function reorder(id,direction){const ids=[...(inst.state.chosen||[])],i=ids.indexOf(id),j=i+direction;if(i<0||j<0||j>=ids.length)return;[ids[i],ids[j]]=[ids[j],ids[i]];updateQuestions(ids)}
- function drawBoard(){const qs=getQuestions(),generated=qs.filter(q=>q.composerAI),isAI=prefs.method==='ai';board.querySelector('h2').textContent=isAI?`${generated.length} questions generated`:`${qs.length} ${qs.length===1?'question':'questions'} ${prefs.method==='bank'?'added':'in your assessment'}`;board.querySelector('[data-qc-clear]').hidden=isAI;board.querySelector('[data-qc-clear]').disabled=!qs.length;board.querySelector('[data-qc-regenerate]').hidden=!isAI;board.querySelector('[data-qc-regenerate]').disabled=!plus()||!generated.length;
+ let displayedIds=new Set(getQuestions().map(q=>q.id));
+ function syncBank(){
+  const values=inst.renderVals(),rows=values.bank||[];
+  for(const row of library.querySelectorAll('.question-card')){
+   const q=rows.find(q=>q.stem===row.querySelector('h4')?.textContent.trim());
+   const previous=row.querySelector('.qbottom .btn.small');if(!q||!previous)continue;
+   const button=previous.cloneNode(false);button.type='button';button.disabled=!q.canAdd;
+   button.textContent=q.isAdded?'✓ Added':q.isLocked?'Classroom+':q.isFull?'Full':'+';
+   button.setAttribute('aria-label',q.isAdded?'Added item: '+q.stem:'Add item: '+q.stem);
+   if(q.canAdd)button.onclick=q.add;previous.replaceWith(button);
+  }
+  const m=model(),count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0),current=active(m)||{};
+  const summary=page.querySelector('.tf-bottom-copy p');if(summary)summary.textContent='Grade '+(current.grade||'5')+' · '+(current.subject||'Mathematics')+(count?' · '+count+(count===1?' item':' items'):'');
+ }
+ function drawBoard(){syncBank();const qs=getQuestions(),generated=qs.filter(q=>q.composerAI),isAI=prefs.method==='ai';board.querySelector('h2').textContent=isAI?`${generated.length} questions generated`:`${qs.length} ${qs.length===1?'question':'questions'} ${prefs.method==='bank'?'added':'in your assessment'}`;board.querySelector('[data-qc-clear]').hidden=isAI;board.querySelector('[data-qc-clear]').disabled=!qs.length;board.querySelector('[data-qc-regenerate]').hidden=!isAI;board.querySelector('[data-qc-regenerate]').disabled=!plus()||!generated.length;
   board.querySelector('.qc-preview-list').innerHTML=qs.length?qs.map((q,i)=>`<article class="qc-preview-card ${q.visual?'qc-has-visual':''}" draggable="true" data-question-id="${esc(q.id)}"><span class="qc-drag" aria-hidden="true">⠿</span><span class="qc-number">${i+1}</span><div class="qc-question-content">${questionPreview(q)}</div><details class="qc-question-menu"><summary aria-label="Actions for question ${i+1}" title="Question actions">⋮</summary><div><a href="CAP-T06-Review.dc.html?question=${i}">Edit question</a><button type="button" data-qc-up="${esc(q.id)}" ${i===0?'disabled':''}>Move up</button><button type="button" data-qc-down="${esc(q.id)}" ${i===qs.length-1?'disabled':''}>Move down</button><button type="button" data-qc-remove="${esc(q.id)}">Remove</button></div></details></article>`).join(''):`<div class="qc-empty">${icon(prefs.method==='ai'?'spark':'book')}<h3>${isAI?'Your draft questions will appear here':'Build your assessment'}</h3><p>${isAI?'Describe what you need, choose your settings and generate a set of sample questions.':'Choose questions from the bank or create your own.'}</p></div>`;
+  for(const row of board.querySelectorAll('[data-question-id]'))if(!displayedIds.has(row.dataset.questionId))row.classList.add('qc-item-enter');
+  displayedIds=new Set(qs.map(q=>q.id));
   board.querySelector('.qc-board-note').textContent=isAI&&qs.length>generated.length?`${qs.length-generated.length} additional bank or manually created ${qs.length-generated.length===1?'question is':'questions are'} included. Regenerate replaces only the AI draft set.`:'';
   board.querySelectorAll('[data-qc-up]').forEach(b=>b.onclick=()=>reorder(b.dataset.qcUp,-1));board.querySelectorAll('[data-qc-down]').forEach(b=>b.onclick=()=>reorder(b.dataset.qcDown,1));board.querySelectorAll('[data-qc-remove]').forEach(b=>b.onclick=()=>updateQuestions(inst.state.chosen.filter(id=>id!==b.dataset.qcRemove)));
   let dragId;board.querySelectorAll('[data-question-id]').forEach(row=>{row.ondragstart=e=>{dragId=row.dataset.questionId;e.dataTransfer.setData('text/plain',dragId);e.dataTransfer.effectAllowed='move';row.classList.add('qc-dragging')};row.ondragend=()=>row.classList.remove('qc-dragging');row.ondragover=e=>e.preventDefault();row.ondrop=e=>{e.preventDefault();const ids=[...inst.state.chosen],from=ids.indexOf(dragId),to=ids.indexOf(row.dataset.questionId);if(from<0||to<0||from===to)return;ids.splice(to,0,ids.splice(from,1)[0]);updateQuestions(ids)}});
@@ -62,5 +78,12 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
   return {...q,displayType:type,type:q.options.length?'Multiple choice':type==='Extended response'?'Extended text':'Text entry',marks:q.marks||1,source:'AI draft',composerAI:true,difficulty,standards:[...prefs.standards],standard:prefs.standards[0]||t.standard};
  }
  function generate(regenerate=false){if(!plus())return;if(!prefs.prompt.trim()){notice.textContent='Describe the questions you need first.';ai.querySelector('textarea').focus();return}persist();const state=inst.state,old=getQuestions().filter(q=>q.composerAI).map(q=>q.id),written={...state.written},edits={...state.edits};old.forEach(id=>{delete written[id];delete edits[id]});const count=prefs.count,round=regenerate?Number(sessionStorage.getItem(prefKey+':round')||0)+1:0;sessionStorage.setItem(prefKey+':round',round);const formats=prefs.types.length>1&&prefs.types.includes('Multiple choice')?['Multiple choice','Multiple choice',...prefs.types.filter(x=>x!=='Multiple choice'),'Multiple choice']:prefs.types;const ids=[];for(let i=0;i<count;i++){const id='ai-'+Date.now()+'-'+i;written[id]={...draftsFor(formats[i%formats.length],i,round),id};ids.push(id)}inst.setState({written,edits,chosen:(state.chosen||[]).filter(id=>!old.includes(id)).concat(ids)});inst.update();}
+ // Keep the custom board synchronized after the template runtime and its wrappers render.
+ inst.refreshQuestionBoard=()=>{if(board.isConnected)drawBoard()};
+ if(!inst.questionBoardUpdateInstalled){
+  inst.questionBoardUpdateInstalled=true;
+  const update=inst.update;let refreshQueued=false;
+  inst.update=function(...args){const result=update.apply(this,args);if(!refreshQueued){refreshQueued=true;queueMicrotask(()=>{refreshQueued=false;inst.refreshQuestionBoard?.()})}return result};
+ }
  board.querySelector('[data-qc-clear]').onclick=()=>updateQuestions([]);ai.querySelector('[data-qc-generate]').onclick=()=>generate(false);board.querySelector('[data-qc-regenerate]').onclick=()=>generate(true);showMethod();
 };

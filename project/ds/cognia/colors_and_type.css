@@ -2,68 +2,64 @@
    Cognia Design System — colors_and_type.css
    ------------------------------------------------------------
    Sourced from the official @gs-ai-era-highered/cognia-design-system
-   npm package (dist/globals.css). All values below mirror the
-   production token set exactly.
+   npm package (assets/globals.css). Colour, shadow and theme values
+   mirror the package exactly. Typography, spacing and radius tokens
+   below are the package's documented scale, exposed as CSS variables
+   and classes for HTML mockups.
+   Refreshed 28 Oct 2026.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  /* ---------- Surface & text (shadcn semantic) ---------- */
+  /* ---------- shadcn semantic colours ---------- */
   --background:           #F9F9F9;
   --foreground:           #000012;
   --card:                 #FFFFFF;
   --card-foreground:      #000012;
   --popover:              #FFFFFF;
   --popover-foreground:   #000012;
-  --muted:                #F9F9F9;
-  --muted-foreground:     #000012;
-  --accent:               #F9F9F9;
-  --accent-foreground:    #000012;
-  --border:               #EDEDEF;
-  --input:                #EDEDEF;
-  --input-background:     var(--background);
-  --ring:                 #C7C7CA;
-
-  /* ---------- Primary (never re-skins per theme) ---------- */
   --primary:              #000012;
   --primary-foreground:   #FFFFFF;
   --secondary:            #EDEDEF;
   --secondary-foreground: #000012;
-
-  /* ---------- Status ---------- */
-  --info:                 #007BBA;
-  --info-light:           #E5F2F8;
-  --success:              #0C8835;
-  --success-light:        #E7F3EB;
-  --warning:              #B95E04;
-  --warning-light:        #F8EFE6;
+  --muted:                #F9F9F9;
+  --muted-foreground:     #3E3E4B;
+  --accent:               #F9F9F9;
+  --accent-foreground:    #000012;
   --destructive:          #DC2626;
+  --info:                 #007BBA;
+  --success:              #0C8835;
+  --warning:              #B95E04;
+  --border:               #EDEDEF;
+  --input:                #EDEDEF;
+  --ring:                 #C7C7CA;
+
+  /* ---------- Status surface colours ---------- */
+  --info-light:           #E5F2F8;
+  --success-light:        #E7F3EB;
+  --warning-light:        #F8EFE6;
   --destructive-light:    #FBE9E9;
 
-  /* ---------- Overlays ---------- */
+  /* ---------- Utility overlays ---------- */
   --backdrop-overlay:     rgba(0, 0, 0, 0.6);
   --hover-overlay:        rgba(0, 0, 0, 0.05);
+  --input-background:     var(--background);
 
-  /* ---------- Default theme: Data & Reporting (Coral) ---------- */
+  /* ---------- Default theme: Data & Reporting (coral) ---------- */
   --accent-100: #FFCFCD;
   --accent-200: #FF928D;
   --accent-300: #FF554D;
   --accent-400: #800600;
   --accent-500: #3F1513;
 
-  /* Chart colours — default */
   --chart-1: #FFCFCD;
   --chart-2: #FF928D;
   --chart-3: #FF554D;
   --chart-4: #800600;
   --chart-5: #3F1513;
 
-  /* Brand */
-  --brand-coral: #FF554D;
-  --brand-ink:   #1A1A1A;
-
-  /* Sidebar */
+  /* ---------- Sidebar ---------- */
   --sidebar:                       #FFFFFF;
   --sidebar-foreground:            #000012;
   --sidebar-primary:               #000012;
@@ -72,6 +68,33 @@
   --sidebar-accent-foreground:     #000012;
   --sidebar-border:                #EDEDEF;
   --sidebar-ring:                  #FFFFFF;
+
+  /* ---------- Opacity scales ---------- */
+  --opacity-primary-10: rgba(0, 0, 18, 0.1);
+  --opacity-primary-20: rgba(0, 0, 18, 0.2);
+  --opacity-primary-30: rgba(0, 0, 18, 0.3);
+  --opacity-secondary-10: rgba(237, 237, 239, 0.1);
+  --opacity-secondary-20: rgba(237, 237, 239, 0.2);
+  --opacity-secondary-30: rgba(237, 237, 239, 0.3);
+  --opacity-success-10: rgba(12, 136, 53, 0.1);
+  --opacity-success-20: rgba(12, 136, 53, 0.2);
+  --opacity-success-30: rgba(12, 136, 53, 0.3);
+  --opacity-info-10: rgba(0, 123, 186, 0.1);
+  --opacity-info-20: rgba(0, 123, 186, 0.2);
+  --opacity-info-30: rgba(0, 123, 186, 0.3);
+  --opacity-warning-10: rgba(185, 94, 4, 0.1);
+  --opacity-warning-20: rgba(185, 94, 4, 0.2);
+  --opacity-warning-30: rgba(185, 94, 4, 0.3);
+  --opacity-destructive-10: rgba(220, 38, 38, 0.1);
+  --opacity-destructive-20: rgba(220, 38, 38, 0.2);
+  --opacity-destructive-30: rgba(220, 38, 38, 0.3);
+  --opacity-neutral-10: rgba(62, 62, 75, 0.1);
+  --opacity-neutral-20: rgba(62, 62, 75, 0.2);
+  --opacity-neutral-30: rgba(62, 62, 75, 0.3);
+
+  /* Brand */
+  --brand-coral: #FF554D;
+  --brand-ink:   #1A1A1A;
 
   /* ============================================================
      TYPOGRAPHY TOKENS
@@ -132,83 +155,16 @@
 }
 
 /* ============================================================
-   THEME: Assessments — indigo
+   RESPONSIVE LAYOUT (controlled by the design team)
    ============================================================ */
-.theme-assessments {
-  --accent-100: #D1D5EE;
-  --accent-200: #8690D3;
-  --accent-300: #4F5CBE;
-  --accent-400: #262E67;
-  --accent-500: #0B0D1C;
-  --chart-1: #262E67;
-  --chart-2: #4F5CBE;
-  --chart-3: #8690D3;
-  --chart-4: #D1D5EE;
-  --chart-5: #0B0D1C;
+@media (max-width: 767px) {
+  :root { --horizontal-padding: 16px; --vertical-padding: 32px; --section-spacing: 48px; }
 }
-
-/* ============================================================
-   THEME: Learning — green
-   ============================================================ */
-.theme-learn {
-  --accent-100: #DBE7DB;
-  --accent-200: #9DBF9E;
-  --accent-300: #507E6D;
-  --accent-400: #033D3C;
-  --accent-500: #111911;
-  --chart-1: #033D3C;
-  --chart-2: #507E6D;
-  --chart-3: #9DBF9E;
-  --chart-4: #DBE7DB;
-  --chart-5: #111911;
+@media (min-width: 768px) and (max-width: 1279px) {
+  :root { --horizontal-padding: 24px; --vertical-padding: 64px; --section-spacing: 64px; }
 }
-
-/* ============================================================
-   THEME: Performance — magenta
-   ============================================================ */
-.theme-performance {
-  --accent-100: #ECCFE0;
-  --accent-200: #D085B1;
-  --accent-300: #AD4281;
-  --accent-400: #63264A;
-  --accent-500: #190A13;
-  --chart-1: #63264A;
-  --chart-2: #AD4281;
-  --chart-3: #D085B1;
-  --chart-4: #ECCFE0;
-  --chart-5: #190A13;
-}
-
-/* ============================================================
-   THEME: Data & Reporting — coral (also the default)
-   ============================================================ */
-.theme-data-reporting {
-  --accent-100: #FFCFCD;
-  --accent-200: #FF928D;
-  --accent-300: #FF554D;
-  --accent-400: #800600;
-  --accent-500: #3F1513;
-  --chart-1: #800600;
-  --chart-2: #FF554D;
-  --chart-3: #FF928D;
-  --chart-4: #FFCFCD;
-  --chart-5: #3F1513;
-}
-
-/* ============================================================
-   THEME: Observations & Surveys — gold / amber
-   ============================================================ */
-.theme-observations-surveys {
-  --accent-100: #FEF0C4;
-  --accent-200: #FCE086;
-  --accent-300: #F9C00A;
-  --accent-400: #B28804;
-  --accent-500: #4E3C02;
-  --chart-1: #B28804;
-  --chart-2: #F9C00A;
-  --chart-3: #FCE086;
-  --chart-4: #FEF0C4;
-  --chart-5: #4E3C02;
+@media (min-width: 1280px) {
+  :root { --horizontal-padding: 32px; --vertical-padding: 96px; --section-spacing: 96px; }
 }
 
 /* ============================================================
@@ -221,25 +177,27 @@
   --card-foreground:      #FFFFFF;
   --popover:              #000012;
   --popover-foreground:   #FFFFFF;
-  --muted:                #000012;
-  --muted-foreground:     #F9F9F9;
-  --accent:               #000012;
-  --accent-foreground:    #F9F9F9;
-  --border:               #7C7C85;
-  --input:                #EDEDEF;
-  --input-background:     rgba(0, 0, 0, 0.3);
-  --ring:                 #7C7C85;
-
   --primary:              #F9F9F9;
   --primary-foreground:   #000000;
   --secondary:            #3E3E4B;
   --secondary-foreground: #F9F9F9;
+  --muted:                #000012;
+  --muted-foreground:     #F9F9F9;
+  --accent:               #000012;
+  --accent-foreground:    #F9F9F9;
+  --destructive:          #DC2626;
+  --info:                 #007BBA;
+  --success:              #0C8835;
+  --warning:              #B95E04;
+  --border:               #7C7C85;
+  --input:                #EDEDEF;
+  --ring:                 #7C7C85;
 
-  --accent-100: #3F1513;
-  --accent-200: #FFCFCD;
-  --accent-300: #FF554D;
-  --accent-400: #800600;
-  --accent-500: #FFCFCD;
+  --chart-1: #3F1513;
+  --chart-2: #800600;
+  --chart-3: #FF554D;
+  --chart-4: #FF928D;
+  --chart-5: #FFCFCD;
 
   --sidebar:                       #000012;
   --sidebar-foreground:            #FFFFFF;
@@ -250,8 +208,22 @@
   --sidebar-border:                #000012;
   --sidebar-ring:                  #000012;
 
-  --hover-overlay:        rgba(0, 0, 0, 0.05);
+  --accent-100: #3F1513;
+  --accent-200: #FFCFCD;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #FFCFCD;
+
   --backdrop-overlay:     rgba(0, 0, 0, 0.6);
+  --hover-overlay:        rgba(0, 0, 0, 0.05);
+  --input-background:     rgba(0, 0, 0, 0.3);
+
+  --opacity-primary-10: rgba(249, 249, 249, 0.1);
+  --opacity-primary-20: rgba(249, 249, 249, 0.2);
+  --opacity-primary-30: rgba(249, 249, 249, 0.3);
+  --opacity-secondary-10: rgba(62, 62, 75, 0.1);
+  --opacity-secondary-20: rgba(62, 62, 75, 0.2);
+  --opacity-secondary-30: rgba(62, 62, 75, 0.3);
 
   --shadow-xs: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
   --shadow-sm: 0 1px 3px 0 rgba(255, 255, 255, 0.1);
@@ -259,6 +231,54 @@
   --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
   --shadow-xl: 0 20px 25px -5px rgba(255, 255, 255, 0.1);
   --shadow-2xl: 0 25px 50px -12px rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================
+   PRODUCT THEMES
+   ============================================================ */
+.theme-assessments {
+  --accent-100: #D1D5EE; --accent-200: #8690D3; --accent-300: #4F5CBE; --accent-400: #262E67; --accent-500: #0B0D1C;
+  --chart-1: #262E67; --chart-2: #4F5CBE; --chart-3: #8690D3; --chart-4: #D1D5EE; --chart-5: #0B0D1C;
+}
+.theme-assessments.dark {
+  --accent-100: #0B0D1C; --accent-200: #262E67; --accent-300: #4F5CBE; --accent-400: #8690D3; --accent-500: #D1D5EE;
+  --chart-1: #8690D3; --chart-2: #262E67; --chart-3: #4F5CBE; --chart-4: #8690D3; --chart-5: #D1D5EE;
+}
+
+.theme-learn {
+  --accent-100: #DBE7DB; --accent-200: #9DBF9E; --accent-300: #507E6D; --accent-400: #033D3C; --accent-500: #111911;
+  --chart-1: #033D3C; --chart-2: #507E6D; --chart-3: #9DBF9E; --chart-4: #DBE7DB; --chart-5: #111911;
+}
+.theme-learn.dark {
+  --accent-100: #111911; --accent-200: #033D3C; --accent-300: #507E6D; --accent-400: #9DBF9E; --accent-500: #DBE7DB;
+  --chart-1: #9DBF9E; --chart-2: #033D3C; --chart-3: #507E6D; --chart-4: #9DBF9E; --chart-5: #DBE7DB;
+}
+
+.theme-performance {
+  --accent-100: #ECCFE0; --accent-200: #D085B1; --accent-300: #AD4281; --accent-400: #63264A; --accent-500: #190A13;
+  --chart-1: #63264A; --chart-2: #AD4281; --chart-3: #D085B1; --chart-4: #ECCFE0; --chart-5: #190A13;
+}
+.theme-performance.dark {
+  --accent-100: #190A13; --accent-200: #63264A; --accent-300: #AD4281; --accent-400: #D085B1; --accent-500: #ECCFE0;
+  --chart-1: #D085B1; --chart-2: #63264A; --chart-3: #AD4281; --chart-4: #D085B1; --chart-5: #ECCFE0;
+}
+
+.theme-data-reporting {
+  --accent-100: #FFCFCD; --accent-200: #FF928D; --accent-300: #FF554D; --accent-400: #800600; --accent-500: #3F1513;
+  --chart-1: #800600; --chart-2: #FF554D; --chart-3: #FF928D; --chart-4: #FFCFCD; --chart-5: #3F1513;
+}
+.theme-data-reporting.dark {
+  --accent-100: #3F1513; --accent-200: #800600; --accent-300: #FF554D; --accent-400: #FF928D; --accent-500: #FFCFCD;
+  --chart-1: #FF928D; --chart-2: #800600; --chart-3: #FF554D; --chart-4: #FF928D; --chart-5: #FFCFCD;
+}
+
+.theme-observations-surveys {
+  --accent-100: #FEF0C4; --accent-200: #FCE086; --accent-300: #F9C00A; --accent-400: #B28804; --accent-500: #4E3C02;
+  --chart-1: #B28804; --chart-2: #F9C00A; --chart-3: #FCE086; --chart-4: #FEF0C4; --chart-5: #4E3C02;
+}
+.theme-observations-surveys.dark {
+  --accent-100: #4E3C02; --accent-200: #B28804; --accent-300: #F9C00A; --accent-400: #FCE086; --accent-500: #FEF0C4;
+  --chart-1: #FCE086; --chart-2: #B28804; --chart-3: #F9C00A; --chart-4: #FCE086; --chart-5: #FEF0C4;
 }
 
 /* ============================================================

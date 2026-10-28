@@ -1,0 +1,51 @@
+/* ============================================================
+   Admin type scale (District and School Administrator screens)
+   ------------------------------------------------------------
+   Follows the cognia-design plugin rule: at most 3 font sizes and
+   3 font weights per screen.
+   Sizes:   20px main headers and headline numbers
+            16px card and section titles (semibold)
+            14px everything else
+   Weights: 400, 600, 700
+   Loaded last on admin screens so it wins over older layers.
+   Chart labels sit inside scaled SVGs (about 1.075x at the 1440px
+   artboard), so their sizes are set in chart units to show at 14px.
+   ============================================================ */
+
+/* Main headers: page titles and section headings */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(h1, h2) {
+  font-size: var(--text-subheading) !important;
+  font-weight: var(--weight-semibold) !important;
+  line-height: var(--lh-snug) !important;
+  letter-spacing: normal !important;
+}
+
+/* Card and panel titles: 16px strong */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > span) {
+  font-size: var(--text-body-base) !important;
+  font-weight: var(--weight-semibold) !important;
+  line-height: var(--lh-snug) !important;
+}
+
+/* Headline numbers: 20px */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(.sumval, .v2wpct, .dgoal-n, .dtip-n, .sg-mval, .bubvalh) {
+  font-size: var(--text-subheading) !important;
+  line-height: var(--lh-snug) !important;
+}
+
+/* No 900 weight anywhere */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf .gc b {
+  font-weight: var(--weight-bold) !important;
+}
+
+/* Chart labels: 14px on screen (13 chart units x 1.075) */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(.svax, .svpt, .svpt.svbig, .svtip, .svtip *) {
+  font-size: 13px !important;
+}
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf .trsvg text {
+  font-size: 13px !important;
+}
+/* Bubble values: 20px on screen */
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf .bubval {
+  font-size: 28.6px !important; /* 20px on screen: the bubble chart draws at 0.7x */
+}

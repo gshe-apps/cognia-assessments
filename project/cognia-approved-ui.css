@@ -426,7 +426,7 @@ html:not(#preview-root) body:not(#preview-body).student-friendly .sj-root .stude
 /* Extend the approved visual treatment to existing screen families. */
 html:not(#preview-root) body:not(#preview-body) :is(.wf,.cap-root,.sj-root){--foreground:var(--preview-foreground);--primary:var(--preview-primary);--muted-foreground:var(--preview-muted);--background:var(--preview-background);--border:var(--preview-border);--radius:8px;color:var(--foreground)!important}
 html:not(#preview-root) body:not(#preview-body) :is(.wf>.top,.global-header,.student-header){background:var(--card)!important}
-html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2){font-size:24px!important;font-weight:600!important;line-height:1.3!important;color:var(--foreground)!important}
+html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2):not(.v2hero h2){font-size:24px!important;font-weight:600!important;line-height:1.3!important;color:var(--foreground)!important}
 html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) :is(h3,h4){font-size:20px!important;font-weight:400!important;line-height:1.4!important}
 html:not(#preview-root) body:not(#preview-body) .cap-root .ef-form-row h2{font-size:20px!important;font-weight:400!important}
 html:not(#preview-root) body:not(#preview-body) :is(.cap-root,.wf) .btn{border-radius:var(--radius)!important;box-shadow:none!important;transition-duration:200ms!important}

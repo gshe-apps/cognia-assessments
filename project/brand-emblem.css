@@ -1,0 +1,24 @@
+/* Official Cognia icon mark. Preserve the supplied SVG colours on every flow. */
+html body :is(.brand,.hubbrand) :is(.logo,.hublogo) {
+ display:inline-flex !important;
+ align-items:center;
+ justify-content:center;
+ flex:0 0 28px;
+ width:28px !important;
+ min-width:28px !important;
+ height:28px !important;
+ padding:0 !important;
+ background:transparent !important;
+ border:0;
+ border-radius:0;
+}
+html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
+ display:block !important;
+ width:28px !important;
+ height:28px !important;
+ min-width:28px !important;
+ max-width:none;
+ object-fit:contain;
+ filter:none !important;
+ opacity:1 !important;
+}

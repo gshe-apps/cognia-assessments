@@ -67,8 +67,9 @@ jobs:
           }
           console.log(`Rewrote canvas image links in ${changed} files`);
 
-          // Front page: same entry point as serve.cjs.
-          fs.writeFileSync(path.join(site, 'index.html'),
+          // Preserve the persona entry screen copied from project/index.html.
+          // Older exports without an entry screen still get a usable fallback.
+          if (!fs.existsSync(path.join(site, 'index.html'))) fs.writeFileSync(path.join(site, 'index.html'),
             '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Cognia Assessment Hub prototype</title>' +
             '<meta http-equiv="refresh" content="0; url=Main.dc.html"></head>' +
             '<body><a href="Main.dc.html">Open the prototype</a></body></html>');

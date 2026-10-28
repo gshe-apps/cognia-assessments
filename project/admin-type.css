@@ -1,5 +1,6 @@
 /* ============================================================
-   Admin type scale (District and School Administrator screens)
+   Admin standards (District and School Administrator screens):
+   type scale and navigation shell
    ------------------------------------------------------------
    Follows the cognia-design plugin rule: at most 3 font sizes and
    3 font weights per screen.
@@ -48,4 +49,23 @@ html:not(#ty1):not(#ty2) body:not(#ty3) .wf .trsvg text {
 /* Bubble values: 20px on screen */
 html:not(#ty1):not(#ty2) body:not(#ty3) .wf .bubval {
   font-size: 28.6px !important; /* 20px on screen: the bubble chart draws at 0.7x */
+}
+
+/* ============================================================
+   Navigation shell (cognia-design plugin: Navigation shell, Footer)
+   Page on --background; header and footer with no background
+   colour, so they sit on the page. Wins over older shared layers
+   that paint the admin header white.
+   ============================================================ */
+html:not(#ty1):not(#ty2) body:not(#ty3),
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf {
+  background: var(--background) !important;
+}
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf > .top {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html:not(#ty1):not(#ty2) body:not(#ty3) .wf .hubfoot {
+  background: transparent !important;
 }

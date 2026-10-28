@@ -6,7 +6,7 @@ const root=path.join(__dirname,'project');
 const read=n=>fs.readFileSync(path.join(root,n),'utf8');
 const reports=[];
 for(const [file,role,overview] of [
- ['Main.dc.html','district','SA2-Hub.dc.html'],
+ ['District-Home.dc.html','district','SA2-Hub.dc.html'],
  ['PA1-Home.dc.html','school','PA-Overview.dc.html'],
  ['CAP-T00-Home.dc.html','educator','CAP-T01-Overview.dc.html'],
 ]){
@@ -39,7 +39,7 @@ const entry=read('index.html');
 assert(entry.includes('data-open-admin'));
 assert(entry.includes('href="CAP-T00-Home.dc.html"'));
 assert(entry.includes('href="CAP-S01-SignIn.dc.html"'));
-assert(entry.includes('href="Main.dc.html"'));
+assert(entry.includes('href="District-Home.dc.html"'));
 assert(entry.includes('href="PA1-Home.dc.html"'));
 assert.equal((entry.match(/class="home-card persona-card"/g)||[]).length,3);
 assert(read('../serve.cjs').includes("pathname === '/' ? '/index.html'"));
@@ -53,7 +53,7 @@ for(const file of fs.readdirSync(root).filter(n=>n.endsWith('.html'))){
    assert.equal(role[1],'CAP-T00-Home.dc.html',`${file}: educator role must open Home`);
  }
  // Check every local dependency and new navigational target on the four new screens.
- if(!['Main.dc.html','PA1-Home.dc.html','CAP-T00-Home.dc.html','index.html'].includes(file))continue;
+ if(!['District-Home.dc.html','PA1-Home.dc.html','CAP-T00-Home.dc.html','index.html'].includes(file))continue;
  for(const attr of html.matchAll(/(?:href|src)="([^"{}]+)"/g)){
    const target=attr[1].split(/[?#]/)[0];
    if(!target||/^(https?:|data:|mailto:|\/)/.test(target))continue;
@@ -67,3 +67,5 @@ assert(!/#[a-f\d]{3,8}\b|\brgba?\(/i.test(read('home-pages.css')),'Home CSS must
 assert(!read('assets/cognia-logo.svg').includes('<text'),'Official vector wordmark, not text substitute');
 reports.push('New scripts compile; Home colours use tokens; supplied Cognia wordmark present');
 console.log(reports.join('\n'));
+
+assert.equal(read('Main.dc.html'),read('index.html'),'Legacy client link must show the audience selector');

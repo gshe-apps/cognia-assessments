@@ -1,7 +1,7 @@
 // Shared prototype-only role routing; assessment page destinations stay intact.
 (() => {
  const file = location.pathname.split('/').pop() || 'index.html';
- const home = file.startsWith('CAP-T') ? 'CAP-T00-Home.dc.html' : file.startsWith('CAP-S') ? 'CAP-S01-SignIn.dc.html' : /^(PA|DI-School)/.test(file) ? 'PA1-Home.dc.html' : 'Main.dc.html';
+ const home = file.startsWith('CAP-T') ? 'CAP-T00-Home.dc.html' : file.startsWith('CAP-S') ? 'CAP-S01-SignIn.dc.html' : /^(PA|DI-School)/.test(file) ? 'PA1-Home.dc.html' : 'District-Home.dc.html';
  function update() {
    for(const link of document.querySelectorAll('.roleopt')) {
      const title=link.querySelector('strong');

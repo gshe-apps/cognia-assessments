@@ -327,7 +327,7 @@
       "h": 1024,
       "is_interactive": true,
       "page": "admin",
-      "title": "Data Insights · District overview (was SA 1 Home)",
+      "title": "Data Insights · District overview (was DA 1 Home)",
       "w": 1440,
       "x": 0,
       "y": 4600
@@ -347,7 +347,7 @@
       "h": 1409,
       "is_interactive": true,
       "page": "admin",
-      "title": "SA 6 · Interim · Library",
+      "title": "DA 6 · Interim · Library",
       "w": 1440,
       "x": 6080,
       "y": 0
@@ -357,7 +357,7 @@
       "h": 1024,
       "is_interactive": true,
       "page": "admin",
-      "title": "SA 1 · Home (launch pad)",
+      "title": "DA 1 · Home (launch pad)",
       "w": 1440,
       "x": 0,
       "y": 0
@@ -417,7 +417,7 @@
       "h": 1149,
       "is_interactive": true,
       "page": "admin",
-      "title": "SA 2 · Interim · Overview",
+      "title": "DA 2 · Interim · Overview",
       "w": 1440,
       "x": 1520,
       "y": 0
@@ -427,7 +427,7 @@
       "h": 1190,
       "is_interactive": true,
       "page": "admin",
-      "title": "SA 2a · Interim · All schools",
+      "title": "DA 2a · Interim · All schools",
       "w": 1440,
       "x": 3040,
       "y": 0
@@ -437,7 +437,7 @@
       "h": 1024,
       "is_interactive": true,
       "page": "admin",
-      "title": "SA 2b · Interim · Subgroups",
+      "title": "DA 2b · Interim · Subgroups",
       "w": 1440,
       "x": 4560,
       "y": 0
@@ -509,7 +509,7 @@
       "kind": "title1",
       "maxW": 7520,
       "page": "admin",
-      "text": "System Administrator, district oversight",
+      "text": "District Admin, district oversight",
       "w": 240,
       "x": 0,
       "y": -620

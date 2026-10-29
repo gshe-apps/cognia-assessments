@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Student · Option 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<style>
+/* Tokens copied from the cognia-design plugin, assets/globals.css (do not edit here) */
+/* ============================================================
+   DEFAULT LIGHT THEME
+   Unlayered so it always overrides any layered :root {} block
+   in the developer's local globals.css
+   ============================================================ */
+:root {
+
+  /* Font */
+  --font-family: Open Sans;
+
+  /* Border radius */
+  --radius: 8px;
+  --rounded-full: 9999px;
+
+  /* shadcn semantic colours */
+  --background: #F9F9F9;
+  --foreground: #000012;
+  --card: #FFFFFF;
+  --card-foreground: #000012;
+  --popover: #FFFFFF;
+  --popover-foreground: #000012;
+  --primary: #000012;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDEDEF;
+  --secondary-foreground: #000012;
+  --muted: #F9F9F9;
+  --muted-foreground: #3E3E4B;
+  --accent: #F9F9F9;
+  --accent-foreground: #000012;
+  --destructive: #DC2626;
+  --info: #007BBA;
+  --success: #0C8835;
+  --warning: #B95E04;
+  --border: #EDEDEF;
+  --input: #EDEDEF;
+  --ring: #C7C7CA;
+
+  /* Chart colours — default (data & reporting palette) */
+  --chart-1: #FFCFCD;
+  --chart-2: #FF928D;
+  --chart-3: #FF554D;
+  --chart-4: #800600;
+  --chart-5: #3F1513;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #000012;
+  --sidebar-primary: #000012;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDEDEF;
+  --sidebar-accent-foreground: #000012;
+  --sidebar-border: #EDEDEF;
+  --sidebar-ring: #FFFFFF;
+
+  /* Accent ramp — default (data & reporting palette) */
+  --accent-100: #FFCFCD;
+  --accent-200: #FF928D;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #3F1513;
+
+  /* Status surface colours */
+  --info-light: #E5F2F8;
+  --success-light: #E7F3EB;
+  --warning-light: #F8EFE6;
+  --destructive-light: #FBE9E9;
+
+  /* Utility overlays */
+  --backdrop-overlay: rgba(0, 0, 0, 0.6);
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --input-background: var(--background);
+
+  /* Opacity scales */
+  --opacity-primary-10: rgba(0, 0, 18, 0.1);
+  --opacity-primary-20: rgba(0, 0, 18, 0.2);
+  --opacity-primary-30: rgba(0, 0, 18, 0.3);
+  --opacity-secondary-10: rgba(237, 237, 239, 0.1);
+  --opacity-secondary-20: rgba(237, 237, 239, 0.2);
+  --opacity-secondary-30: rgba(237, 237, 239, 0.3);
+  --opacity-success-10: rgba(12, 136, 53, 0.1);
+  --opacity-success-20: rgba(12, 136, 53, 0.2);
+  --opacity-success-30: rgba(12, 136, 53, 0.3);
+  --opacity-info-10: rgba(0, 123, 186, 0.1);
+  --opacity-info-20: rgba(0, 123, 186, 0.2);
+  --opacity-info-30: rgba(0, 123, 186, 0.3);
+  --opacity-warning-10: rgba(185, 94, 4, 0.1);
+  --opacity-warning-20: rgba(185, 94, 4, 0.2);
+  --opacity-warning-30: rgba(185, 94, 4, 0.3);
+  --opacity-destructive-10: rgba(220, 38, 38, 0.1);
+  --opacity-destructive-20: rgba(220, 38, 38, 0.2);
+  --opacity-destructive-30: rgba(220, 38, 38, 0.3);
+  --opacity-neutral-10: rgba(62, 62, 75, 0.1);
+  --opacity-neutral-20: rgba(62, 62, 75, 0.2);
+  --opacity-neutral-30: rgba(62, 62, 75, 0.3);
+
+  /* Shadows — light mode */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================================
+   DEFAULT DARK THEME
+   ============================================================ */
+.dark {
+
+  /* shadcn semantic colours */
+  --background: #000012;
+  --foreground: #FFFFFF;
+  --card: #000012;
+  --card-foreground: #FFFFFF;
+  --popover: #000012;
+  --popover-foreground: #FFFFFF;
+  --primary: #F9F9F9;
+  --primary-foreground: #000000;
+  --secondary: #3E3E4B;
+  --secondary-foreground: #F9F9F9;
+  --muted: #000012;
+  --muted-foreground: #F9F9F9;
+  --accent: #000012;
+  --accent-foreground: #F9F9F9;
+  --destructive: #DC2626;
+  --info: #007BBA;
+  --success: #0C8835;
+  --warning: #B95E04;
+  --border: #7C7C85;
+  --input: #EDEDEF;
+  --ring: #7C7C85;
+
+  /* Chart colours — default dark (data & reporting palette) */
+  --chart-1: #3F1513;
+  --chart-2: #800600;
+  --chart-3: #FF554D;
+  --chart-4: #FF928D;
+  --chart-5: #FFCFCD;
+
+  /* Sidebar */
+  --sidebar: #000012;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #F9F9F9;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #000012;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #000012;
+  --sidebar-ring: #000012;
+
+  /* Accent ramp — default dark (data & reporting palette) */
+  --accent-100: #3F1513;
+  --accent-200: #FFCFCD;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #FFCFCD;
+
+  /* Utility overlays */
+  --backdrop-overlay: rgba(0, 0, 0, 0.6);
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --input-background: rgba(0, 0, 0, 0.3);
+
+  /* Opacity scales */
+  --opacity-primary-10: rgba(249, 249, 249, 0.1);
+  --opacity-primary-20: rgba(249, 249, 249, 0.2);
+  --opacity-primary-30: rgba(249, 249, 249, 0.3);
+  --opacity-secondary-10: rgba(62, 62, 75, 0.1);
+  --opacity-secondary-20: rgba(62, 62, 75, 0.2);
+  --opacity-secondary-30: rgba(62, 62, 75, 0.3);
+
+  /* Shadows — dark mode (white shadows on dark backgrounds) */
+  --shadow-xs: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(255, 255, 255, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(255, 255, 255, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================
+   PRODUCT THEME — ASSESSMENTS (light)
+   ============================================================ */
+.theme-assessments {
+  --accent-100: #D1D5EE;
+  --accent-200: #8690D3;
+  --accent-300: #4F5CBE;
+  --accent-400: #262E67;
+  --accent-500: #0B0D1C;
+  --chart-1: #262E67;
+  --chart-2: #4F5CBE;
+  --chart-3: #8690D3;
+  --chart-4: #D1D5EE;
+  --chart-5: #0B0D1C;
+}
+
+.theme-assessments.dark {
+  --accent-100: #0B0D1C;
+  --accent-200: #262E67;
+  --accent-300: #4F5CBE;
+  --accent-400: #8690D3;
+  --accent-500: #D1D5EE;
+  --chart-1: #8690D3;
+  --chart-2: #262E67;
+  --chart-3: #4F5CBE;
+  --chart-4: #8690D3;
+  --chart-5: #D1D5EE;
+}
+
+/* ============================================================
+   PRODUCT THEME — LEARNING (light)
+   ============================================================ */
+.theme-learn {
+  --accent-100: #DBE7DB;
+  --accent-200: #9DBF9E;
+  --accent-300: #507E6D;
+  --accent-400: #033D3C;
+  --accent-500: #111911;
+  --chart-1: #033D3C;
+  --chart-2: #507E6D;
+  --chart-3: #9DBF9E;
+  --chart-4: #DBE7DB;
+  --chart-5: #111911;
+}
+
+.theme-learn.dark {
+  --accent-100: #111911;
+  --accent-200: #033D3C;
+  --accent-300: #507E6D;
+  --accent-400: #9DBF9E;
+  --accent-500: #DBE7DB;
+  --chart-1: #9DBF9E;
+  --chart-2: #033D3C;
+  --chart-3: #507E6D;
+  --chart-4: #9DBF9E;
+  --chart-5: #DBE7DB;
+}
+
+/* ============================================================
+   PRODUCT THEME — PERFORMANCE (light)
+   ============================================================ */
+.theme-performance {
+  --accent-100: #ECCFE0;
+  --accent-200: #D085B1;
+  --accent-300: #AD4281;
+  --accent-400: #63264A;
+  --accent-500: #190A13;
+  --chart-1: #63264A;
+  --chart-2: #AD4281;
+  --chart-3: #D085B1;
+  --chart-4: #ECCFE0;
+  --chart-5: #190A13;
+}
+
+.theme-performance.dark {
+  --accent-100: #190A13;
+  --accent-200: #63264A;
+  --accent-300: #AD4281;
+  --accent-400: #D085B1;
+  --accent-500: #ECCFE0;
+  --chart-1: #D085B1;
+  --chart-2: #63264A;
+  --chart-3: #AD4281;
+  --chart-4: #D085B1;
+  --chart-5: #ECCFE0;
+}
+
+/* ============================================================
+   PRODUCT THEME — DATA & REPORTING (light)
+   ============================================================ */
+.theme-data-reporting {
+  --accent-100: #FFCFCD;
+  --accent-200: #FF928D;
+  --accent-300: #FF554D;
+  --accent-400: #800600;
+  --accent-500: #3F1513;
+  --chart-1: #800600;
+  --chart-2: #FF554D;
+  --chart-3: #FF928D;
+  --chart-4: #FFCFCD;
+  --chart-5: #3F1513;
+}
+
+.theme-data-reporting.dark {
+  --accent-100: #3F1513;
+  --accent-200: #800600;
+  --accent-300: #FF554D;
+  --accent-400: #FF928D;
+  --accent-500: #FFCFCD;
+  --chart-1: #FF928D;
+  --chart-2: #800600;
+  --chart-3: #FF554D;
+  --chart-4: #FF928D;
+  --chart-5: #FFCFCD;
+}
+
+/* ============================================================
+   PRODUCT THEME — OBSERVATIONS & SURVEYS (light)
+   ============================================================ */
+.theme-observations-surveys {
+  --accent-100: #FEF0C4;
+  --accent-200: #FCE086;
+  --accent-300: #F9C00A;
+  --accent-400: #B28804;
+  --accent-500: #4E3C02;
+  --chart-1: #B28804;
+  --chart-2: #F9C00A;
+  --chart-3: #FCE086;
+  --chart-4: #FEF0C4;
+  --chart-5: #4E3C02;
+}
+
+.theme-observations-surveys.dark {
+  --accent-100: #4E3C02;
+  --accent-200: #B28804;
+  --accent-300: #F9C00A;
+  --accent-400: #FCE086;
+  --accent-500: #FEF0C4;
+  --chart-1: #FCE086;
+  --chart-2: #B28804;
+  --chart-3: #F9C00A;
+  --chart-4: #FCE086;
+  --chart-5: #FEF0C4;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-family), sans-serif;
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+@layer utilities {
+  .text-title-hero  { font-size: 72px; line-height: 1.1; }
+  .text-title-page  { font-size: 48px; line-height: 1.2; }
+  .text-subtitle    { font-size: 30px; line-height: 1.3; }
+  .text-heading     { font-size: 24px; line-height: 1.3; }
+  .text-subheading  { font-size: 20px; line-height: 1.4; }
+  .text-body-base   { font-size: 16px; line-height: 1.5; }
+  .text-body-small  { font-size: 14px; line-height: 1.5; }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+[data-slot="tabs-content"]:not([hidden]) {
+  animation: tab-content-in 180ms ease-out both;
+}
+
+@keyframes tab-content-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE LAYOUT
+   Controlled by the design team — do not override these values
+   ============================================================ */
+
+@media (max-width: 767px) {
+  :root {
+    --horizontal-padding: 16px;
+    --vertical-padding: 32px;
+    --section-spacing: 48px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  :root {
+    --horizontal-padding: 24px;
+    --vertical-padding: 64px;
+    --section-spacing: 64px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --horizontal-padding: 32px;
+    --vertical-padding: 96px;
+    --section-spacing: 96px;
+  }
+}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box;border-color:var(--border)}
+html,body{margin:0;height:100%}
+body{background:var(--background);color:var(--foreground);font-family:var(--font-family),sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;overscroll-behavior:none}
+button{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* Type scale (typography.md) */
+.text-title-page{font-size:48px;line-height:1.2}
+.text-heading{font-size:24px;line-height:1.3}
+.text-body-base{font-size:16px;line-height:1.5}
+.text-body-small{font-size:14px;line-height:1.5}
+.font-bold{font-weight:700}.font-semibold{font-weight:600}
+.text-muted{color:var(--muted-foreground)}
+.big .q-title{font-size:30px}
+.big .q-body,.big .opt-label{font-size:20px}
+
+/* Layout helpers (8pt scale) */
+.stack{display:flex;flex-direction:column}
+.row{display:flex;align-items:center}
+.between{justify-content:space-between}
+.center{text-align:center;align-items:center}
+.grow{flex:1}
+.g-1{gap:4px}.g-2{gap:8px}.g-3{gap:12px}.g-4{gap:16px}.g-6{gap:24px}.g-8{gap:32px}
+.w-full{width:100%}
+
+/* ---------- 3D stage ---------- */
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;touch-action:none}
+.no-webgl #scene{display:none}
+.no-webgl .app{background:linear-gradient(180deg,var(--accent-100),var(--background))}
+.veil{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:all 200ms;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:color-mix(in srgb,var(--background) 45%,transparent)}
+.veil.on{opacity:1}
+.solid-page .veil{opacity:1;background:var(--background);backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* App layer */
+.app{position:fixed;inset:0;z-index:2;display:flex;justify-content:center}
+.screen{position:relative;width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;animation:fade 200ms ease-out both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ---------- Buttons (lg default, min-w-16, px-4) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;min-width:64px;padding:0 16px;border-radius:var(--radius);border:1px solid transparent;font-size:16px;font-weight:600;cursor:pointer;transition:all 200ms;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.btn svg{width:20px;height:20px}
+.btn-solid{background:var(--primary);color:var(--primary-foreground)}
+.btn-outline{background:var(--card);color:var(--foreground);border-color:var(--primary)}
+.btn-ghost{background:transparent;color:var(--foreground)}
+.btn-icon{width:48px;min-width:48px;padding:0}
+.btn-icon svg{color:var(--muted-foreground)}
+.btn:active{transform:scale(.98)}
+
+/* Glass surfaces sit over the 3D room. Colours are derived from tokens. */
+.glass{background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);box-shadow:var(--shadow-lg);border:1px solid color-mix(in srgb,var(--card) 60%,transparent)}
+.pill{display:inline-flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:var(--rounded-full)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:var(--rounded-full);font-size:14px;font-weight:600;white-space:nowrap}
+.badge svg{width:14px;height:14px}
+.badge-success{background:var(--success-light);color:var(--success)}
+.badge-warning{background:var(--warning-light);color:var(--warning)}
+.badge-info{background:var(--info-light);color:var(--info)}
+.badge-secondary{background:var(--secondary);color:var(--secondary-foreground)}
+.badge-theme-light{background:var(--accent-100);color:var(--secondary-foreground)}
+.badge-theme-solid{background:var(--accent-300);color:var(--primary-foreground)}
+.stars svg{width:16px;height:16px;color:var(--accent-300)}
+.stars{font-size:14px;font-weight:600}
+.pop{animation:pop 200ms ease-out}
+@keyframes pop{from{transform:scale(1.25)}to{transform:scale(1)}}
+.icon-tile{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius);background:var(--card);flex:none}
+.icon-tile svg{width:20px;height:20px;color:var(--accent-300)}
+.icon-plain svg{width:20px;height:20px;color:var(--muted-foreground)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--muted-foreground);font-size:14px}
+.meta span{display:inline-flex;align-items:center;gap:4px}
+.meta svg{width:16px;height:16px}
+
+/* ---------- Header ---------- */
+.hud{display:flex;align-items:center;gap:8px;padding:12px var(--horizontal-padding);padding-top:calc(12px + env(safe-area-inset-top))}
+.hud .logo{width:40px;height:40px;border-radius:var(--rounded-full);display:inline-flex;align-items:center;justify-content:center}
+.hud .logo svg{width:24px;height:24px;display:block}
+.avatar{width:40px;height:40px;border-radius:var(--rounded-full);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:400;cursor:pointer;border:0}
+
+/* ---------- Sign in ---------- */
+.signin{margin:auto var(--horizontal-padding);padding:24px;border-radius:var(--radius);animation:rise 200ms ease-out both}
+.signin .mark{width:56px;height:56px}
+.signin .mark svg{width:100%;height:100%;display:block}
+.field{display:flex;flex-direction:column;gap:8px;text-align:left}
+.field label{font-size:14px;font-weight:600}
+.input-wrap{position:relative}
+.input{width:100%;height:48px;border-radius:var(--radius);border:1px solid var(--muted-foreground);background:var(--primary-foreground);color:var(--foreground);padding:0 16px;font:inherit;font-size:16px}
+.input-wrap .input{padding-right:56px}
+.input-wrap .btn-icon{position:absolute;right:0;top:0}
+.input[aria-invalid="true"]{border-color:var(--destructive)}
+.err{display:flex;align-items:center;gap:4px;color:var(--destructive);font-size:14px}
+.err svg{width:16px;height:16px;flex:none}
+
+/* ---------- Landing ---------- */
+.landing-body{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--horizontal-padding) calc(16px + env(safe-area-inset-bottom));gap:12px;position:relative}
+.tcard{display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:var(--radius);text-align:left;width:100%;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform 200ms ease-out,opacity 200ms ease-out}
+button.tcard{cursor:pointer}
+.tcard.dragging{transition:none}
+.tcard.enter{animation:rise 200ms ease-out both}
+.tcard.leave-up{transform:translateY(-140%) scale(.9);opacity:0}
+.tcard.leave-down{transform:translateY(60%) scale(.95);opacity:0}
+.tcard .cta{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:var(--radius);background:var(--primary);color:var(--primary-foreground);font-weight:600;font-size:16px}
+.tcard .cta svg{width:20px;height:20px}
+.note{border-left:4px solid var(--accent-300);padding:8px 12px;background:color-mix(in srgb,var(--accent-100) 70%,transparent);border-radius:0 var(--radius) var(--radius) 0}
+.result-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.result-row div{display:flex;flex-direction:column;align-items:center;padding:8px;border-radius:var(--radius);background:color-mix(in srgb,var(--card) 80%,transparent)}
+.dots{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px}
+.dot{width:8px;height:8px;border-radius:var(--rounded-full);background:color-mix(in srgb,var(--card) 70%,transparent);box-shadow:var(--shadow-sm);transition:all 200ms}
+.dot.on{height:24px;background:var(--primary)}
+.swipe-hint{display:flex;justify-content:center;gap:8px}
+.swipe-hint .btn{height:40px;border-radius:var(--rounded-full);font-size:14px}
+.chev{animation:nudge 1600ms ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ---------- Test deck ---------- */
+.deck-wrap{flex:1;position:relative;margin:0 var(--horizontal-padding);min-height:0}
+.qcard{position:absolute;inset:0 0 32px 0;display:flex;flex-direction:column;background:var(--card);color:var(--card-foreground);border-radius:var(--radius);box-shadow:var(--shadow-lg);transition:transform 200ms ease-out,opacity 200ms ease-out;transform-origin:50% 100%;will-change:transform;touch-action:pan-y;overflow:hidden}
+.qcard.dragging{transition:none}
+.qcard .qbody{flex:1;overflow:auto;padding:24px 16px;display:flex;flex-direction:column;gap:16px;-webkit-overflow-scrolling:touch}
+.qcard .qfoot{padding:12px 16px 16px;border-top:1px solid var(--border)}
+.qcard[aria-hidden="true"] *{pointer-events:none}
+.side{flex:none;width:48px;height:48px;border-radius:var(--rounded-full);display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;opacity:.85;transition:all 200ms}
+.side[hidden]{display:inline-flex!important;visibility:hidden}
+.side svg{width:20px;height:20px;color:var(--muted-foreground)}
+.deck-meta{display:flex;align-items:center;gap:8px;padding:4px var(--horizontal-padding) calc(12px + env(safe-area-inset-bottom));min-height:64px}
+#deck-msg{flex:1;text-align:center}
+.segs{display:flex;gap:4px;flex:1}
+.seg{flex:1;height:8px;border-radius:var(--rounded-full);background:color-mix(in srgb,var(--card) 70%,var(--secondary));transition:all 200ms}
+.seg.done{background:var(--accent-300)}
+.seg.now{background:var(--accent-200)}
+
+.story{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:var(--radius);background:var(--accent-100)}
+.panel{display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:var(--radius);background:var(--background)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:4px;font-size:24px;font-weight:600;line-height:1}
+.frac .bar{align-self:stretch;height:2px;background:var(--foreground);border-radius:var(--rounded-full)}
+.eq{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:24px;font-weight:600}
+.step-label{font-size:14px;font-weight:600;color:var(--muted-foreground)}
+.blank{height:48px;min-width:64px;padding:0 8px;border-radius:var(--radius);border:2px dashed var(--muted-foreground);background:var(--card);font:inherit;font-size:24px;font-weight:600;cursor:pointer;transition:all 200ms}
+.blank.active{border:2px solid var(--primary);background:var(--accent-100)}
+.blank.filled{border-style:solid;border-color:var(--primary)}
+.tray{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.chip{height:48px;min-width:64px;border-radius:var(--radius);border:1px solid var(--primary);background:var(--card);font-size:24px;font-weight:600;cursor:pointer;transition:all 200ms}
+.chip[aria-pressed="true"]{background:var(--primary);color:var(--primary-foreground)}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--muted-foreground);cursor:pointer;text-align:left;width:100%;font:inherit;transition:all 200ms}
+.opt .letter{flex:none;width:32px;height:32px;border-radius:var(--rounded-full);background:var(--secondary);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.opt .tick{margin-left:auto;flex:none;width:24px;height:24px;border-radius:var(--rounded-full);border:2px solid var(--muted-foreground);display:inline-flex;align-items:center;justify-content:center}
+.opt .tick svg{width:16px;height:16px;opacity:0;color:var(--primary-foreground)}
+.opt[aria-checked="true"]{border:2px solid var(--primary);background:var(--accent-100);padding:11px 15px}
+.opt[aria-checked="true"] .letter{background:var(--primary);color:var(--primary-foreground)}
+.opt[aria-checked="true"] .tick{background:var(--primary);border-color:var(--primary)}
+.opt[aria-checked="true"] .tick svg{opacity:1}
+.opt-label{font-size:16px}
+.match-row{display:flex;flex-direction:column;gap:12px;border-radius:var(--radius);background:var(--card);padding:12px 16px;border:1px solid var(--muted-foreground)}
+.match-row.open{border:2px solid var(--primary);padding:11px 15px}
+.match-head{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left;min-height:48px}
+.match-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.match-grid .chip{font-size:16px}
+.cheer{font-size:14px;font-weight:600;color:var(--foreground)}
+.cheer-pill{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:var(--rounded-full)}
+.cheer-pill svg{width:16px;height:16px;color:var(--accent-300)}
+.finish-icon{width:80px;height:80px;border-radius:var(--rounded-full);background:var(--accent-100);display:inline-flex;align-items:center;justify-content:center}
+.finish-icon svg{width:40px;height:40px;color:var(--accent-400)}
+
+/* ---------- Review (clean page) ---------- */
+.review-head{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 8px;padding-top:calc(8px + env(safe-area-inset-top));background:var(--card);border-bottom:1px solid var(--border);min-height:64px}
+.review-body{flex:1;overflow:auto;padding:24px var(--horizontal-padding) 24px;display:flex;flex-direction:column;gap:16px}
+.ritem{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:var(--radius);background:var(--card)}
+.ritem .num{width:32px;height:32px;border-radius:var(--rounded-full);background:var(--secondary);display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex:none}
+.answer{padding:8px 12px;border-radius:var(--radius);background:var(--background)}
+.review-foot{padding:12px var(--horizontal-padding) calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--border)}
+
+/* ---------- Overlays ---------- */
+.scrim{position:fixed;inset:0;z-index:40;background:var(--backdrop-overlay);display:flex;align-items:flex-end;justify-content:center;animation:fade 200ms ease-out both}
+.scrim.mid{align-items:center;padding:16px;z-index:50}
+.sheet{width:100%;max-width:480px;background:var(--popover);color:var(--popover-foreground);border-radius:var(--radius) var(--radius) 0 0;box-shadow:var(--shadow-lg);padding:24px var(--horizontal-padding) calc(16px + env(safe-area-inset-bottom));animation:rise 200ms ease-out both}
+.dialog{width:100%;max-width:400px;background:var(--popover);color:var(--popover-foreground);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:24px;animation:rise 200ms ease-out both}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px}
+.switch{position:relative;width:44px;height:24px;border-radius:var(--rounded-full);background:var(--muted-foreground);border:0;cursor:pointer;flex:none;transition:all 200ms;padding:0}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:var(--rounded-full);background:var(--primary-foreground);transition:all 200ms}
+.switch[aria-checked="true"]{background:var(--primary)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.trophy-layer{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:color-mix(in srgb,var(--background) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fade 200ms ease-out both;cursor:pointer;padding:24px}
+.trophy-layer canvas{width:min(320px,80vw);height:min(320px,80vw);display:block}
+.trophy-layer .copy{animation:rise 200ms ease-out 400ms both;text-align:center}
+
+@media (hover:hover){
+  .btn-solid:hover{box-shadow:inset 0 0 0 999px var(--opacity-secondary-20)}
+  .btn-outline:hover{background:var(--accent)}
+  .btn-ghost:hover{background:var(--secondary)}
+  button.tcard:hover{box-shadow:var(--shadow-xl)}
+  .chip:hover{background:var(--accent)}
+  .opt:hover{box-shadow:var(--shadow-md)}
+  .side:hover{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .chev{animation:none}
+}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="veil" id="veil"></div>
+<div class="app theme-assessments" id="app"></div>
+<div aria-live="polite" class="sr-only" id="live"></div>
+<template id="logo-tpl"><svg width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_28351_60028)">
+<path d="M100.383 108C96.3149 108 92.9609 104.856 92.9609 100.536C92.9609 96.174 96.3149 93.03 100.383 93.03C104.493 93.03 107.847 96.174 107.847 100.536C107.85 104.856 104.493 108 100.383 108ZM100.383 94.287C96.9869 94.287 94.3019 96.888 94.3019 100.536C94.3019 104.142 96.9869 106.743 100.383 106.743C103.779 106.743 106.464 104.142 106.464 100.536C106.464 96.888 103.782 94.287 100.383 94.287ZM102.231 104.352C102.063 104.142 101.979 103.638 101.895 102.801C101.853 101.877 101.475 101.586 100.596 101.586H98.9999V104.355H97.2809V96.555H100.929C102.9 96.555 103.908 97.479 103.908 98.946C103.908 100.077 103.152 100.833 102.147 100.917C103.026 101.085 103.53 101.631 103.614 102.51C103.698 103.683 103.74 104.061 104.034 104.355H102.231V104.352ZM100.593 100.242C101.643 100.242 102.144 99.864 102.144 99.069C102.144 98.355 101.64 97.896 100.593 97.896H98.9999V100.245H100.593V100.242Z" fill="#1A1A1A"/>
+<path d="M107.919 53.919L84.6721 53.895C84.6721 54.612 84.6451 55.323 84.6001 56.019C84.2671 60.918 82.7581 65.712 80.2051 69.924C77.6461 74.136 74.0731 77.766 69.4951 80.454C63.9301 83.709 57.8731 85.002 51.9181 84.606C47.0161 84.273 42.2221 82.764 38.0101 80.208C33.7951 77.649 30.1621 74.073 27.4711 69.489C24.2161 63.927 22.9231 57.87 23.3191 51.912C23.6521 47.013 25.1641 42.216 27.7171 38.004C30.2761 33.789 33.8521 30.159 38.4361 27.468H38.4391C43.9951 24.216 50.0491 22.923 56.0011 23.322C60.8071 23.649 65.5111 25.107 69.6631 27.573L81.5311 7.58102C74.2231 3.24602 66.0121 0.702024 57.5791 0.126024C47.1601 -0.590976 36.3451 1.74002 26.6791 7.41302C18.7111 12.078 12.3271 18.54 7.83613 25.95C3.34213 33.366 0.711133 41.733 0.126133 50.331C-0.590867 60.756 1.73713 71.574 7.41313 81.246C12.0811 89.214 18.5401 95.598 25.9531 100.089C33.3661 104.583 41.7331 107.214 50.3341 107.802C60.7591 108.519 71.5741 106.188 81.2461 100.515H81.2491C89.2171 95.847 95.5981 89.388 100.086 81.978C104.577 74.565 107.208 66.198 107.793 57.603C107.877 56.367 107.919 55.14 107.919 53.919Z" fill="#1A1A1A"/>
+<path d="M79.4462 39.624C75.9632 33.681 77.9582 26.043 83.8982 22.56C89.8412 19.077 97.4792 21.069 100.962 27.012C104.445 32.955 102.45 40.593 96.5072 44.076C90.5672 47.559 82.9292 45.564 79.4462 39.624Z" fill="#FF554D"/>
+</g>
+<defs>
+<clipPath id="clip0_28351_60028">
+<rect width="108" height="108" fill="white"/>
+</clipPath>
+</defs>
+</svg></template>
+
+<script type="module">
+import * as THREE from './vendor/three/three.min.js';
+
+/* ======================================================================
+   Tokens: every colour in the 3D scene is read from the CSS variables
+   ====================================================================== */
+const themeEl = document.getElementById('app');
+const tok = n => getComputedStyle(themeEl).getPropertyValue(n).trim();
+const C = n => new THREE.Color(tok(n));
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ======================================================================
+   Icons (Lucide)
+   ====================================================================== */
+const I = {
+  x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  star:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  right:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  left:'<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+  chevL:'<path d="m15 18-6-6 6-6"/>',
+  chevR:'<path d="m9 18 6-6-6-6"/>',
+  chevU:'<path d="m18 15-6-6-6 6"/>',
+  chevD:'<path d="m6 9 6 6 6-6"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  list:'<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
+  tools:'<path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>',
+  volume:'<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>',
+  trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+  send:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+  undo:'<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>',
+  dog:'<path d="M10 5.17C10 3.97 9.1 3 8 3s-2 .97-2 2.17"/><path d="M14 5.17C14 3.97 14.9 3 16 3s2 .97 2 2.17"/><path d="M6 8c0-3 2.7-4 6-4s6 1 6 4v5a6 6 0 0 1-12 0z"/><path d="M10 10h.01"/><path d="M14 10h.01"/><path d="M11 14h2l-1 1z"/>',
+  eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  eyeOff:'<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/>',
+  alert:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+  pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>'
+};
+const ic = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+const logo = document.getElementById('logo-tpl').innerHTML;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const frac = (n, d) => `<span class="frac"><span>${n}</span><span class="bar"></span><span>${d}</span></span>`;
+
+/* ======================================================================
+   Content
+   ====================================================================== */
+const TEST = { title:'Fractions check', subject:'Maths', teacher:'Ms Taylor', minutes:8, due:'Due Friday',
+  note:'No timer, so take your time. Skip any question and come back to it.' };
+const Q = [
+  { type:'fill', label:'Equivalent fractions',
+    story:'A dog trainer saw that 3/10 of the dogs at the park were golden retrievers and 25/100 were poodles.',
+    title:'What fraction of the dogs were retrievers or poodles?', bank:[55,33,3,30,10,100,110,28] },
+  { type:'match', label:'Add tenths and hundredths',
+    story:'A dog shelter adds up the fraction of dogs adopted each day. Turn the tenths into hundredths first, then add.',
+    title:'Match each sum to its answer.',
+    rows:[['6','10','7','100'],['4','10','3','100'],['2','10','5','100'],['1','10','9','100']],
+    choices:['67/100','25/100','52/100','19/100','43/100'] },
+  { type:'mcq', label:'Add tenths and hundredths',
+    story:'At a dog park, 3/10 of the dogs are golden retrievers and 4/100 are poodles.',
+    title:'What is 3/10 + 4/100?', options:['7/100','7/110','34/100','34/10'] },
+  { type:'passage', label:'Multiplication as comparison', passageTitle:'Sticker collections',
+    passage:'Maya and Leo both collect stickers. Leo has 4 stickers. Maya has 5 times as many stickers as Leo. Maya says she can write a multiplication equation to show how her collection compares to Leo’s.',
+    title:'Which equation best shows “Maya has 5 times as many stickers as Leo”?',
+    options:['20 + 5 = 25, Maya has 5 more stickers than Leo','4 × 5 = 20, Leo has 4 times as many stickers as Maya','5 × 4 = 20, Maya has 5 times as many stickers as Leo','4 + 4 + 4 + 4 + 4 = 20, Maya has 5 groups of 4 added together'] }
+];
+const PAST = [
+  { title:'Reading reflection', subject:'English', when:'Handed in 21 Oct', questions:6, stars:6, minutes:11, result:'Ms Taylor hasn’t shared results yet.' },
+  { title:'Times tables sprint', subject:'Maths', when:'Handed in 14 Oct', questions:10, stars:10, minutes:7, result:'Feedback shared. Great effort on the 7s!' }
+];
+
+/* ======================================================================
+   State (kept in this browser tab only)
+   ====================================================================== */
+const KEY = 'cogniaStudentOption2v2';
+const fresh = () => ({ screen:'signin', i:0, card:0, answers:[[null,null,null,null],[null,null,null,null],null,null],
+  activeBlank:0, openRow:0, stars:12, streak:3, status:'new', startedAt:null, finishedAt:null, readAloud:false, bigText:false,
+  seen:[false,false,false,false], swiped:false });
+let S = fresh();
+try { const saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (saved) S = Object.assign(fresh(), saved); } catch (e) {}
+const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+let overlay = null, cheer = '', justSubmitted = false;
+let signinErr = { id:false, pw:false }, showPw = false;
+
+const isAnswered = k => { const a = S.answers[k]; return Array.isArray(a) ? a.every(v => v !== null) : a !== null; };
+const answered = () => Q.filter((_, k) => isAnswered(k)).length;
+const left = () => Q.length - answered();
+const say = t => { const l = document.getElementById('live'); l.textContent = ''; setTimeout(() => l.textContent = t, 30); };
+const speak = t => { if (!S.readAloud || !('speechSynthesis' in window)) return; try { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t)); } catch (e) {} };
+
+/* ======================================================================
+   3D classroom
+   ====================================================================== */
+const World = (() => {
+  const canvas = document.getElementById('scene');
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance' }); }
+  catch (e) { document.body.classList.add('no-webgl'); return { go(){}, setActive(){}, fly(){}, ok:false }; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  const bg = C('--accent-100');
+  scene.background = bg;
+  scene.fog = new THREE.Fog(bg, 16, 32);
+  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 60);
+
+  const M = (token, extra = {}) => new THREE.MeshStandardMaterial(Object.assign({ color:C(token), roughness:0.85, metalness:0 }, extra));
+  const box = (w, h, d, mat, r = 0.04) => {
+    const g = r > 0 ? new THREE.RoundedBoxGeometry(w, h, d, 3, Math.min(r, w / 2, h / 2, d / 2)) : new THREE.BoxGeometry(w, h, d);
+    const m = new THREE.Mesh(g, mat); m.castShadow = true; m.receiveShadow = true; return m;
+  };
+  const at = (m, x, y, z) => { m.position.set(x, y, z); scene.add(m); return m; };
+
+  // Lights: soft sky light plus sunlight through the windows
+  scene.add(new THREE.HemisphereLight(C('--card'), C('--secondary'), 1.6));
+  const sun = new THREE.DirectionalLight(C('--card'), 2.4);
+  sun.position.set(9, 9, 3); sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, { left:-9, right:9, top:9, bottom:-9, near:1, far:30 });
+  sun.shadow.bias = -0.0005;
+  scene.add(sun);
+
+  // Room shell
+  const W = 12, D = 14, H = 5;
+  const wallM = M('--background'), floorM = M('--secondary'), trimM = M('--card');
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(W, D), floorM); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  const rug = new THREE.Mesh(new THREE.CircleGeometry(3.2, 48), M('--accent-100')); rug.rotation.x = -Math.PI / 2; rug.position.set(0, 0.01, 0.6); rug.receiveShadow = true; scene.add(rug);
+  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(W, D), trimM); ceil.rotation.x = Math.PI / 2; ceil.position.y = H; scene.add(ceil);
+  at(box(W, H, 0.2, wallM, 0), 0, H / 2, -D / 2);
+  at(box(W, H, 0.2, wallM, 0), 0, H / 2, D / 2);
+  at(box(0.2, H, D, wallM, 0), -W / 2, H / 2, 0);
+  // Right wall with three windows
+  const wx = W / 2;
+  at(box(0.2, 1.0, D, wallM, 0), wx, 0.5, 0);
+  at(box(0.2, 1.2, D, wallM, 0), wx, H - 0.6, 0);
+  const winZ = [-4.2, 0, 4.2];
+  const sky = new THREE.MeshBasicMaterial({ color:C('--accent-100') });
+  [-6.4, -2.1, 2.1, 6.4].forEach(z => at(box(0.2, H - 2.2, 1.6, wallM, 0), wx, 1 + (H - 2.2) / 2, z * 1.0 + (z > 0 ? 0 : 0)));
+  winZ.forEach(z => {
+    const pane = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 2.8), sky); pane.rotation.y = -Math.PI / 2; pane.position.set(wx + 0.05, 2.4, z); scene.add(pane);
+    at(box(0.12, 0.1, 2.8, trimM), wx - 0.08, 2.4, z);
+    at(box(0.12, 2.8, 0.1, trimM), wx - 0.08, 2.4, z);
+    at(box(0.4, 0.08, 2.8, trimM), wx - 0.2, 1.02, z);
+  });
+  // Skirting
+  at(box(W, 0.16, 0.06, trimM, 0), 0, 0.08, -D / 2 + 0.13);
+  at(box(0.06, 0.16, D, trimM, 0), -W / 2 + 0.13, 0.08, 0);
+
+  // Board with chalk-style writing drawn from tokens
+  at(box(6.4, 2.8, 0.14, trimM), 0, 2.7, -D / 2 + 0.16);
+  const boardCanvas = document.createElement('canvas'); boardCanvas.width = 1024; boardCanvas.height = 448;
+  const boardTex = new THREE.CanvasTexture(boardCanvas); boardTex.colorSpace = THREE.SRGBColorSpace;
+  const drawBoard = () => {
+    const g = boardCanvas.getContext('2d');
+    g.fillStyle = tok('--accent-400'); g.fillRect(0, 0, 1024, 448);
+    g.fillStyle = tok('--card'); g.strokeStyle = tok('--accent-100'); g.lineWidth = 6;
+    g.font = '600 64px "Open Sans", sans-serif'; g.fillText('Fractions', 64, 112);
+    g.font = '400 52px "Open Sans", sans-serif';
+    g.fillText('3/10 = 30/100', 64, 220); g.fillText('30/100 + 25/100 = ?', 64, 304);
+    g.beginPath(); g.moveTo(64, 340); g.lineTo(560, 340); g.stroke();
+    g.font = '600 48px "Open Sans", sans-serif'; g.fillText('You’ve got this!', 620, 392);
+    // simple fraction pie
+    g.beginPath(); g.arc(830, 190, 110, 0, Math.PI * 2); g.lineWidth = 6; g.stroke();
+    g.beginPath(); g.moveTo(830, 190); g.arc(830, 190, 110, -Math.PI / 2, 0); g.closePath(); g.fillStyle = tok('--accent-200'); g.fill(); g.stroke();
+    g.beginPath(); g.moveTo(720, 190); g.lineTo(940, 190); g.moveTo(830, 80); g.lineTo(830, 300); g.stroke();
+    boardTex.needsUpdate = true;
+  };
+  drawBoard(); document.fonts && document.fonts.ready.then(drawBoard);
+  const board = new THREE.Mesh(new THREE.PlaneGeometry(6, 2.5), new THREE.MeshStandardMaterial({ map:boardTex, roughness:0.95 }));
+  board.position.set(0, 2.7, -D / 2 + 0.24); scene.add(board);
+  at(box(6.2, 0.08, 0.24, trimM), 0, 1.3, -D / 2 + 0.28);
+
+  // Clock
+  const clock = new THREE.Group(); clock.position.set(4.3, 3.8, -D / 2 + 0.15); scene.add(clock);
+  const face = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.08, 40), trimM); face.rotation.x = Math.PI / 2; clock.add(face);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(0.45, 0.05, 12, 40), M('--accent-400')); clock.add(rim);
+  const handM = M('--primary');
+  const hourHand = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.24, 0.02), handM); hourHand.geometry.translate(0, 0.12, 0); hourHand.position.z = 0.06; clock.add(hourHand);
+  const minHand = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.36, 0.02), handM); minHand.geometry.translate(0, 0.18, 0); minHand.position.z = 0.07; clock.add(minHand);
+
+  // Desk and chair builder
+  const deskTop = M('--card'), legM = M('--muted-foreground'), seatM = M('--accent-300'), bookMs = ['--accent-200', '--accent-300', '--accent-400', '--accent-100'].map(t => M(t));
+  const paperM = M('--card');
+  const desk = (x, z, props = 0) => {
+    const g = new THREE.Group(); g.position.set(x, 0, z); scene.add(g);
+    const top = box(1.5, 0.1, 0.95, deskTop, 0.04); top.position.y = 1.05; g.add(top);
+    [[-0.65, -0.38], [0.65, -0.38], [-0.65, 0.38], [0.65, 0.38]].forEach(([lx, lz]) => { const l = box(0.06, 1.0, 0.06, legM, 0.02); l.position.set(lx, 0.5, lz); g.add(l); });
+    const seat = box(0.8, 0.08, 0.75, seatM, 0.04); seat.position.set(0, 0.62, 0.85); g.add(seat);
+    const back = box(0.8, 0.6, 0.08, seatM, 0.04); back.position.set(0, 1.0, 1.2); g.add(back);
+    [[-0.34, 0.55], [0.34, 0.55], [-0.34, 1.15], [0.34, 1.15]].forEach(([lx, lz]) => { const l = box(0.05, 0.6, 0.05, legM, 0.02); l.position.set(lx, 0.3, lz); g.add(l); });
+    if (props % 3 === 0) { const b = box(0.42, 0.08, 0.3, bookMs[props % 4], 0.02); b.position.set(-0.35, 1.15, -0.05); b.rotation.y = 0.3; g.add(b); }
+    if (props % 2 === 0) { const p = box(0.36, 0.01, 0.48, paperM, 0); p.position.set(0.2, 1.11, 0.05); p.rotation.y = -0.2; g.add(p);
+      const pen = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.3, 8), bookMs[2]); pen.rotation.z = Math.PI / 2; pen.rotation.y = 0.5; pen.position.set(0.45, 1.13, 0.1); g.add(pen); }
+    return g;
+  };
+  let n = 0;
+  [-2.4, 0.4, 3.2].forEach(z => [-3.4, 0, 3.4].forEach(x => desk(x, z, n++)));
+
+  // Teacher desk, globe and apple-free stack of books
+  const tdesk = box(2.6, 0.12, 1.1, deskTop, 0.05); at(tdesk, 3.4, 1.1, -5.2);
+  at(box(2.4, 1.0, 0.06, M('--accent-400'), 0.02), 3.4, 0.55, -5.7);
+  [[-1.2, -0.45], [1.2, -0.45], [-1.2, 0.45], [1.2, 0.45]].forEach(([lx, lz]) => at(box(0.07, 1.05, 0.07, legM, 0.02), 3.4 + lx, 0.53, -5.2 + lz));
+  const globe = at(new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 24), M('--accent-300', { roughness:0.5 })), 2.6, 1.62, -5.2); globe.castShadow = true;
+  at(new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.2, 20), legM), 2.6, 1.26, -5.2);
+  [0, 1, 2].forEach(k => { const b = box(0.6, 0.1, 0.42, bookMs[k], 0.02); b.rotation.y = k * 0.25; at(b, 4.2, 1.22 + k * 0.1, -5.1); });
+
+  // Bookshelf on the left wall
+  const shelf = new THREE.Group(); shelf.position.set(-W / 2 + 0.45, 0, -0.6); shelf.rotation.y = Math.PI / 2; scene.add(shelf);
+  const sideM = M('--card');
+  [[-1.5], [1.5]].forEach(([sx]) => { const s = box(0.08, 2.6, 0.6, sideM, 0.02); s.position.set(sx, 1.3, 0); shelf.add(s); });
+  [0.1, 0.95, 1.8, 2.6].forEach(y => { const s = box(3.08, 0.08, 0.6, sideM, 0.02); s.position.set(0, y, 0); shelf.add(s); });
+  [0.14, 0.99, 1.84].forEach((y, row) => { let x = -1.38;
+    while (x < 1.3) { const w = 0.1 + ((x * 37 + row * 13) % 1 + 1) % 1 * 0.08, h = 0.5 + (((x * 91 + row) % 1 + 1) % 1) * 0.25;
+      const b = box(w, h, 0.42, bookMs[Math.floor(((x + 2) * 7 + row) % 4)], 0.01); b.position.set(x + w / 2, y + h / 2 + 0.04, 0); b.rotation.z = (row === 1 && x > 0.6) ? 0.15 : 0; shelf.add(b); x += w + 0.03; } });
+
+  // Ceiling lights
+  [-3, 3].forEach(x => [-3, 3].forEach(z => at(new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.06, 0.5), new THREE.MeshBasicMaterial({ color:C('--card') })), x, H - 0.05, z)));
+
+  // Floating collectible stars (the game layer)
+  const starShape = new THREE.Shape();
+  for (let k = 0; k < 10; k++) { const r = k % 2 ? 0.11 : 0.26, a = k / 10 * Math.PI * 2 + Math.PI / 2; const px = Math.cos(a) * r, py = Math.sin(a) * r; k ? starShape.lineTo(px, py) : starShape.moveTo(px, py); }
+  const starGeo = new THREE.ExtrudeGeometry(starShape, { depth:0.08, bevelEnabled:true, bevelSize:0.03, bevelThickness:0.03, bevelSegments:2 }); starGeo.center();
+  const starM = M('--accent-200', { emissive:C('--accent-200'), emissiveIntensity:0.35, roughness:0.4, metalness:0.2 });
+  const stars = [[-2, 3.2, -3], [1.6, 3.6, -1], [4.2, 2.8, 1.5], [-4.4, 3.1, 1.2], [0.2, 3.0, 2.8], [2.8, 3.4, -4], [-3.2, 2.6, -4.6], [4.6, 2.2, -2.4]].map(([x, y, z], k) => {
+    const s = new THREE.Mesh(starGeo, starM); s.position.set(x, y, z); s.castShadow = true; s.userData = { y, k }; scene.add(s); return s; });
+
+  // Paper plane circling the room
+  const planeGeo = new THREE.BufferGeometry();
+  planeGeo.setAttribute('position', new THREE.Float32BufferAttribute([0,0,0.5, -0.32,0.02,-0.3, 0,0,-0.2,  0,0,0.5, 0,0,-0.2, 0.32,0.02,-0.3,  0,0,0.5, 0,-0.12,-0.25, 0,0,-0.2], 3));
+  planeGeo.computeVertexNormals();
+  const plane = new THREE.Mesh(planeGeo, new THREE.MeshStandardMaterial({ color:C('--card'), side:THREE.DoubleSide, roughness:0.7 })); plane.castShadow = true; scene.add(plane);
+
+  /* Camera stations: one per landing card, plus the test and sign-in views */
+  const ST = {
+    land0: { p:[1.7, 3.3, 6.6], l:[-0.3, 1.5, -6] },
+    land1: { p:[3.0, 2.0, 2.4], l:[5.6, 1.7, -2.6] },
+    land2: { p:[-2.2, 2.2, 2.6], l:[-5.8, 1.4, -1.0] },
+    test:  { p:[0.6, 2.2, -1.6], l:[0.2, 2.6, -7] },
+    signin:{ p:[-1.2, 3.6, 6.4], l:[0.6, 1.0, -3] },
+    review:{ p:[1.7, 3.3, 6.6], l:[-0.3, 1.5, -6] }
+  };
+  const cur = { p:new THREE.Vector3(...ST.signin.p), l:new THREE.Vector3(...ST.signin.l) };
+  let tween = null;
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function go(name, ms = 1100) {
+    const s = ST[name] || ST.land0;
+    const to = { p:new THREE.Vector3(...s.p), l:new THREE.Vector3(...s.l) };
+    if (reduceMotion || ms === 0) { cur.p.copy(to.p); cur.l.copy(to.l); tween = null; return Promise.resolve(); }
+    return new Promise(res => { tween = { from:{ p:cur.p.clone(), l:cur.l.clone() }, to, t0:performance.now(), ms, res }; });
+  }
+
+  // Gentle parallax from pointer or touch
+  const par = { x:0, y:0, tx:0, ty:0 };
+  addEventListener('pointermove', e => { par.tx = (e.clientX / innerWidth - 0.5) * 2; par.ty = (e.clientY / innerHeight - 0.5) * 2; }, { passive:true });
+
+  let active = true;
+  function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w / h < 0.7 ? 62 : 50; camera.updateProjectionMatrix(); }
+  addEventListener('resize', resize); resize();
+
+  const clockStart = performance.now();
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!active || document.hidden) return;
+    const t = (now - clockStart) / 1000;
+    if (tween) {
+      const k = Math.min(1, (now - tween.t0) / tween.ms), e = ease(k);
+      cur.p.lerpVectors(tween.from.p, tween.to.p, e); cur.l.lerpVectors(tween.from.l, tween.to.l, e);
+      if (k === 1) { const r = tween.res; tween = null; r(); }
+    }
+    par.x += (par.tx - par.x) * 0.04; par.y += (par.ty - par.y) * 0.04;
+    const sway = reduceMotion ? 0 : 1;
+    camera.position.set(cur.p.x + par.x * 0.25 * sway + Math.sin(t * 0.35) * 0.06 * sway, cur.p.y - par.y * 0.12 * sway + Math.sin(t * 0.5) * 0.04 * sway, cur.p.z);
+    camera.lookAt(cur.l);
+    if (sway) {
+      stars.forEach(s => { s.rotation.y = t * 0.9 + s.userData.k; s.position.y = s.userData.y + Math.sin(t * 1.2 + s.userData.k) * 0.12; });
+      const a = t * 0.25; plane.position.set(Math.cos(a) * 3.6, 3.4 + Math.sin(t * 0.8) * 0.2, Math.sin(a) * 3.4 - 0.6);
+      plane.rotation.set(0, -a, Math.sin(t * 0.8) * 0.2); globe.rotation.y = t * 0.4;
+    }
+    const d = new Date(); minHand.rotation.z = -d.getMinutes() / 60 * Math.PI * 2; hourHand.rotation.z = -((d.getHours() % 12) + d.getMinutes() / 60) / 12 * Math.PI * 2;
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(frame);
+  return { go, setActive(v) { active = v; }, ok:true };
+})();
+
+/* ======================================================================
+   Screens
+   ====================================================================== */
+const app = document.getElementById('app');
+const veil = document.getElementById('veil');
+
+function hud(extra = '') {
+  return `<header class="hud">
+    <span class="logo glass">${logo}</span><span class="grow"></span>
+    <span class="pill glass stars" id="stars" aria-label="${S.stars} stars">${ic('star')}${S.stars}</span>
+    ${extra}
+  </header>`;
+}
+
+/* ---- Sign in ---- */
+function signin() {
+  return `<section class="screen">
+    <form class="signin glass stack g-6" novalidate data-form="signin" aria-labelledby="si-t">
+      <div class="stack g-3 center"><span class="mark">${logo}</span>
+        <div class="stack g-1 center"><h1 class="text-heading font-semibold" id="si-t">Hi there!</h1>
+        <p class="text-body-base text-muted">Sign in with the details from your teacher.</p></div></div>
+      <div class="stack g-6">
+        <div class="field"><label for="sid">Student ID *</label>
+          <input class="input" id="sid" name="sid" inputmode="numeric" autocomplete="username" placeholder="e.g. 204518" ${signinErr.id ? 'aria-invalid="true" aria-describedby="sid-err"' : ''}>
+          ${signinErr.id ? `<p class="err" id="sid-err">${ic('alert')}Enter your student ID.</p>` : ''}</div>
+        <div class="field"><label for="pw">Password *</label>
+          <div class="input-wrap"><input class="input" id="pw" name="pw" type="${showPw ? 'text' : 'password'}" autocomplete="current-password" placeholder="Your password" ${signinErr.pw ? 'aria-invalid="true" aria-describedby="pw-err"' : ''}>
+          <button type="button" class="btn btn-ghost btn-icon" data-go="togglepw" aria-label="${showPw ? 'Hide password' : 'Show password'}" title="${showPw ? 'Hide password' : 'Show password'}">${ic(showPw ? 'eyeOff' : 'eye')}</button></div>
+          ${signinErr.pw ? `<p class="err" id="pw-err">${ic('alert')}Enter your password.</p>` : ''}</div>
+      </div>
+      <button class="btn btn-solid w-full" type="submit">Sign in${ic('right')}</button>
+      <p class="text-body-small text-muted center">Forgot your password? Ask your teacher.</p>
+    </form>
+    <p class="text-body-small text-muted" style="text-align:center;padding:0 16px 16px">Prototype: any ID and password work.</p>
+  </section>`;
+}
+
+/* ---- Landing: one glass card in front of the classroom ---- */
+const deckCards = () => {
+  const cur = S.status === 'done'
+    ? { kind:'done', title:TEST.title, subject:TEST.subject }
+    : { kind:'todo', title:TEST.title, subject:TEST.subject };
+  return [cur, ...PAST.map(p => Object.assign({ kind:'past' }, p))];
+};
+function cardHTML(c, idx, total) {
+  if (c.kind === 'todo') {
+    const inProg = S.status === 'progress', n = answered();
+    return `<button class="tcard glass" data-card="open" aria-label="${inProg ? 'Continue' : 'Start'} ${c.title}, card ${idx + 1} of ${total}">
+      <span class="row between"><span class="badge badge-theme-light">${c.subject}</span>${inProg ? `<span class="badge badge-info">${n} of ${Q.length} done</span>` : `<span class="badge badge-secondary">New</span>`}</span>
+      <span class="stack g-2"><span class="text-heading font-semibold">${c.title}</span>
+        <span class="meta"><span>${ic('list')}${Q.length} questions</span><span>${ic('clock')}About ${TEST.minutes} min</span><span>${ic('calendar')}${TEST.due}</span></span></span>
+      <span class="note stack"><span class="text-body-small font-semibold">${TEST.teacher}</span><span class="text-body-small">${TEST.note}</span></span>
+      <span class="cta">${inProg ? 'Keep going' : 'Start test'}${ic('right')}</span>
+    </button>`;
+  }
+  const done = c.kind === 'done';
+  const stats = done ? [[`${answered()}/${Q.length}`, 'Answered'], [`+${starsEarned()}`, 'Stars'], [`${minsTaken()} min`, 'Time']] : [[`${c.questions}/${c.questions}`, 'Answered'], [`+${c.stars}`, 'Stars'], [`${c.minutes} min`, 'Time']];
+  return `<div class="tcard glass" data-card="info" tabindex="0" aria-label="${c.title}, handed in, card ${idx + 1} of ${total}">
+    <span class="row between"><span class="badge badge-theme-light">${c.subject}</span><span class="badge badge-success">${ic('check')}Handed in</span></span>
+    <span class="stack g-2"><span class="text-heading font-semibold">${c.title}</span>
+      <span class="meta"><span>${ic('calendar')}${done ? 'Handed in just now' : c.when}</span></span></span>
+    <span class="result-row">${stats.map(([v, l]) => `<div><span class="text-body-base font-semibold">${v}</span><span class="text-body-small text-muted">${l}</span></div>`).join('')}</span>
+    <span class="text-body-small text-muted">${done ? `${TEST.teacher} will share how you did.` : c.result}</span>
+  </div>`;
+}
+function landing() {
+  const cards = deckCards(), k = S.card, c = cards[k];
+  const hint = k < cards.length - 1
+    ? `<button class="btn btn-ghost glass" data-go="cardnext" aria-label="Swipe up for the next card">${'<span class="chev" style="display:inline-flex">' + ic('chevU') + '</span>'}${k === 0 ? 'Past tests' : 'Older'}</button>`
+    : '';
+  const back = k > 0 ? `<button class="btn btn-ghost glass" data-go="cardprev" aria-label="Back to the previous card">${ic('chevD')}${k === 1 ? 'Up next' : 'Newer'}</button>` : '';
+  return `<section class="screen">
+    ${hud(`<button class="avatar glass" data-go="signout" aria-label="Jamie M., sign out" title="Sign out">JM</button>`)}
+    <div class="landing-body">
+      <div class="stack g-1" style="margin-bottom:auto;padding-top:8px">
+        <h1 class="text-heading font-semibold">${justSubmitted ? 'Nice work, Jamie!' : k === 0 ? (S.status === 'done' ? 'All caught up, Jamie' : 'Hey Jamie') : 'Your past tests'}</h1>
+        <p class="text-body-small font-semibold row g-1">${ic('star').replace('<svg', '<svg style="width:16px;height:16px;color:var(--accent-300)"')}${S.streak}-day streak</p>
+      </div>
+      <div class="dots" aria-hidden="true">${cards.map((_, j) => `<span class="dot ${j === k ? 'on' : ''}"></span>`).join('')}</div>
+      <div id="card-slot">${cardHTML(c, k, cards.length)}</div>
+      <div class="swipe-hint">${back}${hint}</div>
+    </div>
+  </section>`;
+}
+
+/* ---- Test: a deck of question cards ---- */
+function qLabel(k) { return `<span class="row between"><span class="text-body-small text-muted">Question ${k + 1} of ${Q.length} · ${Q[k].label}</span>
+  ${S.readAloud ? `<button class="btn btn-ghost" style="height:32px;padding:0 8px;min-width:0" data-go="speak" aria-label="Read this question aloud" title="Read aloud">${ic('volume')}</button>` : ''}</span>`; }
+const storyHTML = q => `<div class="story"><span class="icon-tile">${ic('dog')}</span><p class="text-body-base q-body">${esc(q.story)}</p></div>`;
+const title = (q, k) => `<h2 class="text-heading font-semibold q-title" id="qt-${k}">${esc(q.title)}</h2>`;
+
+function blank(idx, val) {
+  const a = S.activeBlank === idx;
+  return `<button class="blank ${val !== null ? 'filled' : ''} ${a ? 'active' : ''}" data-blank="${idx}" aria-label="Box ${idx + 1}${val !== null ? ', ' + val : ', empty'}${a ? ', selected' : ''}">${val !== null ? val : ''}</button>`;
+}
+function body(k) {
+  const q = Q[k];
+  if (q.type === 'fill') {
+    const v = S.answers[0], bf = (a, b) => `<span class="frac"><span>${a}</span><span class="bar"></span><span>${b}</span></span>`;
+    return { body:`${qLabel(k)}${storyHTML(q)}${title(q, k)}
+      <div class="panel">
+        <div class="stack g-2"><span class="step-label">Step 1 · Turn tenths into hundredths</span><div class="eq">${frac(3, 10)}<span>=</span>${bf(blank(0, v[0]), blank(1, v[1]))}</div></div>
+        <div class="stack g-2"><span class="step-label">Step 2 · Add the two fractions</span><div class="eq">${frac(30, 100)}<span>+</span>${frac(25, 100)}<span>=</span>${bf(blank(2, v[2]), '100')}</div></div>
+        <div class="stack g-2"><span class="step-label">Answer</span><div class="eq"><span class="q-body">So</span>${bf(blank(3, v[3]), '100')}<span class="text-body-base q-body" style="font-weight:400">of the dogs</span></div></div>
+      </div>`,
+      foot:`<div class="stack g-2"><p class="text-body-small text-muted center" style="text-align:center">Tap a number to fill the highlighted box</p>
+        <div class="row g-2"><div class="tray grow">${q.bank.map(n => `<button class="chip" data-chip="${n}">${n}</button>`).join('')}</div></div>
+        <button class="btn btn-ghost w-full" data-go="clear">${ic('undo')}Clear box</button></div>` };
+  }
+  if (q.type === 'match') {
+    const v = S.answers[1];
+    return { body:`${qLabel(k)}${storyHTML(q)}${title(q, k)}<div class="stack g-3">${q.rows.map((r, j) => { const open = S.openRow === j;
+      return `<div class="match-row ${open ? 'open' : ''}"><button class="match-head" data-row="${j}" aria-expanded="${open}">
+        <span class="eq" style="gap:8px">${frac(r[0], r[1])}<span>+</span>${frac(r[2], r[3])}<span>=</span></span><span class="grow"></span>
+        ${v[j] ? `<span class="badge badge-theme-light" style="font-size:16px;height:32px;padding:0 12px">${v[j]}</span>` : `<span class="text-body-small text-muted">${open ? 'Pick one' : 'Tap to pick'}</span>`}</button>
+        ${open ? `<div class="match-grid" role="radiogroup" aria-label="Answer for row ${j + 1}">${q.choices.map(c => `<button class="chip" role="radio" aria-checked="${v[j] === c}" aria-pressed="${v[j] === c}" data-match="${j}" data-val="${c}">${c}</button>`).join('')}</div>` : ''}</div>`; }).join('')}</div>` };
+  }
+  const v = S.answers[k];
+  const lead = q.type === 'passage'
+    ? `<div class="panel" style="gap:8px"><span class="row g-2 icon-plain">${ic('book')}<span class="text-body-base font-semibold">${q.passageTitle}</span></span><p class="text-body-base q-body">${esc(q.passage)}</p></div>`
+    : storyHTML(q);
+  return { body:`${qLabel(k)}${lead}${title(q, k)}<div class="opts" role="radiogroup" aria-labelledby="qt-${k}">${q.options.map((o, j) => `
+      <button class="opt" role="radio" aria-checked="${v === j}" data-opt="${j}" data-q="${k}"><span class="letter">${'ABCD'[j]}</span>
+      <span class="opt-label ${o.length < 8 ? 'font-semibold' : ''}" ${o.length < 8 ? 'style="font-size:24px"' : ''}>${esc(o)}</span><span class="tick">${ic('check')}</span></button>`).join('')}</div>` };
+}
+function finishCard() {
+  const s = left();
+  return { body:`<div class="stack g-6 center" style="margin:auto 0;text-align:center">
+      <span class="finish-icon">${ic('trophy')}</span>
+      <div class="stack g-2 center"><h2 class="text-heading font-semibold">${s ? `${answered()} of ${Q.length} answered` : `That’s all ${Q.length}!`}</h2>
+      <p class="text-body-base text-muted">${s ? `Swipe back to finish ${s === 1 ? 'the skipped question' : 'the skipped questions'}, or review what you have.` : 'Check your answers, then hand in.'}</p></div>
+    </div>`, foot:`<button class="btn btn-solid w-full" data-go="review">Review answers${ic('right')}</button>` };
+}
+const cardCount = () => Q.length + 1;
+function cardInner(k) { const c = k < Q.length ? body(k) : finishCard(); return `<div class="qbody">${c.body}</div>${c.foot ? `<div class="qfoot">${c.foot}</div>` : ''}`; }
+
+function testScreen() {
+  const segs = Q.map((_, k) => `<span class="seg ${isAnswered(k) ? 'done' : ''} ${k === S.i && !isAnswered(k) ? 'now' : ''}"></span>`).join('');
+  return `<section class="screen ${S.bigText ? 'big' : ''}">
+    <header class="hud" style="padding-left:8px;padding-right:8px">
+      <button class="btn btn-icon btn-ghost glass" style="border-radius:var(--rounded-full)" data-go="exit" aria-label="Take a break" title="Take a break">${ic('x')}</button>
+      <div class="segs" id="segs" role="img" aria-label="${answered()} of ${Q.length} answered">${segs}</div>
+      <span class="pill glass stars" id="stars" aria-label="${S.stars} stars">${ic('star')}${S.stars}</span>
+      <button class="btn btn-icon btn-ghost glass" style="border-radius:var(--rounded-full)" data-go="tools" aria-label="Support tools" title="Support tools">${ic('tools')}</button>
+    </header>
+    <div class="deck-wrap" id="deck">
+      ${Array.from({ length:cardCount() }, (_, k) => `<article class="qcard" data-k="${k}" aria-roledescription="card">${Math.abs(k - S.i) <= 2 ? cardInner(k) : ''}</article>`).join('')}
+    </div>
+    <div class="deck-meta"><button class="side l glass" data-go="prev" aria-label="Previous question" title="Previous question">${ic('chevL')}</button>
+      <span id="deck-msg"></span>
+      <button class="side r glass" data-go="next" aria-label="Next question" title="Next question">${ic('chevR')}</button></div>
+  </section>`;
+}
+function deckMeta() {
+  const m = document.getElementById('deck-msg'); if (!m) return;
+  const msg = cheer ? `<span class="cheer-pill glass cheer">${ic('star')}${cheer}</span>`
+    : `<span class="text-body-small font-semibold">${S.i < Q.length ? `${S.swiped ? `${answered()} of ${Q.length} answered` : 'Swipe for the next question'}` : 'Ready to review'}</span>`;
+  m.innerHTML = msg;
+}
+function layoutDeck(animate = true) {
+  const deck = document.getElementById('deck'); if (!deck) return;
+  deck.querySelectorAll('.qcard').forEach(el => {
+    const k = +el.dataset.k, d = k - S.i;
+    if (!animate) el.style.transition = 'none';
+    if (d < 0) { el.style.transform = 'translateX(-130%) rotate(-12deg)'; el.style.opacity = '0'; el.style.zIndex = 5; }
+    else { const dd = Math.min(d, 3); el.style.transform = `translateY(${dd * 12}px) scale(${1 - dd * 0.05})`; el.style.opacity = d > 3 ? '0' : '1'; el.style.zIndex = 5 - d; }
+    el.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+    if (d === 0) el.removeAttribute('inert'); else el.setAttribute('inert', '');
+    if (Math.abs(d) <= 2 && !el.firstChild) el.innerHTML = cardInner(k);
+    if (!animate) { void el.offsetWidth; el.style.transition = ''; }
+  });
+  document.querySelector('.side.l').hidden = S.i === 0;
+  document.querySelector('.side.r').hidden = S.i >= cardCount() - 1;
+  const segs = document.getElementById('segs');
+  if (segs) { segs.innerHTML = Q.map((_, k) => `<span class="seg ${isAnswered(k) ? 'done' : ''} ${k === S.i && !isAnswered(k) ? 'now' : ''}"></span>`).join(''); segs.setAttribute('aria-label', `${answered()} of ${Q.length} answered`); }
+  deckMeta();
+  save();
+}
+function refreshCard(k, focusSel) {
+  const el = document.querySelector(`.qcard[data-k="${k}"]`); if (!el) return;
+  const sc = el.querySelector('.qbody')?.scrollTop || 0;
+  el.innerHTML = cardInner(k);
+  const b = el.querySelector('.qbody'); if (b) b.scrollTop = sc;
+  const fin = document.querySelector(`.qcard[data-k="${Q.length}"]`); if (fin && k !== Q.length) fin.innerHTML = cardInner(Q.length);
+  if (focusSel) el.querySelector(focusSel)?.focus({ preventScroll:true });
+  layoutDeck();
+}
+function moveDeck(dir) {
+  const n = S.i + dir;
+  if (n < 0 || n >= cardCount()) { bounce(dir); return; }
+  S.i = n; cheer = ''; if (dir > 0) S.swiped = true;
+  layoutDeck();
+  if (n < Q.length) speak(Q[n].title);
+  setTimeout(() => document.querySelector(`.qcard[data-k="${S.i}"] .qbody`)?.focus?.({ preventScroll:true }), 200);
+}
+function bounce(dir) {
+  const el = document.querySelector(`.qcard[data-k="${S.i}"]`); if (!el) return;
+  el.style.transform = `translateX(${dir > 0 ? -16 : 16}px)`; setTimeout(() => layoutDeck(), 120);
+}
+
+/* ---- Review: a clean page ---- */
+function answerText(k) {
+  const a = S.answers[k], q = Q[k];
+  if (!isAnswered(k)) return null;
+  if (q.type === 'fill') return `Step 1: 3/10 = ${a[0]}/${a[1]}<br>Step 2: 30/100 + 25/100 = ${a[2]}/100<br>Answer: ${a[3]}/100 of the dogs`;
+  if (q.type === 'match') return q.rows.map((r, j) => `${r[0]}/${r[1]} + ${r[2]}/${r[3]} = ${a[j]}`).join('<br>');
+  return `${'ABCD'[a]}. ${esc(q.options[a])}`;
+}
+function review() {
+  const n = answered();
+  return `<section class="screen" style="max-width:none">
+    <header class="review-head"><button class="btn btn-icon btn-ghost" data-go="backdeck" aria-label="Back to questions" title="Back to questions">${ic('left')}</button>
+      <span class="text-body-base font-semibold grow">Check your answers</span></header>
+    <div class="review-body" style="max-width:480px;width:100%;margin:0 auto">
+      <div class="stack g-1"><h1 class="text-heading font-semibold">${TEST.title}</h1>
+      <p class="text-body-base text-muted">${n === Q.length ? `All ${Q.length} answered. Tap a question to change it.` : `${n} of ${Q.length} answered. Skipped questions are marked.`}</p></div>
+      ${Q.map((q, k) => { const t = answerText(k); return `<article class="ritem">
+        <div class="row g-3"><span class="num">${k + 1}</span><span class="text-body-small text-muted grow">${q.label}</span>${t ? '' : `<span class="badge badge-warning">${ic('alert')}Skipped</span>`}</div>
+        <p class="text-body-base font-semibold">${esc(q.title)}</p>
+        ${t ? `<div class="answer text-body-base">${t}</div>` : ''}
+        <div><button class="btn btn-ghost" style="padding:0 12px" data-jump="${k}">${ic('pencil')}${t ? 'Change' : 'Answer it'}</button></div>
+      </article>`; }).join('')}
+    </div>
+    <div class="review-foot"><div style="max-width:448px;margin:0 auto"><button class="btn btn-solid w-full" data-go="handin">${ic('send')}Hand in</button></div></div>
+  </section>`;
+}
+
+/* ---- Overlays ---- */
+const toolsBody = () => `<div class="stack g-2">
+  <div class="switch-row"><label class="text-body-base" for="sw-read">Read aloud</label><button class="switch" id="sw-read" role="switch" aria-checked="${S.readAloud}" data-switch="readAloud"></button></div>
+  <div class="switch-row"><label class="text-body-base" for="sw-big">Bigger text</label><button class="switch" id="sw-big" role="switch" aria-checked="${S.bigText}" data-switch="bigText"></button></div></div>`;
+function overlayHTML() {
+  if (overlay === 'tools') return `<div class="scrim" data-scrim><div class="sheet stack g-6" role="dialog" aria-modal="true" aria-labelledby="tl-t" aria-describedby="tl-d">
+    <div class="stack g-1"><h2 class="text-heading font-semibold" id="tl-t">Support tools</h2><p class="text-body-small text-muted" id="tl-d">Your teacher has turned these on for you.</p></div>
+    ${toolsBody()}<button class="btn btn-solid w-full" data-go="close">Done</button></div></div>`;
+  if (overlay === 'exit') return `<div class="scrim mid" data-scrim><div class="dialog stack g-6" role="dialog" aria-modal="true" aria-labelledby="ex-t" aria-describedby="ex-d">
+    <div class="stack g-2"><h2 class="text-heading font-semibold" id="ex-t">Take a break?</h2><p class="text-body-base text-muted" id="ex-d">Your answers are saved. Pick up right where you left off.</p></div>
+    <div class="stack g-2"><button class="btn btn-solid w-full" data-go="close">Keep going</button><button class="btn btn-outline w-full" data-go="leave">Exit test</button></div></div></div>`;
+  if (overlay === 'handin') return `<div class="scrim mid" data-scrim><div class="dialog stack g-6" role="dialog" aria-modal="true" aria-labelledby="hi-t" aria-describedby="hi-d">
+    <div class="stack g-2"><h2 class="text-heading font-semibold" id="hi-t">Hand in with ${left()} skipped?</h2><p class="text-body-base text-muted" id="hi-d">You won’t be able to change your answers after you hand in.</p></div>
+    <div class="stack g-2"><button class="btn btn-outline w-full" data-go="finishfirst">Finish first</button><button class="btn btn-solid w-full" data-go="confirmhandin">Hand in</button></div></div></div>`;
+  return '';
+}
+
+/* ======================================================================
+   Render and navigation
+   ====================================================================== */
+function render(focusSel) {
+  document.querySelectorAll('.scrim').forEach(n => n.remove());
+  const view = { signin, landing, test:testScreen, review }[S.screen] || signin;
+  app.innerHTML = view() + overlayHTML();
+  document.body.classList.toggle('solid-page', S.screen === 'review');
+  veil.classList.toggle('on', S.screen === 'signin' || S.screen === 'test');
+  World.setActive(S.screen !== 'review');
+  if (S.screen === 'test') { layoutDeck(false); bindDeck(); }
+  if (S.screen === 'landing') bindCard();
+  save();
+  const f = focusSel ? app.querySelector(focusSel) : overlay ? app.querySelector('[role=dialog] button') : null;
+  if (f) f.focus({ preventScroll:true });
+}
+const starsEarned = () => answered() + 2;
+const minsTaken = () => Math.max(1, Math.round(((S.finishedAt || Date.now()) - (S.startedAt || Date.now())) / 60000));
+const landStation = k => 'land' + Math.min(k, 2);
+
+async function toLanding(k = 0) {
+  S.card = k; S.screen = 'landing'; overlay = null; render();
+  World.go(landStation(k), 1200);
+}
+async function startTest() {
+  const el = document.querySelector('.tcard'); if (el) { el.style.transform = 'scale(1.04)'; el.style.opacity = '0'; }
+  if (S.status !== 'progress') { S.status = 'progress'; S.startedAt = S.startedAt || Date.now(); S.i = 0; }
+  else { const f = Q.findIndex((_, k) => !isAnswered(k)); S.i = f < 0 ? Q.length : f; }
+  await new Promise(r => setTimeout(r, 200));
+  World.go('test', 900);
+  S.screen = 'test'; overlay = null; render();
+  if (S.i < Q.length) speak(Q[S.i].title);
+}
+
+/* Landing card: swipe up for older, swipe down for newer, tap to open */
+function bindCard() {
+  const el = document.querySelector('.tcard'); if (!el) return;
+  let sy = 0, sx = 0, dy = 0, drag = false, id = null;
+  el.addEventListener('pointerdown', e => { sy = e.clientY; sx = e.clientX; dy = 0; drag = false; id = e.pointerId; });
+  el.addEventListener('pointermove', e => {
+    if (e.pointerId !== id) return;
+    const ny = e.clientY - sy, nx = e.clientX - sx;
+    if (!drag && Math.abs(ny) > 10 && Math.abs(ny) > Math.abs(nx)) { drag = true; el.setPointerCapture(id); el.classList.add('dragging'); }
+    if (drag) { dy = ny; el.style.transform = `translateY(${dy}px) scale(${1 - Math.min(Math.abs(dy), 300) / 3000})`; el.style.opacity = String(1 - Math.min(Math.abs(dy), 300) / 600); }
+  });
+  const end = e => {
+    if (e.pointerId !== id) return; id = null;
+    if (!drag) return;
+    el.classList.remove('dragging');
+    const total = deckCards().length;
+    if (dy < -70 && S.card < total - 1) changeCard(1);
+    else if (dy > 70 && S.card > 0) changeCard(-1);
+    else { el.style.transform = ''; el.style.opacity = ''; }
+    el.dataset.dragged = '1'; setTimeout(() => delete el.dataset.dragged, 50);
+  };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+}
+let changing = false;
+async function changeCard(dir) {
+  if (changing) return; changing = true;
+  const el = document.querySelector('.tcard');
+  if (el) el.classList.add(dir > 0 ? 'leave-up' : 'leave-down');
+  justSubmitted = false;
+  S.card += dir; save();
+  const fly = World.go(landStation(S.card), 1200);
+  await new Promise(r => setTimeout(r, reduceMotion ? 0 : 650));
+  render();
+  const n = document.querySelector('.tcard'); if (n) n.classList.add('enter');
+  await fly; changing = false;
+  say(deckCards()[S.card].title);
+}
+addEventListener('wheel', e => { if (S.screen !== 'landing' || overlay || changing) return; if (Math.abs(e.deltaY) < 30) return;
+  const total = deckCards().length; if (e.deltaY > 0 && S.card < total - 1) changeCard(1); else if (e.deltaY < 0 && S.card > 0) changeCard(-1); }, { passive:true });
+
+/* Question deck: swipe left for next, right for back */
+function bindDeck() {
+  const deck = document.getElementById('deck');
+  let sx = 0, sy = 0, dx = 0, drag = false, id = null, el = null, decided = false;
+  deck.addEventListener('pointerdown', e => {
+    el = e.target.closest('.qcard'); if (!el || +el.dataset.k !== S.i) { el = null; return; }
+    sx = e.clientX; sy = e.clientY; dx = 0; drag = false; decided = false; id = e.pointerId;
+  });
+  deck.addEventListener('pointermove', e => {
+    if (!el || e.pointerId !== id) return;
+    const nx = e.clientX - sx, ny = e.clientY - sy;
+    if (!decided && (Math.abs(nx) > 10 || Math.abs(ny) > 10)) { decided = true; drag = Math.abs(nx) > Math.abs(ny) * 1.2; if (drag) { el.setPointerCapture(id); el.classList.add('dragging'); } }
+    if (!drag) return;
+    dx = nx; const edge = (dx > 0 && S.i === 0) || (dx < 0 && S.i === cardCount() - 1);
+    const eff = edge ? dx * 0.25 : dx;
+    el.style.transform = `translateX(${eff}px) rotate(${eff / 22}deg)`;
+    const nxt = document.querySelector(`.qcard[data-k="${S.i + 1}"]`);
+    if (nxt && dx < 0) nxt.style.transform = `translateY(${12 - Math.min(-dx, 160) / 160 * 12}px) scale(${0.95 + Math.min(-dx, 160) / 160 * 0.05})`;
+  });
+  const end = e => {
+    if (!el || e.pointerId !== id) return;
+    const was = drag; id = null; el.classList.remove('dragging');
+    if (was) { swallowClick = true; setTimeout(() => swallowClick = false, 60);
+      if (dx < -80) moveDeck(1); else if (dx > 80) moveDeck(-1); else layoutDeck(); }
+    el = null; drag = false;
+  };
+  deck.addEventListener('pointerup', end); deck.addEventListener('pointercancel', end);
+}
+let swallowClick = false;
+document.addEventListener('click', e => { if (swallowClick) { e.stopPropagation(); e.preventDefault(); swallowClick = false; } }, true);
+
+/* Stars and encouragement */
+function earn(k) {
+  if (S.seen[k]) return false;
+  S.seen[k] = true; S.stars += 1;
+  const n = left();
+  cheer = n === 0 ? 'All answered! +1 star' : `Locked in! +1 star, ${n} to go`;
+  say(cheer); return true;
+}
+function popStars() { const s = document.getElementById('stars'); if (!s) return; s.setAttribute('aria-label', `${S.stars} stars`); s.innerHTML = ic('star') + S.stars; s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop'); }
+
+/* Trophy celebration, then back to the classroom */
+function trophy() {
+  overlay = null; render();
+  const layer = document.createElement('div');
+  layer.className = 'trophy-layer'; layer.setAttribute('role', 'dialog'); layer.setAttribute('aria-modal', 'true'); layer.setAttribute('aria-labelledby', 'tr-t');
+  layer.innerHTML = `<canvas aria-hidden="true"></canvas><div class="copy stack g-2 center"><h2 class="text-title-page font-bold" id="tr-t">Handed in!</h2>
+    <p class="text-body-base text-muted">+${starsEarned()} stars · ${S.streak}-day streak</p><p class="text-body-small text-muted">Taking you back to your classroom</p></div>`;
+  document.body.appendChild(layer);
+  say('Handed in! Great work.');
+  let done = false, raf;
+  const finish = () => { if (done) return; done = true; cancelAnimationFrame(raf); layer.style.opacity = '0'; layer.style.transition = 'all 200ms';
+    setTimeout(() => { layer.remove(); justSubmitted = true; toLanding(0); setTimeout(() => document.querySelector('.tcard')?.classList.add('enter'), 0); }, 200); };
+  layer.addEventListener('click', finish);
+  if (!World.ok) { setTimeout(finish, 1800); return; }
+  const cv = layer.querySelector('canvas');
+  const r = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true });
+  r.setPixelRatio(Math.min(devicePixelRatio, 2)); r.setSize(cv.clientWidth, cv.clientHeight, false);
+  const sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, 1, 0.1, 50); cam.position.set(0, 1.4, 5.2); cam.lookAt(0, 1.05, 0);
+  sc.add(new THREE.HemisphereLight(C('--card'), C('--accent-400'), 2.2));
+  const key = new THREE.DirectionalLight(C('--card'), 2.6); key.position.set(3, 5, 4); sc.add(key);
+  const metal = new THREE.MeshStandardMaterial({ color:C('--accent-300'), metalness:0.55, roughness:0.28 });
+  const dark = new THREE.MeshStandardMaterial({ color:C('--accent-400'), roughness:0.5 });
+  const tg = new THREE.Group(); sc.add(tg);
+  const bowlPts = [[0,0],[0.18,0.02],[0.38,0.12],[0.56,0.34],[0.68,0.66],[0.75,1.02],[0.78,1.12],[0.72,1.14],[0.66,1.0],[0.58,0.66],[0.42,0.32],[0.2,0.16],[0,0.12]].map(([x, y]) => new THREE.Vector2(x, y));
+  const metal2 = metal.clone(); metal2.side = THREE.DoubleSide;
+  const bowl = new THREE.Mesh(new THREE.LatheGeometry(bowlPts, 64), metal2); bowl.position.y = 1.05; tg.add(bowl);
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.14, 0.62, 32), metal); stem.position.y = 0.76; tg.add(stem);
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.15, 32, 16), metal); knob.position.y = 0.62; knob.scale.y = 0.7; tg.add(knob);
+  const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.42, 0.14, 40), metal); foot.position.y = 0.4; tg.add(foot);
+  [1, -1].forEach(sd => { const h = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.055, 16, 32, Math.PI), metal); h.position.set(sd * 0.7, 1.62, 0); h.rotation.z = sd > 0 ? -Math.PI / 2 : Math.PI / 2; tg.add(h); });
+  const base = new THREE.Mesh(new THREE.RoundedBoxGeometry(1.1, 0.34, 0.8, 3, 0.06), dark); base.position.y = 0.17; tg.add(base);
+  const plaque = new THREE.Mesh(new THREE.RoundedBoxGeometry(0.62, 0.14, 0.02, 2, 0.01), metal); plaque.position.set(0, 0.17, 0.41); tg.add(plaque);
+  const sShape = new THREE.Shape(); for (let k = 0; k < 10; k++) { const rr = k % 2 ? 0.08 : 0.19, aa = k / 10 * Math.PI * 2 + Math.PI / 2; k ? sShape.lineTo(Math.cos(aa) * rr, Math.sin(aa) * rr) : sShape.moveTo(Math.cos(aa) * rr, Math.sin(aa) * rr); }
+  const badge = new THREE.Mesh(new THREE.ExtrudeGeometry(sShape, { depth:0.04, bevelEnabled:true, bevelSize:0.015, bevelThickness:0.015 }), new THREE.MeshStandardMaterial({ color:C('--accent-100'), emissive:C('--accent-100'), emissiveIntensity:0.3, roughness:0.4 }));
+  badge.position.set(0, 1.62, 0.62); badge.rotation.x = -0.12; tg.add(badge);
+  tg.position.y = -0.2;
+  const conf = [], confCols = ['--accent-100', '--accent-200', '--accent-300', '--accent-400', '--card'].map(t => new THREE.MeshStandardMaterial({ color:C(t), side:THREE.DoubleSide, roughness:0.6 }));
+  const cg = new THREE.PlaneGeometry(0.09, 0.05);
+  for (let k = 0; k < 90; k++) { const m = new THREE.Mesh(cg, confCols[k % confCols.length]); const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 3;
+    m.position.set(0, 1.4, 0); m.userData = { v:new THREE.Vector3(Math.cos(a) * sp * 0.6, 3 + Math.random() * 3, Math.sin(a) * sp * 0.3), r:new THREE.Vector3(Math.random() * 8, Math.random() * 8, Math.random() * 8) }; sc.add(m); conf.push(m); }
+  const t0 = performance.now(), dur = reduceMotion ? 1600 : 2800;
+  const elastic = t => t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1;
+  let last = t0;
+  const loop = now => {
+    raf = requestAnimationFrame(loop);
+    const t = (now - t0) / 1000, dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const s = reduceMotion ? 1 : elastic(Math.min(1, t / 0.8)); tg.scale.setScalar(Math.max(0.001, s));
+    tg.rotation.y = reduceMotion ? 0.3 : Math.sin(t * 1.3) * 0.7; tg.position.y = -0.2 + Math.sin(t * 2) * 0.05;
+    if (!reduceMotion) conf.forEach(m => { m.userData.v.y -= 6 * dt; m.position.addScaledVector(m.userData.v, dt); m.rotation.x += m.userData.r.x * dt; m.rotation.y += m.userData.r.y * dt; });
+    else conf.forEach(m => m.visible = false);
+    r.render(sc, cam);
+    if (now - t0 > dur) finish();
+  };
+  raf = requestAnimationFrame(loop);
+}
+
+/* ======================================================================
+   Events
+   ====================================================================== */
+app.addEventListener('submit', e => {
+  e.preventDefault();
+  const id = app.querySelector('#sid').value.trim(), pw = app.querySelector('#pw').value;
+  signinErr = { id:!id, pw:!pw };
+  if (!id || !pw) { render(!id ? '#sid' : '#pw'); if (id) app.querySelector('#sid').value = id; return; }
+  signinErr = { id:false, pw:false };
+  toLanding(0);
+});
+app.addEventListener('click', e => {
+  const t = e.target.closest('button, [data-scrim], .tcard');
+  if (!t) return;
+  if (t.hasAttribute('data-scrim') && e.target === t) { overlay = null; render(); return; }
+  if (t.classList.contains('tcard')) { if (t.dataset.dragged) return; if (t.dataset.card === 'open') startTest(); return; }
+  const g = t.dataset.go;
+  if (g === 'togglepw') { const v = app.querySelector('#sid')?.value || '', p = app.querySelector('#pw')?.value || ''; showPw = !showPw; render('[data-go="togglepw"]'); app.querySelector('#sid').value = v; app.querySelector('#pw').value = p; return; }
+  if (g === 'signout') { S = fresh(); justSubmitted = false; render(); World.go('signin', 1200); return; }
+  if (g === 'cardnext') return changeCard(1);
+  if (g === 'cardprev') return changeCard(-1);
+  if (g === 'exit') { overlay = 'exit'; return render(); }
+  if (g === 'tools') { overlay = 'tools'; return render(); }
+  if (g === 'close') { overlay = null; return render(); }
+  if (g === 'leave') return toLanding(0);
+  if (g === 'next') return moveDeck(1);
+  if (g === 'prev') return moveDeck(-1);
+  if (g === 'speak') { const q = Q[S.i]; speak([q.story || q.passage, q.title].join('. ')); return; }
+  if (g === 'review') { S.screen = 'review'; overlay = null; render(); window.scrollTo(0, 0); return; }
+  if (g === 'backdeck') { S.i = Q.length; S.screen = 'test'; World.go('test', 0); render(); return; }
+  if (g === 'handin') { if (left()) { overlay = 'handin'; return render(); } return handIn(); }
+  if (g === 'finishfirst') { S.i = Q.findIndex((_, k) => !isAnswered(k)); S.screen = 'test'; overlay = null; World.go('test', 0); render(); return; }
+  if (g === 'confirmhandin') return handIn();
+  if (g === 'clear') { S.answers[0][S.activeBlank] = null; cheer = ''; refreshCard(0, `[data-blank="${S.activeBlank}"]`); return; }
+  if (t.dataset.switch) { const k = t.dataset.switch; S[k] = !S[k]; if (S.screen === 'test') { overlay = 'tools'; render('#' + t.id); } else render('#' + t.id); return; }
+  if (t.dataset.jump !== undefined) { S.i = +t.dataset.jump; S.screen = 'test'; World.go('test', 0); render(); return; }
+
+  if (t.dataset.blank !== undefined) { S.activeBlank = +t.dataset.blank; refreshCard(0, `[data-blank="${S.activeBlank}"]`); return; }
+  if (t.dataset.chip !== undefined) {
+    const a = S.answers[0]; a[S.activeBlank] = +t.dataset.chip;
+    const ne = a.findIndex(v => v === null); if (ne >= 0) S.activeBlank = ne;
+    const got = isAnswered(0) && earn(0); refreshCard(0, `[data-chip="${t.dataset.chip}"]`); if (got) popStars(); return;
+  }
+  if (t.dataset.row !== undefined) { S.openRow = S.openRow === +t.dataset.row ? -1 : +t.dataset.row; refreshCard(1, `[data-row="${t.dataset.row}"]`); return; }
+  if (t.dataset.match !== undefined) {
+    const a = S.answers[1]; a[+t.dataset.match] = t.dataset.val;
+    const no = a.findIndex(v => v === null); S.openRow = no;
+    const got = isAnswered(1) && earn(1); refreshCard(1, no >= 0 ? `[data-row="${no}"]` : null); if (got) popStars(); return;
+  }
+  if (t.dataset.opt !== undefined) { const k = +t.dataset.q; S.answers[k] = +t.dataset.opt; const got = earn(k); refreshCard(k, `[data-opt="${t.dataset.opt}"]`); if (got) popStars(); return; }
+});
+function handIn() { S.status = 'done'; S.finishedAt = Date.now(); S.stars += 2; S.streak += 1; S.screen = 'landing'; S.card = 0; save(); World.go('land0', 0); trophy(); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && overlay) { overlay = null; render(); return; }
+  if (overlay || /INPUT|TEXTAREA/.test(document.activeElement?.tagName || '')) return;
+  if (S.screen === 'test' && e.key === 'ArrowRight') moveDeck(1);
+  if (S.screen === 'test' && e.key === 'ArrowLeft') moveDeck(-1);
+  if (S.screen === 'landing' && e.key === 'ArrowDown' && S.card < deckCards().length - 1) changeCard(1);
+  if (S.screen === 'landing' && e.key === 'ArrowUp' && S.card > 0) changeCard(-1);
+});
+
+/* Boot */
+if (S.screen === 'test' && S.status !== 'progress') S.screen = 'landing';
+const startStation = { signin:'signin', landing:landStation(S.card), test:'test', review:'review' }[S.screen] || 'signin';
+World.go(startStation, 0);
+render();
+</script>
+</body>
+</html>

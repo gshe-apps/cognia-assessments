@@ -1,5 +1,9 @@
 # Cognia Assessment Hub, Wireframes
 
+## Design-system authority
+
+Cognia Design 1.2.0 governs visual work. Read `AGENTS.md` (or `CLAUDE.md`) and the full rules in `design-system/cognia/` before styling. Historical visual approvals no longer override the design system; interaction flows remain protected. Legacy CSS is in the `cap-legacy` layer, so normal semantic styles win without `!important` or artificial ID selectors. Run `node scripts/check-design-system.cjs` and `node verify-homepages.cjs` before delivery. The design-system workflow runs these checks after this local change is published.
+
 Interactive wireframes for the Summer 2027 Assessment Hub, exported from the Claude Design canvas. The canvas is the source of truth; this repo is a snapshot of it.
 
 ## Structure

@@ -1,8 +1,13 @@
-.cap-root .student-workspace .hubhdr{width:100%;box-sizing:border-box}.cap-root .student-workspace .hubhdr .hubright{margin-left:auto;grid-column:3;justify-self:end;justify-content:flex-end}.cap-root .student-workspace .hubhdr .hubbrand{grid-column:1}
-.cap-root .student-work-list [hidden]{display:none!important}.cap-root .student-work-empty{padding:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);font-size:14px;line-height:1.7;color:var(--muted-foreground)}.cap-root .student-status-detail{padding:14px;margin-top:14px;border-radius:var(--radius);background:var(--secondary);font-size:13px;line-height:1.6}.cap-root .student-filters{flex-wrap:wrap}.cap-root .student-filters button:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
+.cap-root .student-workspace .hubhdr{width:100%;box-sizing:border-box;}.cap-root .student-workspace .hubhdr .hubright{margin-left:auto;grid-column:3;justify-self:end;justify-content:flex-end;}.cap-root .student-workspace .hubhdr .hubbrand{grid-column:1;}
+.cap-root .student-work-list [hidden]{display:none!important;}.cap-root .student-work-empty{padding:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);font-size:14px;line-height:1.7;color:var(--muted-foreground);}.cap-root .student-status-detail{padding:14px;margin-top:14px;border-radius:var(--radius);background:var(--secondary);font-size:13px;line-height:1.6;}.cap-root .student-filters{flex-wrap:wrap;}.cap-root .student-filters button:focus-visible{outline:2px solid var(--ring);outline-offset:2px;}
 /* Filtering must not vertically centre or resize the work-page layout. */
-.cap-root .student-workspace .main:has(.student-work-list){width:100%;box-sizing:border-box;margin-top:0;margin-bottom:0;align-self:stretch}
-.cap-root .student-workspace .student-page:has(.student-work-list){width:100%;max-width:800px;margin-left:auto;margin-right:auto;box-sizing:border-box}
-.cap-root .student-work-list{min-height:420px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start}
-.cap-root .student-work-list>article,.cap-root .student-work-list>.student-work-empty{width:100%;box-sizing:border-box;flex-shrink:0}
-.cap-root .student-filters{align-self:flex-start;flex-shrink:0}
+.cap-root .student-workspace .main:has(.student-work-list){width:100%;box-sizing:border-box;margin-top:0;margin-bottom:0;align-self:stretch;}
+.cap-root .student-workspace .student-page:has(.student-work-list){width:100%;max-width:800px;margin-left:auto;margin-right:auto;box-sizing:border-box;}
+.cap-root .student-work-list{min-height:420px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;}
+.cap-root .student-work-list>article,.cap-root .student-work-list>.student-work-empty{width:100%;box-sizing:border-box;flex-shrink:0;}
+.cap-root .student-filters{align-self:flex-start;flex-shrink:0;}
+
+}

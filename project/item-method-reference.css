@@ -1,53 +1,56 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* Reference-aligned item creation cards. Scoped to this builder screen only. */
 html body.item-method-reference .cap-root.theme-assessments {
- --primary:inherit; --primary-foreground:inherit; --ring:inherit;
- --accent:inherit; --accent-foreground:inherit; --secondary:inherit;
- --secondary-foreground:inherit; --border:inherit; --muted-foreground:inherit;
- --foreground:inherit; --background:inherit; --card:inherit; --font-sans:inherit;
- filter:none !important; background:var(--background) !important;
+
+
+
+    --font-sans:inherit;
+ filter:none ; background:var(--background) ;
 }
-html body.item-method-reference { background:var(--background) !important; }
+html body.item-method-reference { background:var(--background) ; }
 html body.item-method-reference .cap-root :is(p,span,a,button,label,small,b,strong,input,select,textarea,summary) {
- font-family:var(--font-sans) !important; font-size:var(--text-body-small) !important;
- line-height:var(--lh-base) !important; letter-spacing:normal !important;
+ font-family:var(--font-sans) ; font-size:var(--text-body-small) ;
+ line-height:var(--lh-base) ; letter-spacing:normal ;
 }
 html body.item-method-reference .cap-root :is(h2,h3,h4,.hubmod) {
- font-family:var(--font-sans) !important; font-size:var(--text-body-base) !important;
- font-weight:var(--weight-semibold) !important; line-height:var(--lh-base) !important;
+ font-family:var(--font-sans) ; font-size:var(--text-body-base) ;
+ font-weight:var(--weight-semibold) ; line-height:var(--lh-base) ;
 }
 html body.item-method-reference .cap-root .tf-hero h1 {
- font-family:var(--font-sans) !important; font-size:var(--text-subtitle) !important;
- font-weight:var(--weight-bold) !important; line-height:var(--lh-snug) !important;
- letter-spacing:normal !important;
+ font-family:var(--font-sans) ; font-size:var(--text-subtitle) ;
+ font-weight:var(--weight-bold) ; line-height:var(--lh-snug) ;
+ letter-spacing:normal ;
 }
-html body.item-method-reference .tf-hero { min-height:0 !important; margin-bottom:var(--space-6); }
+html body.item-method-reference .tf-hero { min-height:0 ; margin-bottom:var(--space-6); }
 html body.item-method-reference .tf-hero::after { display:none !important; }
 html body.item-method-reference .cap-root .tf-page > .qc-methods {
  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
  gap:var(--space-4); margin:0 0 var(--space-6); padding:0;
 }
 html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method {
- display:flex !important; flex-direction:row !important; align-items:center !important;
- justify-content:flex-start !important; gap:var(--space-4);
- min-height:144px !important; height:auto; margin:0 !important;
- padding:var(--space-6) var(--space-10) var(--space-6) var(--space-6) !important;
- position:relative; overflow:hidden; isolation:auto; text-align:left !important;
- background:var(--card) !important; color:var(--card-foreground);
- border:1px solid transparent !important; border-radius:var(--radius);
- box-shadow:none; transform:none !important; filter:none !important;
+ display:flex !important; flex-direction:row ; align-items:center ;
+ justify-content:flex-start ; gap:var(--space-4);
+ min-height:144px ; height:auto; margin:0 ;
+ padding:var(--space-6) var(--space-10) var(--space-6) var(--space-6) ;
+ position:relative; overflow:hidden; isolation:auto; text-align:left ;
+ background:var(--card) ; color:var(--card-foreground);
+ border:1px solid transparent ; border-radius:var(--radius);
+ box-shadow:none; transform:none ; filter:none ;
  transition:all 200ms; cursor:pointer;
 }
 html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method:hover {
- background:var(--card) !important; box-shadow:var(--shadow-md);
- transform:none !important; filter:none !important;
+ background:var(--card) ; box-shadow:var(--shadow-md);
+ transform:none ; filter:none ;
 }
 html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method[aria-pressed="true"] {
- border-color:var(--primary) !important; background:var(--card) !important;
+ border-color:var(--primary) ; background:var(--card) ;
 }
 html body.item-method-reference .qc-methods .tf-method::before,
 html body.item-method-reference .qc-methods .tf-method::after,
 html body.item-method-reference .qc-methods .tf-folder-outline,
-html body.item-method-reference .qc-methods .approved-selection { display:none !important; content:none !important; }
+html body.item-method-reference .qc-methods .approved-selection { display:none !important; content:none ; }
 html body.item-method-reference .qc-methods .item-method-icon {
  display:flex; align-items:center; justify-content:center; flex:0 0 48px;
  width:48px; height:48px; margin:0; padding:var(--space-2);
@@ -58,13 +61,13 @@ html body.item-method-reference .qc-methods .item-method-copy {
  display:flex; flex-direction:column; gap:var(--space-2); flex:1; min-width:0;
 }
 html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method b {
- display:block; margin:0 !important; padding:0; font-family:var(--font-sans) !important;
- font-size:var(--text-body-base) !important; font-weight:var(--weight-semibold) !important;
- line-height:var(--lh-snug) !important; color:var(--foreground);
+ display:block; margin:0 ; padding:0; font-family:var(--font-sans) ;
+ font-size:var(--text-body-base) ; font-weight:var(--weight-semibold) ;
+ line-height:var(--lh-snug) ; color:var(--foreground);
 }
 html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method small {
  display:block; max-width:none; margin:0; padding:0;
- font-size:var(--text-body-small) !important; line-height:var(--lh-base) !important;
+ font-size:var(--text-body-small) ; line-height:var(--lh-base) ;
  font-weight:var(--weight-regular); color:var(--muted-foreground);
 }
 html body.item-method-reference .qc-methods .item-method-selection {
@@ -80,17 +83,19 @@ html body.item-method-reference .qc-methods .tf-method:focus-visible {
  outline:3px solid var(--ring); outline-offset:var(--space-1);
 }
 html body.item-method-reference .cap-root .btn.solid {
- background:var(--primary) !important; color:var(--primary-foreground) !important;
- border-color:var(--primary) !important; border-radius:var(--radius);
+ background:var(--primary) ; color:var(--primary-foreground) ;
+ border-color:var(--primary) ; border-radius:var(--radius);
 }
 @media(max-width:1000px) {
  html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method {
- gap:var(--space-3); padding:var(--space-4) var(--space-8) var(--space-4) var(--space-4) !important;
+ gap:var(--space-3); padding:var(--space-4) var(--space-8) var(--space-4) var(--space-4) ;
  }
  html body.item-method-reference .qc-methods .item-method-icon { flex-basis:40px; width:40px; height:40px; }
 }
 @media(max-width:767px) {
  html body.item-method-reference .cap-root .tf-page > .qc-methods { grid-template-columns:1fr; }
- html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method { min-height:112px !important; }
+ html body.item-method-reference .cap-root .tf-page .qc-methods .tf-method { min-height:112px ; }
 }
 @media(prefers-reduced-motion:reduce) { body.item-method-reference .qc-methods * { transition:none !important; } }
+
+}

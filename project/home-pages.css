@@ -1,3 +1,6 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* Cognia v1.2.0: the new Home/entry screens use 20, 16 and 14px;
    400, 600 and 700; exact shared semantic, spacing and radius tokens. */
 .cap-home { margin:0; background:var(--background); color:var(--foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); }
@@ -164,13 +167,13 @@
 
 /* Home refinement: the reference's hierarchy and card proportions, using
    the documented 24/16/14px scale and default/themed card variants. */
-html:not(#ty1):not(#ty2) body.home-polished:not(#ty3) .wf :is(h1,h2) {
- font-size:var(--text-heading) !important;
- font-weight:var(--weight-semibold) !important;
- line-height:var(--lh-snug) !important;
+html body.home-polished .wf :is(h1,h2) {
+ font-size:var(--text-heading) ;
+ font-weight:var(--weight-semibold) ;
+ line-height:var(--lh-snug) ;
 }
-html:not(#ty1):not(#ty2) body.home-polished:not(#ty3) .wf .home-section > h2 {
- font-size:var(--text-body-base) !important;
+html body.home-polished .wf .home-section > h2 {
+ font-size:var(--text-body-base) ;
 }
 .home-polished .home-main.home-reference { max-width:1120px; padding-top:var(--space-12); padding-bottom:var(--space-12); gap:var(--space-10); }
 .home-polished .home-greeting { align-items:center; text-align:center; gap:var(--space-2); }
@@ -228,4 +231,6 @@ html:not(#ty1):not(#ty2) body.home-polished:not(#ty3) .wf .home-section > h2 {
  .home-polished .home-reference .home-hub { min-height:208px; padding:var(--space-4); }
  .home-polished .home-continue { flex-wrap:wrap; padding:var(--space-4); }
  .home-polished .home-continue-action { width:100%; justify-content:flex-end; }
+}
+
 }

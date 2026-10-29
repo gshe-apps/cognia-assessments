@@ -1,3 +1,6 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* ============================================================
    Admin standards (District and School Administrator screens):
    type scale and navigation shell
@@ -14,41 +17,41 @@
    ============================================================ */
 
 /* Main headers: page titles and section headings */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(h1, h2) {
-  font-size: var(--text-subheading) !important;
-  font-weight: var(--weight-semibold) !important;
-  line-height: var(--lh-snug) !important;
-  letter-spacing: normal !important;
+html body .wf :is(h1, h2) {
+  font-size: var(--text-subheading) ;
+  font-weight: var(--weight-semibold) ;
+  line-height: var(--lh-snug) ;
+  letter-spacing: normal ;
 }
 
 /* Card and panel titles: 16px strong */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > span) {
-  font-size: var(--text-body-base) !important;
-  font-weight: var(--weight-semibold) !important;
-  line-height: var(--lh-snug) !important;
+html body .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > span) {
+  font-size: var(--text-body-base) ;
+  font-weight: var(--weight-semibold) ;
+  line-height: var(--lh-snug) ;
 }
 
 /* Headline numbers: 20px */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(.sumval, .v2wpct, .dgoal-n, .dtip-n, .sg-mval, .bubvalh) {
-  font-size: var(--text-subheading) !important;
-  line-height: var(--lh-snug) !important;
+html body .wf :is(.sumval, .v2wpct, .dgoal-n, .dtip-n, .sg-mval, .bubvalh) {
+  font-size: var(--text-subheading) ;
+  line-height: var(--lh-snug) ;
 }
 
 /* No 900 weight anywhere */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf .gc b {
-  font-weight: var(--weight-bold) !important;
+html body .wf .gc b {
+  font-weight: var(--weight-bold) ;
 }
 
 /* Chart labels: 14px on screen (13 chart units x 1.075) */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf :is(.svax, .svpt, .svpt.svbig, .svtip, .svtip *) {
-  font-size: 13px !important;
+html body .wf :is(.svax, .svpt, .svpt.svbig, .svtip, .svtip *) {
+  font-size: 13px ;
 }
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf .trsvg text {
-  font-size: 13px !important;
+html body .wf .trsvg text {
+  font-size: 13px ;
 }
 /* Bubble values: 20px on screen */
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf .bubval {
-  font-size: 28.6px !important; /* 20px on screen: the bubble chart draws at 0.7x */
+html body .wf .bubval {
+  font-size: 28.6px ; /* 20px on screen: the bubble chart draws at 0.7x */
 }
 
 /* ============================================================
@@ -57,15 +60,17 @@ html:not(#ty1):not(#ty2) body:not(#ty3) .wf .bubval {
    colour, so they sit on the page. Wins over older shared layers
    that paint the admin header white.
    ============================================================ */
-html:not(#ty1):not(#ty2) body:not(#ty3),
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf {
-  background: var(--background) !important;
+html body,
+html body .wf {
+  background: var(--background) ;
 }
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf > .top {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
+html body .wf > .top {
+  background: transparent ;
+  border: 0 ;
+  box-shadow: none ;
 }
-html:not(#ty1):not(#ty2) body:not(#ty3) .wf .hubfoot {
-  background: transparent !important;
+html body .wf .hubfoot {
+  background: transparent ;
+}
+
 }

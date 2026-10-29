@@ -1,30 +1,35 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* Scoped educator draft additions; preserve the latest main design tokens. */
 @view-transition{navigation:none}
-.cap-root .reference-content:has(.ef-start-grid){grid-template-columns:1fr}
-.cap-root .ef-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.cap-root .ef-start-grid .reference-folder{min-height:430px!important}
-.cap-root .ef-start-grid .reference-folder-content{padding:34px 28px 0!important}
-.cap-root .ef-start-grid .reference-folder h2{font-size:29px!important}
-.cap-root .ef-start-grid .reference-folder p{font-size:15px!important;max-width:42ch}
-.cap-root .ef-start-grid .reference-hero-image{height:40%!important}
-.cap-root .reference-content:has(.ef-start-grid)>.reference-side{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.cap-root .ef-library-entry .reference-hero-image{transform:none}
-.cap-root .ef-collection-help{font-size:13px;line-height:1.6;color:var(--muted-foreground);margin:12px 0 24px}
-.cap-root .ef-compact-library .client-form-grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.cap-root .ef-compact-library .ef-form-row{display:grid;grid-template-columns:130px minmax(220px,1fr) auto;gap:24px;align-items:center;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:22px 24px;min-height:0;box-shadow:none}
-.cap-root .ef-compact-library .ef-form-row:last-child{border-bottom:0}
-.cap-root .ef-compact-library .ef-form-row:before{display:none}
-.cap-root .ef-form-row .ef-form-kind{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.cap-root .ef-form-row h2{font-size:19px;margin-bottom:6px}
-.cap-root .ef-form-row p{margin:3px 0;font-size:13px}
-.cap-root .ef-form-row .ef-form-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin:0}
-.cap-root .ef-recipient-summary{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:14px 18px;font-size:14px;font-weight:600;margin:0 0 22px}
-.cap-root .ef-bank-status{font-size:13px;line-height:1.6;color:var(--muted-foreground)}
-.cap-root .ef-decision-note{margin:16px 0 22px;border-left:3px solid var(--border);padding:10px 14px;background:var(--card);font-size:12px;line-height:1.6;color:var(--muted-foreground)}
-.cap-root .ef-decision-note summary{cursor:pointer;font-weight:600}.cap-root .ef-decision-note p{margin:8px 0 0}
-.ef-review-control{position:fixed;right:18px;bottom:18px;z-index:1200;border:1px solid var(--border,#ccc);border-radius:24px;padding:10px 16px;background:var(--card,#fff);color:var(--foreground,#222);font:600 12px 'Open Sans',sans-serif;box-shadow:0 2px 14px #0001;cursor:pointer}
-.ef-review-dialog{width:min(660px,calc(100vw - 48px));box-sizing:border-box;border:1px solid var(--border,#ccc);border-radius:var(--radius,10px);padding:28px;font-family:'Open Sans',sans-serif;color:var(--foreground,#222);background:var(--card,#fff);max-height:85vh;overflow:auto}
-.ef-review-dialog::backdrop{background:#0006}.ef-review-head{display:flex;gap:20px;align-items:center;justify-content:space-between}.ef-review-dialog h2{font-size:23px;margin:0}.ef-review-dialog h3{font-size:15px;margin:20px 0 6px}.ef-review-dialog p{font-size:13px;line-height:1.65}.ef-review-dialog a{display:inline-block;margin-top:16px}.ef-review-dialog .btn{font:inherit;cursor:pointer}.ef-review-lede{color:var(--muted-foreground,#666)}
-@media(max-width:1000px){.cap-root .ef-compact-library .ef-form-row{grid-template-columns:100px minmax(0,1fr)}.cap-root .ef-form-actions{grid-column:2}.cap-root .ef-start-grid{gap:16px}.cap-root .reference-content:has(.ef-start-grid)>.reference-side{grid-template-columns:1fr}}
-@media(max-width:650px){.cap-root .ef-start-grid{grid-template-columns:1fr}.cap-root .ef-start-grid .reference-folder{min-height:390px!important}.cap-root .ef-compact-library .ef-form-row{grid-template-columns:1fr;padding:20px;gap:12px}.cap-root .ef-form-row .ef-form-kind{flex-direction:row;align-items:center}.cap-root .ef-form-actions{grid-column:1;justify-content:flex-start!important}.ef-review-control{bottom:10px;right:10px}.cap-root .ef-recipient-summary{font-size:12px}}
+.cap-root .reference-content:has(.ef-start-grid){grid-template-columns:1fr;}
+.cap-root .ef-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
+.cap-root .ef-start-grid .reference-folder{min-height:430px;}
+.cap-root .ef-start-grid .reference-folder-content{padding:34px 28px 0;}
+.cap-root .ef-start-grid .reference-folder h2{font-size:29px;}
+.cap-root .ef-start-grid .reference-folder p{font-size:15px;max-width:42ch;}
+.cap-root .ef-start-grid .reference-hero-image{height:40%;}
+.cap-root .reference-content:has(.ef-start-grid)>.reference-side{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.cap-root .ef-library-entry .reference-hero-image{transform:none;}
+.cap-root .ef-collection-help{font-size:13px;line-height:1.6;color:var(--muted-foreground);margin:12px 0 24px;}
+.cap-root .ef-compact-library .client-form-grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.cap-root .ef-compact-library .ef-form-row{display:grid;grid-template-columns:130px minmax(220px,1fr) auto;gap:24px;align-items:center;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:22px 24px;min-height:0;box-shadow:none;}
+.cap-root .ef-compact-library .ef-form-row:last-child{border-bottom:0;}
+.cap-root .ef-compact-library .ef-form-row:before{display:none;}
+.cap-root .ef-form-row .ef-form-kind{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:10px;}
+.cap-root .ef-form-row h2{font-size:19px;margin-bottom:6px;}
+.cap-root .ef-form-row p{margin:3px 0;font-size:13px;}
+.cap-root .ef-form-row .ef-form-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin:0;}
+.cap-root .ef-recipient-summary{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);padding:14px 18px;font-size:14px;font-weight:600;margin:0 0 22px;}
+.cap-root .ef-bank-status{font-size:13px;line-height:1.6;color:var(--muted-foreground);}
+.cap-root .ef-decision-note{margin:16px 0 22px;border-left:3px solid var(--border);padding:10px 14px;background:var(--card);font-size:12px;line-height:1.6;color:var(--muted-foreground);}
+.cap-root .ef-decision-note summary{cursor:pointer;font-weight:600;}.cap-root .ef-decision-note p{margin:8px 0 0;}
+.ef-review-control{position:fixed;right:18px;bottom:18px;z-index:1200;border:1px solid var(--border,#ccc);border-radius:24px;padding:10px 16px;background:var(--card,#fff);color:var(--foreground,#222);font:600 12px "Open Sans",sans-serif;box-shadow:0 2px 14px #0001;cursor:pointer;}
+.ef-review-dialog{width:min(660px,calc(100vw - 48px));box-sizing:border-box;border:1px solid var(--border,#ccc);border-radius:var(--radius,10px);padding:28px;font-family:"Open Sans",sans-serif;color:var(--foreground,#222);background:var(--card,#fff);max-height:85vh;overflow:auto;}
+.ef-review-dialog::backdrop{background:#0006;}.ef-review-head{display:flex;gap:20px;align-items:center;justify-content:space-between;}.ef-review-dialog h2{font-size:23px;margin:0;}.ef-review-dialog h3{font-size:15px;margin:20px 0 6px;}.ef-review-dialog p{font-size:13px;line-height:1.65;}.ef-review-dialog a{display:inline-block;margin-top:16px;}.ef-review-dialog .btn{font:inherit;cursor:pointer;}.ef-review-lede{color:var(--muted-foreground,#666);}
+@media(max-width:1000px){.cap-root .ef-compact-library .ef-form-row{grid-template-columns:100px minmax(0,1fr);}.cap-root .ef-form-actions{grid-column:2;}.cap-root .ef-start-grid{gap:16px;}.cap-root .reference-content:has(.ef-start-grid)>.reference-side{grid-template-columns:1fr;}}
+@media(max-width:650px){.cap-root .ef-start-grid{grid-template-columns:1fr;}.cap-root .ef-start-grid .reference-folder{min-height:390px;}.cap-root .ef-compact-library .ef-form-row{grid-template-columns:1fr;padding:20px;gap:12px;}.cap-root .ef-form-row .ef-form-kind{flex-direction:row;align-items:center;}.cap-root .ef-form-actions{grid-column:1;justify-content:flex-start;}.ef-review-control{bottom:10px;right:10px;}.cap-root .ef-recipient-summary{font-size:12px;}}
 
+
+}

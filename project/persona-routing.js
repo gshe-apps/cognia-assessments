@@ -8,7 +8,7 @@
      if(!title) continue;
      const label=title.textContent.trim();
      if(label==='Teacher'||label==='Educator') { title.textContent='Educator'; link.setAttribute('href','CAP-T00-Home.dc.html'); }
-     if(label==='System Administrator') title.textContent='District administrator';
+     if(label==='System Administrator'||label==='District administrator') title.textContent='District Admin';
      if(label==='School Administrator') title.textContent='School administrator';
      const current=file!=='index.html'&&link.getAttribute('href')===home;
      if(current) link.setAttribute('aria-current','page'); else { link.removeAttribute('aria-current'); link.querySelector('.rolecur')?.remove(); }

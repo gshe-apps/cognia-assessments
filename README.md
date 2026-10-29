@@ -20,9 +20,9 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 
 ## Flows
 
-**System Administrator, district oversight**
-- Interim: SA 1 Home, SA 2 Overview (Assign), SA 2a All schools, SA 2b Subgroups, SA 6 Library (preview and assign to schools)
-- Formative: SA 5 Formative (usage by school, school year picker, sort, share report)
+**District Admin, district oversight**
+- Interim: DA 1 Home, DA 2 Overview (Assign), DA 2a All schools, DA 2b Subgroups, DA 6 Library (preview and assign to schools)
+- Formative: DA 5 Formative (usage by school, school year picker, sort, share report)
 - Coming soon: Screeners, Alt Assessments
 
 **School Administrator, institution-level review**
@@ -39,11 +39,11 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 
 ## Prototype controls
 
-- **Switch role**: every account menu has a Switch button that opens a modal for System Administrator, School Administrator, Teacher and Student. Prototype only.
+- **Switch role**: every account menu has a Switch button that opens a modal for District Admin, School Administrator, Teacher and Student. Prototype only.
 - **Plan**: every account menu has a Basic / Classroom+ switch. On Basic, Classroom+ features are locked, and the teacher Interim hub shows as a paid add-on.
 - The Interim navigation has two tabs, Overview and Library. The Overview summary cards open All schools / All students (pre-filtered) and Subgroups.
 - **All schools / All students**: the selected row opens a side column with a water-fill completion card, a stack of detail cards (click one to bring it to the front) and a follow-up alert for anything below the 50% benchmark.
-- The Follow-up screens (SA 4, School 4) are off the canvas for now but kept here, as other screens still link to them.
+- The Follow-up screens (DA 4, School 4) are off the canvas for now but kept here, as other screens still link to them.
 - **My Hubs**: product tiles take their hub colour (Cognia accent 200). Screeners and Alt Assessments are disabled for now; their status badges show in the hover description.
 
 ## Run the interactive browser prototype

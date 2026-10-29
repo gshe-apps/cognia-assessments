@@ -1,0 +1,42 @@
+@import url("screens.css");
+/* Plain-HTML equivalents of documented Cognia roles.
+   Unlayered semantic classes outrank the cap-legacy fallback layer without !important.
+   Low-specificity defaults keep future component classes easy to apply. */
+:where(body, .cap-root, .sj-root, .wf, .home-shell) {
+  font-family: var(--font-family), sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+}
+.text-foreground { color: var(--foreground); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.text-primary-foreground { color: var(--primary-foreground); }
+.text-card-foreground { color: var(--card-foreground); }
+.text-secondary-foreground { color: var(--secondary-foreground); }
+.bg-background { background-color: var(--background); }
+.bg-card { background-color: var(--card); }
+.bg-primary { background-color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.rounded-lg { border-radius: var(--radius); }
+.rounded-full { border-radius: var(--rounded-full); }
+.font-normal { font-weight: 400; }
+.underline { text-decoration: underline; }
+:where(.hubhdr, .wf > .top) {
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+  min-height: 52px;
+}
+:where(.hubnav a, .navl a)[aria-current="page"] {
+  border-bottom: 2px solid var(--brand-coral);
+  color: var(--foreground);
+  background: transparent;
+}
+:where(.hubfoot, .hubfootin) { background: transparent; }
+:where(.hubfoot) { border-top: 1px solid var(--border); margin-top: auto; }
+:where(.hubfootin) { padding: 12px 32px; }
+:where(.hubcopy) { color: var(--muted-foreground); font-size: 14px; font-weight: 600; }
+:where(.hubfootnav a, .hublang) { color: var(--muted-foreground); font-size: 14px; text-decoration: none; }
+:where(.hubfootnav a:hover) { text-decoration: underline; }
+:where(.hublang) { border-bottom: 2px solid var(--brand-coral); }
+:where(.hubfoot :is(a, button):focus-visible) { outline: 3px solid var(--ring); }
+:where(.hublogo img, .logo img) { filter: none; opacity: 1; }

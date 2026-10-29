@@ -1,25 +1,30 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* Small, shared feedback for interactive controls; no layout movement. */
-:root{--interaction-duration:150ms;--interaction-easing:cubic-bezier(.2,.7,.3,1)}
-:where(a,button,summary,input,select,textarea){-webkit-tap-highlight-color:transparent}
-:where(a,button,summary){transition:background-color var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),box-shadow var(--interaction-duration) var(--interaction-easing),color var(--interaction-duration) var(--interaction-easing),filter var(--interaction-duration) var(--interaction-easing)}
-:where(input,select,textarea){transition:border-color var(--interaction-duration) var(--interaction-easing),box-shadow var(--interaction-duration) var(--interaction-easing)}
+:root{--interaction-duration:150ms;--interaction-easing:cubic-bezier(.2,.7,.3,1);}
+:where(a,button,summary,input,select,textarea){-webkit-tap-highlight-color:transparent;}
+:where(a,button,summary){transition:background-color var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),box-shadow var(--interaction-duration) var(--interaction-easing),color var(--interaction-duration) var(--interaction-easing),filter var(--interaction-duration) var(--interaction-easing);}
+:where(input,select,textarea){transition:border-color var(--interaction-duration) var(--interaction-easing),box-shadow var(--interaction-duration) var(--interaction-easing);}
 @media(hover:hover) and (pointer:fine){
- body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.manage-library>a,.draftcard,.journey-links>a,.appt:not(.appdis):not(.applocked)){transition:box-shadow var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),background-color var(--interaction-duration) var(--interaction-easing)}
- body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.draftcard,.journey-links>a):hover{box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 10%,transparent);border-color:var(--accent-200,#8690d3)}
- body .manage-folder:has(a:hover),body .reference-draft-row:has(a:hover),body .assessment-test-item:has(button:not(:disabled):hover){box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 9%,transparent);transition:box-shadow var(--interaction-duration) var(--interaction-easing)}
- body .manage-folder:has(a:hover) .manage-folder-outline path{stroke:var(--accent-200,#8690d3);transition:stroke var(--interaction-duration) var(--interaction-easing)}
- body :is(a.btn,button.btn):not(:disabled):not([aria-disabled=true]):hover{filter:none;box-shadow:none}
- body :is(a.btn,button.btn):not(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain,.p,.primary,.solid,.primary-cta-hover):not(:disabled):not([aria-disabled=true]):hover{background-color:color-mix(in srgb,var(--foreground,#000012) 14%,var(--card,#fff))}
+ body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.manage-library>a,.draftcard,.journey-links>a,.appt:not(.appdis):not(.applocked)){transition:box-shadow var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),background-color var(--interaction-duration) var(--interaction-easing);}
+ body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.draftcard,.journey-links>a):hover{box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 10%,transparent);border-color:var(--accent-200,#8690d3);}
+ body .manage-folder:has(a:hover),body .reference-draft-row:has(a:hover),body .assessment-test-item:has(button:not(:disabled):hover){box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 9%,transparent);transition:box-shadow var(--interaction-duration) var(--interaction-easing);}
+ body .manage-folder:has(a:hover) .manage-folder-outline path{stroke:var(--accent-200,#8690d3);transition:stroke var(--interaction-duration) var(--interaction-easing);}
+ body :is(a.btn,button.btn):not(:disabled):not([aria-disabled=true]):hover{filter:none;box-shadow:none;}
+ body :is(a.btn,button.btn):not(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain,.p,.primary,.solid,.primary-cta-hover):not(:disabled):not([aria-disabled=true]):hover{background-color:color-mix(in srgb,var(--foreground,#000012) 14%,var(--card,#fff));}
  /* Ghost and icon-only buttons: background change only on hover, no shadow */
- body :is(a.btn,button.btn):is(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain):not(:disabled):not([aria-disabled=true]):hover{box-shadow:none}
- body :is(.plain,.iconbtn,.profile-trigger,.acctbtn,.appgrid,.session-remove):not(:disabled):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent);border-radius:var(--radius,8px)}
- body .student-answer:hover{border-color:var(--accent-200,#8690d3);box-shadow:0 1px 5px color-mix(in srgb,var(--accent-400,#262e67) 7%,transparent)}
- body :is(.student-filters button,.assessment-view-tabs a):not([aria-pressed=true]):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent)}
- body summary:hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 30%,transparent)}
- body :is(a.btn,button.btn):not(:disabled):active{filter:brightness(.92);box-shadow:none}
+ body :is(a.btn,button.btn):is(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain):not(:disabled):not([aria-disabled=true]):hover{box-shadow:none;}
+ body :is(.plain,.iconbtn,.profile-trigger,.acctbtn,.appgrid,.session-remove):not(:disabled):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent);border-radius:var(--radius,8px);}
+ body .student-answer:hover{border-color:var(--accent-200,#8690d3);box-shadow:0 1px 5px color-mix(in srgb,var(--accent-400,#262e67) 7%,transparent);}
+ body :is(.student-filters button,.assessment-view-tabs a):not([aria-pressed=true]):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent);}
+ body summary:hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 30%,transparent);}
+ body :is(a.btn,button.btn):not(:disabled):active{filter:brightness(.92);box-shadow:none;}
 }
-body :is(a,button,summary,input,select,textarea):focus-visible{outline:2px solid var(--accent-300,#4f5cbe);outline-offset:3px}
-body :is(button:disabled,[aria-disabled=true]){cursor:not-allowed}
-@media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+body :is(a,button,summary,input,select,textarea):focus-visible{outline:2px solid var(--accent-300,#4f5cbe);outline-offset:3px;}
+body :is(button:disabled,[aria-disabled=true]){cursor:not-allowed;}
+@media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
 /* Header icon buttons (My Hubs grid, account): neutral hover, no product tint */
-html body :is(.profile-trigger,.acctbtn,.appgrid):not(:disabled):hover{background-color:var(--hover-overlay)}
+html body :is(.profile-trigger,.acctbtn,.appgrid):not(:disabled):hover{background-color:var(--hover-overlay);}
+
+}

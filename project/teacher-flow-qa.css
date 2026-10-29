@@ -1,34 +1,39 @@
+
+/* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
+@layer cap-legacy {
 /* Teacher draft design-system consistency and quiet header artwork. */
-html body .cap-root.theme-assessments{--primary:#111;--primary-foreground:#fff;--ring:#888;--accent:#eee;--accent-foreground:#222;--secondary:#f3f3f3;--secondary-foreground:#333;--border:#e5e5e5;--muted-foreground:#737373;--foreground:#171717;--background:#fafafa;--card:#fff;--font-sans:'Open Sans',Arial,sans-serif}
-html body .cap-root .tf-hero:after,html body .cap-root .ac-hero:before,html body .cap-root .af-success:before{opacity:.25!important}
-html body .cap-root .hubhdr,html body .cap-root .hubfoot{filter:none}
-html body .cap-root .main h1{font-family:Georgia,'Times New Roman',serif!important;font-weight:400!important;letter-spacing:-.03em!important}
-html body .cap-root :is(button,input,select,textarea){font-family:var(--font-sans)!important}
-html body .cap-root :is(.btn.solid,.af-primary){background-color:#111!important;border-color:#111!important;color:#fff!important}
-html body .cap-root :is(.btn.solid,.af-primary):hover:not(:disabled){background-color:#333!important;border-color:#333!important}
-html body .cap-root input:is([type=checkbox],[type=radio]){accent-color:#111}
-html body .cap-root :is(button,a,input,select,textarea):focus-visible{outline:2px solid #777;outline-offset:3px}
-html body .cap-root .tf-hero{overflow:clip;overflow-clip-margin:90px}
-@media(prefers-reduced-motion:reduce){html body .cap-root *,html body .cap-root *:before,html body .cap-root *:after{transition:none!important;animation:none!important}}
-@media(max-width:700px){html body .cap-root .af-success:before{right:-18px;width:75%;max-width:100%}}
+html body .cap-root.theme-assessments{--font-sans:"Open Sans",Arial,sans-serif;}
+html body .cap-root .tf-hero:after,html body .cap-root .ac-hero:before,html body .cap-root .af-success:before{opacity:.25;}
+html body .cap-root .hubhdr,html body .cap-root .hubfoot{filter:none;}
+html body .cap-root .main h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.03em;}
+html body .cap-root :is(button,input,select,textarea){font-family:var(--font-sans);}
+html body .cap-root :is(.btn.solid,.af-primary){background-color:#111;border-color:#111;color:#fff;}
+html body .cap-root :is(.btn.solid,.af-primary):hover:not(:disabled){background-color:#333;border-color:#333;}
+html body .cap-root input:is([type=checkbox],[type=radio]){accent-color:#111;}
+html body .cap-root :is(button,a,input,select,textarea):focus-visible{outline:2px solid #777;outline-offset:3px;}
+html body .cap-root .tf-hero{overflow:clip;overflow-clip-margin:90px;}
+@media(prefers-reduced-motion:reduce){html body .cap-root *,html body .cap-root *:before,html body .cap-root *:after{transition:none!important;animation:none!important;}}
+@media(max-width:700px){html body .cap-root .af-success:before{right:-18px;width:75%;max-width:100%;}}
 /* Mobile summaries must not compress into a narrow column beside actions. */
-@media(max-width:700px){html body .cap-root :is(.tf-bottom,.af-confirm .tf-bottom){position:static!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px;padding:16px!important;margin-top:20px!important;width:100%;min-width:0}.cap-root .tf-bottom-icon{display:none!important}.cap-root .tf-bottom-copy{width:100%!important;min-width:0!important;flex:auto!important;max-width:none!important}.cap-root .tf-bottom-copy>div{display:flex!important;align-items:center;flex-wrap:wrap;gap:8px;font-size:16px!important}.cap-root .tf-bottom-copy p{font-size:11px!important;white-space:normal!important;line-height:1.6!important;margin-top:6px}.cap-root .tf-bottom .tf-original-actions{display:flex!important;width:100%!important;flex-wrap:wrap!important;justify-content:flex-end!important;gap:8px}.cap-root .tf-bottom .actionbar{display:flex!important;width:100%!important;flex-wrap:wrap!important;justify-content:flex-end!important;gap:8px!important;min-width:0!important;margin:0!important;padding:0!important}.cap-root .tf-bottom .actionbar>.row{display:flex!important;flex-wrap:wrap!important;gap:8px!important}.cap-root .tf-bottom :is(.btn,.xbtn){min-width:0!important;padding:10px 12px!important;font-size:11px!important}.cap-root .tf-bottom .note,.cap-root .tf-bottom .review-continue-note{display:none!important}}
+@media(max-width:700px){html body .cap-root :is(.tf-bottom,.af-confirm .tf-bottom){position:static;display:flex!important;flex-direction:column;align-items:stretch;gap:14px;padding:16px;margin-top:20px;width:100%;min-width:0;}.cap-root .tf-bottom-icon{display:none!important;}.cap-root .tf-bottom-copy{width:100%;min-width:0;flex:auto;max-width:none;}.cap-root .tf-bottom-copy>div{display:flex!important;align-items:center;flex-wrap:wrap;gap:8px;font-size:16px;}.cap-root .tf-bottom-copy p{font-size:11px;white-space:normal;line-height:1.6;margin-top:6px;}.cap-root .tf-bottom .tf-original-actions{display:flex!important;width:100%;flex-wrap:wrap;justify-content:flex-end;gap:8px;}.cap-root .tf-bottom .actionbar{display:flex!important;width:100%;flex-wrap:wrap;justify-content:flex-end;gap:8px;min-width:0;margin:0;padding:0;}.cap-root .tf-bottom .actionbar>.row{display:flex!important;flex-wrap:wrap;gap:8px;}.cap-root .tf-bottom :is(.btn,.xbtn){min-width:0;padding:10px 12px;font-size:11px;}.cap-root .tf-bottom .note,.cap-root .tf-bottom .review-continue-note{display:none!important;}}
 /* Neutralize legacy teacher icon tiles and stat surfaces. */
-html body .cap-root main :is(.circle-icon,.client-icon,.overview-stat,.assessment-library-panel){filter:grayscale(1)}
+html body .cap-root main :is(.circle-icon,.client-icon,.overview-stat,.assessment-library-panel){filter:grayscale(1);}
 /* Teacher typography follows the Cognia Open Sans token throughout. */
-html body .cap-root.theme-assessments,html body .cap-root.theme-assessments :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:'Open Sans',Arial,sans-serif!important}
-html body .cap-root .main h1{font-weight:600!important;letter-spacing:-.035em!important;line-height:1.15!important}
-html body .cap-root .main :is(h2,h3,h4){line-height:1.4}
-html body .cap-root .rj-media-tools b{font-family:Georgia,serif!important}
-html body .cap-root.theme-assessments .workspace main.main :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:'Open Sans',Arial,sans-serif!important}
+html body .cap-root.theme-assessments,html body .cap-root.theme-assessments :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:"Open Sans",Arial,sans-serif;}
+html body .cap-root .main h1{font-weight:600;letter-spacing:-.035em;line-height:1.15;}
+html body .cap-root .main :is(h2,h3,h4){line-height:1.4;}
+html body .cap-root .rj-media-tools b{font-family:Georgia,serif;}
+html body .cap-root.theme-assessments .workspace main.main :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:"Open Sans",Arial,sans-serif;}
 
 /* Keep fixed launcher overlays anchored to the viewport and preserve the brand mark. */
-html body .cap-root .hubnav a.on{border-bottom-color:#111}
-html body .cap-root .hublogo img{display:block;width:28px;height:28px;object-fit:contain;filter:none}
+html body .cap-root .hubnav a.on{border-bottom-color:#111;}
+html body .cap-root .hublogo img{display:block;width:28px;height:28px;object-fit:contain;filter:none;}
 /* Full-bleed header artwork: retain the image ratio and fade its lower edge. */
-html body .cap-root.theme-assessments .workspace .main .tf-hero{overflow:visible;isolation:isolate}
-html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{right:calc((100% - 100vw)/2);left:auto;bottom:auto;width:min(78vw,1100px);height:auto;aspect-ratio:3/1;background-size:contain;background-position:right top;background-repeat:no-repeat;mask-image:linear-gradient(to right,transparent,#000 42%),linear-gradient(to bottom,#000 72%,transparent);mask-composite:intersect;max-width:none;pointer-events:none}
-html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-85px}
-html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:-20px}
-html body .cap-root.theme-assessments .workspace .main .af-success:before{top:-24px}
-@media(max-width:700px){html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{width:100vw;max-width:none}html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-50px}html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:0}}
+html body .cap-root.theme-assessments .workspace .main .tf-hero{overflow:visible;isolation:isolate;}
+html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{right:calc((100% - 100vw)/2);left:auto;bottom:auto;width:min(78vw,1100px);height:auto;aspect-ratio:3/1;background-size:contain;background-position:right top;background-repeat:no-repeat;mask-image:linear-gradient(to right,transparent,#000 42%),linear-gradient(to bottom,#000 72%,transparent);mask-composite:intersect;max-width:none;pointer-events:none;}
+html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-85px;}
+html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:-20px;}
+html body .cap-root.theme-assessments .workspace .main .af-success:before{top:-24px;}
+@media(max-width:700px){html body .cap-root.theme-assessments .workspace .main .tf-hero:after,html body .cap-root.theme-assessments .workspace .main .ac-hero:before,html body .cap-root.theme-assessments .workspace .main .af-success:before{width:100vw;max-width:none;}html body .cap-root.theme-assessments .workspace .main .tf-hero:after{top:-50px;}html body .cap-root.theme-assessments .workspace .main .ac-hero:before{top:0;}}
+
+}

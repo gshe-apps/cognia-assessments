@@ -1,0 +1,15 @@
+name: Design system cascade
+on:
+  pull_request:
+  push:
+permissions:
+  contents: read
+jobs:
+  design-system:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject visual cascade locks
+        run: node scripts/check-design-system.cjs
+      - name: Verify existing persona flows
+        run: node verify-homepages.cjs

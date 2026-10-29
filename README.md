@@ -20,7 +20,7 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 
 ## Flows
 
-**District Admin, district oversight**
+**District administrator, district oversight**
 - Interim: DA 1 Home, DA 2 Overview (Assign), DA 2a All schools, DA 2b Subgroups, DA 6 Library (preview and assign to schools)
 - Formative: DA 5 Formative (usage by school, school year picker, sort, share report)
 - Coming soon: Screeners, Alt Assessments
@@ -39,7 +39,7 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 
 ## Prototype controls
 
-- **Switch role**: every account menu has a Switch button that opens a modal for District Admin, School Administrator, Teacher and Student. Prototype only.
+- **Switch role**: every account menu has a Switch button that opens a modal for District administrator, School Administrator, Teacher and Student. Prototype only.
 - **Plan**: every account menu has a Basic / Classroom+ switch. On Basic, Classroom+ features are locked, and the teacher Interim hub shows as a paid add-on.
 - The Interim navigation has two tabs, Overview and Library. The Overview summary cards open All schools / All students (pre-filtered) and Subgroups.
 - **All schools / All students**: the selected row opens a side column with a water-fill completion card, a stack of detail cards (click one to bring it to the front) and a follow-up alert for anything below the 50% benchmark.

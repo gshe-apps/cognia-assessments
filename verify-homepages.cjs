@@ -13,10 +13,29 @@ for(const [file,role,overview] of [
  const html=read(file);
  assert(html.includes(`data-persona="${role}"`),`${file}: persona`);
  assert(html.includes(`href="${overview}"`),`${file}: assessment destination`);
- for(const text of ['Welcome back, Jordan','What can we help you with today?','Your question','Priority actions','Your hubs','Pick up where you left off'])assert(html.includes(text),`${file}: ${text}`);
+ const sectionLabels=role==='district'
+   ? ['Welcome back, Jordan','Ask a question or search across your district','District snapshot','Your hubs','Pick up where you left off']
+   : role==='school'
+   ? ['Welcome back, Jordan','Ask a question or search across your school','School snapshot','Your hubs','Continue draft','Review results','Explore resources']
+   : ['Welcome back, Jordan','What can we help you with today?','Your question','Priority actions','Your hubs','Pick up where you left off'];
+ for(const text of sectionLabels)assert(html.includes(text),`${file}: ${text}`);
  assert.equal((html.match(/class="home-card home-priority"/g)||[]).length,0);
- assert.equal((html.match(/class="home-card home-hub"/g)||[]).length,role==='educator'?3:4);
- assert.equal((html.match(/class="home-card home-recent-link home-continue"/g)||[]).length,1);
+ if(role==='district'){
+   assert.equal((html.match(/class="dh-hub dh-hub-[a-z]+"/g)||[]).length,5);
+   assert.equal((html.match(/class="dh-metric"/g)||[]).length,4);
+   assert.equal((html.match(/class="dh-recent-item"/g)||[]).length,3);
+   for(const text of ['24,862','78%','18','32 pending invitations','data-open-hub="Dr"','href="SA2-Schools.dc.html"'])assert(html.includes(text),`${file}: ${text}`);
+ }else if(role==='school'){
+   assert.equal((html.match(/class="dh-hub dh-hub-[a-z]+"/g)||[]).length,5);
+   assert.equal((html.match(/class="dh-action dh-action-(?:draft|results|resources)"/g)||[]).length,3);
+   assert.equal((html.match(/class="dh-metric"/g)||[]).length,4);
+   assert(!html.includes('class="dh-recent"'),`${file}: no recent-work container`);
+   assert(html.indexOf('class="dh-actions"')<html.indexOf('class="dh-hubs"'),`${file}: actions precede hubs`);
+   assert(html.includes('310')&&html.includes('46%')&&html.includes('48%'),`${file}: school fixture data`);
+ }else{
+   assert.equal((html.match(/class="home-card home-hub"/g)||[]).length,role==='educator'?3:4);
+   assert.equal((html.match(/class="home-card home-recent-link home-continue"/g)||[]).length,1);
+ }
  assert(!html.includes('home-section-heading'),`${file}: no extra section subtitles`);
  assert(!html.includes('home-intro'),`${file}: no additional introduction`);
  assert(!/<main[^>]*class="soonpg"/.test(html));

@@ -1,0 +1,107 @@
+/* Hub palette aliases copied from Cognia Design 1.2.0 assets/globals.css. */
+:root {
+  --hub-assessments-surface: #D1D5EE;
+  --hub-assessments-accent: #262E67;
+  --hub-observations-surface: #FEF0C4;
+  --hub-observations-accent: #B28804;
+  --hub-learning-surface: #DBE7DB;
+  --hub-learning-accent: #033D3C;
+  --hub-performance-surface: #ECCFE0;
+  --hub-performance-accent: #63264A;
+  --hub-reporting-surface: #FFCFCD;
+  --hub-reporting-accent: #800600;
+}
+/* Cognia semantic content components. No shell styles or token overrides. */
+.dh-main { width:100%; max-width:1440px; margin:0 auto; padding:var(--space-12) var(--horizontal-padding) var(--space-6); display:flex; flex:1; flex-direction:column; gap:var(--space-8); color:var(--foreground); }
+.dh-main :is(h1,h2,h3,p) { margin:0; }
+.dh-main h1,.dh-main h2 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
+.dh-main h3 { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
+.dh-main p { font-size:var(--text-body-small); line-height:var(--lh-base); color:var(--muted-foreground); }
+.dh-greeting { display:flex; flex-direction:column; align-items:center; text-align:center; gap:var(--space-2); padding-bottom:var(--space-2); }
+.dh-greeting p { font-size:var(--text-body-base); }
+.dh-question { width:100%; max-width:1024px; margin:0 auto; display:flex; flex-direction:column; gap:var(--space-3); }
+.dh-question .home-search { max-width:none; margin:0; }
+.dh-question .home-search-row { padding:var(--space-1) var(--space-2) var(--space-1) var(--space-4); gap:var(--space-3); }
+.dh-question .home-search-row input { min-height:48px; padding:var(--space-2) 0; background:transparent; }
+.dh-question .home-search-leading svg { width:24px; height:24px; }
+.dh-question .home-question-submit { display:flex; align-items:center; justify-content:center; gap:var(--space-2); min-height:40px; min-width:96px; padding:var(--space-2) var(--space-4); border:1px solid var(--primary); border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); font-size:var(--text-body-small); cursor:pointer; }
+.dh-question .home-question-submit svg { width:16px; height:16px; }
+.dh-question .home-suggested-action { padding:var(--space-2) var(--space-4); min-height:40px; border:1px solid var(--border); border-radius:var(--rounded-full); background:var(--card); color:var(--foreground); cursor:pointer; text-decoration:none; }
+.dh-question .home-search-results { max-width:none; }
+.dh-hubs { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--space-4); }
+.dh-hub { display:flex; flex-direction:column; align-items:flex-start; min-width:0; min-height:208px; padding:var(--space-6); gap:var(--space-3); border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); text-align:left; text-decoration:none; cursor:pointer; transition:all 200ms; }
+.dh-hub-assessments .dh-icon,.dh-action-draft .dh-icon { background:var(--hub-assessments-surface); color:var(--hub-assessments-accent); }
+.dh-hub-observations .dh-icon { background:var(--hub-observations-surface); color:var(--hub-observations-accent); }
+.dh-hub-learning .dh-icon,.dh-action-resources .dh-icon { background:var(--hub-learning-surface); color:var(--hub-learning-accent); }
+.dh-hub-performance .dh-icon,.dh-action-results .dh-icon { background:var(--hub-performance-surface); color:var(--hub-performance-accent); }
+.dh-hub-reporting .dh-icon { background:var(--hub-reporting-surface); color:var(--hub-reporting-accent); }
+.dh-hub:hover { box-shadow:var(--shadow-md); }
+.dh-icon { width:48px; height:48px; border-radius:var(--rounded-full); background:var(--card); color:var(--muted-foreground); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.dh-icon svg { width:24px; height:24px; }
+.dh-hub .dh-icon,.dh-action .dh-icon { border-radius:var(--radius); }
+
+.dh-hub p { line-height:var(--lh-base); }
+.dh-hub-arrow { display:flex; align-self:flex-end; margin-top:auto; }
+.dh-hub-arrow svg,.dh-text-link svg,.dh-outline svg { width:16px; height:16px; flex-shrink:0; }
+/* Client-requested framed snapshot; explicit reference refinement, 29 October. */
+.dh-snapshot { background:var(--card); padding:var(--space-6); border:1px solid var(--border); border-radius:var(--radius); }
+.dh-section-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--space-4); padding:var(--space-2) 0 var(--space-4); }
+.dh-section-heading p { margin-top:var(--space-2); }
+.dh-text-link { display:inline-flex; align-items:center; gap:var(--space-2); min-height:40px; color:var(--foreground); font-size:var(--text-body-small); text-decoration:none; }
+.dh-text-link:hover { text-decoration:underline; }
+.dh-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:var(--space-2) 0; }
+.dh-metric { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-1); padding:0 var(--space-12); border-left:1px solid var(--border); }
+.dh-metric:first-child { border-left:0; padding-left:var(--space-6); }
+.dh-metric > .dh-icon { margin-bottom:var(--space-2); }
+.dh-number { font:var(--weight-bold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
+.dh-metric h3 { font-weight:var(--weight-regular); }
+.dh-metric-link { color:var(--foreground); text-decoration:none; }
+.dh-metric-link:hover { text-decoration:underline; }
+.dh-trend { display:flex; flex-direction:column; gap:var(--space-1); margin-top:var(--space-2); }
+.dh-trend-badge { display:inline-flex; align-self:flex-start; align-items:center; gap:var(--space-1); padding:var(--space-1) var(--space-2); border-radius:var(--rounded-full); background:var(--success-light); color:var(--success); font-size:var(--text-body-small); }
+.dh-trend-badge svg { width:16px; height:16px; }
+.dh-score { position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; margin-top:calc(-1 * var(--space-1)); margin-bottom:var(--space-1); }
+.dh-score svg { position:absolute; inset:0; width:100%; height:100%; fill:none; stroke-width:8; }
+.dh-score-track { stroke:var(--secondary); }
+.dh-score-progress { stroke:var(--chart-3); stroke-linecap:round; transform:rotate(-90deg); transform-origin:center; }
+.dh-score strong { font-size:var(--text-heading); font-weight:var(--weight-bold); }
+.dh-recent { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:var(--space-4) var(--space-6); }
+.dh-recent h2 { font-size:var(--text-body-base); }
+.dh-recent-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-6); margin-top:var(--space-3); }
+.dh-recent-item { display:flex; align-items:center; gap:var(--space-3); padding-left:var(--space-6); border-left:1px solid var(--border); }
+.dh-recent-item:first-child { padding-left:0; border-left:0; }
+.dh-recent-item > div { flex:1; min-width:0; }
+.dh-recent-item h3 { font-size:var(--text-body-small); font-weight:var(--weight-regular); }
+.dh-recent-icon { display:flex; color:var(--muted-foreground); }
+.dh-recent-icon svg { width:24px; height:24px; }
+.dh-outline { display:inline-flex; justify-content:center; align-items:center; gap:var(--space-2); flex-shrink:0; padding:var(--space-2) var(--space-3); min-height:40px; border:1px solid var(--primary); border-radius:var(--radius); background:transparent; color:var(--foreground); font-size:var(--text-body-small); text-decoration:none; cursor:pointer; transition:all 200ms; }
+.dh-outline:hover,.dh-question .home-suggested-action:hover { background:var(--secondary); }
+.dh-visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+@media(max-width:1100px) { .dh-hubs { grid-template-columns:repeat(3,minmax(0,1fr)); } .dh-recent-grid { grid-template-columns:1fr; gap:var(--space-3); } .dh-recent-item { border-left:0; padding:var(--space-3) 0 0; border-top:1px solid var(--border); } .dh-recent-item:first-child { border:0; padding:0; } .dh-metric { padding:0 var(--space-6); } }
+@media(max-width:767px) { .dh-main { padding-top:var(--space-8); } .dh-hubs,.dh-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .dh-hub { min-height:208px; padding:var(--space-4); } .dh-section-heading { align-items:flex-start; flex-direction:column; gap:var(--space-1); } .dh-metrics { gap:var(--space-6) 0; } .dh-metric { padding:0 var(--space-4); } .dh-metric:first-child { padding-left:var(--space-4); } .dh-metric:nth-child(3) { border-left:0; } .dh-recent { padding:var(--space-4); } .dh-recent-item { flex-wrap:wrap; } .dh-question .home-search-row { flex-wrap:nowrap; } .dh-question .home-suggestions { align-items:flex-start; gap:var(--space-2); } .dh-question .home-search-leading { display:none; } }
+@media(max-width:380px) { .dh-hubs { grid-template-columns:1fr; } }
+@media(prefers-reduced-motion:reduce) { .dh-hub,.dh-outline { transition:none; } }
+
+/* Alternate school Home puts task choices before the hub destinations. */
+.dh-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); }
+.dh-action { display:flex; align-items:center; gap:var(--space-4); padding:var(--space-6); border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--foreground); text-decoration:none; text-align:left; cursor:pointer; transition:all 200ms; }
+.dh-action:hover { box-shadow:var(--shadow-md); }
+.dh-action > div { flex:1; }
+.dh-action h2 { font-size:var(--text-body-base); margin-bottom:var(--space-1); }
+.dh-action > svg { width:16px; height:16px; flex-shrink:0; }
+@media(max-width:767px) { .dh-actions { grid-template-columns:1fr; } .dh-action { padding:var(--space-4); } .dh-snapshot { padding:var(--space-4); } }
+@media(prefers-reduced-motion:reduce) { .dh-action { transition:none; } }
+
+/* Exact upstream dark palette aliases. */
+.dark {
+  --hub-assessments-surface: #0B0D1C;
+  --hub-assessments-accent: #8690D3;
+  --hub-observations-surface: #4E3C02;
+  --hub-observations-accent: #FCE086;
+  --hub-learning-surface: #111911;
+  --hub-learning-accent: #9DBF9E;
+  --hub-performance-surface: #190A13;
+  --hub-performance-accent: #D085B1;
+  --hub-reporting-surface: #3F1513;
+  --hub-reporting-accent: #FF928D;
+}

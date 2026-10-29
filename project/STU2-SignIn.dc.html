@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Student option 2 · Sign in</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="stu2.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="stu2 theme-assessments" style="position: fixed; inset: 0">
+
+<div class="stu2-layer" style="padding: 32px 16px 24px; gap: 32px; background: var(--background)">
+<div class="signin-col" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 32px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<img src="assets/stu2/cognia-c.svg" alt="Cognia" style="width: 56px; height: 56px">
+<h1 class="t-heading" id="si-t">Hi there!</h1>
+<p class="t-body t-muted">Sign in with the details from your teacher.</p>
+</div>
+<form style="display: flex; flex-direction: column; gap: 24px" aria-labelledby="si-t">
+<div class="field"><label for="pw">Student passcode *</label>
+<div style="position: relative"><input class="input" id="pw" type="{{pwType}}" inputmode="numeric" autocomplete="off" placeholder="e.g. 4821" style="padding-right: 56px; border-style: none">
+<button type="button" class="btn btn-ghost btn-icon" style="position: absolute; right: 0; top: 0" aria-label="{{pwLabel}}" onClick="{{togglePw}}">
+<sc-if value="{{showPw}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><path d="m2 2 20 20"></path></svg></sc-if>
+<sc-if value="{{hidePw}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"></path><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path></svg></sc-if>
+</button></div></div>
+<div class="field"><label for="sc">Session code *</label><input class="input" id="sc" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. MATH-27" style="border-style: none"></div>
+<a class="btn btn-solid" href="STU2-Classroom.dc.html" style="width: 100%">Sign in<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<p class="t-small t-muted" style="text-align: center">Both codes are on the board or from your teacher.</p>
+</form>
+</div>
+<p class="t-small t-muted" style="text-align: center">Prototype: any passcode and session code work.</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const show = !!(this.state && this.state.showPw);
+    return {
+      showPw: show, hidePw: !show,
+      pwType: show ? 'text' : 'password',
+      pwLabel: show ? 'Hide passcode' : 'Show passcode',
+      togglePw: () => this.setState({ showPw: !show })
+    };
+  }
+}
+</script>
+</body>
+</html>

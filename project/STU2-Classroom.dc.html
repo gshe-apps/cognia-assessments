@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Student option 2 · Classroom</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="stu2.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="stu2 theme-assessments" style="position: fixed; inset: 0">
+
+<sc-if value="{{scrClass}}" hint-placeholder-val="{{ true }}"><img class="{{r0}}" src="{{room0}}" alt="3D classroom background"><img class="{{r1}}" src="{{room1}}" alt=""><img class="{{r2}}" src="{{room2}}" alt=""><div class="planes" style="{{planesStyle}}" aria-hidden="true"><span class="plane p1"><span class="pm"><i class="w1"></i><i class="w2"></i><i class="k"></i></span></span><span class="plane p2"><span class="pm"><i class="w1"></i><i class="w2"></i><i class="k"></i></span></span><span class="plane p3"><span class="pm"><i class="w1"></i><i class="w2"></i><i class="k"></i></span></span><span class="plane p4"><span class="pm"><i class="w1"></i><i class="w2"></i><i class="k"></i></span></span><span class="plane p5"><span class="pm"><i class="w1"></i><i class="w2"></i><i class="k"></i></span></span></div><div class="stu2-layer">
+<header class="hud">
+<img src="assets/stu2/cognia-c.svg" alt="Cognia" style="width: 32px; height: 32px; display: block"><span style="flex: 1"></span>
+<a class="btn btn-ghost" href="STU2-SignIn.dc.html">Sign out</a>
+</header>
+<div class="stage">
+<div class="lead"><h1 class="t-heading">{{headText}}</h1></div>
+<div class="carousel">
+<div class="track" style="{{trackStyle}}" onDragStart="{{noDrag}}" onPointerDown="{{cdown}}" onPointerMove="{{cmove}}" onPointerUp="{{cup}}" onPointerCancel="{{cup}}">
+<sc-if value="{{card0Open}}" hint-placeholder-val="{{ true }}"><button type="button" class="{{c0}}" draggable="false" onDragStart="{{noDrag}}" onClick="{{startTest}}" aria-label="{{startLabel}}"><span style="display: flex; justify-content: space-between; align-items: center"><span class="subj">Maths</span><sc-if value="{{newBadge}}" hint-placeholder-val="{{ true }}"><span class="badge b-new">New</span></sc-if><sc-if value="{{progBadge}}" hint-placeholder-val="{{ false }}"><span class="badge b-progress">In progress</span></sc-if></span><span class="ctitle"><span class="t-heading">Fractions check</span><span class="t-small t-muted">{{sub0}}</span></span><span class="cbottom"><span class="meta meta-split"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>Due Friday</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20"></path><path d="M12 6v6l4 2"></path></svg>About 8 min</span></span><span class="note" style="display: flex; flex-direction: column"><span class="t-small t-strong">Ms Taylor</span><span class="t-small">No timer, so take your time. Skip any question and come back to it.</span></span></span><span class="cta">{{ctaText}}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></button></sc-if><sc-if value="{{card0Done}}" hint-placeholder-val="{{ false }}"><div class="{{c0}}" tabindex="0" aria-label="Fractions check, handed in"><span style="display: flex; justify-content: space-between; align-items: center"><span class="subj">Maths</span><span class="badge b-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Handed in</span></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="t-heading">Fractions check</span><span class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>Handed in just now</span></span></span><span class="stats"><span class="stat"><span class="t-body t-strong">{{doneAns}}</span><span class="t-small t-muted">Answered</span></span><span class="stat"><span class="t-body t-strong">4 min</span><span class="t-small t-muted">Time</span></span></span><span class="t-small t-muted">Ms Taylor will share how you did.</span></div></sc-if><div class="{{c1}}" tabindex="0" aria-label="Reading reflection, handed in"><span style="display: flex; justify-content: space-between; align-items: center"><span class="subj">English</span><span class="badge b-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Handed in</span></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="t-heading">Reading reflection</span><span class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>Handed in 21 Oct</span></span></span><span class="stats"><span class="stat"><span class="t-body t-strong">6/6</span><span class="t-small t-muted">Answered</span></span><span class="stat"><span class="t-body t-strong">11 min</span><span class="t-small t-muted">Time</span></span></span><span class="t-small t-muted">Ms Taylor hasn’t shared results yet.</span></div><div class="{{c2}}" tabindex="0" aria-label="Times tables sprint, handed in"><span style="display: flex; justify-content: space-between; align-items: center"><span class="subj">Maths</span><span class="badge b-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Handed in</span></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="t-heading">Times tables sprint</span><span class="meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>Handed in 14 Oct</span></span></span><span class="stats"><span class="stat"><span class="t-body t-strong">10/10</span><span class="t-small t-muted">Answered</span></span><span class="stat"><span class="t-body t-strong">7 min</span><span class="t-small t-muted">Time</span></span></span><span class="t-small t-muted">Feedback shared. Great effort on the 7s!</span></div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div class="hdots"><button type="button" class="{{cprevCls}}" onClick="{{cprev}}" aria-label="Previous test"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button><button type="button" class="hdot-btn" onClick="{{go0}}" aria-label="Show your next test"><span class="{{d0}}"></span></button><button type="button" class="hdot-btn" onClick="{{go1}}" aria-label="Show Reading reflection"><span class="{{d1}}"></span></button><button type="button" class="hdot-btn" onClick="{{go2}}" aria-label="Show Times tables sprint"><span class="{{d2}}"></span></button><button type="button" class="{{cnextCls}}" onClick="{{cnext}}" aria-label="Next test"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button></div>
+<p class="t-small t-muted"><span class="touch-only">{{hint}}</span><span class="desk-only">{{hintDesk}}</span></p>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{scrQ}}" hint-placeholder-val="{{ false }}"><img class="stu2-bg" src="{{roomTest}}" alt="3D classroom background"><div class="stu2-veil"></div><div class="stu2-layer">
+<header class="hud wrap" style="padding: 12px 8px 12px 16px">
+<div class="segs" role="img" aria-label="{{answeredLabel}}"><span class="{{g0}}"></span><span class="{{g1}}"></span><span class="{{g2}}"></span><span class="{{g3}}"></span></div>
+<span class="t-small t-strong" aria-label="{{answeredLabel}}" style="min-width: 24px; text-align: right">{{countLabel}}</span>
+<button type="button" class="btn btn-ghost btn-icon" onClick="{{openExit}}" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+</header>
+<div class="deck" onPointerDown="{{down}}" onPointerMove="{{move}}" onPointerUp="{{up}}" onPointerCancel="{{up}}" onClickCapture="{{guard}}">
+<article class="qcard" style="{{s0}}" aria-hidden="{{h0}}"><div class="qbody"><div class="qhead"><div class="story"><p class="t-body">A dog trainer saw that 3/10 of the dogs at the park were golden retrievers and 25/100 were poodles.</p></div><h2 class="t-heading" id="qt0">What fraction of the dogs were retrievers or poodles?</h2></div><div class="qans"><div class="panel"><div style="display: flex; flex-direction: column; gap: 8px"><span class="step">Step 1 · Turn tenths into hundredths</span><div class="eq"><span class="frac"><span>3</span><span class="bar"></span><span>10</span></span><span>=</span><span class="frac"><span><button type="button" class="{{b0c}}" onClick="{{b0s}}" aria-label="Box 1">{{b0v}}</button></span><span class="bar"></span><span><button type="button" class="{{b1c}}" onClick="{{b1s}}" aria-label="Box 2">{{b1v}}</button></span></span></div></div><div style="display: flex; flex-direction: column; gap: 8px"><span class="step">Step 2 · Add the two fractions</span><div class="eq"><span class="frac"><span>30</span><span class="bar"></span><span>100</span></span><span>+</span><span class="frac"><span>25</span><span class="bar"></span><span>100</span></span><span>=</span><span class="frac"><span><button type="button" class="{{b2c}}" onClick="{{b2s}}" aria-label="Box 3">{{b2v}}</button></span><span class="bar"></span><span>100</span></span></div></div><div style="display: flex; flex-direction: column; gap: 8px"><span class="step">Answer</span><div class="eq"><span>So</span><span class="frac"><span><button type="button" class="{{b3c}}" onClick="{{b3s}}" aria-label="Box 4">{{b3v}}</button></span><span class="bar"></span><span>100</span></span><span class="t-body" style="font-weight: 400">of the dogs</span></div></div></div></div></div><div class="qfoot" style="display: flex; flex-direction: column; gap: 8px"><p class="t-small t-muted" style="text-align: center">Tap a number to fill the highlighted box</p><div class="tray"><sc-for list="{{bank}}" as="n" hint-placeholder-count="8"><button type="button" class="chip" onClick="{{n.pick}}">{{n.label}}</button></sc-for></div><button type="button" class="btn btn-ghost" onClick="{{clearBox}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>Clear box</button></div></article><article class="qcard" style="{{s1}}" aria-hidden="{{h1}}"><div class="qbody"><div class="qhead"><div class="story"><p class="t-body">A dog shelter adds up the fraction of dogs adopted each day. Turn the tenths into hundredths first, then add.</p></div><h2 class="t-heading" id="qt1">Match each sum to its answer.</h2></div><div class="qans"><div style="display: flex; flex-direction: column; gap: 12px"><sc-for list="{{rows}}" as="r" hint-placeholder-count="4"><div class="{{r.cls}}"><button type="button" class="mhead" onClick="{{r.toggle}}" aria-expanded="{{r.expanded}}"><span class="eq" style="gap: 8px"><span class="frac"><span>{{r.a}}</span><span class="bar"></span><span>10</span></span><span>+</span><span class="frac"><span>{{r.c}}</span><span class="bar"></span><span>100</span></span><span>=</span></span><span style="flex: 1"></span><sc-if value="{{r.has}}" hint-placeholder-val="{{ false }}"><span class="badge b-strong" style="font-size: 16px; height: 32px; padding: 0 12px">{{r.value}}</span></sc-if><sc-if value="{{r.none}}" hint-placeholder-val="{{ true }}"><span class="t-small t-muted">{{r.hint}}</span></sc-if></button><sc-if value="{{r.open}}" hint-placeholder-val="{{ false }}"><div class="mgrid" role="radiogroup"><sc-for list="{{r.choices}}" as="c" hint-placeholder-count="5"><button type="button" class="{{c.cls}}" role="radio" aria-checked="{{c.on}}" onClick="{{c.pick}}">{{c.label}}</button></sc-for></div></sc-if></div></sc-for></div></div></div></article><article class="qcard" style="{{s2}}" aria-hidden="{{h2}}"><div class="qbody"><div class="qhead"><div class="story"><p class="t-body">At a dog park, 3/10 of the dogs are golden retrievers and 4/100 are poodles.</p></div><h2 class="t-heading" id="qt2">What is 3/10 + 4/100?</h2></div><div class="qans"><div class="opts" role="radiogroup" aria-labelledby="qt2"><button type="button" class="{{q2o0}}" role="radio" aria-checked="{{q2c0}}" onClick="{{q2p0}}"><span class="letter">A</span><span class="big-opt">7/100</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q2o1}}" role="radio" aria-checked="{{q2c1}}" onClick="{{q2p1}}"><span class="letter">B</span><span class="big-opt">7/110</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q2o2}}" role="radio" aria-checked="{{q2c2}}" onClick="{{q2p2}}"><span class="letter">C</span><span class="big-opt">34/100</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q2o3}}" role="radio" aria-checked="{{q2c3}}" onClick="{{q2p3}}"><span class="letter">D</span><span class="big-opt">34/10</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button></div></div></div></article><article class="qcard" style="{{s3}}" aria-hidden="{{h3}}"><div class="qbody"><div class="qhead"><div class="panel" style="gap: 8px"><span class="t-body t-strong">Sticker collections</span><p class="t-body">Maya and Leo both collect stickers. Leo has 4 stickers. Maya has 5 times as many stickers as Leo. Maya says she can write a multiplication equation to show how her collection compares to Leo’s.</p></div><h2 class="t-heading" id="qt3">Which equation best shows “Maya has 5 times as many stickers as Leo”?</h2></div><div class="qans"><div class="opts" role="radiogroup" aria-labelledby="qt3"><button type="button" class="{{q3o0}}" role="radio" aria-checked="{{q3c0}}" onClick="{{q3p0}}"><span class="letter">A</span><span class="t-body">20 + 5 = 25, Maya has 5 more stickers than Leo</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q3o1}}" role="radio" aria-checked="{{q3c1}}" onClick="{{q3p1}}"><span class="letter">B</span><span class="t-body">4 × 5 = 20, Leo has 4 times as many stickers as Maya</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q3o2}}" role="radio" aria-checked="{{q3c2}}" onClick="{{q3p2}}"><span class="letter">C</span><span class="t-body">5 × 4 = 20, Maya has 5 times as many stickers as Leo</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button><button type="button" class="{{q3o3}}" role="radio" aria-checked="{{q3c3}}" onClick="{{q3p3}}"><span class="letter">D</span><span class="t-body">4 + 4 + 4 + 4 + 4 = 20, Maya has 5 groups of 4 added together</span><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button></div></div></div></article><article class="qcard" style="{{s4}}" aria-hidden="{{h4}}"><div class="qbody" style="justify-content: center; align-items: center; text-align: center; gap: 24px"><span class="finish"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg></span><div style="display: flex; flex-direction: column; gap: 8px"><h2 class="t-heading">{{finishTitle}}</h2><p class="t-body t-muted">{{finishText}}</p></div></div><div class="qfoot" style="border-style: none; display: flex; flex-direction: column; gap: 8px"><sc-if value="{{hasMissing}}" hint-placeholder-val="{{ false }}"><button type="button" class="btn btn-solid" onClick="{{toMissing}}" style="width: 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Back to unanswered</button><button type="button" class="btn btn-ghost" onClick="{{goReview}}" style="width: 100%">Review anyway</button></sc-if><sc-if value="{{allDone}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-solid" onClick="{{goReview}}" style="width: 100%">Review answers<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button></sc-if></div></article>
+<button type="button" class="{{prevCls}}" onClick="{{prev}}" aria-label="Previous question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+<button type="button" class="{{nextCls}}" onClick="{{next}}" aria-label="Next question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+</div>
+<div class="wrap" style="display: flex; align-items: center; gap: 8px; padding: 4px 16px 12px; min-height: 64px">
+<span class="t-small t-muted" style="flex: 1; text-align: center"><span class="touch-only">{{msg}}</span><span class="desk-only">{{msgDesk}}</span></span>
+</div>
+</div>
+<sc-if value="{{exitOpen}}" hint-placeholder-val="{{ false }}">
+<div class="scrim mid" onClick="{{closeExit}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="ex-t" aria-describedby="ex-d" onClick="{{stop}}" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px"><h2 class="t-heading" id="ex-t">Take a break?</h2><p class="t-body t-muted" id="ex-d">Your answers are saved. You can pick up right where you left off.</p></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><button type="button" class="btn btn-solid" onClick="{{closeExit}}" style="width: 100%">Keep going</button><button type="button" class="btn btn-outline" onClick="{{saveClose}}" style="width: 100%">Save and close</button></div>
+</div></div>
+</sc-if>
+</sc-if>
+<sc-if value="{{scrReview}}" hint-placeholder-val="{{ false }}"><div class="stu2-solid"></div>
+<div class="stu2-layer">
+<header class="rhead" style="background-color: transparent; border-style: none"><button type="button" class="btn btn-ghost btn-icon" onClick="{{backToQ}}" aria-label="Back to questions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></button><span class="t-body t-strong" style="flex: 1">Check your answers</span></header>
+<div style="flex: 1; overflow: auto; padding: 24px 16px">
+<div class="rcol">
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 class="t-heading">Fractions check</h1><p class="t-body t-muted">{{reviewSub}}</p></div>
+<sc-for list="{{ritems}}" as="r" hint-placeholder-count="4"><article class="ritem">
+<div style="display: flex; align-items: center; gap: 12px; margin: -8px -8px 0 0"><span class="num">{{r.num}}</span><span class="t-small t-muted" style="flex: 1">{{r.lab}}</span>
+<sc-if value="{{r.flag}}" hint-placeholder-val="{{ false }}"><span class="badge b-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>{{r.flagText}}</span></sc-if>
+<button type="button" class="btn btn-ghost btn-icon" onClick="{{r.edit}}" aria-label="{{r.editLabel}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg></button></div>
+<p class="t-body t-strong">{{r.title}}</p>
+<sc-if value="{{r.has}}" hint-placeholder-val="{{ true }}"><div class="answer t-body"><sc-for list="{{r.lines}}" as="l" hint-placeholder-count="2"><div>{{l.t}}</div></sc-for></div></sc-if>
+</article></sc-for>
+<div style="padding: 8px 0 8px"><button type="button" class="btn btn-solid" onClick="{{askHandIn}}" style="width: 100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"></path><path d="M22 2 11 13"></path></svg>Hand in</button></div>
+</div>
+</div>
+</div>
+<sc-if value="{{confirmOpen}}" hint-placeholder-val="{{ false }}">
+<div class="scrim mid" onClick="{{closeConfirm}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="hi-t" aria-describedby="hi-d" onClick="{{stop}}" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px"><h2 class="t-heading" id="hi-t">{{confirmTitle}}</h2><p class="t-body t-muted" id="hi-d">You won’t be able to change your answers after you hand in.</p></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><button type="button" class="btn btn-outline" onClick="{{confirmBack}}" style="width: 100%">{{confirmBackText}}</button><button type="button" class="btn btn-solid" onClick="{{handIn}}" style="width: 100%">Hand in</button></div>
+</div></div>
+</sc-if>
+<sc-if value="{{trophyOpen}}" hint-placeholder-val="{{ false }}">
+<div class="trophy-wrap" role="dialog" aria-modal="true" aria-labelledby="tr-t">
+<div class="trophy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg><span class="confetti" style="--dx: 110px; --dy: -30px; background: var(--accent-100); animation-delay: 0ms"></span><span class="confetti" style="--dx: 132px; --dy: 18px; background: var(--accent-200); animation-delay: 60ms"></span><span class="confetti" style="--dx: 130px; --dy: 79px; background: var(--accent-300); animation-delay: 120ms"></span><span class="confetti" style="--dx: 55px; --dy: 65px; background: var(--accent-400); animation-delay: 180ms"></span><span class="confetti" style="--dx: 24px; --dy: 108px; background: var(--card); animation-delay: 0ms"></span><span class="confetti" style="--dx: -30px; --dy: 137px; background: var(--accent-100); animation-delay: 60ms"></span><span class="confetti" style="--dx: -55px; --dy: 65px; background: var(--accent-200); animation-delay: 120ms"></span><span class="confetti" style="--dx: -107px; --dy: 60px; background: var(--accent-300); animation-delay: 180ms"></span><span class="confetti" style="--dx: -160px; --dy: 28px; background: var(--accent-400); animation-delay: 0ms"></span><span class="confetti" style="--dx: -110px; --dy: -30px; background: var(--card); animation-delay: 60ms"></span><span class="confetti" style="--dx: -132px; --dy: -78px; background: var(--accent-100); animation-delay: 120ms"></span><span class="confetti" style="--dx: -130px; --dy: -139px; background: var(--accent-200); animation-delay: 180ms"></span><span class="confetti" style="--dx: -55px; --dy: -125px; background: var(--accent-300); animation-delay: 0ms"></span><span class="confetti" style="--dx: -24px; --dy: -168px; background: var(--accent-400); animation-delay: 60ms"></span><span class="confetti" style="--dx: 30px; --dy: -197px; background: var(--card); animation-delay: 120ms"></span><span class="confetti" style="--dx: 55px; --dy: -125px; background: var(--accent-100); animation-delay: 180ms"></span><span class="confetti" style="--dx: 107px; --dy: -120px; background: var(--accent-200); animation-delay: 0ms"></span><span class="confetti" style="--dx: 160px; --dy: -88px; background: var(--accent-300); animation-delay: 60ms"></span></div>
+<div class="rise-late" style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+<h2 class="t-hero" id="tr-t">Handed in!</h2>
+<p class="t-body t-muted">Ms Taylor will share how you did.</p>
+</div>
+<button type="button" class="btn btn-solid rise-late" onClick="{{toClassroom}}" style="width: 100%">Back to classroom<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+</div>
+</sc-if>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  st() {
+    const START = 'class';
+    const full = { a0: [30, 100, 55, 55], act: 3, a1: ['67/100', '43/100', '25/100', '19/100'], open: -1, a2: 2, a3: 2, seen: [true, true, true, true], swiped: true, i: 4 };
+    const base = { scr: 'class', status: 'new', card: 0, cdx: 0, cdrag: false, i: 0, dx: 0, drag: false, a0: [null, null, null, null], act: 0, a1: [null, null, null, null], open: 0, a2: null, a3: null, seen: [false, false, false, false], cheer: '', swiped: false };
+    const seed = START === 'q' ? { scr: 'q', status: 'progress' } : START === 'review' ? Object.assign({ scr: 'review', status: 'progress' }, full) : START === 'done' ? Object.assign({ status: 'done' }, full) : {};
+    return Object.assign(base, seed, this.state || {});
+  }
+  done(s, k) { const a = [s.a0, s.a1, s.a2, s.a3][k]; return Array.isArray(a) ? a.every(v => v !== null) : a !== null; }
+  some(s, k) { const a = [s.a0, s.a1, s.a2, s.a3][k]; return Array.isArray(a) ? a.some(v => v !== null) : a !== null; }
+  earn(s, k, patch) {
+    const n = Object.assign({}, s, patch);
+    if (this.done(n, k) && !s.seen[k]) {
+      const seen = s.seen.slice(); seen[k] = true;
+      const left = [0, 1, 2, 3].filter(j => !this.done(n, j)).length;
+      patch.seen = seen;
+      patch.cheer = left === 0 ? 'All answered!' : 'Locked in! ' + left + ' to go';
+      // All answered: glide on to the final card
+      if (left === 0 && s.i < 4) setTimeout(() => this.moveTo(4), 700);
+    }
+    this.setState(patch);
+  }
+  moveTo(n) { const s = this.st(); if (n < 0 || n > 4) { this.setState({ dx: 0, drag: false }); return; } this.setState({ i: n, dx: 0, drag: false, cheer: '', swiped: s.swiped || n > s.i }); }
+  go(k) { if (k < 0 || k > 2) { this.setState({ cdx: 0, cdrag: false }); return; } this.setState({ card: k, cdx: 0, cdrag: false }); }
+  renderVals() {
+    const s = this.st();
+    const v = { scrClass: s.scr === 'class', scrQ: s.scr === 'q', scrReview: s.scr === 'review' };
+    const answered = [0, 1, 2, 3].filter(k => this.done(s, k)).length;
+    const firstMissing = [0, 1, 2, 3].find(k => !this.done(s, k));
+    v.stop = (e) => { if (e) e.stopPropagation(); };
+    v.noDrag = (e) => { e.preventDefault(); };
+
+    // ---------- Classroom
+    const k = s.card, cdx = s.cdx;
+    const sz = (window.innerWidth || 390) >= 1200 ? 'd' : (window.innerWidth || 390) >= 768 ? 't' : 'm';
+    v.room0 = 'assets/stu2/' + sz + '-land0.jpg'; v.room1 = 'assets/stu2/' + sz + '-land1.jpg'; v.room2 = 'assets/stu2/' + sz + '-land2.jpg'; v.roomTest = 'assets/stu2/' + sz + '-test.jpg';
+    v.headText = s.status === 'done' ? 'Nice work, Jamie!' : 'Hey Jamie';
+    v.card0Open = s.status !== 'done'; v.card0Done = s.status === 'done';
+    v.newBadge = s.status === 'new'; v.progBadge = s.status === 'progress';
+    v.sub0 = s.status === 'progress' ? '4 questions · ' + answered + ' answered' : '4 questions';
+    v.ctaText = s.status === 'progress' ? 'Continue test' : 'Start test';
+    v.startLabel = (s.status === 'progress' ? 'Continue' : 'Start') + ' Fractions check';
+    v.doneAns = answered + '/4';
+    v.startTest = (e) => { if (this._moved) { e.preventDefault(); this._moved = false; return; } this.setState({ scr: 'q', dx: 0, cheer: '', exitOpen: false }); };
+    v.hint = k === 0 ? 'Swipe to see your past tests' : 'Swipe back for your next test';
+    v.hintDesk = k === 0 ? 'Use the arrows to see your past tests' : 'Go back for your next test';
+    v.trackStyle = '--k: ' + k + '; --dx: ' + cdx + 'px; transition: ' + (s.cdrag ? 'none' : 'transform 450ms cubic-bezier(.22,.61,.36,1)');
+    v.planesStyle = '--k: ' + k + '; --dx: ' + cdx + 'px' + (s.cdrag ? '; transition: none' : '');
+    v.cprevCls = 'nav-arrow glass prev' + (k === 0 ? ' hide' : ''); v.cnextCls = 'nav-arrow glass next' + (k === 2 ? ' hide' : '');
+    v.cprev = () => this.go(k - 1); v.cnext = () => this.go(k + 1);
+    v.go0 = () => this.go(0); v.go1 = () => this.go(1); v.go2 = () => this.go(2);
+    v.cdown = (e) => { this._cx = e.clientX; this._cy = e.clientY; this._cdec = false; this._cdrag = false; this._moved = false; };
+    v.cmove = (e) => {
+      if (this._cx == null) return;
+      const nx = e.clientX - this._cx, ny = e.clientY - this._cy;
+      if (!this._cdec && (Math.abs(nx) > 10 || Math.abs(ny) > 10)) { this._cdec = true; this._cdrag = Math.abs(nx) > Math.abs(ny); if (this._cdrag) { this._moved = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {} } }
+      if (!this._cdrag) return;
+      const edge = (nx > 0 && k === 0) || (nx < 0 && k === 2);
+      this.setState({ cdx: edge ? nx * 0.25 : nx, cdrag: true });
+    };
+    v.cup = () => {
+      const was = this._cdrag; this._cx = null; this._cdrag = false;
+      if (!was) return;
+      if (cdx < -60) this.go(k + 1); else if (cdx > 60) this.go(k - 1); else this.setState({ cdx: 0, cdrag: false });
+    };
+    for (let j = 0; j < 3; j++) { v['c' + j] = 'tcard glass' + (j === k ? '' : ' side-card'); v['d' + j] = 'hdot' + (j === k ? ' on' : ''); v['r' + j] = 'stu2-bg room' + (j === k ? ' on' : (j < k ? ' behind' : '')); }
+
+    // ---------- Question deck
+    for (let q = 0; q < 5; q++) {
+      const d = q - s.i;
+      let t;
+      if (d < 0) t = 'transform: translateX(-130%) rotate(-12deg); opacity: 0; z-index: 5';
+      else if (d === 0) t = 'transform: translateX(' + s.dx + 'px) rotate(' + (s.dx / 22) + 'deg); opacity: 1; z-index: 5' + (s.drag ? '; transition: none' : '');
+      else { const dd = Math.min(d, 3); t = 'transform: translateY(' + (dd * 12) + 'px) scale(' + (1 - dd * 0.05) + '); opacity: ' + (d > 3 ? 0 : 1) + '; z-index: ' + (5 - d); }
+      if (d !== 0) t += '; pointer-events: none';
+      v['s' + q] = t; v['h' + q] = d === 0 ? 'false' : 'true';
+    }
+    for (let q = 0; q < 4; q++) v['g' + q] = 'seg' + (this.done(s, q) ? ' done' : (q === s.i ? ' now' : ''));
+    v.answeredLabel = answered + ' of 4 answered'; v.countLabel = answered + '/4';
+    v.msg = s.cheer ? s.cheer : (s.i === 4 ? '' : (s.swiped ? answered + ' of 4 answered' : 'Swipe for the next question'));
+    v.msgDesk = s.cheer ? s.cheer : (s.i === 4 ? '' : (s.swiped ? answered + ' of 4 answered' : 'Use the arrows for the next question'));
+    v.prevCls = 'deck-arrow glass prev' + (s.i === 0 ? ' hide' : ''); v.nextCls = 'deck-arrow glass next' + (s.i === 4 ? ' hide' : '');
+    v.prev = () => this.moveTo(s.i - 1); v.next = () => this.moveTo(s.i + 1);
+    v.finishTitle = answered === 4 ? 'That’s all 4!' : answered + ' of 4 answered';
+    v.hasMissing = answered < 4; v.allDone = answered === 4;
+    v.toMissing = () => { if (firstMissing !== undefined) this.moveTo(firstMissing); };
+    v.finishText = answered === 4 ? 'Check your answers, then hand in.' : 'You missed a question. Go back and answer it before you hand in.';
+    v.goReview = () => this.setState({ scr: 'review', confirm: false });
+    for (let b = 0; b < 4; b++) {
+      const val = s.a0[b];
+      v['b' + b + 'v'] = val === null ? '' : String(val);
+      v['b' + b + 'c'] = 'blank' + (val !== null ? ' filled' : '') + (s.act === b ? ' active' : '');
+      v['b' + b + 's'] = () => this.setState({ act: b });
+    }
+    v.bank = [55, 33, 3, 30, 10, 100, 110, 28].map(n => ({ label: String(n), pick: () => {
+      const a = s.a0.slice(); a[s.act] = n; const nx = a.indexOf(null);
+      this.earn(s, 0, { a0: a, act: nx >= 0 ? nx : s.act });
+    } }));
+    v.clearBox = () => { const a = s.a0.slice(); a[s.act] = null; const seen = s.seen.slice(); seen[0] = false; this.setState({ a0: a, seen: seen }); };
+    const choices = ['67/100', '25/100', '52/100', '19/100', '43/100'];
+    const sums = [['6', '7'], ['4', '3'], ['2', '5'], ['1', '9']];
+    v.rows = sums.map((r, j) => {
+      const val = s.a1[j], open = s.open === j;
+      return { a: r[0], c: r[1], value: val || '', has: !!val, none: !val, hint: open ? 'Pick one' : 'Tap to pick', open: open,
+        expanded: open ? 'true' : 'false', cls: 'mrow' + (open ? ' open' : ''),
+        toggle: () => this.setState({ open: open ? -1 : j }),
+        choices: choices.map(c => ({ label: c, on: val === c ? 'true' : 'false', cls: 'chip small' + (val === c ? ' on' : ''),
+          pick: () => { const a = s.a1.slice(); a[j] = c; this.earn(s, 1, { a1: a, open: a.indexOf(null) }); } })) };
+    });
+    const opt2 = ['7/100', '7/110', '34/100', '34/10'];
+    const opt3 = ['20 + 5 = 25, Maya has 5 more stickers than Leo', '4 × 5 = 20, Leo has 4 times as many stickers as Maya', '5 × 4 = 20, Maya has 5 times as many stickers as Leo', '4 + 4 + 4 + 4 + 4 = 20, Maya has 5 groups of 4 added together'];
+    [2, 3].forEach(q => {
+      const cur = q === 2 ? s.a2 : s.a3;
+      for (let j = 0; j < 4; j++) {
+        v['q' + q + 'o' + j] = 'opt' + (cur === j ? ' on' : '');
+        v['q' + q + 'c' + j] = cur === j ? 'true' : 'false';
+        v['q' + q + 'p' + j] = () => { const p = {}; p['a' + q] = j; this.earn(s, q, p); };
+      }
+    });
+    v.down = (e) => { if (!e.target.closest || !e.target.closest('.qcard') || e.target.closest('.qcard').getAttribute('aria-hidden') === 'true') return; this._sx = e.clientX; this._sy = e.clientY; this._dec = false; this._drag = false; };
+    v.move = (e) => {
+      if (this._sx == null) return;
+      const nx = e.clientX - this._sx, ny = e.clientY - this._sy;
+      if (!this._dec && (Math.abs(nx) > 10 || Math.abs(ny) > 10)) { this._dec = true; this._drag = Math.abs(nx) > Math.abs(ny) * 1.2; if (this._drag) { try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {} } }
+      if (!this._drag) return;
+      const edge = (nx > 0 && s.i === 0) || (nx < 0 && s.i === 4);
+      this.setState({ dx: edge ? nx * 0.25 : nx, drag: true });
+    };
+    v.up = () => {
+      const was = this._drag; this._sx = null; this._drag = false;
+      if (!was) return;
+      this._swallow = true; setTimeout(() => { this._swallow = false; }, 60);
+      if (s.dx < -80) this.moveTo(s.i + 1); else if (s.dx > 80) this.moveTo(s.i - 1); else this.setState({ dx: 0, drag: false });
+    };
+    v.guard = (e) => { if (this._swallow) { e.preventDefault(); e.stopPropagation(); this._swallow = false; } };
+    v.exitOpen = !!s.exitOpen; v.openExit = () => this.setState({ exitOpen: true }); v.closeExit = () => this.setState({ exitOpen: false });
+    // Save and close: back to the classroom, test now in progress
+    v.saveClose = () => this.setState({ exitOpen: false, scr: 'class', status: 'progress', card: 0, cdx: 0 });
+
+    // ---------- Review, built from the real answers
+    const f = (x) => x === null ? '__' : String(x);
+    const lines = [
+      [['Step 1: 3/10 = ' + f(s.a0[0]) + '/' + f(s.a0[1])], ['Step 2: 30/100 + 25/100 = ' + f(s.a0[2]) + '/100'], ['Answer: ' + f(s.a0[3]) + '/100 of the dogs']],
+      sums.map((r, j) => [r[0] + '/10 + ' + r[1] + '/100 = ' + (s.a1[j] || '__')]),
+      s.a2 === null ? [] : [['ABCD'[s.a2] + '. ' + opt2[s.a2]]],
+      s.a3 === null ? [] : [['ABCD'[s.a3] + '. ' + opt3[s.a3]]]
+    ];
+    const meta = [['Equivalent fractions', 'What fraction of the dogs were retrievers or poodles?'], ['Add tenths and hundredths', 'Match each sum to its answer.'], ['Add tenths and hundredths', 'What is 3/10 + 4/100?'], ['Multiplication as comparison', 'Which equation best shows “Maya has 5 times as many stickers as Leo”?']];
+    v.ritems = meta.map((m, q) => {
+      const isDone = this.done(s, q), any = this.some(s, q);
+      return { num: q + 1, lab: m[0], title: m[1], has: any, lines: lines[q].map(t => ({ t: t[0] })),
+        flag: !isDone, flagText: any ? 'Not finished' : 'Skipped',
+        editLabel: (isDone ? 'Change answer ' : 'Answer question ') + (q + 1),
+        edit: () => { this.setState({ scr: 'q', i: q, dx: 0, cheer: '', swiped: true }); } };
+    });
+    const missing = 4 - answered;
+    v.reviewSub = missing === 0 ? 'All 4 answered. Check them, then hand in.' : answered + ' of 4 answered. Skipped questions are marked.';
+    v.backToQ = () => this.setState({ scr: 'q', i: 4, dx: 0 });
+    v.confirmOpen = !!s.confirm; v.trophyOpen = !!s.trophy;
+    v.confirmTitle = missing === 0 ? 'Ready to hand in?' : 'Hand in with ' + missing + ' skipped?';
+    v.confirmBackText = missing === 0 ? 'Not yet' : 'Finish first';
+    v.confirmBack = () => { if (missing === 0) this.setState({ confirm: false }); else this.setState({ confirm: false, scr: 'q', i: firstMissing, dx: 0 }); };
+    v.closeConfirm = () => this.setState({ confirm: false });
+    v.askHandIn = () => this.setState({ confirm: true });
+    v.handIn = () => this.setState({ confirm: false, trophy: true });
+    v.toClassroom = () => this.setState({ trophy: false, scr: 'class', status: 'done', card: 0, cdx: 0 });
+    return v;
+  }
+}
+</script>
+</body>
+</html>

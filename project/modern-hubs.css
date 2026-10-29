@@ -87,3 +87,6 @@ html body .modern-hubs .appt.appdis .appic,html body .modern-hubs .appt.applocke
 html body .modern-hubs .appt.appdis .modern-product-status,html body .modern-hubs .appt.applocked .modern-product-status{background:var(--card);color:color-mix(in srgb,var(--foreground) 60%,var(--card));}
 
 }
+
+/* 29 Oct: quick actions for unavailable products stay visible but disabled, matching the disabled product cards. */
+html body .modern-hubs .appqab.locked,html body .modern-hubs .appqab.locked:hover{background:var(--secondary);border-color:var(--secondary);color:color-mix(in srgb,var(--foreground) 50%,var(--secondary));cursor:not-allowed;box-shadow:none}

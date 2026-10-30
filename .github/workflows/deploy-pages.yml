@@ -1,4 +1,5 @@
-# Publishes the wireframe prototype in project/ to GitHub Pages on every push to main.
+# Publishes the wireframe prototype in project/ to GitHub Pages on every push to main,
+# after the cognia-design plugin check passes.
 # One-time setup: Settings > Pages > Build and deployment > Source: GitHub Actions.
 name: Deploy prototype to GitHub Pages
 
@@ -17,7 +18,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Nothing reaches the live site unless the screens pass the latest cognia-design plugin.
+  design-check:
+    uses: ./.github/workflows/design-system-check.yml
+    secrets: inherit
+
   deploy:
+    needs: design-check
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -2,7 +2,7 @@
 
 ## Design-system authority
 
-Cognia Design 1.2.0 governs visual work. Read `AGENTS.md` (or `CLAUDE.md`) and the full rules in `design-system/cognia/` before styling. Historical visual approvals no longer override the design system; interaction flows remain protected. Legacy CSS is in the `cap-legacy` layer, so normal semantic styles win without `!important` or artificial ID selectors. Run `node scripts/check-design-system.cjs` and `node verify-homepages.cjs` before delivery. The design-system workflow runs these checks after this local change is published.
+Cognia Design 1.2.0 governs visual work. Read `AGENTS.md` (or `CLAUDE.md`) and the full rules in `design-system/cognia/` before styling. Historical visual approvals no longer override the design system; interaction flows remain protected. Legacy CSS is in the `cap-legacy` layer, so normal semantic styles win without `!important` or artificial ID selectors. Run the cognia-design plugin check (`node <plugin>/skills/cognia-design/checks/check-project.cjs`), `node scripts/check-design-system.cjs` and `node verify-homepages.cjs` before delivery. The plugin check needs Playwright: `npm i --no-save playwright && npx playwright install chromium`. GitHub runs all three against the latest plugin on every push, and Pages only deploys `main` when they pass (setup: add the `COGNIA_DESIGN_PLUGIN_TOKEN` secret, see `.github/workflows/design-system-check.yml`). The design-system workflow runs these checks after this local change is published.
 
 Interactive wireframes for the Summer 2027 Assessment Hub, exported from the Claude Design canvas. The canvas is the source of truth; this repo is a snapshot of it.
 

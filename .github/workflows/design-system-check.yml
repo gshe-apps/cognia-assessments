@@ -1,7 +1,18 @@
-name: Design system cascade
+# Checks every screen against the latest cognia-design plugin (gshe-apps/cognia-design-plugin).
+# The rules and the checker live in the plugin; this repo only holds cognia-design.config.json
+# and the baseline of known legacy issues. Runs on every push and pull request, and before
+# every deploy of main (see deploy-pages.yml).
+#
+# One-time setup: add a repository secret COGNIA_DESIGN_PLUGIN_TOKEN, a fine-grained token
+# with read-only "Contents" access to gshe-apps/cognia-design-plugin (the plugin repo is private).
+name: Cognia design plugin check
 on:
   pull_request:
   push:
+  workflow_call:
+    secrets:
+      COGNIA_DESIGN_PLUGIN_TOKEN:
+        required: true
 permissions:
   contents: read
 jobs:
@@ -9,7 +20,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reject visual cascade locks
+
+      - name: Fetch the latest cognia-design plugin
+        uses: actions/checkout@v4
+        with:
+          repository: gshe-apps/cognia-design-plugin
+          token: ${{ secrets.COGNIA_DESIGN_PLUGIN_TOKEN }}
+          path: .cognia-design-plugin
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Plugin copy in this repo matches the plugin
+        run: |
+          if ! diff -r -B -Z .cognia-design-plugin/skills/cognia-design design-system/cognia \
+               --exclude=checks > /tmp/plugin-diff.txt; then
+            cat /tmp/plugin-diff.txt
+            echo "::error::design-system/cognia is out of date. Copy skills/cognia-design from the plugin into design-system/cognia."
+            exit 1
+          fi
+
+      - name: Install headless browser
+        run: npm i --no-save playwright && npx playwright install --with-deps chromium
+
+      - name: Screens follow the cognia-design plugin
+        run: node .cognia-design-plugin/skills/cognia-design/checks/check-project.cjs
+
+      - name: No visual cascade locks
         run: node scripts/check-design-system.cjs
-      - name: Verify existing persona flows
+
+      - name: Persona flows still work
         run: node verify-homepages.cjs

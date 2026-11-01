@@ -1,0 +1,80 @@
+/* Reference-led Educator Overview. Documented Cognia tokens, 48/16/14 type,
+   400/600/700 weights. Artwork is decorative; no token or legacy cascade locks. */
+@font-face { font-family:'Open Sans'; font-style:normal; font-weight:300 800; font-stretch:75% 100%; font-display:swap; src:url('../../assets/fonts/OpenSans-variable.ttf') format('truetype'); }
+.ov-main { position:relative; flex:1; padding:0; background:var(--background); }
+.ov-page { position:relative; width:100%; padding:var(--space-2) var(--horizontal-padding) var(--space-8); display:flex; flex-direction:column; gap:var(--space-4); }
+.ov-page :is(h1,h2,h3,p) { margin:0; }
+.ov-page :is(a,button,summary) { -webkit-tap-highlight-color:transparent; }
+.ov-page :is(a,button,summary):focus-visible { outline:3px solid var(--ring); outline-offset:var(--space-1); }
+.ov-backdrop { position:absolute; inset:0 0 auto; height:280px; overflow:hidden; pointer-events:none; background:linear-gradient(120deg,var(--card),var(--info-light),var(--accent-100)); mask-image:linear-gradient(to bottom,var(--foreground),transparent); }
+.ov-backdrop svg { width:100%; height:100%; fill:var(--accent-200); opacity:.24; }
+.ov-backdrop path+path { fill:var(--card); }
+.ov-hero { position:relative; display:flex; align-items:center; justify-content:space-between; gap:var(--space-8); padding:var(--space-4) var(--space-6) var(--space-2); }
+.ov-hero h1 { font:var(--weight-bold) var(--text-title-page)/1.2 var(--font-sans); letter-spacing:-.025em; color:var(--foreground); }
+.ov-hero > div > p { margin-top:var(--space-2); font-size:var(--text-body-base); line-height:var(--lh-base); color:var(--muted-foreground); }
+.ov-hero-actions { align-self:stretch; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; gap:var(--space-8); }
+.ov-hero-actions time { color:var(--muted-foreground); font-size:var(--text-body-base); white-space:nowrap; }
+.ov-button,.ov-button:visited { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-4); align-self:flex-start; min-height:48px; min-width:64px; padding:var(--space-3) var(--space-6); border:1px solid var(--primary); border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); font:var(--weight-semibold) var(--text-body-base)/var(--lh-base) var(--font-sans); text-decoration:none; cursor:pointer; transition:all 200ms; }
+.ov-button:hover { color:var(--primary-foreground); box-shadow:var(--shadow-md); }
+.ov-button svg { width:24px; height:24px; flex-shrink:0; }
+.ov-panel { padding:var(--space-6); border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); }
+.ov-panel h2 { font:var(--weight-bold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
+.ov-priority-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); margin-top:var(--space-4); }
+.ov-priority { position:relative; display:grid; grid-template-columns:64px minmax(0,1fr); grid-template-rows:auto 1fr; column-gap:var(--space-6); row-gap:var(--space-4); padding:var(--space-6); min-height:192px; min-width:0; isolation:isolate; border:1px solid var(--accent-100); border-radius:var(--radius); background:linear-gradient(115deg,var(--card) 25%,var(--accent-100) 200%); color:var(--card-foreground); }
+.ov-results { border-color:var(--info-light); background:linear-gradient(115deg,var(--card) 25%,var(--info-light)); }
+.ov-scheduled { border-color:var(--destructive-light); background:linear-gradient(115deg,var(--card) 25%,var(--destructive-light)); }
+.ov-priority-icon { position:relative; z-index:10; display:flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:var(--radius); background:var(--accent-100); color:var(--accent-400); }
+.ov-priority-icon svg { width:32px; height:32px; }
+.ov-results .ov-priority-icon { background:var(--info-light); color:var(--info); }
+.ov-scheduled .ov-priority-icon { background:var(--destructive-light); color:var(--destructive); }
+.ov-priority-copy { position:relative; z-index:10; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:var(--space-1); min-width:0; }
+.ov-status { display:inline-flex; align-items:center; min-height:24px; padding:var(--space-1) var(--space-4); margin-bottom:var(--space-2); border-radius:var(--rounded-full); background:var(--accent-100); color:var(--foreground); font-size:var(--text-body-small); font-weight:var(--weight-semibold); line-height:1.2; }
+.ov-results .ov-status { background:var(--info-light); color:var(--info); }
+.ov-scheduled .ov-status { background:var(--destructive-light); color:var(--foreground); }
+.ov-priority h3 { padding-right:var(--space-2); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); color:var(--foreground); }
+.ov-priority .ov-assessment-title { font-size:var(--text-body-base); line-height:var(--lh-base); color:var(--muted-foreground); }
+.ov-priority .ov-priority-meta { font-size:var(--text-body-small); line-height:var(--lh-base); color:var(--muted-foreground); }
+.ov-priority .ov-button { position:relative; z-index:10; grid-column:1/-1; align-self:end; justify-self:start; margin-top:0; font-size:var(--text-body-base); }
+.ov-card-wave { position:absolute; z-index:0; inset:0; width:100%; height:100%; pointer-events:none; border-radius:var(--radius); fill:var(--accent-100); opacity:.4; }
+.ov-card-wave path+path { opacity:.5; }
+.ov-results .ov-card-wave { fill:var(--info-light); }
+.ov-scheduled .ov-card-wave { fill:var(--destructive-light); }
+.ov-priority > .ov-priority-art { width:224px; height:192px; }
+.ov-priority-art { position:absolute; z-index:0; right:0; bottom:0; width:192px; height:192px; pointer-events:none; border-radius:0 0 var(--radius) 0; background-image:url('../../assets/overview-priority-art.png'); background-size:300% 100%; background-position:0 100%; background-repeat:no-repeat; }
+.ov-results .ov-priority-art { background-position:50% 100%; }
+.ov-scheduled .ov-priority-art { background-position:100% 100%; }
+.ov-menu { position:absolute; z-index:20; right:var(--space-3); top:var(--space-4); font-size:var(--text-body-small); }
+.ov-menu summary { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius); color:var(--muted-foreground); cursor:pointer; list-style:none; }
+.ov-menu summary::-webkit-details-marker { display:none; }
+.ov-menu summary svg { width:24px; height:24px; }
+.ov-menu summary:hover { background:var(--secondary); }
+.ov-menu[open] { z-index:30; }
+.ov-menu > div { position:absolute; top:100%; right:0; min-width:192px; padding:var(--space-2); border:1px solid var(--border); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); box-shadow:var(--shadow-md); }
+.ov-menu a { display:block; padding:var(--space-2); color:var(--popover-foreground); text-decoration:none; border-radius:var(--radius); white-space:nowrap; }
+.ov-menu a:hover { background:var(--accent); }
+.ov-section-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--space-4); margin-bottom:var(--space-4); }
+.ov-calendar { display:inline-flex; align-items:center; gap:var(--space-3); min-height:32px; color:var(--foreground); font-size:var(--text-body-base); text-decoration:underline; text-underline-offset:var(--space-1); }
+.ov-calendar svg { width:24px; height:24px; }
+.ov-table-scroll { position:relative; width:100%; min-width:0; max-width:100%; overflow-x:auto; }
+.ov-schedule { width:100%; border-collapse:collapse; text-align:left; font-size:var(--text-body-base); color:var(--muted-foreground); }
+.ov-schedule thead { background:var(--background); }
+.ov-schedule th { padding:var(--space-3) var(--space-6); color:var(--muted-foreground); font-size:var(--text-body-small); text-transform:uppercase; font-weight:var(--weight-semibold); white-space:nowrap; }
+.ov-schedule th:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+.ov-schedule th:last-child { border-radius:0 var(--radius) var(--radius) 0; }
+.ov-schedule td { height:64px; padding:var(--space-2) var(--space-6); border-bottom:1px solid var(--border); white-space:nowrap; }
+.ov-schedule tr:last-child td { border-bottom:0; }
+.ov-schedule td:nth-child(2) { width:38%; }
+.ov-schedule td:nth-child(2) a { color:var(--foreground); text-decoration:none; }
+.ov-schedule td:nth-child(2) a:hover { text-decoration:underline; }
+.ov-date-tile { display:flex; flex-direction:column; align-items:center; justify-content:center; width:56px; height:48px; border-radius:var(--radius); background:var(--secondary); color:var(--secondary-foreground); line-height:1.2; }
+.ov-date-tile span { font-size:var(--text-body-small); font-weight:var(--weight-semibold); }
+.ov-date-tile strong { font-size:var(--text-body-base); font-weight:var(--weight-bold); }
+.ov-row-menu { position:relative; inset:auto; }
+.ov-row-menu > div { bottom:100%; top:auto; }
+.ov-sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+/* Overlays remain in the same three-size type set as this screen. */
+.educator-overview-screen :is(.appdlg,.acctmenu,.roledlg) :is(h1,h2,h3,h4) { font-size:var(--text-body-base); }
+@media(max-width:1279px) { .ov-priority { grid-template-columns:48px minmax(0,1fr); gap:var(--space-4); padding:var(--space-4); } .ov-priority-icon { width:48px; height:48px; } .ov-priority-art { width:144px; height:144px; } .ov-priority h3 { padding-right:var(--space-6); } }
+@media(max-width:900px) { .ov-priority-grid { grid-template-columns:1fr; } .ov-priority { min-height:192px; } .ov-priority-art { width:192px; height:192px; } .ov-hero { align-items:flex-start; padding:var(--space-6) 0; } .ov-hero h1 { font-size:var(--text-heading); } .ov-hero-actions { gap:var(--space-4); } }
+@media(max-width:639px) { .ov-page { padding-top:var(--space-2); } .ov-hero { flex-direction:column; gap:var(--space-4); } .ov-hero-actions { align-items:flex-start; gap:var(--space-3); } .ov-panel { padding:var(--space-4); } .ov-section-heading { flex-wrap:wrap; gap:var(--space-2); } .ov-priority-grid { gap:var(--space-3); } .ov-priority .ov-button { width:auto; } .ov-schedule td,.ov-schedule th { padding-left:var(--space-3); padding-right:var(--space-3); } }
+@media(prefers-reduced-motion:reduce) { .ov-button { transition:none; } }

@@ -7,7 +7,7 @@
    ------------------------------------------------------------
    Follows the cognia-design plugin rule: at most 3 font sizes and
    3 font weights per screen.
-   Sizes:   20px main headers and headline numbers
+   Sizes:   24px main headers and headline numbers (Cognia Heading)
             16px card and section titles (semibold)
             14px everything else
    Weights: 400, 600, 700
@@ -16,9 +16,9 @@
    artboard), so their sizes are set in chart units to show at 14px.
    ============================================================ */
 
-/* Main headers: page titles and section headings */
+/* Main headers: page titles and section headings (Cognia Heading, 24px) */
 html body .wf :is(h1, h2) {
-  font-size: var(--text-subheading) ;
+  font-size: var(--text-heading) ;
   font-weight: var(--weight-semibold) ;
   line-height: var(--lh-snug) ;
   letter-spacing: normal ;
@@ -31,9 +31,9 @@ html body .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > spa
   line-height: var(--lh-snug) ;
 }
 
-/* Headline numbers: 20px */
-html body .wf :is(.sumval, .v2wpct, .dgoal-n, .dtip-n, .sg-mval, .bubvalh) {
-  font-size: var(--text-subheading) ;
+/* Headline numbers: 24px */
+html body .wf :is(.sumval, .v2wpct, .dgoal-n, .dtip-n, .sg-mval) {
+  font-size: var(--text-heading) ;
   line-height: var(--lh-snug) ;
 }
 
@@ -49,9 +49,11 @@ html body .wf :is(.svax, .svpt, .svpt.svbig, .svtip, .svtip *) {
 html body .wf .trsvg text {
   font-size: 13px ;
 }
-/* Bubble values: 20px on screen */
-html body .wf .bubval {
-  font-size: 28.6px ; /* 20px on screen: the bubble chart draws at 0.7x */
+/* Bubble values: 16px strong on screen (Cognia Body Strong). Bubble size
+   carries the data, so the smallest bubbles cannot fit a 24px value. */
+html body .wf :is(.bubval, .bubvalh) {
+  font-size: 22.9px ; /* 16px on screen: the bubble chart draws at 0.7x */
+  font-weight: var(--weight-semibold) ;
 }
 
 /* ============================================================

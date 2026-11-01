@@ -115,7 +115,7 @@ html body .theme-assessments .topfive .schcard{cursor:pointer;transition:box-sha
 html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(--space-4);margin-top:var(--space-8);padding:0;background:transparent;}
 .bubhd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-3);}
 .bubttl{display:flex;flex-direction:column;gap:var(--space-2);}
-.bubttl h2{margin:0;font:var(--weight-bold) var(--text-subheading) var(--font-sans);}
+.bubttl h2{margin:0;font:var(--weight-bold) var(--text-heading) var(--font-sans);}
 .bubleg{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small);}
 .bubleg svg{width:56px;height:8px;flex-shrink:0;}
 .bubgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-4);}
@@ -170,7 +170,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .ilmodal{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:var(--space-4);background:var(--backdrop-overlay);}
 .ildlg{width:min(560px,100%);height:min(540px,calc(100vh - 32px));overflow:hidden;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-6);background:var(--background);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);color:var(--foreground);font-family:var(--font-sans);box-sizing:border-box;}
 .ildlghd{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
-.ildlghd h2{margin:0;font:var(--weight-bold) var(--text-subheading)/var(--lh-snug) var(--font-sans);}
+.ildlghd h2{margin:0;font:var(--weight-bold) var(--text-heading)/var(--lh-snug) var(--font-sans);}
 .ilfld{display:flex;flex-direction:column;gap:var(--space-2);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);}
 .ilselw{position:relative;display:block;}
 .ilselc{position:absolute;right:var(--space-4);top:50%;width:18px;height:18px;transform:translateY(-50%);pointer-events:none;color:var(--foreground);}
@@ -277,7 +277,7 @@ html body .theme-assessments .sum-bad .sumic{color:var(--destructive);}
 html body .theme-assessments .sum-good .sumic{color:var(--success);}
 html body .theme-assessments .sum-neutral .sumic{color:var(--foreground);}
 html body .theme-assessments .sumlbl{font:var(--weight-semibold) var(--text-body-small) var(--font-sans);}
-html body .theme-assessments .sumval{font:var(--weight-semibold) var(--text-subheading) var(--font-sans);}
+html body .theme-assessments .sumval{font:var(--weight-semibold) var(--text-heading) var(--font-sans);}
 html body .theme-assessments .sumbadge{display:none;}
 /* Top five: legend sits beside the header */
 .bubttl{flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--space-4);}
@@ -687,6 +687,6 @@ class Component extends DCLogic {
   }
 }
 </script>
-<link rel="stylesheet" href="cognia-approved-ui.css"><link rel="stylesheet" href="admin-type.css">
+<link rel="stylesheet" href="cognia-approved-ui.css"><link rel="stylesheet" href="admin-type.css?v=20261030-heading24">
 <script src="persona-routing.js"></script><link rel="stylesheet" href="brand-emblem.css?v=20261028-emblem"></body>
 </html>

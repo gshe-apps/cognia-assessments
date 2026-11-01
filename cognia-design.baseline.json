@@ -1,0 +1,752 @@
+{
+ "plugin": "1.2.0",
+ "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
+ "counts": {
+  "project/approved-redesign.css": {
+   "colour.hardcoded": 48,
+   "type.raw-size": 10,
+   "spacing.off-scale": 55,
+   "type.font-family": 15,
+   "radius.off-scale": 10,
+   "type.off-scale-size": 33
+  },
+  "project/assessment-catalogue.css": {
+   "colour.hardcoded": 100,
+   "spacing.off-scale": 72,
+   "z-index.off-scale": 7,
+   "type.off-scale-size": 51,
+   "type.font-family": 11,
+   "shadow.not-a-token": 7,
+   "type.weight": 2,
+   "radius.off-scale": 20,
+   "type.raw-size": 5,
+   "motion.duration": 6
+  },
+  "project/assessment-library-panel.css": {
+   "colour.hardcoded": 14,
+   "radius.off-scale": 5,
+   "spacing.off-scale": 14,
+   "type.off-scale-size": 11
+  },
+  "project/assessment-progress.css": {
+   "spacing.off-scale": 4,
+   "type.raw-size": 1,
+   "z-index.off-scale": 1,
+   "type.off-scale-size": 1
+  },
+  "project/assessment-tests.css": {
+   "spacing.off-scale": 9,
+   "type.off-scale-size": 6,
+   "type.raw-size": 1,
+   "colour.accent-text": 1
+  },
+  "project/assessments-layout-refinement.css": {
+   "spacing.off-scale": 13,
+   "type.off-scale-size": 8,
+   "radius.off-scale": 2,
+   "type.weight": 1,
+   "colour.hardcoded": 5
+  },
+  "project/assessments-reference.css": {
+   "spacing.off-scale": 41,
+   "type.off-scale-size": 29,
+   "type.raw-size": 9,
+   "z-index.off-scale": 2,
+   "shadow.not-a-token": 2
+  },
+  "project/assignment-finish.css": {
+   "spacing.off-scale": 60,
+   "colour.hardcoded": 68,
+   "type.font-family": 31,
+   "type.raw-size": 14,
+   "type.off-scale-size": 36,
+   "radius.off-scale": 7,
+   "type.weight": 3,
+   "z-index.off-scale": 2,
+   "shadow.not-a-token": 1
+  },
+  "project/cap-cognia.css": {
+   "type.raw-size": 7,
+   "colour.accent-text": 5,
+   "colour.status-text-outside-badge": 4,
+   "spacing.off-scale": 1
+  },
+  "project/cap-prototype.css": {
+   "type.raw-size": 42,
+   "motion.duration": 18,
+   "type.off-scale-size": 84,
+   "type.weight": 27,
+   "z-index.off-scale": 8,
+   "spacing.off-scale": 381,
+   "shadow.not-a-token": 2,
+   "motion.easing": 1,
+   "motion.layout-property": 2,
+   "colour.opacity-on-text": 1
+  },
+  "project/client-feedback.css": {
+   "type.raw-size": 3,
+   "spacing.off-scale": 27,
+   "type.off-scale-size": 12,
+   "motion.duration": 1,
+   "radius.off-scale": 2,
+   "colour.hardcoded": 14,
+   "type.font-family": 1,
+   "shadow.not-a-token": 1
+  },
+  "project/cognia-approved-ui.css": {
+   "type.raw-size": 32,
+   "shadow.not-a-token": 2
+  },
+  "project/cognia-skin.css": {
+   "type.off-scale-size": 20,
+   "colour.accent-text": 10,
+   "type.raw-size": 65,
+   "spacing.off-scale": 82,
+   "z-index.off-scale": 9,
+   "motion.duration": 10,
+   "logo.restyled": 1,
+   "colour.hardcoded": 3,
+   "colour.opacity-on-text": 1,
+   "colour.status-text-outside-badge": 1
+  },
+  "project/connected-feedback-draft.css": {
+   "type.font-family": 1,
+   "type.raw-size": 2,
+   "colour.hardcoded": 9,
+   "radius.off-scale": 2,
+   "spacing.off-scale": 10,
+   "type.off-scale-size": 4
+  },
+  "project/delivery-sessions.css": {
+   "type.raw-size": 1,
+   "spacing.off-scale": 7,
+   "type.off-scale-size": 8,
+   "colour.accent-text": 1
+  },
+  "project/ds/cognia/components.css": {
+   "type.raw-size": 2
+  },
+  "project/ds/cognia/screens.css": {
+   "type.raw-size": 9
+  },
+  "project/educator-feedback-draft.css": {
+   "spacing.off-scale": 15,
+   "type.off-scale-size": 12,
+   "type.raw-size": 1,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 1,
+   "type.font-family": 2,
+   "colour.hardcoded": 2,
+   "shadow.not-a-token": 1
+  },
+  "project/folder-peek.css": {
+   "motion.duration": 4,
+   "motion.easing": 4,
+   "z-index.off-scale": 2,
+   "colour.hardcoded": 8,
+   "radius.off-scale": 3,
+   "shadow.not-a-token": 2
+  },
+  "project/home-pages.css": {
+   "colour.accent-text": 1
+  },
+  "project/hub-header.css": {
+   "type.raw-size": 11,
+   "spacing.off-scale": 5,
+   "z-index.off-scale": 3,
+   "colour.accent-text": 2,
+   "colour.status-text-outside-badge": 3,
+   "colour.surface-token-as-text": 1,
+   "motion.duration": 2,
+   "motion.easing": 1
+  },
+  "project/hub-menu-responsive.css": {
+   "z-index.off-scale": 1,
+   "spacing.off-scale": 13,
+   "radius.off-scale": 1,
+   "colour.hardcoded": 1,
+   "type.off-scale-size": 5
+  },
+  "project/item-method-reference.css": {
+   "shadow.not-a-token": 1
+  },
+  "project/manage-assessments.css": {
+   "z-index.off-scale": 3,
+   "spacing.off-scale": 32,
+   "type.off-scale-size": 29,
+   "type.raw-size": 1,
+   "colour.accent-text": 2,
+   "type.weight": 1
+  },
+  "project/modern-hubs.css": {
+   "colour.accent-text": 3,
+   "z-index.off-scale": 3,
+   "spacing.off-scale": 1,
+   "colour.surface-token-as-text": 4
+  },
+  "project/overview-reference.css": {
+   "type.off-scale-size": 34,
+   "type.weight": 4,
+   "spacing.off-scale": 30,
+   "shadow.not-a-token": 2,
+   "z-index.off-scale": 5,
+   "type.raw-size": 7
+  },
+  "project/plan-features.css": {
+   "type.font-family": 1,
+   "radius.off-scale": 1,
+   "spacing.off-scale": 5,
+   "colour.hardcoded": 13,
+   "type.raw-size": 1,
+   "type.off-scale-size": 4
+  },
+  "project/primary-cta-hover.css": {
+   "motion.duration": 1
+  },
+  "project/prototype-interactions.css": {
+   "shadow.not-a-token": 3
+  },
+  "project/prototype-roles.css": {
+   "z-index.off-scale": 2,
+   "spacing.off-scale": 4,
+   "radius.off-scale": 1
+  },
+  "project/question-composer.css": {
+   "spacing.off-scale": 57,
+   "type.off-scale-size": 33,
+   "colour.hardcoded": 67,
+   "radius.off-scale": 16,
+   "type.raw-size": 3,
+   "type.weight": 1,
+   "motion.duration": 2,
+   "shadow.not-a-token": 3,
+   "z-index.off-scale": 2,
+   "type.font-family": 7
+  },
+  "project/reference-journey.css": {
+   "spacing.off-scale": 143,
+   "colour.hardcoded": 150,
+   "type.off-scale-size": 95,
+   "shadow.not-a-token": 4,
+   "z-index.off-scale": 3,
+   "radius.off-scale": 23,
+   "type.font-family": 27,
+   "type.raw-size": 11,
+   "type.weight": 1,
+   "motion.duration": 2
+  },
+  "project/review-reference.css": {
+   "spacing.off-scale": 31,
+   "type.raw-size": 8,
+   "type.off-scale-size": 28,
+   "type.weight": 4,
+   "z-index.off-scale": 1
+  },
+  "project/scheduled-design.css": {
+   "colour.hardcoded": 32,
+   "radius.off-scale": 7,
+   "spacing.off-scale": 32,
+   "z-index.off-scale": 2,
+   "type.off-scale-size": 19,
+   "type.raw-size": 5,
+   "type.font-family": 1
+  },
+  "project/screen-updates.css": {
+   "spacing.off-scale": 18,
+   "type.off-scale-size": 14,
+   "type.weight": 1,
+   "shadow.not-a-token": 1,
+   "type.raw-size": 1,
+   "z-index.off-scale": 1
+  },
+  "project/stu2.css": {
+   "type.raw-size": 30,
+   "motion.duration": 17,
+   "type.font-family": 1,
+   "z-index.off-scale": 2,
+   "shadow.not-a-token": 2,
+   "colour.accent-text": 7,
+   "colour.status-text-outside-badge": 3,
+   "radius.off-scale": 4,
+   "spacing.off-scale": 2,
+   "motion.easing": 4,
+   "motion.delay": 1
+  },
+  "project/student-app-design.css": {
+   "colour.hardcoded": 84,
+   "spacing.off-scale": 44,
+   "type.off-scale-size": 37,
+   "radius.off-scale": 22,
+   "motion.duration": 1,
+   "shadow.not-a-token": 2,
+   "type.raw-size": 15,
+   "type.font-family": 2,
+   "type.weight": 1
+  },
+  "project/student-design.css": {
+   "spacing.off-scale": 25,
+   "type.off-scale-size": 15,
+   "type.weight": 1,
+   "type.raw-size": 5,
+   "colour.hardcoded": 48,
+   "radius.off-scale": 12,
+   "motion.duration": 7,
+   "z-index.off-scale": 3,
+   "motion.easing": 1,
+   "shadow.not-a-token": 2,
+   "motion.layout-property": 1
+  },
+  "project/student-feedback-draft.css": {
+   "spacing.off-scale": 6,
+   "type.off-scale-size": 7,
+   "type.font-family": 2,
+   "type.raw-size": 1,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 1,
+   "colour.hardcoded": 1,
+   "shadow.not-a-token": 1
+  },
+  "project/student-journey.css": {
+   "type.font-family": 3,
+   "colour.hardcoded": 81,
+   "z-index.off-scale": 2,
+   "spacing.off-scale": 79,
+   "type.off-scale-size": 46,
+   "type.raw-size": 6,
+   "radius.off-scale": 13,
+   "motion.layout-property": 1
+  },
+  "project/student-work.css": {
+   "spacing.off-scale": 3,
+   "type.raw-size": 1,
+   "type.off-scale-size": 1
+  },
+  "project/teacher-flow-qa.css": {
+   "type.font-family": 4,
+   "colour.hardcoded": 8,
+   "spacing.off-scale": 4,
+   "type.raw-size": 1,
+   "type.off-scale-size": 2
+  },
+  "project/teacher-flow-upgrade.css": {
+   "type.off-scale-size": 61,
+   "radius.off-scale": 26,
+   "colour.hardcoded": 131,
+   "spacing.off-scale": 87,
+   "z-index.off-scale": 6,
+   "type.font-family": 8,
+   "type.raw-size": 11,
+   "motion.duration": 2,
+   "motion.easing": 1,
+   "shadow.not-a-token": 3
+  },
+  "project/teacher-overview-ui.css": {
+   "colour.status-text-outside-badge": 1
+  },
+  "project/workspace-layout.css": {
+   "spacing.off-scale": 2
+  },
+  "project/CAP-T00-Home.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 3,
+   "radius.off-scale": 3,
+   "colour.status-text-outside-badge": 2,
+   "motion.duration": 5,
+   "motion.easing": 1,
+   "motion.delay": 1,
+   "z-index.off-scale": 1
+  },
+  "project/CAP-T05-Algebra.dc.html": {
+   "z-index.off-scale": 2,
+   "spacing.off-scale": 3,
+   "render.contrast": 1
+  },
+  "project/CAP-T05-Questions.dc.html": {
+   "z-index.off-scale": 2,
+   "spacing.off-scale": 3,
+   "render.contrast": 10
+  },
+  "project/CAP-T05-Reading.dc.html": {
+   "z-index.off-scale": 2,
+   "spacing.off-scale": 3,
+   "render.contrast": 4
+  },
+  "project/CAP-T07-DraftSaved.dc.html": {
+   "spacing.off-scale": 2
+  },
+  "project/CAP-T11-Classes.dc.html": {
+   "spacing.off-scale": 4
+  },
+  "project/CAP-T13-Results.dc.html": {
+   "spacing.off-scale": 1,
+   "render.contrast": 1
+  },
+  "project/CAP-T15-ScoreResponse.dc.html": {
+   "spacing.off-scale": 1
+  },
+  "project/CAP-T16-Insights.dc.html": {
+   "spacing.off-scale": 3
+  },
+  "project/DI-District.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 5,
+   "radius.off-scale": 3,
+   "colour.status-text-outside-badge": 2,
+   "motion.duration": 5,
+   "motion.easing": 1,
+   "motion.delay": 1,
+   "z-index.off-scale": 1,
+   "render.contrast": 10
+  },
+  "project/DI-School.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 5,
+   "radius.off-scale": 3,
+   "colour.status-text-outside-badge": 2,
+   "motion.duration": 5,
+   "motion.easing": 1,
+   "motion.delay": 1,
+   "z-index.off-scale": 1,
+   "render.contrast": 11
+  },
+  "project/District-Home.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 3,
+   "radius.off-scale": 3,
+   "colour.status-text-outside-badge": 2,
+   "motion.duration": 5,
+   "motion.easing": 1,
+   "motion.delay": 1,
+   "z-index.off-scale": 1,
+   "render.contrast": 2
+  },
+  "project/MOD-AltAssessments.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 10,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1
+  },
+  "project/MOD-Interim.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 15,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 2,
+   "colour.surface-token-as-text": 3,
+   "z-index.off-scale": 2,
+   "radius.off-scale": 4,
+   "render.contrast": 11
+  },
+  "project/MOD-Screeners.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 10,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1
+  },
+  "project/PA-AltAssessments.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 11,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1
+  },
+  "project/PA-Interim.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 15,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 2,
+   "colour.surface-token-as-text": 3,
+   "z-index.off-scale": 2,
+   "radius.off-scale": 4,
+   "render.contrast": 10
+  },
+  "project/PA-Overview.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 16,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 2,
+   "motion.duration": 5,
+   "colour.status-text-outside-badge": 4,
+   "colour.surface-token-as-text": 2,
+   "z-index.off-scale": 2,
+   "radius.off-scale": 2,
+   "motion.easing": 1,
+   "motion.layout-property": 1,
+   "motion.delay": 1,
+   "colour.hardcoded": 1,
+   "render.contrast": 1
+  },
+  "project/PA-Screeners.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 11,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1
+  },
+  "project/PA1-Home.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 3,
+   "radius.off-scale": 3,
+   "colour.status-text-outside-badge": 2,
+   "motion.duration": 5,
+   "motion.easing": 1,
+   "motion.delay": 1,
+   "z-index.off-scale": 1
+  },
+  "project/PA2-Grades.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 23,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 3,
+   "motion.duration": 9,
+   "colour.status-text-outside-badge": 9,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 9,
+   "colour.surface-token-as-text": 4,
+   "shadow.not-a-token": 3,
+   "motion.easing": 3,
+   "colour.hardcoded": 3,
+   "render.contrast": 17
+  },
+  "project/PA2-Students.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 24,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 3,
+   "motion.duration": 9,
+   "colour.status-text-outside-badge": 9,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 9,
+   "colour.surface-token-as-text": 5,
+   "shadow.not-a-token": 3,
+   "motion.easing": 3,
+   "colour.hardcoded": 2,
+   "render.too-many-weights": 1,
+   "render.weight-off-scale": 1,
+   "render.contrast": 509
+  },
+  "project/PA2-Subgroups.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 22,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 3,
+   "motion.duration": 11,
+   "colour.status-text-outside-badge": 11,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 10,
+   "colour.surface-token-as-text": 4,
+   "shadow.not-a-token": 3,
+   "motion.easing": 3,
+   "colour.hardcoded": 2
+  },
+  "project/PA3-Trends.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 13,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1,
+   "render.size-off-scale": 1,
+   "render.contrast": 1,
+   "shell.nav-selected": 1
+  },
+  "project/PA5-Followup.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 5,
+   "logo.restyled": 1,
+   "spacing.off-scale": 15,
+   "type.off-scale-size": 1,
+   "render.size-off-scale": 1,
+   "render.contrast": 1,
+   "shell.nav-selected": 1
+  },
+  "project/SA2-Combined.dc.html": {
+   "type.raw-size": 4,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 19,
+   "type.off-scale-size": 3,
+   "colour.accent-text": 1,
+   "radius.off-scale": 4,
+   "z-index.off-scale": 6,
+   "colour.surface-token-as-text": 1,
+   "render.size-off-scale": 3,
+   "render.too-many-sizes": 1,
+   "render.contrast": 3
+  },
+  "project/SA2-Hub.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 16,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 2,
+   "motion.duration": 5,
+   "colour.status-text-outside-badge": 4,
+   "colour.surface-token-as-text": 2,
+   "z-index.off-scale": 2,
+   "radius.off-scale": 2,
+   "motion.easing": 1,
+   "motion.layout-property": 1,
+   "motion.delay": 1,
+   "colour.hardcoded": 1,
+   "render.contrast": 1
+  },
+  "project/SA2-Schools.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 23,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 3,
+   "motion.duration": 9,
+   "colour.status-text-outside-badge": 9,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 9,
+   "colour.surface-token-as-text": 4,
+   "shadow.not-a-token": 3,
+   "motion.easing": 3,
+   "colour.hardcoded": 3,
+   "render.contrast": 14
+  },
+  "project/SA2-Subgroups.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 22,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 3,
+   "motion.duration": 11,
+   "colour.status-text-outside-badge": 11,
+   "z-index.off-scale": 1,
+   "radius.off-scale": 10,
+   "colour.surface-token-as-text": 4,
+   "shadow.not-a-token": 3,
+   "motion.easing": 3,
+   "colour.hardcoded": 2
+  },
+  "project/SA3-Mockup.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 4,
+   "logo.restyled": 1,
+   "spacing.off-scale": 13,
+   "type.off-scale-size": 2,
+   "colour.accent-text": 1,
+   "radius.off-scale": 2,
+   "z-index.off-scale": 5,
+   "render.size-off-scale": 1,
+   "render.too-many-sizes": 1
+  },
+  "project/SA6-Respond.dc.html": {
+   "type.raw-size": 3,
+   "type.weight": 5,
+   "logo.restyled": 1,
+   "spacing.off-scale": 14,
+   "type.off-scale-size": 1,
+   "colour.accent-text": 1,
+   "render.size-off-scale": 1,
+   "render.contrast": 1,
+   "shell.nav-selected": 1
+  },
+  "project/STU2-Classroom.dc.html": {
+   "inline.type-or-colour": 21,
+   "type.raw-size": 1,
+   "render.contrast": 2,
+   "shell.footer-missing": 1
+  },
+  "project/STU2-SignIn.dc.html": {
+   "inline.type-or-colour": 1,
+   "spacing.off-scale": 1,
+   "shell.header-missing": 1,
+   "shell.footer-missing": 1
+  },
+  "project/SUP-Home-Goal.dc.html": {
+   "type.raw-size": 1,
+   "type.weight": 1,
+   "logo.restyled": 1,
+   "spacing.off-scale": 2,
+   "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
+   "render.contrast": 2
+  },
+  "project/CAP-S01-SignIn.dc.html": {
+   "render.size-off-scale": 3
+  },
+  "project/CAP-S02-ConfirmAccount.dc.html": {
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-S03-MyWork.dc.html": {
+   "render.size-off-scale": 2,
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-S04-Instructions.dc.html": {
+   "render.size-off-scale": 3,
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-S05-Question.dc.html": {
+   "render.size-off-scale": 4
+  },
+  "project/CAP-S06-ReviewAnswers.dc.html": {
+   "render.size-off-scale": 3
+  },
+  "project/CAP-S07-Submit.dc.html": {
+   "render.size-off-scale": 2,
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-S08-Submitted.dc.html": {
+   "render.size-off-scale": 2,
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-S09-AccessHelp.dc.html": {
+   "render.too-many-sizes": 1
+  },
+  "project/CAP-T02-OverviewStats.dc.html": {
+   "render.contrast": 1
+  },
+  "project/CAP-T03-Assessments.dc.html": {
+   "render.contrast": 5
+  },
+  "project/CAP-T06-Review.dc.html": {
+   "render.contrast": 11
+  },
+  "project/CAP-T08-AudienceDelivery.dc.html": {
+   "render.contrast": 8
+  },
+  "project/CAP-T09-ConfirmAssignment.dc.html": {
+   "render.contrast": 9
+  },
+  "project/CAP-T10-Scheduled.dc.html": {
+   "render.contrast": 5
+  },
+  "project/CAP-T21-AssessmentLibrary.dc.html": {
+   "shell.nav-selected": 1
+  }
+ }
+}

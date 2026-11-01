@@ -98,7 +98,7 @@ html body .theme-assessments .topfive .schcard{cursor:pointer;transition:box-sha
 html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(--space-4);margin-top:var(--space-12);padding:0;background:transparent;}
 .bubhd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-3);}
 .bubttl{display:flex;flex-direction:column;gap:var(--space-2);}
-.bubttl h2{margin:0;font:var(--weight-bold) var(--text-subheading) var(--font-sans);}
+.bubttl h2{margin:0;font:var(--weight-bold) var(--text-heading) var(--font-sans);}
 .bubleg{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small);}
 .bubleg svg{width:56px;height:8px;flex-shrink:0;}
 .bubgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-4);}
@@ -130,7 +130,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .note{display:flex;align-items:flex-start;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-radius:var(--radius);background:var(--info-light);font-size:var(--text-body-small);}
 .note svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--info);}
 .tblsec{display:flex;flex-direction:column;gap:var(--space-3);}
-.tblsec h2{font:var(--weight-bold) var(--text-subheading) var(--font-sans);}
+.tblsec h2{font:var(--weight-bold) var(--text-heading) var(--font-sans);}
 .tblwrap{background:var(--card);border-radius:var(--radius);overflow-x:auto;}
 table.dt{width:100%;min-width:900px;border-collapse:collapse;font-size:var(--text-body-small);}
 .segwrap{position:relative;display:inline-flex;}
@@ -161,7 +161,7 @@ table.dt{width:100%;min-width:900px;border-collapse:collapse;font-size:var(--tex
 .ilmodal{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:var(--space-4);background:var(--backdrop-overlay);}
 .ildlg{width:min(560px,100%);height:min(540px,calc(100vh - 32px));overflow:hidden;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-6);background:var(--background);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);color:var(--foreground);font-family:var(--font-sans);box-sizing:border-box;}
 .ildlghd{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
-.ildlghd h2{margin:0;font:var(--weight-bold) var(--text-subheading)/var(--lh-snug) var(--font-sans);}
+.ildlghd h2{margin:0;font:var(--weight-bold) var(--text-heading)/var(--lh-snug) var(--font-sans);}
 .ildlgft{margin-top:auto;display:flex;justify-content:flex-end;gap:var(--space-2);padding-top:var(--space-2);}
 .ildlg > sc-if{display:contents;}
 .ildlg.fmod{width:min(480px,100%);height:auto;gap:var(--space-6);}
@@ -186,13 +186,13 @@ html body .theme-assessments .fchips .fchip{border:0;}
 .sdhd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3);}
 .sdhdt{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .sdcmp{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;text-align:right;}
-.sdcmp > b{font:var(--weight-bold) var(--text-subheading)/var(--lh-snug) var(--font-sans);color:var(--foreground);}
+.sdcmp > b{font:var(--weight-bold) var(--text-heading)/var(--lh-snug) var(--font-sans);color:var(--foreground);}
 .sdcmpw{align-items:center;gap:var(--space-1);}
 .sdinfo{padding:0;border:0;background:none;color:var(--muted-foreground);cursor:pointer;border-radius:var(--radius-full);}
 .sdinfo:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring);}
 .sdtip{left:auto;right:0;transform:none;width:240px;text-align:left;}
 .segwrap:has(.sdinfo:focus-visible) .sdtip{display:block;}
-.sdhd h2{margin:0;font:var(--weight-bold) var(--text-subheading)/var(--lh-snug) var(--font-sans);color:var(--foreground);}
+.sdhd h2{margin:0;font:var(--weight-bold) var(--text-heading)/var(--lh-snug) var(--font-sans);color:var(--foreground);}
 .sdmut{color:color-mix(in srgb,var(--muted-foreground) 65%,var(--card));font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans);}
 .sdx{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex-shrink:0;padding:0;border:0;border-radius:var(--radius-full);background:transparent;color:var(--foreground);cursor:pointer;}.sdx:hover{background:var(--hover-overlay);}.sdx svg{width:18px;height:18px;}.sdx:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring);}
 .sdsec{display:flex;flex-direction:column;gap:var(--space-2);}
@@ -722,6 +722,6 @@ class Component extends DCLogic {
   }
 }
 </script>
-<link rel="stylesheet" href="cognia-approved-ui.css"><link rel="stylesheet" href="admin-type.css">
+<link rel="stylesheet" href="cognia-approved-ui.css"><link rel="stylesheet" href="admin-type.css?v=20261030-heading24">
 <script src="persona-routing.js"></script><link rel="stylesheet" href="brand-emblem.css?v=20261028-emblem"></body>
 </html>

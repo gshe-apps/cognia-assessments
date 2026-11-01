@@ -10,6 +10,7 @@ This plugin is the source of truth for the Cognia design system. Everything you 
 - `design-system/` — the rules, starting with `DESIGN.md`
 - `assets/globals.css` — every colour, radius and theme token
 - `assets/logos/` — `logo.svg` (wordmark) and `C.svg` (icon mark)
+- `checks/`, the automated check projects run against these rules
 
 Paths below are relative to this skill folder.
 
@@ -44,3 +45,11 @@ Paths below are relative to this skill folder.
 ## After building
 
 Check the work against the docs: no hardcoded colours, no off-scale spacing, no undocumented variants, contrast at WCAG AA. List anywhere you had to ask or deviate.
+
+If the project has a `cognia-design.config.json`, run the automated check from the project root and fix anything it reports as new:
+
+```bash
+node <this skill folder>/checks/check-project.cjs
+```
+
+It reads every rule from this plugin, so it always matches the current docs. Never raise the project's baseline to make a change pass. See `checks/README.md` to set it up in a new project.

@@ -1,0 +1,30 @@
+{
+  "description": "How the Cognia design plugin check reads this project. The rules themselves live in gshe-apps/cognia-design-plugin.",
+  "screens": ["project/*.dc.html"],
+  "styles": ["project/**/*.css"],
+  "exclude": ["project/ds/cognia/tokens.css", "project/ds/cognia/colors_and_type.css"],
+  "tokenCopy": "project/ds/cognia/tokens.css",
+  "logos": {
+    "project/assets/cognia-logo.svg": "logo.svg",
+    "project/assets/cognia-emblem.svg": "C.svg"
+  },
+  "logoSelectors": [".logo", ".hublogo"],
+  "chartSelectors": [".svax", ".svpt", ".svtip", ".trsvg", ".bubval", ".bubvalh"],
+  "ignoreTextIn": [".dh-visually-hidden"],
+  "profiles": [
+    {
+      "name": "District and School administrator screens",
+      "whenContains": "admin-type.css",
+      "typeSizes": [24, 16, 14],
+      "forbidTokens": ["--text-subheading"]
+    }
+  ],
+  "shell": {
+    "header": "header",
+    "footer": "footer",
+    "page": ".wf",
+    "footerText": ["Cognia, Inc. All rights reserved.", "English", "Help & Support", "cognia.org"]
+  },
+  "viewport": { "width": 1440, "height": 1000 },
+  "baseline": "cognia-design.baseline.json"
+}

@@ -35,8 +35,8 @@ Responsive padding and spacing are handled automatically via CSS variables. Use 
 | `--section-spacing` | 48px | 64px | 96px |
 
 ```tsx
-<main style={{
-  padding: 'var(--vertical-padding) var(--horizontal-padding)'
+<main style={{ 
+  padding: 'var(--vertical-padding) var(--horizontal-padding)' 
 }}>
   {children}
 </main>

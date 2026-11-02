@@ -23,10 +23,10 @@
 .ov-priority { position:relative; display:grid; grid-template-columns:64px minmax(0,1fr); grid-template-rows:auto 1fr; column-gap:var(--space-6); row-gap:var(--space-4); padding:var(--space-6); min-height:192px; min-width:0; isolation:isolate; border:1px solid var(--accent-100); border-radius:var(--radius); background:linear-gradient(115deg,var(--card) 25%,var(--accent-100) 200%); color:var(--card-foreground); }
 .ov-results { border-color:var(--info-light); background:linear-gradient(115deg,var(--card) 25%,var(--info-light)); }
 .ov-scheduled { border-color:var(--destructive-light); background:linear-gradient(115deg,var(--card) 25%,var(--destructive-light)); }
-.ov-priority-icon { position:relative; z-index:10; display:flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:var(--radius); background:var(--accent-100); color:var(--accent-400); }
+.ov-priority-icon{position:relative; z-index:10; display:flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:var(--radius); background:var(--accent-100)}:is(.ov-priority-icon, .ov-priority-icon *)[stroke="currentColor"]{stroke:var(--accent-400)}:is(.ov-priority-icon, .ov-priority-icon *)[fill="currentColor"]{fill:var(--accent-400)}
 .ov-priority-icon svg { width:32px; height:32px; }
-.ov-results .ov-priority-icon { background:var(--info-light); color:var(--info); }
-.ov-scheduled .ov-priority-icon { background:var(--destructive-light); color:var(--destructive); }
+.ov-results .ov-priority-icon{background:var(--info-light)}:is(.ov-results .ov-priority-icon, .ov-results .ov-priority-icon *)[stroke="currentColor"]{stroke:var(--info)}:is(.ov-results .ov-priority-icon, .ov-results .ov-priority-icon *)[fill="currentColor"]{fill:var(--info)}
+.ov-scheduled .ov-priority-icon{background:var(--destructive-light)}:is(.ov-scheduled .ov-priority-icon, .ov-scheduled .ov-priority-icon *)[stroke="currentColor"]{stroke:var(--destructive)}:is(.ov-scheduled .ov-priority-icon, .ov-scheduled .ov-priority-icon *)[fill="currentColor"]{fill:var(--destructive)}
 .ov-priority-copy { position:relative; z-index:10; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:var(--space-1); min-width:0; }
 .ov-status { display:inline-flex; align-items:center; min-height:24px; padding:var(--space-1) var(--space-4); margin-bottom:var(--space-2); border-radius:var(--rounded-full); background:var(--accent-100); color:var(--foreground); font-size:var(--text-body-small); font-weight:var(--weight-semibold); line-height:1.2; }
 .ov-results .ov-status { background:var(--info-light); color:var(--info); }

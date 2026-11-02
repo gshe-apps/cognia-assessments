@@ -65,16 +65,14 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .dh-main .hp-btn-solid:hover,.dh-main a.hp-btn-solid:hover { border-color:color-mix(in srgb, var(--primary) 78%, var(--card)); background:color-mix(in srgb, var(--primary) 78%, var(--card)); color:var(--primary-foreground); text-decoration:none; }
 .dh-main .hp-btn-outline { border:1px solid var(--primary); background:var(--primary-foreground); color:var(--foreground); }
 .hp-btn-outline:hover { background:var(--secondary); }
-:is(.hp-btn,.hp-course,.hp-icon-link,.hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+:is(.hp-btn,.hp-icon-link,.hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* ---------- Course card (clickable, hover lifts) ---------- */
-.hp-course { position:relative; display:flex; align-items:stretch; justify-content:space-between; gap:var(--space-4); padding:var(--space-4) var(--space-3); border:0; border-radius:var(--hp-radius); background:var(--accent-100); color:var(--secondary-foreground); text-align:left; font-family:var(--font-sans); cursor:pointer; box-shadow:none; transition:all 200ms; }
-.hp-course:hover { box-shadow:var(--shadow-md); }
+.hp-course { position:relative; display:flex; align-items:stretch; justify-content:space-between; gap:var(--space-4); padding:var(--space-4) var(--space-3); border:0; border-radius:var(--hp-radius); background:var(--accent-100); color:var(--secondary-foreground); text-align:left; font-family:var(--font-sans); box-shadow:none; transition:all 200ms; }
 .hp-course-txt { display:flex; flex-direction:column; justify-content:space-between; gap:var(--space-4); }
 .hp-course-title { font:var(--weight-regular) var(--text-body-base)/var(--lh-snug) var(--font-sans); max-width:168px; }
 .hp-course-cta { display:inline-flex; align-items:center; gap:var(--space-2); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); color:var(--foreground); }
 .hp-course-cta svg { width:16px; height:16px; transition:transform 200ms; }
-.hp-course:hover .hp-course-cta svg { transform:translateX(var(--space-1)); }
 .hp-ring { position:relative; width:100px; height:100px; flex-shrink:0; }
 .hp-ring svg { width:100px; height:100px; transform:rotate(-90deg); }
 .hp-ring .trk { stroke:color-mix(in srgb, var(--foreground) 20%, transparent); }

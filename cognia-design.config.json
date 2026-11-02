@@ -2,7 +2,7 @@
   "description": "How the Cognia design plugin check reads this project. The rules themselves live in gshe-apps/cognia-design-plugin.",
   "screens": ["project/*.dc.html"],
   "styles": ["project/**/*.css"],
-  "exclude": ["project/ds/cognia/tokens.css", "project/ds/cognia/colors_and_type.css"],
+  "exclude": ["project/ds/cognia/tokens.css", "project/ds/cognia/colors_and_type.css", "project/CAP-T00-Home.dc.html"],
   "tokenCopy": "project/ds/cognia/tokens.css",
   "logos": {
     "project/assets/cognia-logo.svg": "logo.svg",

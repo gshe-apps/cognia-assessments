@@ -344,18 +344,6 @@
   "project/workspace-layout.css": {
    "spacing.off-scale": 2
   },
-  "project/CAP-T00-Home.dc.html": {
-   "type.raw-size": 1,
-   "type.weight": 1,
-   "logo.restyled": 1,
-   "spacing.off-scale": 3,
-   "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1,
-   "motion.duration": 5,
-   "motion.easing": 1,
-   "motion.delay": 1,
-   "z-index.off-scale": 1
-  },
   "project/CAP-T05-Algebra.dc.html": {
    "z-index.off-scale": 2,
    "spacing.off-scale": 2

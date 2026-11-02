@@ -28,26 +28,25 @@ const shell=(instance,file)=>{
  const file='District-Home.dc.html',html=read(file);
  assert(html.includes('data-persona="{{persona}}"'),`${file}: persona`);
  for(const text of ['Welcome back, {{firstName}}','Assessment results','Data and Reporting','Observations','Surveys','Performance','href="{{overviewHref}}"','href="OS-Observations.dc.html"','href="OS-Surveys.dc.html"'])assert(html.includes(text),`${file}: ${text}`);
- assert(!html.includes('<span>Classroom Assessment</span>'),`${file}: admins do not see Classroom Assessment in the hub`);
+ assert(/<sc-if value="\{\{hubFmShow\}\}"[^>]*><a class="appt d-Fm"/.test(html),`${file}: Classroom Assessment only shows when the persona has it`);
  for(const [persona,first,overview] of [['district','Jordan','SA2-Hub.dc.html'],['school','Priya','PA-Overview.dc.html']]){
    const instance=runDC(html,{cogniaPersona:persona});
    const vals=instance.renderVals();
-   assert.equal(vals.persona,persona);assert.equal(vals.firstName,first);assert.equal(vals.overviewHref,overview,`${file}: ${persona} results destination`);
+   assert.equal(vals.persona,persona);assert.equal(vals.hubFmShow,false,`${file}: admins do not see Classroom Assessment`);assert.equal(vals.firstName,first);assert.equal(vals.overviewHref,overview,`${file}: ${persona} results destination`);
    shell(instance,file);
  }
  reports.push(`${file}: district and school Home, results destinations, Observations and Surveys links, account, role switch, hub and plan state passed`);
 }
-// Educator Home keeps its own content.
+// Educators use the one Home too (2 Nov): the retired educator Home only forwards old links.
 {
- const file='CAP-T00-Home.dc.html',html=read(file);
- assert(html.includes('data-persona="educator"'),`${file}: persona`);
- assert(html.includes('href="CAP-T01-Overview.dc.html"'),`${file}: assessment destination`);
- for(const text of ['Welcome back, Jordan','What can we help you with today?','Your question','Priority actions','Your hubs','Pick up where you left off'])assert(html.includes(text),`${file}: ${text}`);
- assert.equal((html.match(/class="home-card home-hub"/g)||[]).length,3);
- assert.equal((html.match(/class="home-card home-recent-link home-continue"/g)||[]).length,1);
- assert(html.includes('href="OS-Observations.dc.html"')&&html.includes('href="OS-Surveys.dc.html"'),`${file}: Observations and Surveys open from the hub`);
- shell(runDC(html),file);
- reports.push(`${file}: Home sections, destinations, account, role switch, hub and plan state passed`);
+ const old=read('CAP-T00-Home.dc.html');
+ assert(old.includes("setItem('cogniaPersona', 'educator')")&&old.includes("location.replace('District-Home.dc.html')"),'CAP-T00-Home.dc.html: forwards to the shared Home as the educator');
+ const instance=runDC(read('District-Home.dc.html'),{cogniaPersona:'educator'});const vals=instance.renderVals();
+ assert.equal(vals.firstName,'Sara');assert.equal(vals.orgName,'Lincoln Middle School');assert.equal(vals.overviewHref,'CAP-T13-Results.dc.html');
+ assert.equal(vals.drLink,false,'educators get no Data and Reporting link');assert.equal(vals.isAdmin,false);
+ assert.equal(vals.hubFmShow,true);assert.equal(vals.hubDiShow,false);assert.equal(vals.hubAssignHref,'CAP-T04-Setup.dc.html');
+ shell(instance,'District-Home.dc.html (educator)');
+ reports.push('District-Home.dc.html: educator Home with school, classes, educator insight and educator hub passed');
 }
 // Observations and Surveys pages work for admins and educators.
 for(const file of ['OS-Observations.dc.html','OS-Surveys.dc.html']){
@@ -62,23 +61,23 @@ for(const file of ['OS-Observations.dc.html','OS-Surveys.dc.html']){
 }
 const entry=read('index.html');
 assert(entry.includes('data-open-admin'));
-assert(entry.includes('href="CAP-T00-Home.dc.html" data-persona="educator"'));
+assert(entry.includes('href="District-Home.dc.html" data-persona="educator"'));
 assert(entry.includes('href="STU2-SignIn.dc.html" data-persona="student"'));
 assert(entry.includes('href="District-Home.dc.html" data-persona="district"'));
 assert(entry.includes('href="District-Home.dc.html" data-persona="school"'));
 assert.equal((entry.match(/class="home-card persona-card"/g)||[]).length,3);
 assert(read('../serve.cjs').includes("pathname === '/' ? '/index.html'"));
-reports.push('Entry: exactly three persona cards; both admin options open the one Home as their persona; educator Home; student sign-in; default server route passed');
+reports.push('Entry: exactly three persona cards; admins and educators open the one Home as their persona; student sign-in; default server route passed');
 let switches=0;
 for(const file of fs.readdirSync(root).filter(n=>n.endsWith('.html'))){
  const html=read(file);
  for(const role of html.matchAll(/<a\b[^>]*class="[^"]*\broleopt\b[^"]*"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)){
    if(!/Educator/.test(role[2]))continue;
    switches++;
-   assert.equal(role[1],'CAP-T00-Home.dc.html',`${file}: educator role must open Home`);
+   assert.equal(role[1],'District-Home.dc.html',`${file}: educator role must open Home`);
  }
  // Check every local dependency and new navigational target on the four new screens.
- if(!['District-Home.dc.html','CAP-T00-Home.dc.html','OS-Observations.dc.html','OS-Surveys.dc.html','index.html'].includes(file))continue;
+ if(!['District-Home.dc.html','OS-Observations.dc.html','OS-Surveys.dc.html','index.html'].includes(file))continue;
  for(const attr of html.matchAll(/(?:href|src)="([^"{}]+)"/g)){
    const target=attr[1].split(/[?#]/)[0];
    if(!target||/^(https?:|data:|mailto:|\/)/.test(target))continue;

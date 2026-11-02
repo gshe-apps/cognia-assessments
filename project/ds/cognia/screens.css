@@ -3,11 +3,12 @@
    Three type sizes per screen: 24 / 16 / 14; weights: 400 / 600 / 700.
    Plugin typography utilities remain authoritative while Figma discrepancies are resolved. */
 :where(.cognia-screen) { font:400 14px/1.5 var(--font-sans); color:var(--foreground); background:var(--background); }
-:where(.cognia-screen *) { font-family:var(--font-sans); font-size:inherit; font-weight:inherit; letter-spacing:normal; }
-:where(.cognia-screen h1,.cognia-screen h2) { font-size:24px; line-height:1.3; font-weight:600; color:var(--foreground); }
-:where(.cognia-screen h3,.cognia-screen h4,.cognia-screen strong,.cognia-screen b) { font-size:16px; font-weight:600; }
-:where(.cognia-screen p,.cognia-screen input,.cognia-screen select,.cognia-screen textarea) { font-size:16px; line-height:1.5; }
-:where(.cognia-screen small,.cognia-screen label,.cognia-screen .tag,.cognia-screen .pill,.cognia-screen .badge,.cognia-screen .muted,.cognia-screen .hint,.cognia-screen .meta) { font-size:14px; line-height:1.5; }
+/* The My Hubs window is one shared component across personas: it keeps its own type, so these screen defaults skip it. */
+:where(.cognia-screen *:not(.appmodal *)) { font-family:var(--font-sans); font-size:inherit; font-weight:inherit; letter-spacing:normal; }
+:where(.cognia-screen h1:not(.appmodal *),.cognia-screen h2:not(.appmodal *)) { font-size:24px; line-height:1.3; font-weight:600; color:var(--foreground); }
+:where(.cognia-screen h3:not(.appmodal *),.cognia-screen h4:not(.appmodal *),.cognia-screen strong:not(.appmodal *),.cognia-screen b:not(.appmodal *)) { font-size:16px; font-weight:600; }
+:where(.cognia-screen p:not(.appmodal *),.cognia-screen input:not(.appmodal *),.cognia-screen select:not(.appmodal *),.cognia-screen textarea:not(.appmodal *)) { font-size:16px; line-height:1.5; }
+:where(.cognia-screen small:not(.appmodal *),.cognia-screen label:not(.appmodal *),.cognia-screen .tag:not(.appmodal *),.cognia-screen .pill:not(.appmodal *),.cognia-screen .badge:not(.appmodal *),.cognia-screen .muted:not(.appmodal *),.cognia-screen .hint:not(.appmodal *),.cognia-screen .meta:not(.appmodal *)) { font-size:14px; line-height:1.5; }
 :where(.cognia-screen .muted,.cognia-screen .hint,.cognia-screen small) { color:var(--muted-foreground); }
 :where(.cognia-screen .wf,.cognia-screen .workspace,.cognia-screen .cap-root,.cognia-screen .main) { background:var(--background); }
 :where(.cognia-screen .card,.cognia-screen .draftcard,.cognia-screen .home-card,.cognia-screen .sg-card,.cognia-screen .reference-feature) { border-color:transparent; border-radius:var(--radius); box-shadow:none; background:var(--card); color:var(--card-foreground); }

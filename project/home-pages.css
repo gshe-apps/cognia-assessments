@@ -79,10 +79,11 @@
 .cap-home .hublang { display:flex; align-items:center; gap:var(--space-2); border:0; border-bottom:2px solid var(--brand-coral); background:transparent; padding:var(--space-2) var(--space-1) var(--space-1); }
 .cap-home .hublang svg { width:16px; height:16px; }
 /* Apply the same three-size limit inside the inherited shell overlays. */
-.cap-home :is(.appdlg,.acctmenu,.roledlg) { font-size:var(--text-body-small); }
-.cap-home :is(.appdlg,.acctmenu,.roledlg) :is(p,span,a,button,small,label,strong,b) { font-size:var(--text-body-small); }
-.cap-home :is(.appdlg,.acctmenu,.roledlg) :is(h1,h2) { font-size:var(--text-subheading); }
-.cap-home :is(.appdlg,.acctmenu,.roledlg) :is(h3,h4,.acctname,.roleopt strong) { font-size:var(--text-body-base); }
+/* The My Hubs window keeps its shared type on every screen (2 Nov), so Home no longer resizes it. */
+.cap-home :is(.acctmenu,.roledlg) { font-size:var(--text-body-small); }
+.cap-home :is(.acctmenu,.roledlg) :is(p,span,a,button,small,label,strong,b) { font-size:var(--text-body-small); }
+.cap-home :is(.acctmenu,.roledlg) :is(h1,h2) { font-size:var(--text-subheading); }
+.cap-home :is(.acctmenu,.roledlg) :is(h3,h4,.acctname,.roleopt strong) { font-size:var(--text-body-base); }
 .cap-home .roleopt { border-radius:var(--radius); }
 .cap-home :is(.rolemodal,.appmodal) { z-index:50; }
 .cap-home .acctscrim { z-index:10; }

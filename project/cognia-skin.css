@@ -317,7 +317,7 @@ html body .acctmenu .acctav{border-radius:50% ;width:40px;height:40px;flex-shrin
 /* progress bars inside stacked tiles: keep their height */
 html body .theme-assessments .card > .bar,html body .theme-assessments .kpi > .bar{flex:none;height:10px;width:100%;overflow:hidden;}
 html body .theme-assessments .card > .bar i,html body .theme-assessments .kpi > .bar i{height:100%;}
-html body .theme-assessments .card.tint.trendcard{background:var(--card);border:0 ;gap:var(--space-2);}
+html body .theme-assessments .card.tint.trendcard{background:transparent;border:0 ;gap:var(--space-2);} /* 2 Nov: the trend chart sits on the page, no white card */
 html body .theme-assessments .card.tint.trendcard .lbl,html body .theme-assessments .card.tint.trendcard .n{color:var(--foreground);}
 /* Schools with changed results */
 .theme-assessments .schsec{display:flex;flex-direction:column;gap:var(--space-3);}

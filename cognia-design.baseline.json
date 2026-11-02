@@ -1,5 +1,5 @@
 {
- "plugin": "1.2.0",
+ "plugin": "1.6.0",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/approved-redesign.css": {
@@ -7,8 +7,8 @@
    "type.raw-size": 10,
    "spacing.off-scale": 55,
    "type.font-family": 15,
-   "radius.off-scale": 10,
-   "type.off-scale-size": 33
+   "type.off-scale-size": 33,
+   "radius.off-scale": 8
   },
   "project/assessment-catalogue.css": {
    "colour.hardcoded": 100,
@@ -18,15 +18,15 @@
    "type.font-family": 11,
    "shadow.not-a-token": 7,
    "type.weight": 2,
-   "radius.off-scale": 20,
+   "radius.off-scale": 17,
    "type.raw-size": 5,
    "motion.duration": 6
   },
   "project/assessment-library-panel.css": {
    "colour.hardcoded": 14,
-   "radius.off-scale": 5,
    "spacing.off-scale": 14,
-   "type.off-scale-size": 11
+   "type.off-scale-size": 11,
+   "radius.off-scale": 4
   },
   "project/assessment-progress.css": {
    "spacing.off-scale": 4,
@@ -60,7 +60,7 @@
    "type.font-family": 31,
    "type.raw-size": 14,
    "type.off-scale-size": 36,
-   "radius.off-scale": 7,
+   "radius.off-scale": 6,
    "type.weight": 3,
    "z-index.off-scale": 2,
    "shadow.not-a-token": 1
@@ -144,7 +144,7 @@
    "motion.easing": 4,
    "z-index.off-scale": 2,
    "colour.hardcoded": 8,
-   "radius.off-scale": 3,
+   "radius.off-scale": 2,
    "shadow.not-a-token": 2
   },
   "project/home-pages.css": {
@@ -163,7 +163,6 @@
   "project/hub-menu-responsive.css": {
    "z-index.off-scale": 1,
    "spacing.off-scale": 13,
-   "radius.off-scale": 1,
    "colour.hardcoded": 1,
    "type.off-scale-size": 5
   },
@@ -194,7 +193,6 @@
   },
   "project/plan-features.css": {
    "type.font-family": 1,
-   "radius.off-scale": 1,
    "spacing.off-scale": 5,
    "colour.hardcoded": 13,
    "type.raw-size": 1,
@@ -215,7 +213,7 @@
    "spacing.off-scale": 57,
    "type.off-scale-size": 33,
    "colour.hardcoded": 67,
-   "radius.off-scale": 16,
+   "radius.off-scale": 15,
    "type.raw-size": 3,
    "type.weight": 1,
    "motion.duration": 2,
@@ -229,8 +227,8 @@
    "type.off-scale-size": 95,
    "shadow.not-a-token": 4,
    "z-index.off-scale": 3,
-   "radius.off-scale": 23,
    "type.font-family": 27,
+   "radius.off-scale": 20,
    "type.raw-size": 11,
    "type.weight": 1,
    "motion.duration": 2
@@ -244,11 +242,11 @@
   },
   "project/scheduled-design.css": {
    "colour.hardcoded": 32,
-   "radius.off-scale": 7,
    "spacing.off-scale": 32,
    "z-index.off-scale": 2,
    "type.off-scale-size": 19,
    "type.raw-size": 5,
+   "radius.off-scale": 6,
    "type.font-family": 1
   },
   "project/screen-updates.css": {
@@ -267,16 +265,16 @@
    "shadow.not-a-token": 2,
    "colour.accent-text": 7,
    "colour.status-text-outside-badge": 3,
-   "radius.off-scale": 4,
    "spacing.off-scale": 2,
    "motion.easing": 4,
+   "radius.off-scale": 1,
    "motion.delay": 1
   },
   "project/student-app-design.css": {
    "colour.hardcoded": 84,
    "spacing.off-scale": 44,
    "type.off-scale-size": 37,
-   "radius.off-scale": 22,
+   "radius.off-scale": 21,
    "motion.duration": 1,
    "shadow.not-a-token": 2,
    "type.raw-size": 15,
@@ -289,7 +287,7 @@
    "type.weight": 1,
    "type.raw-size": 5,
    "colour.hardcoded": 48,
-   "radius.off-scale": 12,
+   "radius.off-scale": 11,
    "motion.duration": 7,
    "z-index.off-scale": 3,
    "motion.easing": 1,
@@ -313,7 +311,7 @@
    "spacing.off-scale": 79,
    "type.off-scale-size": 46,
    "type.raw-size": 6,
-   "radius.off-scale": 13,
+   "radius.off-scale": 12,
    "motion.layout-property": 1
   },
   "project/student-work.css": {
@@ -330,7 +328,7 @@
   },
   "project/teacher-flow-upgrade.css": {
    "type.off-scale-size": 61,
-   "radius.off-scale": 26,
+   "radius.off-scale": 19,
    "colour.hardcoded": 131,
    "spacing.off-scale": 87,
    "z-index.off-scale": 6,
@@ -351,8 +349,8 @@
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 3,
-   "radius.off-scale": 3,
    "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
    "motion.duration": 5,
    "motion.easing": 1,
    "motion.delay": 1,
@@ -360,18 +358,15 @@
   },
   "project/CAP-T05-Algebra.dc.html": {
    "z-index.off-scale": 2,
-   "spacing.off-scale": 3,
-   "render.contrast": 1
+   "spacing.off-scale": 2
   },
   "project/CAP-T05-Questions.dc.html": {
    "z-index.off-scale": 2,
-   "spacing.off-scale": 3,
-   "render.contrast": 10
+   "spacing.off-scale": 2
   },
   "project/CAP-T05-Reading.dc.html": {
    "z-index.off-scale": 2,
-   "spacing.off-scale": 3,
-   "render.contrast": 4
+   "spacing.off-scale": 2
   },
   "project/CAP-T07-DraftSaved.dc.html": {
    "spacing.off-scale": 2
@@ -394,8 +389,8 @@
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 5,
-   "radius.off-scale": 3,
    "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
    "motion.duration": 5,
    "motion.easing": 1,
    "motion.delay": 1,
@@ -407,8 +402,8 @@
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 5,
-   "radius.off-scale": 3,
    "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
    "motion.duration": 5,
    "motion.easing": 1,
    "motion.delay": 1,
@@ -420,13 +415,12 @@
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 3,
-   "radius.off-scale": 3,
    "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
    "motion.duration": 5,
    "motion.easing": 1,
    "motion.delay": 1,
-   "z-index.off-scale": 1,
-   "render.contrast": 2
+   "z-index.off-scale": 1
   },
   "project/MOD-AltAssessments.dc.html": {
    "type.raw-size": 3,
@@ -445,7 +439,7 @@
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "z-index.off-scale": 2,
-   "radius.off-scale": 4,
+   "radius.off-scale": 1,
    "render.contrast": 11
   },
   "project/MOD-Screeners.dc.html": {
@@ -473,7 +467,7 @@
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "z-index.off-scale": 2,
-   "radius.off-scale": 4,
+   "radius.off-scale": 1,
    "render.contrast": 10
   },
   "project/PA-Overview.dc.html": {
@@ -487,7 +481,7 @@
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "z-index.off-scale": 2,
-   "radius.off-scale": 2,
+   "radius.off-scale": 1,
    "motion.easing": 1,
    "motion.layout-property": 1,
    "motion.delay": 1,
@@ -507,8 +501,8 @@
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 3,
-   "radius.off-scale": 3,
    "colour.status-text-outside-badge": 2,
+   "radius.off-scale": 1,
    "motion.duration": 5,
    "motion.easing": 1,
    "motion.delay": 1,
@@ -524,11 +518,11 @@
    "motion.duration": 9,
    "colour.status-text-outside-badge": 9,
    "z-index.off-scale": 1,
-   "radius.off-scale": 9,
+   "radius.off-scale": 5,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
-   "colour.hardcoded": 3,
+   "colour.hardcoded": 2,
    "render.contrast": 17
   },
   "project/PA2-Students.dc.html": {
@@ -541,7 +535,7 @@
    "motion.duration": 9,
    "colour.status-text-outside-badge": 9,
    "z-index.off-scale": 1,
-   "radius.off-scale": 9,
+   "radius.off-scale": 4,
    "colour.surface-token-as-text": 5,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
@@ -560,7 +554,7 @@
    "motion.duration": 11,
    "colour.status-text-outside-badge": 11,
    "z-index.off-scale": 1,
-   "radius.off-scale": 10,
+   "radius.off-scale": 4,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
@@ -612,7 +606,7 @@
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "z-index.off-scale": 2,
-   "radius.off-scale": 2,
+   "radius.off-scale": 1,
    "motion.easing": 1,
    "motion.layout-property": 1,
    "motion.delay": 1,
@@ -629,11 +623,11 @@
    "motion.duration": 9,
    "colour.status-text-outside-badge": 9,
    "z-index.off-scale": 1,
-   "radius.off-scale": 9,
+   "radius.off-scale": 5,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
-   "colour.hardcoded": 3,
+   "colour.hardcoded": 2,
    "render.contrast": 14
   },
   "project/SA2-Subgroups.dc.html": {
@@ -646,7 +640,7 @@
    "motion.duration": 11,
    "colour.status-text-outside-badge": 11,
    "z-index.off-scale": 1,
-   "radius.off-scale": 10,
+   "radius.off-scale": 4,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
@@ -730,17 +724,11 @@
   "project/CAP-T02-OverviewStats.dc.html": {
    "render.contrast": 1
   },
-  "project/CAP-T03-Assessments.dc.html": {
-   "render.contrast": 5
-  },
   "project/CAP-T06-Review.dc.html": {
    "render.contrast": 11
   },
   "project/CAP-T08-AudienceDelivery.dc.html": {
-   "render.contrast": 8
-  },
-  "project/CAP-T09-ConfirmAssignment.dc.html": {
-   "render.contrast": 9
+   "render.contrast": 1
   },
   "project/CAP-T10-Scheduled.dc.html": {
    "render.contrast": 5

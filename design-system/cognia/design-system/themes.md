@@ -8,9 +8,9 @@ Apply a theme class to the page layout wrapper. All shadcn components inside aut
 |---|---|---|
 | *(no class)* | Default / Data & Reporting | Red |
 | `theme-assessments` | Assessments | Blue/purple |
-| `theme-learn` | Learning | Green |
+| `theme-learn` | Learning | Amber/gold (yellow) |
 | `theme-performance` | Performance | Pink/magenta |
-| `theme-observations-surveys` | Observations & Surveys | Amber/gold |
+| `theme-observations-surveys` | Observations & Surveys | Green |
 
 Always apply the theme class in `layout.tsx` — never in `page.tsx` or on individual components:
 
@@ -69,6 +69,7 @@ Dark mode is applied by toggling the `dark` class on the `<html>` element. All c
 |---|---|
 | `--backdrop-overlay` | Modal and drawer backdrops |
 | `--hover-overlay` | Hover state overlays |
+| `--primary-hover` | Hover fill for solid (primary) buttons and solid avatar buttons |
 | `--input-background` | Input field backgrounds |
 | `--info-light` | Info alert and badge backgrounds |
 | `--success-light` | Success alert and badge backgrounds |

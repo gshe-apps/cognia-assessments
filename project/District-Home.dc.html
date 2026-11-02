@@ -2,242 +2,229 @@
 <html lang="en">
 <head><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
-<title>District administrator – Cognia Home</title>
+<title>Cognia Home</title>
 <script src="./support.js"></script>
 <link rel="stylesheet" href="ds/cognia/colors_and_type.css">
 <link rel="stylesheet" href="cognia-skin.css">
 <link rel="stylesheet" href="hub-header.css">
 <link rel="stylesheet" href="prototype-roles.css">
-<link rel="stylesheet" href="icon-tiles.css"><link rel="stylesheet" href="prototype-interactions.css"><link rel="stylesheet" href="primary-cta-hover.css"><script defer src="primary-cta-hover.js"></script><link rel="stylesheet" href="modern-hubs.css"><script defer src="modern-hubs.js"></script><link rel="stylesheet" href="hub-menu-responsive.css?v=20261023-complete"><link rel="stylesheet" href="ds/cognia/home-content.css"></head>
-<body class="cap-home home-polished cognia-screen">
+<link rel="stylesheet" href="icon-tiles.css"><link rel="stylesheet" href="prototype-interactions.css"><link rel="stylesheet" href="primary-cta-hover.css"><script defer src="primary-cta-hover.js"></script><link rel="stylesheet" href="modern-hubs.css"><script defer src="modern-hubs.js"></script><link rel="stylesheet" href="hub-menu-responsive.css?v=20261023-complete"><link rel="stylesheet" href="ds/cognia/home-content.css"><link rel="stylesheet" href="ds/cognia/home-previews.css?v=20261102-figma2"></head>
+<body class="cap-home home-polished">
 <x-dc>
 <helmet>
 <style>
 /* Legacy prototype fallback only. Cognia semantic classes and tokens take precedence. */
 @layer cap-legacy {
+body{margin:0;background:var(--secondary)}
+*{box-sizing:border-box}
+a{color:var(--foreground)}a:hover{color:var(--foreground)}
+.wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:14px;line-height:1.45}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
+html body .theme-assessments .top{grid-template-columns:1fr auto}
+html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
+.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
+.wf{min-height:100vh;display:flex;flex-direction:column}
 
-body{margin:0;background:var(--secondary);}
-*{box-sizing:border-box;}
-a{color:var(--foreground);}a:hover{color:var(--foreground);}
-.wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:14px;line-height:1.45;}
-.top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring);}
-html body .theme-assessments .top{grid-template-columns:1fr auto;}
-html body .theme-assessments .top .topr{justify-self:end;margin-left:auto;}
-.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground);}
-.wf{min-height:100vh;display:flex;flex-direction:column;}
+.sg-pg{flex:1;font-family:var(--font-sans);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);padding:var(--space-4) var(--space-16) var(--space-12)}
+.sg-pg .sg-head{margin-top:var(--space-6)}
+.sg-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:var(--space-6);margin-top:var(--space-8)}
+.sg-goal{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2)}
+.sg-goal-btn{display:inline-flex;align-items:center;gap:var(--space-3);background:none;border:0;padding:0;cursor:pointer;color:var(--foreground);text-align:left}
+.sg-goal-btn h1{margin:0;font-size:var(--text-subtitle);font-weight:var(--weight-regular);line-height:var(--lh-snug)}
+.sg-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);font-size:var(--text-body-small);font-weight:var(--weight-semibold);line-height:var(--lh-base)}
+.sg-badge.sg-bad{background:var(--destructive-light);color:var(--destructive)}
+.sg-badge.sg-good{background:var(--success-light);color:var(--success)}
+.sg-district{text-align:right;display:flex;flex-direction:column;gap:var(--space-1)}
+.sg-district p{margin:0}
+.sg-district .sg-nm{font-size:var(--text-heading);font-weight:var(--weight-semibold)}
+.sg-district .sg-meta{font-size:var(--text-body-base);display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--space-3);align-items:center}
+.sg-dot{width:4px;height:4px;border-radius:var(--radius-full);background:var(--foreground)}
+.sg-main{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-8);align-items:stretch}
+.sg-col-l{flex:0 1 384px;min-width:0;display:flex;flex-direction:column;gap:var(--space-3)}
+.sg-col-c{flex:1 1 440px;min-width:0;position:relative}
+.sg-col-r{flex:0 1 256px;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8)}
+.sg-card{background:var(--card);border-radius:12px;box-shadow:var(--shadow-lg);padding:var(--space-4)}
+.sg-mhead{display:flex;align-items:flex-start;gap:var(--space-4);width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left;color:var(--foreground);font-family:var(--font-sans)}
+.sg-mval{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:var(--lh-snug);flex-shrink:0;min-width:56px}
+.sg-mttl{flex:1;font-size:var(--text-body-base);line-height:var(--lh-snug);padding-top:2px}
+.sg-chev{flex-shrink:0;margin-top:4px;color:var(--foreground)}
+.sg-mbody{display:flex;flex-direction:column;gap:var(--space-6);margin-top:var(--space-8)}
+.sg-lbl{font-weight:var(--weight-semibold);margin:0}
+.sg-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2)}
+.sg-prog{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-1)}
+.sg-seg{height:6px;border-radius:var(--radius-full);background:var(--ring);overflow:hidden}
+.sg-seg i{display:block;height:100%;background:var(--primary)}
+.sg-stds{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--space-3);margin-top:var(--space-3)}
+.sg-grp{display:flex;align-items:center;gap:var(--space-2)}
+.sg-chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 var(--space-2);border-radius:var(--radius);font-size:var(--text-body-base);font-weight:var(--weight-semibold)}
+.sg-chip.sg-core{background:var(--primary);color:var(--primary-foreground)}
+.sg-chip.sg-sup{background:var(--secondary);color:var(--secondary-foreground)}
+.sg-ev p{margin:0}
+.sg-insight{background:var(--secondary);border-radius:var(--radius);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4)}
+.sg-insight-row{display:flex;gap:var(--space-4);align-items:flex-start}
+.sg-insight p{margin:0;font-size:var(--text-body-small);line-height:var(--lh-base)}
+a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-decoration:none}
+.sg-btn{align-self:flex-end;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-6);border-radius:var(--radius);border:0;background:var(--primary);color:var(--primary-foreground);font:var(--weight-semibold) var(--text-body-base) var(--font-sans);cursor:pointer}
+.sg-pg .sg-head,.sg-pg .sg-main{width:100%;max-width:1320px;margin-left:auto;margin-right:auto}
+.sg-col-c{container-type:inline-size}
+.sg-stage{position:relative;margin-top:calc(-1 * var(--space-12));width:min(calc(max(70vh, 420px) * 945 / 980), calc((100vh - 290px) * 945 / 980), calc(100cqw + 88px));aspect-ratio:945 / 980;left:50%;transform:translateX(-50%)}
+.sg-chart{width:100%;height:100%;display:block}
+.sg-chart .sg-t{stroke:var(--card);stroke-width:1;stroke-linejoin:round}
+.sg-chart .sg-l,.sg-chart .sg-r{stroke:none}
+.sg-g.sg-t{fill:color-mix(in srgb,var(--success) 22%,var(--card))}
+.sg-g.sg-l{fill:color-mix(in srgb,var(--success) 45%,var(--card))}
+.sg-g.sg-r{fill:color-mix(in srgb,var(--success) 30%,var(--card))}
+.sg-g.sg-hot.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card))}
+.sg-g.sg-hot.sg-l{fill:color-mix(in srgb,var(--success) 88%,var(--foreground))}
+.sg-g.sg-hot.sg-r{fill:color-mix(in srgb,var(--success) 78%,var(--card))}
+.sg-a.sg-t{fill:color-mix(in srgb,var(--warning) 12%,var(--card))}
+.sg-a.sg-l{fill:color-mix(in srgb,var(--warning) 34%,var(--card))}
+.sg-a.sg-r{fill:color-mix(in srgb,var(--warning) 22%,var(--card))}
+.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 22%,var(--card))}
+.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 62%,var(--card))}
+.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 32%,var(--card))}
+.sg-pe.sg-t{fill:color-mix(in srgb,var(--primary) 55%,var(--card))}
+.sg-pe.sg-l{fill:color-mix(in srgb,var(--primary) 70%,var(--card))}
+.sg-pe.sg-r{fill:color-mix(in srgb,var(--primary) 62%,var(--card))}
+.sg-pm.sg-t{fill:color-mix(in srgb,var(--primary) 18%,var(--card))}
+.sg-pm.sg-l{fill:color-mix(in srgb,var(--primary) 30%,var(--card))}
+.sg-pm.sg-r{fill:color-mix(in srgb,var(--primary) 24%,var(--card))}
+.sg-ph.sg-t{fill:var(--secondary)}
+.sg-ph.sg-l{fill:color-mix(in srgb,var(--primary) 16%,var(--card))}
+.sg-ph.sg-r{fill:color-mix(in srgb,var(--primary) 10%,var(--card))}
+.sg-tip{position:absolute;left:38%;top:31.5%;background:var(--popover);color:var(--popover-foreground);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:var(--space-2) var(--space-3);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);min-width:168px}
+.sg-tip p{margin:0;font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
+.sg-week h2{margin:0 0 var(--space-4);font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
+.sg-week ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.sg-week li{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);border-radius:var(--radius);font-size:var(--text-body-small);line-height:var(--lh-snug)}
+.sg-week li.sg-up{background:var(--success-light)}
+.sg-week li.sg-up svg{color:var(--success)}
+.sg-week li.sg-down{background:var(--destructive-light)}
+.sg-week li.sg-down svg{color:var(--destructive)}
+.sg-week b{font-weight:var(--weight-semibold);display:block}
+.sg-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3)}
+.sg-legend li{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small)}
+.sg-sw{width:14px;height:14px;border-radius:2px}
+.sg-sw.sg-e{background:color-mix(in srgb,var(--primary) 70%,var(--card))}
+.sg-sw.sg-m{background:color-mix(in srgb,var(--primary) 30%,var(--card))}
+.sg-sw.sg-h{background:color-mix(in srgb,var(--primary) 12%,var(--card))}
 
-.sg-pg{flex:1;font-family:var(--font-sans);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);padding:var(--space-4) var(--space-16) var(--space-12);}
-.sg-pg .sg-head{margin-top:var(--space-6);}
-.sg-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:var(--space-6);margin-top:var(--space-8);}
-.sg-goal{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2);}
-.sg-goal-btn{display:inline-flex;align-items:center;gap:var(--space-3);background:none;border:0;padding:0;cursor:pointer;color:var(--foreground);text-align:left;}
-.sg-goal-btn h1{margin:0;font-size:var(--text-subtitle);font-weight:var(--weight-regular);line-height:var(--lh-snug);}
-.sg-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);font-size:var(--text-body-small);font-weight:var(--weight-semibold);line-height:var(--lh-base);}
-.sg-badge.sg-bad{background:var(--destructive-light);color:var(--destructive);}
-.sg-badge.sg-good{background:var(--success-light);color:var(--success);}
-.sg-district{text-align:right;display:flex;flex-direction:column;gap:var(--space-1);}
-.sg-district p{margin:0;}
-.sg-district .sg-nm{font-size:var(--text-heading);font-weight:var(--weight-semibold);}
-.sg-district .sg-meta{font-size:var(--text-body-base);display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--space-3);align-items:center;}
-.sg-dot{width:4px;height:4px;border-radius:var(--radius-full);background:var(--foreground);}
-.sg-main{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-8);align-items:stretch;}
-.sg-col-l{flex:0 1 384px;min-width:0;display:flex;flex-direction:column;gap:var(--space-3);}
-.sg-col-c{flex:1 1 440px;min-width:0;position:relative;}
-.sg-col-r{flex:0 1 256px;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8);}
-.sg-card{background:var(--card);border-radius:12px;box-shadow:var(--shadow-lg);padding:var(--space-4);}
-.sg-mhead{display:flex;align-items:flex-start;gap:var(--space-4);width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left;color:var(--foreground);font-family:var(--font-sans);}
-.sg-mval{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:var(--lh-snug);flex-shrink:0;min-width:56px;}
-.sg-mttl{flex:1;font-size:var(--text-body-base);line-height:var(--lh-snug);padding-top:2px;}
-.sg-chev{flex-shrink:0;margin-top:4px;color:var(--foreground);}
-.sg-mbody{display:flex;flex-direction:column;gap:var(--space-6);margin-top:var(--space-8);}
-.sg-lbl{font-weight:var(--weight-semibold);margin:0;}
-.sg-prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2);}
-.sg-prog{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-1);}
-.sg-seg{height:6px;border-radius:var(--radius-full);background:var(--ring);overflow:hidden;}
-.sg-seg i{display:block;height:100%;background:var(--primary);}
-.sg-stds{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--space-3);margin-top:var(--space-3);}
-.sg-grp{display:flex;align-items:center;gap:var(--space-2);}
-.sg-chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 var(--space-2);border-radius:var(--radius);font-size:var(--text-body-base);font-weight:var(--weight-semibold);}
-.sg-chip.sg-core{background:var(--primary);color:var(--primary-foreground);}
-.sg-chip.sg-sup{background:var(--secondary);color:var(--secondary-foreground);}
-.sg-ev p{margin:0;}
-.sg-insight{background:var(--secondary);border-radius:var(--radius);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4);}
-.sg-insight-row{display:flex;gap:var(--space-4);align-items:flex-start;}
-.sg-insight p{margin:0;font-size:var(--text-body-small);line-height:var(--lh-base);}
-a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground) ;text-decoration:none;}
-.sg-btn{align-self:flex-end;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-6);border-radius:var(--radius);border:0;background:var(--primary);color:var(--primary-foreground);font:var(--weight-semibold) var(--text-body-base) var(--font-sans);cursor:pointer;}
-.sg-pg .sg-head,.sg-pg .sg-main{width:100%;max-width:1320px;margin-left:auto;margin-right:auto;}
-.sg-col-c{container-type:inline-size;}
-.sg-stage{position:relative;margin-top:calc(-1 * var(--space-12));width:min(calc(max(70vh, 420px) * 945 / 980), calc((100vh - 290px) * 945 / 980), calc(100cqw + 88px));aspect-ratio:945 / 980;left:50%;transform:translateX(-50%);}
-.sg-chart{width:100%;height:100%;display:block;}
-.sg-chart .sg-t{stroke:var(--card);stroke-width:1;stroke-linejoin:round;}
-.sg-chart .sg-l,.sg-chart .sg-r{stroke:none;}
-.sg-g.sg-t{fill:color-mix(in srgb,var(--success) 22%,var(--card));}
-.sg-g.sg-l{fill:color-mix(in srgb,var(--success) 45%,var(--card));}
-.sg-g.sg-r{fill:color-mix(in srgb,var(--success) 30%,var(--card));}
-.sg-g.sg-hot.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card));}
-.sg-g.sg-hot.sg-l{fill:color-mix(in srgb,var(--success) 88%,var(--foreground));}
-.sg-g.sg-hot.sg-r{fill:color-mix(in srgb,var(--success) 78%,var(--card));}
-.sg-a.sg-t{fill:color-mix(in srgb,var(--warning) 12%,var(--card));}
-.sg-a.sg-l{fill:color-mix(in srgb,var(--warning) 34%,var(--card));}
-.sg-a.sg-r{fill:color-mix(in srgb,var(--warning) 22%,var(--card));}
-.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 22%,var(--card));}
-.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 62%,var(--card));}
-.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 32%,var(--card));}
-.sg-pe.sg-t{fill:color-mix(in srgb,var(--primary) 55%,var(--card));}
-.sg-pe.sg-l{fill:color-mix(in srgb,var(--primary) 70%,var(--card));}
-.sg-pe.sg-r{fill:color-mix(in srgb,var(--primary) 62%,var(--card));}
-.sg-pm.sg-t{fill:color-mix(in srgb,var(--primary) 18%,var(--card));}
-.sg-pm.sg-l{fill:color-mix(in srgb,var(--primary) 30%,var(--card));}
-.sg-pm.sg-r{fill:color-mix(in srgb,var(--primary) 24%,var(--card));}
-.sg-ph.sg-t{fill:var(--secondary);}
-.sg-ph.sg-l{fill:color-mix(in srgb,var(--primary) 16%,var(--card));}
-.sg-ph.sg-r{fill:color-mix(in srgb,var(--primary) 10%,var(--card));}
-.sg-tip{position:absolute;left:38%;top:31.5%;background:var(--popover);color:var(--popover-foreground);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:var(--space-2) var(--space-3);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);min-width:168px;}
-.sg-tip p{margin:0;font-size:var(--text-body-small);font-weight:var(--weight-semibold);}
-.sg-week h2{margin:0 0 var(--space-4);font-size:var(--text-body-small);font-weight:var(--weight-semibold);}
-.sg-week ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2);}
-.sg-week li{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);border-radius:var(--radius);font-size:var(--text-body-small);line-height:var(--lh-snug);}
-.sg-week li.sg-up{background:var(--success-light);}
-.sg-week li.sg-up svg{color:var(--success);}
-.sg-week li.sg-down{background:var(--destructive-light);}
-.sg-week li.sg-down svg{color:var(--destructive);}
-.sg-week b{font-weight:var(--weight-semibold);display:block;}
-.sg-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3);}
-.sg-legend li{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small);}
-.sg-sw{width:14px;height:14px;border-radius:2px;}
-.sg-sw.sg-e{background:color-mix(in srgb,var(--primary) 70%,var(--card));}
-.sg-sw.sg-m{background:color-mix(in srgb,var(--primary) 30%,var(--card));}
-.sg-sw.sg-h{background:color-mix(in srgb,var(--primary) 12%,var(--card));}
+.sg-goal-wrap{position:relative}
+.sg-goal{position:relative}
+.sg-focus .sg-col-l{visibility:hidden;height:0;overflow:hidden}
+.sg-main{position:relative}
+.sg-focus .sg-col-r{padding-bottom:228px;gap:var(--space-4)}
+.sg-back{position:absolute;left:calc(-1 * var(--space-2));bottom:100%;margin-bottom:var(--space-1);display:inline-flex;align-items:center;gap:var(--space-1);min-height:32px;padding:0 var(--space-2) 0 var(--space-1);border:0;border-radius:var(--radius);background:none;color:var(--foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);cursor:pointer}
+.sg-back svg{width:16px;height:16px}
+.sg-back:hover{background:var(--hover-overlay)}
+.sg-back:focus-visible,.sg-viewall:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.sg-crumb{position:absolute;bottom:100%;left:0;margin:0 0 var(--space-1);white-space:nowrap;font-size:var(--text-body-base);color:var(--muted-foreground)}
+.sg-focus .sg-chart polygon.sg-t:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 8%,var(--card))}
+.sg-focus .sg-chart polygon.sg-l:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 20%,var(--card))}
+.sg-focus .sg-chart polygon.sg-r:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 13%,var(--card))}
+.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-t{fill:color-mix(in srgb,var(--foreground) 12%,var(--card))}
+.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-l{fill:color-mix(in srgb,var(--foreground) 28%,var(--card))}
+.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-r{fill:color-mix(in srgb,var(--foreground) 20%,var(--card))}
+.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 55%,var(--card))}
+.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 85%,var(--foreground))}
+.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 70%,var(--card))}
+.sg-chart polygon{transition:fill .3s ease}
+@media (prefers-reduced-motion:reduce){.sg-chart polygon{transition:none}}
+.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{width:max-content;opacity:0;transform:translateY(6px);pointer-events:none;white-space:nowrap;transition:opacity .35s cubic-bezier(.22,.61,.36,1),transform .35s cubic-bezier(.22,.61,.36,1)}
+.sg-stage:has(.sg-bar:hover) .sg-tip.sg-tip-bar,.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{transition-delay:.06s}
+.sg-badge.sg-warn{background:var(--warning-light);color:var(--warning)}
+.sg-pg:not(.sg-focus) .sg-bar{cursor:default}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-l{fill:color-mix(in srgb,var(--success) 88%,var(--foreground))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-r{fill:color-mix(in srgb,var(--success) 78%,var(--card))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-t{fill:color-mix(in srgb,var(--warning) 40%,var(--card))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-l{fill:color-mix(in srgb,var(--warning) 85%,var(--foreground))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-r{fill:color-mix(in srgb,var(--warning) 62%,var(--card))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 55%,var(--card))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 85%,var(--foreground))}
+.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 70%,var(--card))}
+@media (prefers-reduced-motion:reduce){.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{transition:none;transform:none}}
+.sg-tip.sg-tip-b1{left:55.3%;top:13.8%}
+.sg-stage:has(.sg-bar-1:hover) .sg-tip-b1{opacity:1;transform:none}
+.sg-tip.sg-tip-b2{left:37.9%;top:28.6%}
+.sg-stage:has(.sg-bar-2:hover) .sg-tip-b2{opacity:1;transform:none}
+.sg-tip.sg-tip-b3{left:auto;right:37.8%;top:39.3%}
+.sg-stage:has(.sg-bar-3:hover) .sg-tip-b3{opacity:1;transform:none}
+.sg-tip.sg-tip-b4{left:20.4%;top:51.6%}
+.sg-stage:has(.sg-bar-4:hover) .sg-tip-b4{opacity:1;transform:none}
+.sg-tip.sg-tip-b5{left:55.3%;top:41.7%}
+.sg-stage:has(.sg-bar-5:hover) .sg-tip-b5{opacity:1;transform:none}
+.sg-tip.sg-tip-b6{left:auto;right:20.3%;top:37.9%}
+.sg-stage:has(.sg-bar-6:hover) .sg-tip-b6{opacity:1;transform:none}
+.sg-tip.sg-tip-b7{left:37.9%;top:58.8%}
+.sg-stage:has(.sg-bar-7:hover) .sg-tip-b7{opacity:1;transform:none}
+.sg-tip.sg-tip-b8{left:auto;right:37.8%;top:65.2%}
+.sg-stage:has(.sg-bar-8:hover) .sg-tip-b8{opacity:1;transform:none}
+.sg-tip.sg-tip-b9{left:55.3%;top:81.2%}
+.sg-stage:has(.sg-bar-9:hover) .sg-tip-b9{opacity:1;transform:none}
+.sg-tip.sg-tip-hl{left:72%;top:64%}
 
-.sg-goal-wrap{position:relative;}
-.sg-goal{position:relative;}
-.sg-focus .sg-col-l{visibility:hidden;height:0;overflow:hidden;}
-.sg-main{position:relative;}
-.sg-focus .sg-col-r{padding-bottom:228px;gap:var(--space-4);}
-.sg-back{position:absolute;left:calc(-1 * var(--space-2));bottom:100%;margin-bottom:var(--space-1);display:inline-flex;align-items:center;gap:var(--space-1);min-height:32px;padding:0 var(--space-2) 0 var(--space-1);border:0;border-radius:var(--radius);background:none;color:var(--foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);cursor:pointer;}
-.sg-back svg{width:16px;height:16px;}
-.sg-back:hover{background:var(--hover-overlay);}
-.sg-back:focus-visible,.sg-viewall:focus-visible{outline:2px solid var(--ring);outline-offset:2px;}
-.sg-crumb{position:absolute;bottom:100%;left:0;margin:0 0 var(--space-1);white-space:nowrap;font-size:var(--text-body-base);color:var(--muted-foreground);}
-.sg-focus .sg-chart polygon.sg-t:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 8%,var(--card));}
-.sg-focus .sg-chart polygon.sg-l:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 20%,var(--card));}
-.sg-focus .sg-chart polygon.sg-r:is(.sg-g,.sg-a,.sg-n){fill:color-mix(in srgb,var(--foreground) 13%,var(--card));}
-.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-t{fill:color-mix(in srgb,var(--foreground) 12%,var(--card));}
-.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-l{fill:color-mix(in srgb,var(--foreground) 28%,var(--card));}
-.sg-focus .sg-chart :is(.sg-pe,.sg-pm,.sg-ph).sg-r{fill:color-mix(in srgb,var(--foreground) 20%,var(--card));}
-.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 55%,var(--card));}
-.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 85%,var(--foreground));}
-.sg-focus .sg-chart polygon.sg-hl.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 70%,var(--card));}
-.sg-chart polygon{transition:fill .3s ease;}
-@media (prefers-reduced-motion:reduce){.sg-chart polygon{transition:none;}}
-.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{width:max-content;opacity:0;transform:translateY(6px);pointer-events:none;white-space:nowrap;transition:opacity .35s cubic-bezier(.22,.61,.36,1),transform .35s cubic-bezier(.22,.61,.36,1);}
-.sg-stage:has(.sg-bar:hover) .sg-tip.sg-tip-bar,.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{transition-delay:.06s;}
-.sg-badge.sg-warn{background:var(--warning-light);color:var(--warning);}
-.sg-pg:not(.sg-focus) .sg-bar{cursor:default;}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-l{fill:color-mix(in srgb,var(--success) 88%,var(--foreground));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-r{fill:color-mix(in srgb,var(--success) 78%,var(--card));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-t{fill:color-mix(in srgb,var(--warning) 40%,var(--card));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-l{fill:color-mix(in srgb,var(--warning) 85%,var(--foreground));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-a.sg-r{fill:color-mix(in srgb,var(--warning) 62%,var(--card));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 55%,var(--card));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 85%,var(--foreground));}
-.sg-pg:not(.sg-focus) .sg-bar:hover .sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 70%,var(--card));}
-@media (prefers-reduced-motion:reduce){.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{transition:none;transform:none;}}
-.sg-tip.sg-tip-b1{left:55.3%;top:13.8%;}
-.sg-stage:has(.sg-bar-1:hover) .sg-tip-b1{opacity:1;transform:none;}
-.sg-tip.sg-tip-b2{left:37.9%;top:28.6%;}
-.sg-stage:has(.sg-bar-2:hover) .sg-tip-b2{opacity:1;transform:none;}
-.sg-tip.sg-tip-b3{left:auto;right:37.8%;top:39.3%;}
-.sg-stage:has(.sg-bar-3:hover) .sg-tip-b3{opacity:1;transform:none;}
-.sg-tip.sg-tip-b4{left:20.4%;top:51.6%;}
-.sg-stage:has(.sg-bar-4:hover) .sg-tip-b4{opacity:1;transform:none;}
-.sg-tip.sg-tip-b5{left:55.3%;top:41.7%;}
-.sg-stage:has(.sg-bar-5:hover) .sg-tip-b5{opacity:1;transform:none;}
-.sg-tip.sg-tip-b6{left:auto;right:20.3%;top:37.9%;}
-.sg-stage:has(.sg-bar-6:hover) .sg-tip-b6{opacity:1;transform:none;}
-.sg-tip.sg-tip-b7{left:37.9%;top:58.8%;}
-.sg-stage:has(.sg-bar-7:hover) .sg-tip-b7{opacity:1;transform:none;}
-.sg-tip.sg-tip-b8{left:auto;right:37.8%;top:65.2%;}
-.sg-stage:has(.sg-bar-8:hover) .sg-tip-b8{opacity:1;transform:none;}
-.sg-tip.sg-tip-b9{left:55.3%;top:81.2%;}
-.sg-stage:has(.sg-bar-9:hover) .sg-tip-b9{opacity:1;transform:none;}
-.sg-tip.sg-tip-hl{left:72%;top:64%;}
+.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{opacity:1;transform:none}
+.sg-focus .sg-chart .sg-hl{cursor:default}
+@media (prefers-reduced-motion:reduce){.sg-tip.sg-tip-hl{transition:none}}
+.sg-focus-card{display:flex;flex-direction:column;gap:var(--space-4)}
+.sg-focus-card p{margin:0;font-size:var(--text-body-base);line-height:var(--lh-base)}
+.sg-schools{position:absolute;left:0;right:0;bottom:0;z-index:2}
+.sg-pg.sg-focus{position:relative}
+.sg-focus .sg-main{position:static}
+.sg-focus .sg-schools{left:var(--space-16);right:var(--space-16);bottom:var(--space-6);max-width:1320px;margin:0 auto}
 
-.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{opacity:1;transform:none;}
-.sg-focus .sg-chart .sg-hl{cursor:default;}
-@media (prefers-reduced-motion:reduce){.sg-tip.sg-tip-hl{transition:none;}}
-.sg-focus-card{display:flex;flex-direction:column;gap:var(--space-4);}
-.sg-focus-card p{margin:0;font-size:var(--text-body-base);line-height:var(--lh-base);}
-.sg-schools{position:absolute;left:0;right:0;bottom:0;z-index:2;}
-.sg-pg.sg-focus{position:relative;}
-.sg-focus .sg-main{position:static;}
-.sg-focus .sg-schools{left:var(--space-16);right:var(--space-16);bottom:var(--space-6);max-width:1320px;margin:0 auto;}
+.sg-schools-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)}
+.sg-schools-hd h2{margin:0;font-size:var(--text-body-base);font-weight:var(--weight-regular);color:var(--muted-foreground)}
+.sg-viewall,.sg-viewall:visited{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;color:var(--foreground);font-size:var(--text-body-base);font-weight:var(--weight-semibold);text-decoration:none}
+.sg-viewall:hover{text-decoration:underline}
+.sg-school-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-3)}
+.sg-school{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-3);min-height:168px}
+.sg-schools .sg-school{background:var(--card);border-radius:12px;padding:var(--space-4)}
+.sg-school-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-3);width:100%}
+.sg-school-nm{margin:0;font-size:var(--text-body-base);font-weight:var(--weight-semibold);line-height:var(--lh-snug)}
+.sg-avatar{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--secondary);color:var(--secondary-foreground);font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
+.sg-avatar.sg-schic{width:44px;height:44px;background:var(--secondary);color:var(--foreground)}
 
-.sg-schools-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3);}
-.sg-schools-hd h2{margin:0;font-size:var(--text-body-base);font-weight:var(--weight-regular);color:var(--muted-foreground);}
-.sg-viewall,.sg-viewall:visited{display:inline-flex;align-items:center;gap:var(--space-2);min-height:40px;color:var(--foreground);font-size:var(--text-body-base);font-weight:var(--weight-semibold);text-decoration:none;}
-.sg-viewall:hover{text-decoration:underline;}
-.sg-school-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-3);}
-.sg-school{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-3);min-height:168px;}
-.sg-schools .sg-school{background:var(--card);border-radius:12px;padding:var(--space-4);}
-.sg-school-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-3);width:100%;}
-.sg-school-nm{margin:0;font-size:var(--text-body-base);font-weight:var(--weight-semibold);line-height:var(--lh-snug);}
-.sg-avatar{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--secondary);color:var(--secondary-foreground);font-size:var(--text-body-small);font-weight:var(--weight-semibold);}
-.sg-avatar.sg-schic{width:44px;height:44px;background:var(--secondary);color:var(--foreground);}
-
-.sg-btn{transition:background-color .18s ease;}
-@media (hover:hover){.sg-btn:hover{background:color-mix(in srgb,var(--primary) 78%,var(--card));}}
-.sg-btn:active{background:var(--primary);}
-.sg-btn:focus-visible{outline:2px solid var(--ring);outline-offset:3px;}
-@media (prefers-reduced-motion:reduce){.sg-btn{transition:none;}}
+.sg-btn{transition:background-color .18s ease}
+@media (hover:hover){.sg-btn:hover{background:color-mix(in srgb,var(--primary) 78%,var(--card))}}
+.sg-btn:active{background:var(--primary)}
+.sg-btn:focus-visible{outline:2px solid var(--ring);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.sg-btn{transition:none}}
 
 /* School cards open All schools */
-.sg-school-list > li{display:flex;}
-a.sg-school{flex:1;color:var(--foreground);text-decoration:none;transition:background-color .18s ease;}
-a.sg-school:hover{background:var(--card);box-shadow:var(--shadow-lg);}
-a.sg-school{transition:background-color .18s ease,box-shadow .18s ease;}
-a.sg-school:focus-visible{outline:2px solid var(--ring);outline-offset:2px;}
+.sg-school-list > li{display:flex}
+a.sg-school{flex:1;color:var(--foreground);text-decoration:none;transition:background-color .18s ease}
+a.sg-school:hover{background:var(--card);box-shadow:var(--shadow-lg)}
+a.sg-school{transition:background-color .18s ease,box-shadow .18s ease}
+a.sg-school:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
 
-.sg-barlink{cursor:pointer;}
-.sg-barlink:focus-visible{outline:none;}
-.sg-barlink:focus-visible polygon{stroke:var(--ring);stroke-width:3;}
+.sg-barlink{cursor:pointer}
+.sg-barlink:focus-visible{outline:none}
+.sg-barlink:focus-visible polygon{stroke:var(--ring);stroke-width:3}
 
 /* School logos */
-.sg-avatar.sg-logo{width:56px;height:56px;flex-shrink:0;padding:0;background:none;border-radius:0;object-fit:contain;}
-.soonpg{flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-24) var(--space-8);}
-.soont{margin:0;font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans);color:var(--muted-foreground);}
+.sg-avatar.sg-logo{width:56px;height:56px;flex-shrink:0;padding:0;background:none;border-radius:0;object-fit:contain}
+.soonpg{flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-24) var(--space-8)}
+.soont{margin:0;font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans);color:var(--muted-foreground)}
 
 }
 </style>
 </helmet>
 <div class="wf theme-assessments">
   <header class="top">
-    <div class="brand"><a class="logo" href="index.html" aria-label="Choose a prototype persona" style=""><img src="assets/cognia-emblem.svg" alt="Cognia"></a><span class="modname">Home</span></div><div class="topr"><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome on" aria-current="page" href="District-Home.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap:12px; align-items:center;"><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs" style="width: 322px;"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><span class="appt d-Fm appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"></rect><polyline points="8 12 11 15 16 9"></polyline></svg></span><span>Classroom Assessment</span></span><a class="appt d-In" href="SA2-Hub.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim Assessment</span></a><span class="appt d-Sc appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span></span><span class="appt d-Al appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span></span></div><div class="appdesc d-Fm" aria-hidden="true"><strong>Classroom Assessment</strong><p>Build from the multiple-choice item bank or start with a ready-to-use assessment. Add enhanced tools with Classroom+.</p></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim Assessment</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners <span class="tag c">If approved</span></strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div><div class="appdesc d-Al" aria-hidden="true"><strong>Alt Assessments <span class="tag c">Future</span></strong><p>Alternate assessments for students with significant cognitive disabilities.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-observations-surveys" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></span><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></span></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-learn" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></span></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-performance" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></span><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></span></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-data-reporting" aria-label="Data and Reporting"><h3>Data and Reporting</h3><div class="appsgrid"><a class="appt d-Di" href="DI-District.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="10"></line><line x1="10" y1="20" x2="10" y2="4"></line><line x1="16" y1="20" x2="16" y2="13"></line><line x1="22" y1="20" x2="2" y2="20"></line></svg></span><span>Data Insights</span></a></div><div class="appdesc d-Di" aria-hidden="true"><strong>Data Insights</strong><p>See trends across your data and where to look next.</p></div></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="MOD-Interim.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Assign interim assessment</span></a></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><span class="appqab locked" aria-disabled="true" title="Unavailable"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></span><span class="appqab locked" aria-disabled="true" title="Unavailable"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></span></div></div></sc-if></div></div></sc-if></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: Jordan Ellis" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">JE</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctscrim" aria-hidden="true" onClick="{{closeAcct}}"></div></sc-if><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">JE</span><div class="acctwho"><p class="acctname">Jordan Ellis</p><p class="acctrole">District administrator</p></div><button type="button" class="acctswitch" aria-haspopup="dialog" onClick="{{openRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Switch</button></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><div class="planseg" role="group" aria-label="Preview plan"><button type="button" aria-pressed="{{planBasicOn}}" onClick="{{pickBasic}}">Basic</button><button type="button" aria-pressed="{{planPlusOn}}" onClick="{{pickPlus}}">Classroom+</button></div></div><p class="plannote">Prototype only: switch to preview each plan.</p><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom+.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
+    <div class="brand"><a class="logo" href="Main.dc.html" aria-label="Choose a prototype persona"><img src="assets/cognia-emblem.svg" alt="Cognia"></a><span class="modname">Home</span></div><div class="topr"><div class="apps"><button type="button" class="appgrid" aria-label="Apps" aria-expanded="{{appsOpen}}" onClick="{{toggleApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button><!-- Hub window: one shared component, identical on every screen. Links follow the persona via renderVals (hubLinks). --><sc-if value="{{appsOpen}}" hint-placeholder-val="{{ false }}"><div class="appmodal" onClick="{{closeApps}}"><div class="appdlg split" role="dialog" aria-modal="true" aria-labelledby="myhubs" onClick="{{stopApps}}"><div class="appdlghd homeleft"><a class="apphome {{hubHomeCls}}" aria-current="{{hubHomeCurrent}}" href="District-Home.dc.html" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 11 12 4 21 11"></polyline><polyline points="5 10 5 20 19 20 19 10"></polyline></svg><span>Home</span></a><div class="row" style="gap:12px; align-items:center"><button type="button" class="appx" aria-label="Close" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div></div><div class="appsplit"><nav class="apphubs" aria-labelledby="myhubs"><h2 id="myhubs" class="apphubsh">My Hubs</h2><button type="button" class="apphub" aria-pressed="{{hubAsOn}}" onClick="{{pickAs}}">Assessments</button><button type="button" class="apphub" aria-pressed="{{hubOsOn}}" onClick="{{pickOs}}">Observations and Surveys</button><button type="button" class="apphub" aria-pressed="{{hubLnOn}}" onClick="{{pickLn}}">Learning</button><button type="button" class="apphub" aria-pressed="{{hubPfOn}}" onClick="{{pickPf}}">Performance</button><button type="button" class="apphub" aria-pressed="{{hubDrOn}}" onClick="{{pickDr}}">Data and Reporting</button></nav><div class="appright"><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><section class="apppane" aria-label="Assessments"><h3>Assessments</h3><div class="appsgrid"><a class="appt d-In {{hubInCls}}" href="{{hubInHref}}" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="16" y1="3" x2="16" y2="7"></line></svg></span><span>Interim Assessment</span></a><span class="appt d-Sc appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16" y2="16"></line></svg></span><span>Screeners</span></span><span class="appt d-Al appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8 12 3"></polygon><polyline points="3 13 12 18 21 13"></polyline></svg></span><span>Alt Assessments</span></span></div><div class="appdesc d-In" aria-hidden="true"><strong>Interim Assessment</strong><p>Review learning at key points during the year. Access is arranged by your school or organisation.</p></div><div class="appdesc d-Sc" aria-hidden="true"><strong>Screeners <span class="tag c">If approved</span></strong><p>Identify students who may need additional support and inform follow-up assessment.</p></div><div class="appdesc d-Al" aria-hidden="true"><strong>Alt Assessments <span class="tag c">Future</span></strong><p>Alternate assessments for students with significant cognitive disabilities.</p></div></section></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-observations-surveys" aria-label="Observations and Surveys"><h3>Observations and Surveys</h3><div class="appsgrid"><a class="appt" href="OS-Observations.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span>Observations</span></a><a class="appt" href="OS-Surveys.dc.html" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="8" x2="16" y2="8"></line><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg></span><span>Surveys</span></a></div></section></sc-if><sc-if value="{{hubLn}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-learn" aria-label="Learning"><h3>Learning</h3><div class="appsgrid"><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12"></rect><line x1="8" y1="20" x2="16" y2="20"></line><line x1="12" y1="16" x2="12" y2="20"></line><polygon points="10 8 15 10 10 12 10 8"></polygon></svg></span><span>LMS</span></span></div></section></sc-if><sc-if value="{{hubPf}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-performance" aria-label="Performance"><h3>Performance</h3><div class="appsgrid"><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Strategies</span></span><span class="appt appdis" role="link" aria-disabled="true" tabindex="0"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M15 15.5c.6-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4"></path></svg></span><span>Engagement Reviews</span></span></div></section></sc-if><sc-if value="{{hubDr}}" hint-placeholder-val="{{ false }}"><section class="apppane theme-data-reporting" aria-label="Data and Reporting"><h3>Data and Reporting</h3><div class="appsgrid"><a class="appt d-Di {{hubDiCls}}" href="{{hubDiHref}}" onClick="{{closeApps}}"><span class="appic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="10"></line><line x1="10" y1="20" x2="10" y2="4"></line><line x1="16" y1="20" x2="16" y2="13"></line><line x1="22" y1="20" x2="2" y2="20"></line></svg></span><span>Data Insights</span></a></div><div class="appdesc d-Di" aria-hidden="true"><strong>Data Insights</strong><p>See trends across your data and where to look next.</p></div></section></sc-if></div></div><sc-if value="{{hubAs}}" hint-placeholder-val="{{ true }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><a class="appqab" href="{{hubAssignHref}}" onClick="{{closeApps}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>Assign interim assessment</span></a></div></div></sc-if><sc-if value="{{hubOs}}" hint-placeholder-val="{{ false }}"><div class="appfoot"><span class="appfootl">Quick actions</span><div class="appqa"><span class="appqab locked" aria-disabled="true" title="Unavailable"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Observation</span></span><span class="appqab locked" aria-disabled="true" title="Unavailable"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Survey</span></span></div></div></sc-if></div></div></sc-if></div><div class="acct"><button type="button" class="acctbtn" aria-label="Account: {{acctName}}" aria-expanded="{{acctOpen}}" onClick="{{toggleAcct}}">{{acctInitials}}</button><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctscrim" aria-hidden="true" onClick="{{closeAcct}}"></div></sc-if><sc-if value="{{acctOpen}}" hint-placeholder-val="{{ false }}"><div class="acctmenu" role="dialog" aria-label="Account"><div class="accthd"><span class="acctav" aria-hidden="true">{{acctInitials}}</span><div class="acctwho"><p class="acctname">{{acctName}}</p><p class="acctrole">{{acctRole}}</p></div><button type="button" class="acctswitch" aria-haspopup="dialog" onClick="{{openRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>Switch</button></div><div class="acctplan"><div class="acctplanrow"><span class="acctplanl">Your plan</span><div class="planseg" role="group" aria-label="Preview plan"><button type="button" aria-pressed="{{planBasicOn}}" onClick="{{pickBasic}}">Basic</button><button type="button" aria-pressed="{{planPlusOn}}" onClick="{{pickPlus}}">Classroom+</button></div></div><p class="plannote">Prototype only: switch to preview each plan.</p><sc-if value="{{planBasic}}" hint-placeholder-val="{{ false }}"><p class="acctplann">Teacher clusters and create and share are included in Classroom+.</p><a class="acctup" href="#" onClick="{{closeAcct}}">Compare plans</a></sc-if><sc-if value="{{planPlus}}" hint-placeholder-val="{{ true }}"><p class="acctplann">Includes teacher clusters and create and share.</p></sc-if></div><div class="acctadm"><span class="acctadmh">Administration</span><a href="#" onClick="{{closeAcct}}">My Institutions</a><a href="#" onClick="{{closeAcct}}">User Management</a><a href="#" onClick="{{closeAcct}}">Users Report</a><a href="#" onClick="{{closeAcct}}">Internal Admin</a></div><a href="#" onClick="{{closeAcct}}">My account</a><a href="#" onClick="{{closeAcct}}">Log out</a></div></sc-if></div></div>
   </header>
-  <sc-if value="{{rolesOpen}}" hint-placeholder-val="{{ false }}"><div class="rolemodal" onClick="{{closeRoles}}"><div class="roledlg" role="dialog" aria-modal="true" aria-labelledby="roledlgh" onClick="{{stopRoles}}"><div class="roledlghd"><h2 id="roledlgh">Switch role</h2><button type="button" class="rolex" aria-label="Close" onClick="{{closeRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div><p class="rolenote"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>This role switcher is for this prototype only. It lets reviewers move between each role's flow and will not appear in the product. Choose a role to go to the start of its flow.</span></p><div class="rolelist"><a class="roleopt" href="District-Home.dc.html" onClick="{{closeRoles}}" aria-current="page"><span class="rolecur">Current</span><strong>District administrator</strong><span>District oversight across all schools</span></a><a class="roleopt" href="PA1-Home.dc.html" onClick="{{closeRoles}}"><strong>School Administrator</strong><span>Building-level review for one school</span></a><a class="roleopt" href="CAP-T00-Home.dc.html" onClick="{{closeRoles}}"><strong>Educator</strong><span>Create, assign and review classroom assessments</span></a><a class="roleopt" href="CAP-S01-SignIn.dc.html" onClick="{{closeRoles}}"><strong>Student</strong><span>Sign in and complete assigned work</span></a></div></div></div></sc-if>
-<main class="dh-main" id="main" tabindex="-1" data-persona="district">
- <section class="dh-greeting" aria-labelledby="welcome-heading"><h1 id="welcome-heading">Welcome back, Jordan</h1><p>Oceanside Unified School District</p></section>
- <section class="dh-question" aria-label="District search"><form class="home-search" role="search"><label class="dh-visually-hidden" for="home-search">Ask a question or search across your district</label><div class="home-search-row"><span class="home-search-leading"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span><input id="home-search" type="search" placeholder="Ask a question or search across your district" autocomplete="off" aria-controls="home-search-results"><button type="submit" class="home-question-submit" aria-label="Search" title="Search"><span>Ask</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div><p class="home-search-error" id="home-search-error" hidden>Enter a topic to search this prototype.</p></form><div class="home-suggestions"><a class="home-suggested-action" href="SA2-Hub.dc.html" data-search-item data-search-title="Show my district’s interim results">Show my district’s interim results</a><button type="button" class="home-suggested-action" data-open-account>Manage users</button><button type="button" class="home-suggested-action" data-open-hub="Ln">Find learning resources</button></div><section class="home-search-results" id="home-search-results" aria-label="Search results" tabindex="-1" hidden><h2>Search results</h2><p class="home-search-status" role="status"></p><div class="home-search-links"></div><button type="button" class="home-button home-outline" data-clear-search>Clear search</button></section></section>
- <section aria-label="Your hubs"><div class="dh-hubs"><a class="dh-hub dh-hub-assessments" href="SA2-Hub.dc.html" data-search-item><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5M8 16h3"/></svg></span><h3>Assessments</h3><p>Review assessments and interim results across schools.</p><span class="dh-hub-arrow"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
-<button class="dh-hub dh-hub-observations" type="button" data-open-hub="Os"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v12H9l-6 5V4Z"/><path d="M7 8h10M7 12h6"/></svg></span><h3>Observations and surveys</h3><p>Explore observation and survey feedback.</p><span class="dh-hub-arrow"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
-<button class="dh-hub dh-hub-learning" type="button" data-open-hub="Ln"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/></svg></span><h3>Learning</h3><p>Explore courses and learning resources.</p><span class="dh-hub-arrow"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
-<button class="dh-hub dh-hub-performance" type="button" data-open-hub="Pf"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M6 16v-5M12 16V4M18 16V8"/></svg></span><h3>Performance</h3><p>Connect goals, evidence and improvement.</p><span class="dh-hub-arrow"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
-<button class="dh-hub dh-hub-reporting" type="button" data-open-hub="Dr"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5zM14 3v5h5M8 17v-4M12 17v-7M16 17v-3"/></svg></span><h3>Data and Reporting</h3><p>Access and analyze district data and reports.</p><span class="dh-hub-arrow"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button></div></section>
- <section class="dh-snapshot" aria-labelledby="snapshot-heading" aria-describedby="snapshot-context"><div class="dh-section-heading"><div><h2 id="snapshot-heading">District snapshot</h2><p id="snapshot-context">Latest available data across all schools</p></div><a class="dh-text-link" href="SA2-Hub.dc.html">Open district overview<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
- <div class="dh-metrics" aria-label="Illustrative prototype district data">
- <article class="dh-metric"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 21v-4c0-5 12-5 12 0v4M17 4a3 3 0 0 1 0 6M18 14c3 0 4 2 4 6"/></svg></span><strong class="dh-number">24,862</strong><h3>Total students</h3><p class="dh-trend"><span class="dh-trend-badge"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4m-6 6 6-6 6 6"/></svg>2.4%</span><span>from last term</span></p></article>
- <article class="dh-metric"><div class="dh-score" role="img" aria-label="Average score: 78 percent"><svg viewBox="0 0 96 96" aria-hidden="true"><circle class="dh-score-track" cx="48" cy="48" r="40"/><circle class="dh-score-progress" cx="48" cy="48" r="40" pathLength="100" stroke-dasharray="78 100"/></svg><strong>78%</strong></div><h3>Average score</h3><p>Across all schools</p><p class="dh-trend"><span class="dh-trend-badge"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4m-6 6 6-6 6 6"/></svg>6%</span><span>from last term</span></p></article>
- <article class="dh-metric"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M6 16v-5M12 16V4M18 16V8"/></svg></span><a class="dh-metric-link" href="SA2-Schools.dc.html" aria-label="View all 18 schools"><strong class="dh-number">18</strong><h3>Schools</h3></a><p>3 elementary<br>9 middle<br>6 high</p></article>
- <article class="dh-metric"><span class="dh-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5M8 16h3"/></svg></span><strong class="dh-number">4</strong><h3>Active assessments</h3><p>Across district</p><a class="dh-text-link" href="DI-District.dc.html">View assessments<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></article>
- </div></section>
- <section class="dh-recent" aria-labelledby="resume-heading"><h2 id="resume-heading">Pick up where you left off</h2><div class="dh-recent-grid"><article class="dh-recent-item"><span class="dh-recent-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><h3>Winter interim assessments</h3><p>District overview</p></div><a class="dh-outline" href="SA2-Hub.dc.html" data-search-item data-search-title="Winter interim assessments">Open overview<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></article><article class="dh-recent-item"><span class="dh-recent-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5M8 16h3"/></svg></span><div><h3>Assessment library</h3><p>4 items</p></div><a class="dh-outline" href="DI-District.dc.html" data-search-item>View library<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></article><article class="dh-recent-item"><span class="dh-recent-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 21v-4c0-5 12-5 12 0v4M17 4a3 3 0 0 1 0 6M18 14c3 0 4 2 4 6"/></svg></span><div><h3>Manage users</h3><p>32 pending invitations</p></div><button class="dh-outline" type="button" data-open-account>View users<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></article></div></section>
+  <sc-if value="{{rolesOpen}}" hint-placeholder-val="{{ false }}"><div class="rolemodal" onClick="{{closeRoles}}"><div class="roledlg" role="dialog" aria-modal="true" aria-labelledby="roledlgh" onClick="{{stopRoles}}"><div class="roledlghd"><h2 id="roledlgh">Switch role</h2><button type="button" class="rolex" aria-label="Close" onClick="{{closeRoles}}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button></div><p class="rolenote"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>This role switcher is for this prototype only. It lets reviewers move between each role's flow and will not appear in the product. Choose a role to go to the start of its flow.</span></p><div class="rolelist"><a class="roleopt" data-persona="district" href="District-Home.dc.html" onClick="{{roleDistrict}}"><strong>District administrator</strong><span>District oversight across all schools</span></a><a class="roleopt" data-persona="school" href="District-Home.dc.html" onClick="{{roleSchool}}"><strong>School administrator</strong><span>Building-level review for one school</span></a><a class="roleopt" data-persona="educator" href="CAP-T00-Home.dc.html" onClick="{{closeRoles}}"><strong>Educator</strong><span>Create, assign and review classroom assessments</span></a><a class="roleopt" data-persona="student" href="STU2-SignIn.dc.html" onClick="{{closeRoles}}"><strong>Student</strong><span>Sign in and complete assigned work</span></a></div></div></div></sc-if>
+<main class="dh-main" id="main" tabindex="-1" data-persona="{{persona}}">
+ <section class="hp-top" aria-labelledby="welcome-heading"><h1 id="welcome-heading">Welcome back, {{firstName}}</h1><div class="hp-org"><p class="hp-org-name">{{orgName}}</p><p class="hp-org-stats"><span>{{orgStat1}}</span><span class="hp-dot" aria-hidden="true">•</span><span>{{orgStat2}}</span><span class="hp-dot" aria-hidden="true">•</span><span>{{orgStat3}}</span></p></div></section>
+ <div class="hp-rows"><div class="hp-row"><div class="hp-side" style="gap: 16px"><button type="button" class="hp-course theme-learn" onClick="{{openHubLn}}" aria-label="Continue course: Using interim data to plan instruction, 25% complete" style="height: 100%"><span class="hp-course-txt"><span class="hp-course-title">Using interim data to plan instruction</span><span class="hp-course-cta">Continue course<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span><span class="hp-ring" aria-hidden="true"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="47.5" fill="none" stroke-width="5"></circle><circle class="val" cx="50" cy="50" r="47.5" fill="none" stroke-width="5" stroke-linecap="round" stroke-dasharray="74.6 298.5"></circle></svg><span>25%</span></span></button><section class="hp-perf theme-performance" aria-label="Performance. Strongest accreditation standards 1, 5 and 9. Weakest standards 7, 12 and 23."><span class="hp-perf-top"><span class="hp-h">Performance</span><svg aria-hidden="true" width="24" height="22" viewBox="0 0 24 22" fill="none" class="hp-perf-ic"><path d="M4 19H20M6 15V10M12 15V3M18 15V7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span class="hp-stds" aria-hidden="true"><span class="hp-std"><span>Strongest standards</span><span class="hp-chips"><span class="hp-chip is-strong">1</span><span class="hp-chip is-strong">5</span><span class="hp-chip is-strong">9</span></span></span><span class="hp-std"><span>Weakest standards</span><span class="hp-chips"><span class="hp-chip is-weak">7</span><span class="hp-chip is-weak">12</span><span class="hp-chip is-weak">23</span></span></span></span></section></div><section class="hp-wide hp-assess theme-assessments" aria-labelledby="hp-assess-h"><div class="hp-assess-hd"><div><h2 class="hp-h" id="hp-assess-h">Assessment results</h2><span class="hp-badge hp-badge-destructive"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4.08325 4.08337L9.91659 9.91671M5.24992 9.91671H9.91659V5.25004" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>Below benchmark</span></div><a class="hp-btn hp-btn-solid" href="{{overviewHref}}" data-search-item="" data-search-title="Assessment results, {{overviewLabel}}">View results</a></div><div class="hp-chart"><svg role="group" aria-label="Line chart: share of students at or above benchmark by interim window. Fall 2025 46%, Winter 2026 49%, Spring 2026 52%, Fall 2026 48%. Benchmark is 50%. Winter 2027 opens in January." viewBox="0 0 1011 290" preserveAspectRatio="xMinYMin meet"><line class="grid" x1="40" x2="1011" y1="12" y2="12"></line><text class="ax" x="0" y="17">60%</text><line class="grid" x1="40" x2="1011" y1="72" y2="72"></line><text class="ax" x="0" y="77">55%</text><line class="grid" x1="40" x2="1011" y1="132" y2="132"></line><text class="ax" x="0" y="137">50%</text><line class="grid" x1="40" x2="1011" y1="192" y2="192"></line><text class="ax" x="0" y="197">45%</text><line class="grid" x1="40" x2="1011" y1="252" y2="252"></line><text class="ax" x="0" y="257">40%</text><line class="yr" x1="421.6" x2="421.6" y1="12" y2="252"></line><line class="bench" x1="40" x2="1011" y1="132" y2="132"></line><path class="line {{trendDraw}}" pathLength="1" d="M103.6,180 C175.733,168.0 247.867,155.7 320,144 C395.333,131.7 470.667,108.0 546,108 C618,108.0 690,140.0 762,156"></path><g class="marks {{trendDraw}}"><circle class="dot" cx="103.6" cy="180" r="6"></circle><text class="val" x="103.6" y="208" text-anchor="middle">46%</text><text class="ax" x="103.6" y="282" text-anchor="middle">Fall ’25</text><circle class="dot" cx="320" cy="144" r="6"></circle><text class="val" x="320" y="172" text-anchor="middle">49%</text><text class="ax" x="320" y="282" text-anchor="middle">Winter ’26</text><circle class="dot" cx="546" cy="108" r="6"></circle><text class="val" x="546" y="94" text-anchor="middle">52%</text><text class="ax" x="546" y="282" text-anchor="middle">Spring ’26</text><circle class="dot is-current" cx="762" cy="156" r="8"></circle><text class="val" x="762" y="184" text-anchor="middle">48%</text><text class="ax" x="762" y="282" text-anchor="middle">Fall ’26</text><circle class="dot is-upcoming" cx="972" cy="132" r="6"></circle><text class="ax" x="972" y="160" text-anchor="middle">Opens Jan</text><text class="ax" x="972" y="282" text-anchor="middle">Winter ’27</text></g><g class="pt" tabindex="0" role="img" aria-label="Fall 2025 window: 46% of students at or above benchmark; 94% of students completed the interim"><circle class="hit" cx="103.6" cy="180" r="20" fill="transparent"></circle><g class="ptip"><foreignObject class="is-start" x="0" y="82" width="300" height="84"><div xmlns="http://www.w3.org/1999/xhtml" class="svtip"><div class="svtb">Fall 2025 window</div><div class="svrow"><span>Completed the interim</span><b>94%</b></div><div class="svrow"><span>At or above benchmark</span><b>46%</b></div></div></foreignObject></g></g><g class="pt" tabindex="0" role="img" aria-label="Winter 2026 window: 49% of students at or above benchmark; 91% of students completed the interim"><circle class="hit" cx="320" cy="144" r="20" fill="transparent"></circle><g class="ptip"><foreignObject x="170" y="46" width="300" height="84"><div xmlns="http://www.w3.org/1999/xhtml" class="svtip"><div class="svtb">Winter 2026 window</div><div class="svrow"><span>Completed the interim</span><b>91%</b></div><div class="svrow"><span>At or above benchmark</span><b>49%</b></div></div></foreignObject></g></g><g class="pt" tabindex="0" role="img" aria-label="Spring 2026 window: 52% of students at or above benchmark; 89% of students completed the interim"><circle class="hit" cx="546" cy="108" r="20" fill="transparent"></circle><g class="ptip"><foreignObject x="396" y="10" width="300" height="84"><div xmlns="http://www.w3.org/1999/xhtml" class="svtip"><div class="svtb">Spring 2026 window</div><div class="svrow"><span>Completed the interim</span><b>89%</b></div><div class="svrow"><span>At or above benchmark</span><b>52%</b></div></div></foreignObject></g></g><g class="pt" tabindex="0" role="img" aria-label="Fall 2026 window: 48% of students at or above benchmark; 96% of students completed the interim"><circle class="hit" cx="762" cy="156" r="20" fill="transparent"></circle><g class="ptip"><foreignObject x="612" y="58" width="300" height="84"><div xmlns="http://www.w3.org/1999/xhtml" class="svtip"><div class="svtb">Fall 2026 window</div><div class="svrow"><span>Completed the interim</span><b>96%</b></div><div class="svrow"><span>At or above benchmark</span><b>48%</b></div></div></foreignObject></g></g><g class="pt" tabindex="0" role="img" aria-label="Winter 2027 window: opens in January, results after it closes"><circle class="hit" cx="972" cy="132" r="20" fill="transparent"></circle><g class="ptip"><foreignObject class="is-end" x="711" y="34" width="300" height="84"><div xmlns="http://www.w3.org/1999/xhtml" class="svtip"><div class="svtb">Winter 2027 window</div><div class="svrow"><span>Window opens</span><b>January</b></div><div class="svrow"><span>Results</span><b>After it closes</b></div></div></foreignObject></g></g></svg></div></section></div>
+ <div class="hp-row"><section class="hp-side hp-dr" aria-labelledby="hp-dr-h"><h2 class="hp-h" id="hp-dr-h">Data and Reporting</h2><div class="hp-insight"><div class="hp-insight-row"><svg width="40" height="40" viewBox="0 0 40 40" style="flex-shrink: 0" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="color-mix(in srgb,var(--brand-coral) 45%,var(--foreground))"></circle><circle cx="20" cy="20" r="14" fill="var(--destructive-light)"></circle><path d="M26 14 22 22 14 26 18 18z" fill="var(--brand-coral)"></path></svg><p>Middle school Active &amp; Engaged Learning scores are trending below the district average</p></div><a class="hp-btn hp-btn-solid" href="{{libraryHref}}" data-search-item="" data-search-title="Data and reporting insights">Show me where</a></div></section><div class="hp-pair"><section class="hp-obs theme-observations-surveys" aria-labelledby="hp-obs-h"><div class="hp-titled"><span class="hp-tile hp-tile-soft"><svg aria-hidden="true" width="30" height="12" viewBox="0 0 30 12" fill="none"><circle cx="7.53845" cy="6" r="5" stroke="currentColor" stroke-width="2"></circle><circle cx="22.3077" cy="6" r="5" stroke="currentColor" stroke-width="2"></circle><path d="M12.9231 3.69225C14.1539 3.07683 15.6923 3.07687 16.7692 3.69225" stroke="currentColor" stroke-width="2"></path><path d="M1.69231 6.15381H0" stroke="currentColor" stroke-width="2"></path><path d="M30 6.15381H28.3077" stroke="currentColor" stroke-width="2"></path></svg></span><div><h2 class="hp-h" id="hp-obs-h">Observations</h2><span class="hp-muted">Your weekly progress</span></div></div><div class="hp-weeks"><div class="hp-week"><span class="hp-trend-ic"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 17L13.5 8.5L8.5 13.5L2 7M22 11V17H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span><span class="hp-muted">Last week</span><span class="hp-num">-24.8%</span></span></div><div class="hp-week"><span class="hp-trend-ic"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 7L13.5 15.5L8.5 10.5L2 17M22 13V7H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span><span class="hp-muted">This week</span><span class="hp-num">+82.46%</span></span></div></div><div class="hp-obs-foot"><div><span class="hp-muted">Total Complete</span><span class="hp-num">753</span></div><a class="hp-btn hp-btn-outline" href="OS-Observations.dc.html">View scores</a></div></section><section class="hp-surveys theme-observations-surveys" aria-labelledby="hp-sur-h"><div class="hp-surveys-hd"><div><span class="hp-tile hp-tile-solid"><svg aria-hidden="true" width="14" height="20" viewBox="0 0 16 21" fill="none"><path d="M3.72222 2.16211H1V19.9999H15V2.16211H12.1481" stroke="currentColor" stroke-width="2"></path><path d="M4.24072 11.6217L7.87035 14.1892L11.8889 8.24329" stroke="currentColor" stroke-width="1.5"></path><path d="M3.85181 3.51351V0H12.0185V3.51351H3.85181Z" fill="currentColor"></path></svg></span><h2 class="hp-h" id="hp-sur-h">Surveys</h2></div><a class="hp-icon-link" aria-label="Open surveys" href="OS-Surveys.dc.html"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></div><div class="hp-alert hp-alert-success"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.9999 4L4.66659 11.3333L1.33325 8M14.6666 6.66667L9.66658 11.6667L8.66658 10.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><div><span class="hp-strong">Summer 2026 - Essential Perception Survey for Educators</span><span>Launching on this day</span></div></div><div class="hp-alert hp-alert-warning"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.99992 5.33337V8.00004M7.99992 10.6667H8.00659M14.6666 8.00004C14.6666 11.6819 11.6818 14.6667 7.99992 14.6667C4.31802 14.6667 1.33325 11.6819 1.33325 8.00004C1.33325 4.31814 4.31802 1.33337 7.99992 1.33337C11.6818 1.33337 14.6666 4.31814 14.6666 8.00004Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><div><span class="hp-strong">Summer 2026 - Essential Perception Survey for Elementary Students</span><span>Closing in 2 days 16 hours 23 mins</span><a class="hp-alert-action" href="OS-Surveys.dc.html">Extend</a></div></div></section></div></div></div>
 </main>
 <footer class="hubfoot"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1024}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1024}, "plan": {"editor": "enum", "options": ["Basic", "Classroom+"], "default": "Classroom+"}, "persona": {"editor": "enum", "options": ["District administrator", "School administrator"], "default": "District administrator"}, "chat": {"editor": "enum", "options": ["Closed", "Open"], "default": "Closed"}}'>
 class Component extends DCLogic {
   capBack(me, fallback) {
     // 1. Back returns to the screen you came from. Each link click between admin screens is remembered for this
@@ -270,13 +257,23 @@ class Component extends DCLogic {
   extraVals(st) {
     const a = !!st.acctOpen;
     const plan = st.plan ?? this.planStored() ?? this.props.plan ?? 'Classroom+';
+    const chat = st.chatOpen ?? (this.props.chat === 'Open');
     return {
+      chatOpen: chat,
+      chatOpenAttr: chat ? 'true' : 'false',
+      openChat: () => { if (!chat) this.setState({ chatOpen: true, appsOpen: false, acctOpen: false }); },
+      trendDraw: (() => { if (!this._drawT) this._drawT = setTimeout(() => { this._drawn = true; }, 1200); return this._drawn ? 'drawn' : 'draw'; })(),
+      openChat: () => { if (!chat) this.setState({ chatOpen: true, appsOpen: false, acctOpen: false }); },
+      toggleChat: () => this.setState({ chatOpen: !chat, appsOpen: false, acctOpen: false }),
+      closeChat: () => this.setState({ chatOpen: false }),
       acctOpen: a,
       toggleAcct: () => this.setState({ acctOpen: !a, appsOpen: false }),
       closeAcct: () => this.setState({ acctOpen: false }),
       rolesOpen: !!st.rolesOpen,
       openRoles: () => this.setState({ rolesOpen: true, acctOpen: false, appsOpen: false }),
       closeRoles: () => this.setState({ rolesOpen: false }),
+      roleDistrict: () => { try { window.localStorage.setItem('cogniaPersona', 'district'); } catch (e) {} this.setState({ rolesOpen: false, persona: 'district' }); },
+      roleSchool: () => { try { window.localStorage.setItem('cogniaPersona', 'school'); } catch (e) {} this.setState({ rolesOpen: false, persona: 'school' }); },
       stopRoles: (e) => { if (e) e.stopPropagation(); },
       planName: plan,
       planBasic: plan === 'Basic',
@@ -299,6 +296,43 @@ class Component extends DCLogic {
       goS4: () => { try { window.localStorage.setItem('cogniaSchoolsShow', 'gaps-middle:Southern Regional Middle'); } catch (e) {} setTimeout(() => this.setState({ focus: false }), 700); }
     };
   }
+  personaVals(st) {
+    // One Home for both administrator personas. The persona comes from the role switcher or the flow you came from.
+    let stored = null;
+    try { stored = window.localStorage.getItem('cogniaPersona'); } catch (e) {}
+    const fromProp = this.props.persona === 'School administrator' ? 'school' : 'district';
+    const p = st.persona || (stored === 'school' || stored === 'district' ? stored : fromProp);
+    const school = p === 'school';
+    const openHub = (k) => () => this.setState({ appsOpen: true, appsHub: k, acctOpen: false, rolesOpen: false });
+    return {
+      persona: p, isSchool: school, isDistrict: !school,
+      firstName: school ? 'Priya' : 'Jordan',
+      acctName: school ? 'Priya Shah' : 'Jordan Ellis',
+      acctInitials: school ? 'PS' : 'JE',
+      acctRole: school ? 'School administrator · Lincoln Middle School' : 'District administrator',
+      orgName: school ? 'Lincoln Middle School' : 'Oceanside Unified School District',
+      orgStat1: school ? 'Grades 6-9' : '124 Schools',
+      orgStat2: school ? '310 Students' : '79 800 Students',
+      orgStat3: school ? 'Principal Marcus Chen' : 'California',
+      scopeWord: school ? 'school' : 'district',
+      scopeTitle: school ? 'School' : 'District',
+      hubScope: school ? 'your school' : 'schools',
+      assessFoot: school ? '24 classrooms reporting' : '18 schools reporting',
+      overviewHref: school ? 'PA-Overview.dc.html' : 'SA2-Hub.dc.html',
+      overviewLabel: school ? 'School overview' : 'District overview',
+      libraryHref: school ? 'DI-School.dc.html' : 'DI-District.dc.html',
+      openAcct: () => this.setState({ acctOpen: true, appsOpen: false, rolesOpen: false }),
+      openHubOs: openHub('Os'), openHubLn: openHub('Ln'), openHubPf: openHub('Pf'), openHubDr: openHub('Dr')
+    };
+  }
+  hubLinks(persona, current) {
+    // Shared Hub window: same markup on every screen, only the persona's destinations change.
+    const s = persona === 'school';
+    return { hubHomeCls: current === 'home' ? 'on' : '', hubHomeCurrent: current === 'home' ? 'page' : 'false',
+      hubInHref: s ? 'PA-Overview.dc.html' : 'SA2-Hub.dc.html', hubInCls: current === 'interim' ? 'on' : '',
+      hubDiHref: s ? 'DI-School.dc.html' : 'DI-District.dc.html', hubDiCls: current === 'data' ? 'on' : '',
+      hubAssignHref: s ? 'PA-Interim.dc.html' : 'MOD-Interim.dc.html' };
+  }
   renderVals() {
     const st = this.state || {};
     const open = !!st.appsOpen;
@@ -313,7 +347,9 @@ class Component extends DCLogic {
       v['pick' + k] = () => this.setState({ appsHub: k });
     });
     if (this.extraVals) Object.assign(v, this.extraVals(st));
+    Object.assign(v, this.personaVals(st));
     v.backHref = this.capBack('District-Home.dc.html', 'District-Home.dc.html');
+    Object.assign(v, this.hubLinks((v.persona || 'district'), 'home'));
     return v;
   }
 }

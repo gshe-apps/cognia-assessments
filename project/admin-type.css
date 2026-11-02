@@ -24,8 +24,8 @@ html body .wf :is(h1, h2) {
   letter-spacing: normal ;
 }
 
-/* Card and panel titles: 16px strong */
-html body .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > span) {
+/* Card and panel titles: 16px strong. :not(.v2hero h2) matches the weight of the shared h2 rule in cognia-approved-ui.css, so a card title is not raised to 24px. */
+html body .wf :is(h3, h4, h5, h6, .sumttl, .bubttl h2, .sg-card h2, .anfhd > span):not(.v2hero h2) {
   font-size: var(--text-body-base) ;
   font-weight: var(--weight-semibold) ;
   line-height: var(--lh-snug) ;
@@ -73,6 +73,19 @@ html body .wf > .top {
 }
 html body .wf .hubfoot {
   background: transparent ;
+}
+
+/* Home (2 Nov): the card titles Assessment results, Data and Reporting, Observations and Surveys are 16px; only Welcome is 24px. */
+html body .wf .dh-main .hp-h:not(.v2hero h2) {
+  font-size: var(--text-body-base) ;
+  font-weight: var(--weight-semibold) ;
+  line-height: var(--lh-snug) ;
+}
+/* Observations and Surveys pages: section and date headings are 16px; only the page title is 24px. */
+html body .wf .os-main :is(h2, h3):not(.v2hero h2) {
+  font-size: var(--text-body-base) ;
+  font-weight: var(--weight-semibold) ;
+  line-height: var(--lh-snug) ;
 }
 
 }

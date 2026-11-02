@@ -61,17 +61,22 @@ These values update automatically at each breakpoint. Do not override them.
 | `shadow-sm` | Cards, subtle containers |
 | `shadow-md` | Dropdowns, tooltips, popovers |
 | `shadow-lg` | Modals, dialogs, drawers |
-| `shadow-xl` | Toasts, FABs |
+| `shadow-xl` | Toasts |
 
 Light and dark mode shadow colours switch automatically via CSS variables.
+
+Buttons never use a shadow, including floating action buttons and hover states. See Button in `components.md`.
 
 ---
 
 ## Border radius
 
-Only two values are used across the entire system:
+Only three values are used across the entire system:
 
 | Class | Value | Use for |
 |---|---|---|
-| `rounded-lg` | 8px | All components |
+| `rounded-lg` | 8px | All components except cards |
+| `rounded-xl` | 12px | Cards |
 | `rounded-full` | 9999px | Badges, pills, avatars |
+
+In plain CSS, use `var(--radius)` for 8px and `var(--radius-xl)` for 12px.

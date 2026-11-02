@@ -26,5 +26,7 @@ body :is(button:disabled,[aria-disabled=true]){cursor:not-allowed;}
 @media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
 /* Header icon buttons (My Hubs grid, account): neutral hover, no product tint */
 html body :is(.profile-trigger,.acctbtn,.appgrid):not(:disabled):hover{background-color:var(--hover-overlay);}
+/* The profile button is a solid primary fill, so it takes the plugin solid button hover (--primary-hover): the fill lightens, initials stay white, no shadow. */
+html body .acctbtn:not(:disabled):hover{background-color:var(--primary-hover,color-mix(in srgb,var(--primary) 78%,var(--card)));color:var(--primary-foreground);box-shadow:none;}
 
 }

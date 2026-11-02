@@ -78,7 +78,7 @@
 .rj-details .rj-approval-disclosure{padding:var(--space-3) var(--space-4);border:1px solid var(--border);border-radius:var(--radius);background:var(--card);font-size:var(--text-body-small)}
 .rj-details .rj-approval-disclosure summary{cursor:pointer}
 .rj-details .tf-bottom{position:sticky;bottom:var(--space-4);z-index:10;display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-6);margin:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md)}
-.rj-details .tf-bottom-icon{display:grid;place-items:center;width:48px;height:48px;flex-shrink:0;border-radius:var(--rounded-full);background:var(--accent-100);color:var(--accent-400)}
+.rj-details .tf-bottom-icon{display:grid;place-items:center;width:48px;height:48px;flex-shrink:0;border-radius:var(--rounded-full);background:var(--accent-100)}:is(.rj-details .tf-bottom-icon, .rj-details .tf-bottom-icon *)[stroke="currentColor"]{stroke:var(--accent-400)}:is(.rj-details .tf-bottom-icon, .rj-details .tf-bottom-icon *)[fill="currentColor"]{fill:var(--accent-400)}
 .rj-details .tf-bottom-icon svg{width:24px;height:24px}
 .rj-details .tf-bottom-copy{margin-right:auto;min-width:0}
 .rj-details .tf-bottom-copy>div{display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-body-base);font-weight:600}

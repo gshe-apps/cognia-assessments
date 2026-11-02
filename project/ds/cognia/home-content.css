@@ -2,10 +2,10 @@
 :root {
   --hub-assessments-surface: #D1D5EE;
   --hub-assessments-accent: #262E67;
-  --hub-observations-surface: #FEF0C4;
-  --hub-observations-accent: #B28804;
-  --hub-learning-surface: #DBE7DB;
-  --hub-learning-accent: #033D3C;
+  --hub-learning-surface: #FEF0C4;
+  --hub-learning-accent: #B28804;
+  --hub-observations-surface: #DBE7DB;
+  --hub-observations-accent: #033D3C;
   --hub-performance-surface: #ECCFE0;
   --hub-performance-accent: #63264A;
   --hub-reporting-surface: #FFCFCD;
@@ -96,10 +96,10 @@
 .dark {
   --hub-assessments-surface: #0B0D1C;
   --hub-assessments-accent: #8690D3;
-  --hub-observations-surface: #4E3C02;
-  --hub-observations-accent: #FCE086;
-  --hub-learning-surface: #111911;
-  --hub-learning-accent: #9DBF9E;
+  --hub-learning-surface: #4E3C02;
+  --hub-learning-accent: #FCE086;
+  --hub-observations-surface: #111911;
+  --hub-observations-accent: #9DBF9E;
   --hub-performance-surface: #190A13;
   --hub-performance-accent: #D085B1;
   --hub-reporting-surface: #3F1513;

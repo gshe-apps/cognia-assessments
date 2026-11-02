@@ -1,0 +1,49 @@
+/* Educator-only Home. Administrator content and shared hub permissions stay intact. */
+body:has(.dh-main[data-persona="educator"]) .brand .logo { width:128px; flex-basis:128px; height:32px; }
+body:has(.dh-main[data-persona="educator"]) .brand .logo img { width:128px; height:32px; }
+body:has(.dh-main[data-persona="educator"]) .brand .modname { display:none; }
+.dh-main[data-persona="educator"] { max-width:none; padding:0; gap:0; }
+.educator-home { width:100%; font-family:var(--font-sans); color:var(--foreground); }
+.educator-home svg { width:24px; height:24px; flex-shrink:0; }
+.eh-hero { position:relative; padding:var(--space-12) var(--space-6) var(--space-20); background:linear-gradient(to bottom,color-mix(in srgb,var(--background) 38%,transparent),color-mix(in srgb,var(--background) 65%,transparent) 75%,var(--background)),url('../../assets/educator-classroom-clean.png') center 48%/cover; }
+.eh-hero-content { position:relative; max-width:960px; margin:auto; text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--space-6); }
+.eh-label { font-size:var(--text-body-small); font-weight:var(--weight-semibold); letter-spacing:.08em; text-transform:uppercase; color:var(--muted-foreground); }
+.educator-home h1 { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.educator-home h2 { font-size:var(--text-heading); font-weight:var(--weight-semibold); }
+.educator-home p.eh-school { font-size:var(--text-body-base); color:var(--muted-foreground); }
+.eh-search { width:100%; margin:0; max-width:800px; }
+.eh-search-row { display:flex; align-items:center; gap:var(--space-4); padding:var(--space-3) var(--space-4) var(--space-3) var(--space-6); background:var(--card); border-radius:var(--rounded-full); }
+.eh-search-row input { width:100%; min-width:0; padding:var(--space-2) 0; background:transparent; border:0; color:var(--foreground); font:inherit; font-size:var(--text-body-base); }
+.eh-search-row button { display:grid; place-items:center; min-width:40px; min-height:40px; border:0; background:transparent; color:var(--hub-assessments-accent); cursor:pointer; }
+.eh-suggestions { display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-3); }
+.eh-suggestions :is(a,button) { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-4); border:0; border-radius:var(--rounded-full); background:color-mix(in srgb,var(--card) 85%,transparent); color:var(--foreground); font:inherit; font-size:var(--text-body-small); text-decoration:none; cursor:pointer; }
+.eh-suggestions svg { color:var(--hub-assessments-accent); }
+.eh-content { max-width:1440px; margin:auto; padding:0 var(--space-8) var(--space-12); }
+.eh-tasks { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); margin:0 0 var(--space-10); }
+.eh-task { display:flex; align-items:center; gap:var(--space-4); padding:var(--space-6); border-radius:var(--radius-xl,12px); text-decoration:none; color:var(--foreground); min-width:0; transition:transform 200ms,box-shadow 200ms; }
+.eh-draft { background:color-mix(in srgb,var(--hub-assessments-surface) 32%,var(--card)); }
+.eh-results { background:color-mix(in srgb,var(--success-light) 50%,var(--card)); }
+.eh-create { background:color-mix(in srgb,var(--destructive-light) 35%,var(--card)); }
+.eh-icon { display:grid; place-items:center; flex-shrink:0; width:48px; height:64px; border-radius:var(--radius-xl,12px); background:var(--accent-100); color:var(--muted-foreground); }
+.eh-task .eh-icon { background:var(--hub-assessments-surface); color:var(--hub-assessments-accent); }
+.eh-results .eh-icon { background:var(--success-light); color:var(--foreground); }
+.eh-create .eh-icon { background:var(--destructive-light); color:var(--foreground); }
+.eh-task-copy { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; flex:1; }
+.eh-task strong,.eh-hub strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.eh-muted { color:var(--muted-foreground); font-size:var(--text-body-small); line-height:var(--lh-base); }
+.eh-arrow { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; border-radius:var(--rounded-full); background:color-mix(in srgb,var(--card) 60%,transparent); color:var(--muted-foreground); }
+.eh-arrow svg { width:16px; height:16px; }
+.eh-section-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); margin-bottom:var(--space-6); }
+.eh-section-heading button { border:0; background:transparent; color:var(--foreground); font:inherit; font-size:var(--text-body-small); min-height:40px; cursor:pointer; }
+.eh-section-heading button span { margin-left:var(--space-3); }
+.eh-hub-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--space-4); }
+.eh-hub { position:relative; isolation:isolate; overflow:hidden; display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-4); text-align:left; padding:var(--space-6); min-height:240px; background:color-mix(in srgb,var(--accent-100) 12%,var(--card)); border:0; border-radius:var(--radius-xl,12px); font:inherit; color:var(--foreground); cursor:pointer; transition:transform 200ms,box-shadow 200ms; }
+.eh-hub .eh-icon { width:48px; height:48px; }
+.eh-hub[href] { text-decoration:none; }
+.eh-hub .eh-arrow { position:absolute; top:var(--space-6); right:var(--space-4); }
+.eh-hub .eh-muted { max-width:80%; }
+.eh-task:hover,.eh-hub:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+.educator-home :is(a,button,input):focus-visible { outline:2px solid var(--ring); outline-offset:4px; }
+@media(max-width:1000px) { .eh-tasks { grid-template-columns:1fr; } .eh-hub-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .eh-hero { padding-bottom:var(--space-12); } }
+@media(max-width:600px) { .eh-content { padding:0 var(--space-4) var(--space-8); } .eh-hero { padding:var(--space-8) var(--space-4); } .eh-hub-grid { grid-template-columns:1fr; } .eh-hub { min-height:192px; } .eh-suggestions { gap:var(--space-2); } }
+@media(prefers-reduced-motion:reduce) { .eh-task,.eh-hub { transition:none; } .eh-task:hover,.eh-hub:hover { transform:none; } }

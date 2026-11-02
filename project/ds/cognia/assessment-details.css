@@ -149,3 +149,28 @@
 .rj-preview-dialog h2,.rj-preview-dialog h3 { font-size:var(--text-body-base);font-weight:600; }
 @media(max-width:767px) { .rj-details .rj-test-actions { margin:0;width:100%;flex-wrap:wrap; } .rj-details .rj-test-actions :is(.btn,.rj-add-test) { flex:1; } .rj-details .rj-test-actions .rj-add-test { border-left:0;border-radius:var(--radius);width:auto; } }
 @media(prefers-reduced-motion:reduce) { .rj-details .rj-test-actions :is(.btn,.rj-add-test) { transition:none; } }
+/* Standards sit with the test metadata; both main cards share the same height. */
+.rj-details .tf-field:has(>#tf-assessment-name){position:relative;margin-bottom:var(--space-2);}
+.rj-details .tf-field [data-name-count]{position:absolute;right:0;top:0;margin:0;line-height:1.5;}
+.rj-details .rj-four-fields{grid-template-columns:repeat(5,minmax(0,1fr));}
+.rj-details .rj-standard-field{position:relative;}
+.rj-details .rj-standard-field select{appearance:none;-webkit-appearance:none;padding-right:var(--space-8);text-overflow:ellipsis;}
+.rj-standard-chevron{position:absolute;right:var(--space-3);bottom:var(--space-4);width:16px;height:16px;color:var(--muted-foreground);pointer-events:none;}
+.rj-details .rj-details-layout>aside{align-self:stretch;}
+.rj-details .rj-settings{flex:1;display:flex;flex-direction:column;}
+.rj-details .rj-settings>.rj-setting{flex:1;}
+.rj-details .rj-time-control{display:flex;flex:1;}
+.rj-details .rj-time-control>.rj-setting{flex:1;}
+@media(max-width:1199px){.rj-details .rj-four-fields{grid-template-columns:repeat(6,minmax(0,1fr));}.rj-details .rj-four-fields>.tf-field{grid-column:span 2;}.rj-details .rj-four-fields>.tf-field:nth-child(n+4){grid-column:span 3;}}
+@media(max-width:767px){.rj-details .rj-details-layout>aside{height:auto;}.rj-details .rj-settings>.rj-setting,.rj-details .rj-time-control{flex:initial;}}
+@media(max-width:639px){.rj-details .rj-four-fields{grid-template-columns:1fr;}.rj-details .rj-four-fields>.tf-field,.rj-details .rj-four-fields>.tf-field:nth-child(n+4){grid-column:auto;}}
+.rj-details .rj-details-layout>aside>.rj-settings{margin:0;}
+/* Compact details and settings after removing the directions editor. */
+.rj-details .rj-details-layout>.tf-surface,.rj-details .rj-settings{padding:var(--space-4) var(--space-6);}
+.rj-details .tf-field{margin-bottom:var(--space-3);}
+.rj-details #tf-description{height:80px;min-height:80px;}
+.rj-details .rj-four-fields .tf-field{margin-bottom:var(--space-2);}
+.rj-details .rj-resources{margin-top:var(--space-2);}
+.rj-details .rj-setting{border:0;padding:var(--space-1) 0;}
+.rj-details .rj-settings>h2{padding-bottom:var(--space-2);}
+@media(max-width:639px){.rj-details .rj-details-layout>.tf-surface,.rj-details .rj-settings{padding:var(--space-4);}}

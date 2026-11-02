@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    const cls=document.getElementById('classId');cls.value=data.classId;
    document.getElementById('attempts').value=data.attempts;
    document.getElementById('deliveryTime').value=data.time;
-   const accommodation=form.querySelector('[name=accommodations]');accommodation.checked=data.accommodations;
+   const accommodation=form.querySelector('[name=accommodations]');if(accommodation)accommodation.checked=data.accommodations;
    const drawRecipients=()=>{
      const labels=[...form.querySelectorAll('[name=recipient]')];const count=cls.value==='5b'?4:6;
      labels.forEach((input,i)=>{input.closest('label').hidden=i>=count;input.checked=i<count&&data.recipients.includes(input.value);});
@@ -35,14 +35,13 @@ document.addEventListener('DOMContentLoaded',()=>{
      const local=d=>new Date(d.getTime()+7200000).toISOString().slice(0,16);
      data.sessions.push({name:'Session '+(data.sessions.length+1),opens:local(start),due:local(new Date(start.getTime()+3600000))});save();render();document.getElementById('session-name-'+(data.sessions.length-1)).focus();
    });
-   const sync=()=>{data.classId=cls.value;data.recipients=[...form.querySelectorAll('[name=recipient]:checked')].filter(el=>!el.closest('label').hidden).map(el=>el.value);data.accommodations=accommodation.checked;data.attempts=document.getElementById('attempts').value;data.time=document.getElementById('deliveryTime').value;save();};
+   const sync=()=>{data.classId=cls.value;data.recipients=[...form.querySelectorAll('[name=recipient]:checked')].filter(el=>!el.closest('label').hidden).map(el=>el.value);if(accommodation?.isConnected)data.accommodations=accommodation.checked;data.attempts=document.getElementById('attempts').value;data.time=document.getElementById('deliveryTime').value;save();};
    cls.addEventListener('change',()=>{data.classId=cls.value;data.recipients=Array.from({length:cls.value==='5b'?4:6},(_,i)=>String(i));drawRecipients();sync();});
    form.addEventListener('change',sync);
    const next=form.querySelector('a[href="CAP-T09-ConfirmAssignment.dc.html"]');
    next.addEventListener('click',event=>{
      sync();const error=document.getElementById('deliveryError');let message='';
      if(!data.recipients.length)message='Select at least one student.';else if(data.sessions.some(s=>s.customRecipients&&!s.recipients?.length))message='Select at least one student for each session.';
-     else if(!data.accommodations)message='Confirm that you have checked accommodations and recipient access.';
      else if(!form.reportValidity())message='Complete the session name and access times.';
      else if(data.sessions.some(s=>!s.name.trim()||(!s.noLimit&&(!s.opens||!s.due||s.due<=s.opens))))message='Each session must have a name and close after it opens.';
      else {
@@ -58,6 +57,6 @@ document.addEventListener('DOMContentLoaded',()=>{
    const row=document.createElement('div');const dt=document.createElement('dt');dt.textContent='Sessions ('+data.sessions.length+')';const dd=document.createElement('dd');dd.className='session-summary';
    data.sessions.forEach(s=>{const item=document.createElement('div');item.className='session-summary-item';const name=document.createElement('b');name.textContent=s.name;item.append(name,document.createTextNode(s.noLimit?'Available at any time':format(s.opens)+' – '+format(s.due)));dd.append(item);});row.append(dt,dd);summary.append(row);
    const ready=document.querySelector('.readiness');if(ready)ready.children[1].textContent=data.recipients.length+' recipients selected';
-   const schedule=document.querySelector('a[href="CAP-T10-Scheduled.dc.html"]');if(schedule)schedule.addEventListener('click',event=>{if(!data.accommodations||!data.recipients.length){event.preventDefault();document.getElementById('confirmError').textContent='Return to Audience & delivery to confirm recipients and accommodations.';}else{data.scheduled=true;save();}});
+   const schedule=document.querySelector('a[href="CAP-T10-Scheduled.dc.html"]');if(schedule)schedule.addEventListener('click',event=>{if(!data.recipients.length){event.preventDefault();document.getElementById('confirmError').textContent='Return to Audience & delivery to select recipients.';}else{data.scheduled=true;save();}});
  }
 });

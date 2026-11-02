@@ -27,3 +27,85 @@
 .rj-assign .rj-session-access .tf-field>span { display:block; }
 /* The chevron is drawn by ::after; the glyph text is kept off-screen at a scale size rather than shrunk to 0. */
 .rj-assign .rj-class-heading button>i { font-size:var(--text-body-small); overflow:hidden; text-indent:100%; white-space:nowrap; }
+/* Compact assignment panels based on the supplied class and session reference. */
+.rj-assign{padding-top:var(--space-4);gap:var(--space-4);}
+.rj-assign .ra-eyebrow{display:none;}
+.rj-assign .tf-hero{padding:0;}
+.rj-assign .ra-journey{padding:var(--space-3) var(--space-4);border:0;border-radius:var(--radius-xl);box-shadow:none;}
+.rj-assign #deliveryForm>.reviewgrid{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:var(--space-6);align-items:stretch;}
+.rj-assign .reviewgrid>.formcard{padding:var(--space-6);border:0;border-radius:var(--radius-xl);box-shadow:none;}
+.rj-assign .rj-select-class{display:block;margin:0 0 var(--space-6);}
+.rj-assign .rj-select-class>label{display:block;margin:0 0 var(--space-2);font-size:var(--text-body-small);font-weight:var(--weight-semibold);color:var(--foreground);}
+.rj-class-select-control{position:relative;}
+.rj-assign .rj-class-select-control select{appearance:none;-webkit-appearance:none;padding-left:var(--space-12);padding-right:var(--space-10);border:0;background:var(--secondary);font-size:var(--text-body-base);font-weight:var(--weight-semibold);}
+.rj-class-select-control>svg{position:absolute;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted-foreground);pointer-events:none;}
+.rj-class-select-icon{left:var(--space-4);}.rj-class-select-chevron{right:var(--space-4);}
+.rj-assign .rj-audience-search{position:relative;display:block;margin-bottom:var(--space-6);}
+.rj-assign .rj-audience-search input{padding-left:var(--space-12);border:0;background:var(--secondary);}
+.rj-audience-search>svg{position:absolute;left:var(--space-4);top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted-foreground);pointer-events:none;}
+.rj-assign .rj-class{border:0;border-radius:var(--radius-xl);background:var(--background);margin-bottom:var(--space-3);}
+.rj-assign .rj-class.selected{border:0;background:var(--background);}
+.rj-assign .rj-class-heading{padding:var(--space-3) var(--space-4);gap:var(--space-3);}
+.rj-assign .rj-class.selected .rj-class-heading{background:var(--accent-100);}
+.rj-assign .rj-class-heading button{gap:var(--space-3);}
+.rj-assign .rj-class-heading b,.rj-assign .roster-list label{font-size:var(--text-body-base);font-weight:var(--weight-semibold);}
+.rj-assign .roster-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6) var(--space-4);padding:var(--space-4);}
+.rj-assign .roster-list small{font-size:var(--text-body-small);font-weight:var(--weight-regular);background:var(--accent-100);color:var(--secondary-foreground);}
+.rj-assign .rj-audience-tabs{gap:var(--space-2);margin:var(--space-3) 0 0;border:0;}
+.rj-assign .rj-audience-tabs button{min-height:32px;padding:var(--space-1) var(--space-3);border:0;border-radius:var(--radius);background:transparent;font-size:var(--text-body-small);}
+.rj-assign .rj-audience-tabs [aria-pressed=true]{background:var(--secondary);font-weight:var(--weight-semibold);}
+.rj-assign .rj-audience-tabs button:hover{background:var(--secondary);}
+.rj-assign .rj-audience-tabs svg{width:16px;height:16px;}
+.rj-assign .rj-session-heading{margin-bottom:var(--space-4);}
+.rj-assign .rj-session-heading h2{font-size:var(--text-body-base);font-weight:var(--weight-semibold);}
+.rj-assign .rj-session-heading h2 svg{width:24px;height:24px;}
+.rj-assign .rj-session-heading #add-session{border:1px solid var(--primary);box-shadow:none;}
+.rj-assign .session-heading{margin-bottom:var(--space-6);}
+.rj-assign .session-heading p{font-size:var(--text-body-small);line-height:1.5;color:var(--foreground);}
+.rj-assign .session-heading .rj-school-timezone{color:var(--muted-foreground);margin-bottom:var(--space-1);}
+.rj-assign .session-card.rj-session{display:block;padding:var(--space-4);margin-bottom:var(--space-4);border:0;border-radius:var(--radius-xl);background:var(--background);box-shadow:none;}
+.rj-assign .rj-session>.session-card-head{display:flex;align-items:center;margin:calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) var(--space-4);padding:var(--space-3) var(--space-4);border-radius:var(--radius-xl) var(--radius-xl) 0 0;background:var(--accent-100);}
+.rj-assign .session-card-head b{font-size:var(--text-body-base);}
+.rj-assign .rj-session-count{font-size:var(--text-body-small);padding:var(--space-1) var(--space-2);background:var(--card);color:var(--card-foreground);}
+.rj-assign .rj-session-main{display:grid;grid-template-columns:1.1fr 1.1fr .9fr .9fr .7fr;gap:var(--space-3);align-items:start;}
+.rj-assign .rj-session-main>.field{margin:0;}
+.rj-assign .rj-session-dates{display:contents;}
+.rj-assign .rj-session-dates[hidden]{display:none;}
+.rj-assign .rj-session-main input{min-height:40px;padding:var(--space-2);border:0;background:var(--card);font-size:var(--text-body-small);}
+.rj-assign .rj-session .field>label,.rj-assign .rj-session-dates label{margin:0;font-size:var(--text-body-small);line-height:1.5;color:var(--muted-foreground);}
+.rj-assign .rj-session .field>label{margin-bottom:var(--space-2);white-space:nowrap;}
+.rj-assign .rj-session-dates label input{margin-top:var(--space-2);}
+.rj-assign .rj-session-dates label small{display:none;}
+.rj-assign .rj-session-dates p{grid-column:5;grid-row:1;display:flex;flex-direction:column;gap:var(--space-2);align-self:stretch;margin:0;padding-left:var(--space-3);border-left:1px solid var(--border);font-size:var(--text-body-small);line-height:1.5;}
+.rj-assign .rj-session-dates p strong{font-size:var(--text-body-small);font-weight:var(--weight-semibold);color:var(--foreground);}
+.rj-session-options{margin-top:var(--space-3);font-size:var(--text-body-small);color:var(--muted-foreground);}
+.rj-session-options>summary{cursor:pointer;}
+.rj-assign .rj-session-access{padding:var(--space-4) 0 0;border:0;}
+.rj-assign .rj-session-access input:not([type=radio]):not([type=checkbox]),.rj-assign .rj-session-access textarea{border:0;background:var(--card);}
+.rj-assign .rj-session-menu{margin-left:var(--space-2);}
+.rj-assign .rj-session-menu summary{padding:0 var(--space-1);min-height:24px;}
+.rj-assign .rj-session-menu>div{border:0;}
+.rj-assign .rj-session-menu button{min-height:32px;width:100%;text-align:left;cursor:pointer;white-space:nowrap;}
+.rj-assign .rj-session-menu button:hover{background:var(--secondary);}
+@media(max-width:1279px){.rj-assign .rj-session-main{grid-template-columns:repeat(4,minmax(0,1fr));}.rj-assign .rj-session-dates p{grid-column:1/-1;grid-row:2;flex-direction:row;align-items:center;gap:var(--space-2);border-left:0;padding-left:0;}.rj-assign .roster-list{gap:var(--space-4);}}
+@media(max-width:1000px){.rj-assign #deliveryForm>.reviewgrid{grid-template-columns:1fr;}.rj-assign .rj-session-main{grid-template-columns:1.1fr 1.1fr .9fr .9fr .7fr;}.rj-assign .rj-session-dates p{grid-column:5;grid-row:1;flex-direction:column;align-items:stretch;border-left:1px solid var(--border);padding-left:var(--space-3);}}
+@media(max-width:639px){.rj-assign .reviewgrid>.formcard{padding:var(--space-4);}.rj-assign .roster-list{grid-template-columns:1fr;}.rj-assign .rj-session-main{grid-template-columns:repeat(2,minmax(0,1fr));}.rj-assign .rj-session-dates p{grid-column:1/-1;grid-row:auto;flex-direction:row;border:0;padding-left:0;}.rj-assign .rj-session-heading #add-session{width:auto;}.rj-assign .rj-class-heading button{gap:var(--space-2);}.rj-assign .rj-class-heading button>span{display:none;}}
+.cap-root .rj-assign .rj-class-select-control select{padding-left:var(--space-12);padding-right:var(--space-10);border:0;background:var(--secondary);}
+.cap-root .rj-assign .rj-audience-search input{padding-left:var(--space-12);border:0;background:var(--secondary);}
+.cap-root .rj-assign .rj-session-main input{min-height:40px;padding:var(--space-2);border:0;background:var(--card);}
+.rj-assign .rj-school-timezone{font-size:var(--text-body-small);color:var(--muted-foreground);margin:0 0 var(--space-1);}
+.rj-session-options:not([open]){margin-top:0;}
+.rj-session-options:not([open])>summary{display:none;}
+/* Final assignment refinements: tighter recipient panel and slightly taller sessions. */
+.rj-assign .rj-select-class{margin-bottom:var(--space-4);}
+.rj-assign .rj-audience-search{margin-bottom:var(--space-4);}
+.rj-assign .roster-list{row-gap:var(--space-4);}
+.rj-assign .rj-session>.session-card-head{margin-bottom:var(--space-6);}
+.rj-assign .rj-session-main{padding:var(--space-1) 0;}
+.rj-assign .actionbar>.row{margin-left:auto;}
+.rj-assign .actionbar>.solid{margin-left:auto;}
+.rj-assign .tf-original-actions>.actionbar{width:100%;max-width:none;justify-content:space-between;}
+/* One compact selector/search row; the roster shows the selected class only. */
+.rj-assign .rj-recipient-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-4);align-items:end;margin-bottom:var(--space-4);}
+.rj-assign .rj-recipient-toolbar .rj-select-class,.rj-assign .rj-recipient-toolbar .rj-audience-search{min-width:0;margin:0;}
+@media(max-width:639px){.rj-assign .rj-recipient-toolbar{grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-2);}}

@@ -30,3 +30,83 @@
 .af-confirm .af-check-icon { background:transparent; }
 .af-confirm .complete .af-check-icon{background:var(--success-light)}:is(.af-confirm .complete .af-check-icon, .af-confirm .complete .af-check-icon *)[stroke="currentColor"]{stroke:var(--success)}:is(.af-confirm .complete .af-check-icon, .af-confirm .complete .af-check-icon *)[fill="currentColor"]{fill:var(--success)}
 .af-confirm .tf-steps .done span { background:var(--secondary);color:var(--foreground); }
+/* Simplified review and confirmation, using the supplied content hierarchy. */
+.af-confirm{padding-top:var(--space-4);gap:var(--space-6);}
+.af-confirm .ac-eyebrow{display:none;}
+.af-confirm .af-confirm-grid{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:var(--space-6);}
+.af-confirm .af-main-column{gap:var(--space-4);}
+.af-confirm .af-surface{padding:var(--space-6);border:0;border-radius:var(--radius-xl);box-shadow:none;}
+.af-confirm .af-panel-heading{gap:var(--space-3);margin-bottom:var(--space-4);}
+.af-confirm .af-panel-icon{width:40px;height:40px;border:0;background:var(--card);}
+.af-confirm .af-panel-icon svg{width:24px;height:24px;stroke:var(--muted-foreground);}
+.af-confirm .af-edit{min-height:40px;padding:var(--space-2) var(--space-3);border:1px solid var(--primary);background:transparent;box-shadow:none;}
+.af-confirm .af-edit:hover{background:var(--secondary);box-shadow:none;}
+.af-confirm .af-assessment-intro{border:0;padding:0 0 var(--space-4);margin-bottom:var(--space-2);}
+.af-confirm .af-meta{gap:var(--space-2);margin-top:var(--space-2);}
+.af-confirm .af-meta span{min-height:24px;padding:var(--space-1) var(--space-3);border:0;background:var(--secondary);color:var(--secondary-foreground);}
+.af-confirm .af-question-row{grid-template-columns:32px minmax(0,1fr) auto 80px;gap:var(--space-3);padding:var(--space-2) 0;}
+.af-confirm .af-question-row:last-child{border:0;}
+.af-confirm .af-question-row>span:first-child{width:32px;height:32px;}
+.af-confirm .af-question-row>p{font-size:var(--text-body-small);}
+.af-confirm .af-question-type,.af-confirm .af-question-row>span:last-child{background:var(--secondary);color:var(--secondary-foreground);}
+.af-confirm .af-audience{flex:initial;}
+.af-confirm .af-audience-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3);}
+.af-confirm .af-audience-grid>div{align-items:center;padding:var(--space-3);border:0;background:var(--background);}
+.af-confirm .af-audience-grid small:first-child{text-transform:none;letter-spacing:0;margin-bottom:var(--space-1);}
+.af-confirm .af-audience-grid b{font-size:var(--text-body-small);line-height:1.5;}
+.af-confirm .af-audience-grid svg{width:24px;height:24px;stroke:var(--muted-foreground);}
+.af-confirm .af-settings{margin-bottom:var(--space-6);}
+.af-confirm .af-settings>div{padding:var(--space-2) 0;border:0;}
+.af-confirm .af-final-title{margin-bottom:var(--space-2);}
+.af-confirm .af-final-row{border:0;padding:var(--space-3) 0;}
+.af-confirm .af-final-row>i{display:none;}
+.af-confirm .af-final-row .af-check-icon{width:40px;height:40px;border-radius:var(--radius);}
+.af-confirm .tf-bottom{bottom:0;margin:0 calc(-1 * var(--horizontal-padding));width:calc(100% + var(--horizontal-padding) * 2);max-width:none;padding:var(--space-4) var(--horizontal-padding);border:0;border-top:1px solid var(--border);border-radius:0;box-shadow:none;background:var(--card);}
+.af-confirm .tf-bottom-icon{width:40px;height:40px;border:0;background:var(--card);}
+.af-confirm .tf-original-actions{margin-left:auto;}
+.af-confirm .actionbar{gap:var(--space-4);}
+.af-confirm .actionbar .btn{min-height:48px;padding:var(--space-3) var(--space-4);border:1px solid var(--primary);box-shadow:none;transition:all 200ms;}
+.af-confirm .actionbar .btn:not(.solid):hover{background:var(--secondary);box-shadow:none;}
+.af-confirm .actionbar .btn.solid:hover{background:var(--primary-hover);box-shadow:none;}
+.af-confirm .actionbar .btn.solid svg{width:20px;height:20px;}
+@media(max-width:1199px){.af-confirm .af-confirm-grid{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);}.af-confirm .af-audience-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.af-confirm .af-question-row{grid-template-columns:32px minmax(0,1fr) auto;}}
+@media(max-width:767px){.af-confirm .af-confirm-grid{grid-template-columns:1fr;}.af-confirm .af-surface{padding:var(--space-4);}.af-confirm .tf-bottom{position:static;}.af-confirm .tf-original-actions{margin-left:0;width:100%;}}
+@media(prefers-reduced-motion:reduce){.af-confirm .actionbar .btn{transition:none;}}
+.af-confirm .af-main-column .af-audience{flex:1;}
+.af-confirm .af-audience-grid{flex:initial;}
+/* Review the assessment and audience within one tabbed card. */
+.af-confirm .af-tabbed-summary{flex:1;min-width:0;}
+.af-tab-header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-6);}
+.af-review-tabs{display:flex;align-items:stretch;gap:var(--space-4);min-width:0;}
+.af-review-tabs button{min-height:48px;padding:var(--space-2) var(--space-1);border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:var(--muted-foreground);font:var(--weight-semibold) var(--text-body-base)/1.5 var(--font-sans);cursor:pointer;transition:all 200ms;}
+.af-review-tabs button[aria-selected=true]{border-bottom-color:var(--brand-coral);color:var(--foreground);}
+.af-review-tabs button:hover{background:var(--secondary);}
+.af-confirm .af-tab-header .af-edit{margin-left:auto;flex-shrink:0;}
+.af-confirm .af-tabbed-summary .af-summary,.af-confirm .af-tabbed-summary .af-audience{display:block;padding:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;}
+.af-confirm .af-tabbed-summary [role=tabpanel][hidden],.af-confirm .af-tab-header .af-edit[hidden]{display:none;}
+.af-confirm .af-tabbed-summary [role=tabpanel]:focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1);}
+.af-confirm .af-ready .af-settings{margin-bottom:0;}
+@media(max-width:767px){.af-tab-header{gap:var(--space-2);flex-wrap:wrap;}.af-review-tabs{gap:var(--space-3);}.af-review-tabs button{font-size:var(--text-body-small);}}
+@media(prefers-reduced-motion:reduce){.af-review-tabs button{transition:none;}}
+/* Summary and audience are visible together, without tabs. */
+.af-confirm .af-combined-summary{flex:1;min-width:0;}
+.af-confirm .af-combined-summary>.af-summary,.af-confirm .af-combined-summary>.af-audience{display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;}
+.af-confirm .af-combined-summary>.af-audience{margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid var(--border);}
+/* Reference colour accents: light blue metadata, blue icons, green final checks. */
+.af-confirm .af-meta span,.af-confirm .af-question-type{background:var(--accent-100);color:var(--foreground);}
+.af-confirm .af-question-row>span:first-child{background:color-mix(in srgb,var(--accent-100) 55%,var(--card));}
+.af-confirm .af-question-row>span:last-child{background:var(--background);color:var(--muted-foreground);}
+.af-confirm .af-panel-icon,.af-confirm .tf-bottom-icon{background:var(--accent-100);border:0;}
+.af-confirm .af-panel-icon svg,.af-confirm .af-panel-icon svg *,.af-confirm .tf-bottom-icon svg,.af-confirm .tf-bottom-icon svg *{stroke:var(--accent-300);}
+.af-confirm .af-audience-grid>div{background:color-mix(in srgb,var(--accent-100) 40%,var(--card));}
+.af-confirm .af-audience-grid svg,.af-confirm .af-audience-grid svg *{stroke:var(--accent-300);}
+.af-confirm .af-ready .af-settings{margin-bottom:var(--space-6);}
+.af-confirm .af-final-title{margin-bottom:var(--space-2);}
+.af-confirm .af-final-row{gap:var(--space-4);padding:var(--space-3) 0;border:0;}
+.af-confirm .af-final-row .af-check-icon{background:var(--warning-light);}
+.af-confirm .af-final-row.complete .af-check-icon{background:var(--success-light);}
+.af-confirm .af-final-row.complete .af-check-icon svg,.af-confirm .af-final-row.complete .af-check-icon svg *{stroke:var(--success);}
+.cap-root .af-confirm .af-panel-icon svg,.cap-root .af-confirm .af-panel-icon svg *,.cap-root .af-confirm .tf-bottom-icon svg,.cap-root .af-confirm .tf-bottom-icon svg *,.cap-root .af-confirm .af-audience-grid svg,.cap-root .af-confirm .af-audience-grid svg *{stroke:var(--accent-300);}
+/* Distinguish item type from marks in the review list. */
+.af-confirm .af-question-type{background:var(--secondary);color:var(--secondary-foreground);}
+.af-confirm .af-question-row>span:last-child{background:var(--success-light);color:var(--foreground);}

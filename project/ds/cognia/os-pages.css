@@ -138,3 +138,8 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 }
 @media (prefers-reduced-motion:reduce){.os-btn{transition:none}}
 html body .theme-assessments .top.os-top .navl a{text-decoration:none}
+/* Product tabs other than the current page are placeholders: no destination, no hover. */
+html body .theme-assessments .top.os-top .navl a[aria-disabled="true"]{cursor:default}
+html body .theme-assessments .top.os-top .navl a[aria-disabled="true"]:hover{background:transparent}
+/* Date headings in the observations list are labels, 14px semibold. */
+.os-main .os-date{font-size:var(--text-body-small)}

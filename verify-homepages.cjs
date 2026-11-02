@@ -42,11 +42,11 @@ const shell=(instance,file)=>{
  const old=read('CAP-T00-Home.dc.html');
  assert(old.includes("setItem('cogniaPersona', 'educator')")&&old.includes("location.replace('District-Home.dc.html')"),'CAP-T00-Home.dc.html: forwards to the shared Home as the educator');
  const instance=runDC(read('District-Home.dc.html'),{cogniaPersona:'educator'});const vals=instance.renderVals();
- assert.equal(vals.firstName,'Sara');assert.equal(vals.orgName,'Lincoln Middle School');assert.equal(vals.overviewHref,'CAP-T13-Results.dc.html');
- assert.equal(vals.drLink,false,'educators get no Data and Reporting link');assert.equal(vals.isAdmin,false);
+ assert.equal(vals.firstName,'Sara');assert.equal(vals.orgName,'Lincoln Middle School');assert.equal(vals.overviewHref,'CAP-T01-Overview.dc.html','educator results open the classroom assessment Overview');
+ assert.equal(vals.libraryHref,'CAP-T16-Insights.dc.html','educator insight opens their class insights, not Data and Reporting');assert.equal(vals.isAdmin,false);
  assert.equal(vals.hubFmShow,true);assert.equal(vals.hubDiShow,false);assert.equal(vals.hubAssignHref,'CAP-T04-Setup.dc.html');
  shell(instance,'District-Home.dc.html (educator)');
- reports.push('District-Home.dc.html: educator Home with school, classes, educator insight and educator hub passed');
+ reports.push('District-Home.dc.html: educator Home with school, classes, past-month results, class insight, English course and educator hub passed');
 }
 // Observations and Surveys pages work for admins and educators.
 for(const file of ['OS-Observations.dc.html','OS-Surveys.dc.html']){

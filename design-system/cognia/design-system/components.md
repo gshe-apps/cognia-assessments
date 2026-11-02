@@ -140,8 +140,10 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - Never show a hover state on a disabled button.
 - Icons can appear on the left, right, or both sides of the label.
 - Primary (solid) CTAs must always be active — never disable them preemptively. Show inline validation errors on click for missing required fields instead of disabling the button.
+- Solid (default) buttons hover to `--primary-hover`, which is `color-mix(in srgb, var(--primary) 78%, var(--card))`: the fill lightens slightly and the label stays `--primary-foreground` (white in light mode). Use `hover:bg-[var(--primary-hover)]`; never darken, change the label colour, add a border or a shadow. The same hover applies to anything drawn as a solid primary fill, such as the profile (avatar) button in the header.
 - Ghost buttons use `hover:bg-secondary` for a visible hover state. This is set globally in `button.tsx` — do not add it to individual ghost buttons.
 - Outline buttons use `border-primary` for their border — never `border-border` or any other border token.
+- Buttons never have a shadow, in any variant or state (resting, hover, active, focus) and including FABs. Use `shadow-none`. Hover feedback comes from the background change only. The focus ring (`--ring`) is a focus state, not a shadow, and stays.
 
 ```tsx
 <Button>Save changes</Button>
@@ -178,11 +180,11 @@ Buttons are full-width on mobile and shrink to fit their content on tablet and d
 
 **Floating action buttons (FABs)**
 
-FABs are `rounded-full` pill buttons fixed to the bottom-right corner of the screen. Use `shadow-xl` and position with `fixed bottom-6 right-6`. FABs always contain a leading icon and a short label.
+FABs are `rounded-full` pill buttons fixed to the bottom-right corner of the screen. Position them with `fixed bottom-6 right-6`. Like every button, a FAB has no shadow. FABs always contain a leading icon and a short label.
 
 ```tsx
 <div className="fixed bottom-6 right-6">
-  <Button className="rounded-full px-4 py-3 h-auto shadow-xl gap-2">
+  <Button className="rounded-full px-4 py-3 h-auto shadow-none gap-2">
     <PlusIcon className="size-4" />
     New
   </Button>
@@ -199,13 +201,13 @@ Cards group related content and actions into a single container.
 
 | Variant | className | When to use |
 |---|---|---|
-| Default | *(none)* | Standard content grouping |
+| Default | `rounded-xl` | Standard content grouping |
 | Ghost | `bg-transparent py-0 rounded-none` + `px-0` on CardHeader and CardContent | Always used for graph cards, subtle grouping |
-| Outlined | `border-1 border-primary` | Highlighted or selected state |
-| Themed | `style={{ backgroundColor: 'var(--accent-100)' }}` | Product-accented surfaces, highlighted sections |
+| Themed | `rounded-xl` + `style={{ backgroundColor: 'var(--accent-100)' }}` | Product-accented surfaces, highlighted or selected sections |
 
 **Rules**
-- All cards have `border-transparent ring-0 shadow-none` applied by default — borders and rings are opt-in. Do not override this default.
+- Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Every other component keeps 8px (`rounded-lg`).
+- Cards never have a border, in any variant or state, including selected and highlighted. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. To mark a card as selected or highlighted, use the themed variant.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
 - Clickable cards must apply `shadow-none hover:shadow-md transition-all duration-200 cursor-pointer`. The resting state is no shadow; hover lifts it to `shadow-md`. Do not add a background colour change on hover.
@@ -215,7 +217,7 @@ Cards group related content and actions into a single container.
 
 ```tsx
 // Default
-<Card>
+<Card className="rounded-xl">
   <CardHeader>
     <CardTitle>Report title</CardTitle>
     <CardDescription>Supporting description</CardDescription>
@@ -231,14 +233,14 @@ Cards group related content and actions into a single container.
 </Card>
 
 // Themed — use inline style not Tailwind class
-<Card style={{ backgroundColor: 'var(--accent-100)' }}>
+<Card className="rounded-xl" style={{ backgroundColor: 'var(--accent-100)' }}>
   <CardHeader><CardTitle>Featured section</CardTitle></CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 
 // Clickable
 <Link href="/report/1">
-  <Card className="shadow-none hover:shadow-md transition-all duration-200 cursor-pointer">
+  <Card className="rounded-xl shadow-none hover:shadow-md transition-all duration-200 cursor-pointer">
     <CardContent>Content here</CardContent>
   </Card>
 </Link>
@@ -321,12 +323,15 @@ Inputs collect single-line text from the user.
 - Placeholder text should give an example value, not repeat the label.
 - Show validation errors inline below the input, not in a toast.
 - Required fields must be marked with an asterisk (*) after the label.
-- When an input sits on the `--background` surface, apply `bg-[var(--primary-foreground)]` to give it a white fill that lifts it from the off-white page surface.
+- Input fields have no border (`border-0`). This applies to every input field: text inputs, textareas and select triggers. The fill shows where the field is instead:
+  - On the `--background` surface, apply `bg-[var(--primary-foreground)]` to give it a white fill that lifts it from the off-white page surface.
+  - On a white surface (`--card`, `--popover`), apply `bg-secondary` so the field stays visible against the white.
+- Focus shows the standard 3px `--ring` focus ring. An error shows the inline error message below the field and the ring in `--destructive` (`aria-invalid` styling); never rely on colour alone.
 
 ```tsx
 <div className="flex flex-col gap-2">
   <Label htmlFor="email">Email address *</Label>
-  <Input id="email" type="email" placeholder="name@company.com" />
+  <Input id="email" type="email" placeholder="name@company.com" className="border-0" />
   <p className="text-body-small text-destructive">Please enter a valid email.</p>
 </div>
 ```
@@ -339,6 +344,7 @@ Selects let users choose one option from a dropdown list.
 
 **Rules**
 - Use a select when there are 5 or more options. For 4 or fewer, consider radio buttons.
+- The select trigger is an input field, so it follows the Input field rules: no border, filled to suit its surface.
 - Always include a default placeholder: "Select an option".
 - If the list exceeds 20 items, use a searchable combobox instead.
 

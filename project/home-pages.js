@@ -13,6 +13,12 @@
       if (!event.target.matches('.home-search')) return;
       event.preventDefault();
       const input = event.target.querySelector('input');
+      // Home: answers show in the Ask Cognia panel, which opens when the field is clicked.
+      if (!document.getElementById('home-search-results')) {
+        input.click();
+        setTimeout(() => { if (document.getElementById('home-search-results')) event.target.requestSubmit(); }, 50);
+        return;
+      }
       const query = input.value.trim();
       const error = document.getElementById('home-search-error');
       if (!query) {

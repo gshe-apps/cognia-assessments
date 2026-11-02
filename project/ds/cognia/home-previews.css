@@ -191,3 +191,5 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
   .hp-chart .line.draw { animation:none; stroke-dashoffset:0; }
   .hp-chart .marks.draw { animation:none; opacity:1; }
 }
+/* The Data and Reporting title is quieter than the other card titles: 14px regular. */
+.dh-main .hp-dr > .hp-h { font-size:var(--text-body-small); font-weight:var(--weight-regular); }

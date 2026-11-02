@@ -9,27 +9,28 @@
  if (fixed) save(fixed);
  // Educator screens remember the educator, so shared products (Observations, Surveys) keep their identity and Home.
  if (file.startsWith('CAP-T')) save('educator');
- const home = file.startsWith('CAP-T') || (/^OS-/.test(file) && stored() === 'educator') ? 'CAP-T00-Home.dc.html' : /^(CAP-S|STU2)/.test(file) ? 'STU2-SignIn.dc.html' : 'District-Home.dc.html';
+ // Every staff persona starts on the one Home; students start at sign in.
+ const home = /^(CAP-S|STU2)/.test(file) ? 'STU2-SignIn.dc.html' : 'District-Home.dc.html';
  // The canvas viewer does not always load a screen at its file name, so when the URL gives no answer
  // the page itself does: Home's persona, then the signed-in person on the account button.
  const PEOPLE = { 'Jordan Ellis': 'district', 'Priya Shah': 'school', 'Sara Lee': 'educator', 'Jamie M.': 'student' };
  const fromPage = () => {
    const main = document.querySelector('main[data-persona]');
    const p = main && main.dataset.persona;
-   if (p === 'district' || p === 'school') return p;
+   if (p === 'district' || p === 'school' || p === 'educator') return p;
    const btn = document.querySelector('.acctbtn[aria-label^="Account: "],.profile-trigger[aria-label^="Account: "]');
    const who = btn && btn.getAttribute('aria-label').replace('Account: ', '').trim();
    return PEOPLE[who] || null;
  };
- const active = () => fixed || (file === 'District-Home.dc.html' ? (stored() === 'school' ? 'school' : 'district') : fromPage());
+ const active = () => fixed || (file === 'District-Home.dc.html' ? (['school', 'educator'].includes(stored()) ? stored() : 'district') : fromPage());
  const NAMES = { district: 'District administrator', school: 'School administrator', educator: 'Educator', student: 'Student' };
  // Older screens list roles without data-persona: read the role from its title, and send every role to the start of its current flow.
  const BY_TITLE = { 'district administrator': 'district', 'system administrator': 'district', 'school administrator': 'school', 'educator': 'educator', 'teacher': 'educator', 'student': 'student' };
- const START = { district: 'District-Home.dc.html', school: 'District-Home.dc.html', educator: 'CAP-T00-Home.dc.html', student: 'STU2-SignIn.dc.html' };
+ const START = { district: 'District-Home.dc.html', school: 'District-Home.dc.html', educator: 'District-Home.dc.html', student: 'STU2-SignIn.dc.html' };
  function update() {
    const now = active();
    // Remember an admin persona found from the page, so Home opens as the same administrator.
-   if (!fixed && (now === 'district' || now === 'school') && stored() !== now) save(now);
+   if (!fixed && (now === 'district' || now === 'school' || now === 'educator') && stored() !== now) save(now);
    for (const link of document.querySelectorAll('.roleopt')) {
      const title = link.querySelector('strong');
      if (!link.dataset.persona && title) { const p = BY_TITLE[title.textContent.trim().toLowerCase()]; if (p) link.dataset.persona = p; }
@@ -61,7 +62,7 @@
    document.addEventListener('click', event => {
      const el = event.target.closest && event.target.closest('[data-persona]');
      const p = el && el.dataset.persona;
-     if (p === 'district' || p === 'school') save(p);
+     if (p === 'district' || p === 'school' || p === 'educator') save(p);
    }, true);
    document.addEventListener('keydown', event => {
      if (event.key !== 'Escape') return;

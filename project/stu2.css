@@ -580,8 +580,8 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .meta-split { justify-content: space-between; }
 .track img { -webkit-user-drag: none; }
 .track .tcard.side-card { transform: scale(.96); }
-/* Side cards dim their content, but the call to action stays at full opacity */
-.track .tcard.side-card > :not(.cta) { opacity: .75; }
+/* Test cards are fully opaque so they read clearly over the room */
+.track .tcard.glass { background: var(--card); }
 .track .tcard > :not(.cta) { transition: opacity 200ms ease-out; }
 .hdots { display: flex; justify-content: center; gap: 8px; }
 .hdot { width: 8px; height: 8px; border-radius: var(--rounded-full); background: var(--muted-foreground); opacity: .4; transition: all 200ms; }
@@ -712,3 +712,13 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 }
 @media (prefers-reduced-motion: reduce) { .mgrid, .deck, .stu2-solid, .stu2-solid + .stu2-layer .rcol { animation: none; } .opt, .mrow, .blank, .chip { transition: none; } }
 
+
+/* Question 1 footer: instruction left, Clear box right */
+.qfoot-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.qfoot-row .btn { flex: none; white-space: nowrap; margin-right: -8px; }
+
+/* Final step sits on the room, not on a card */
+.qcard.qcard-end { background: transparent; box-shadow: none; }
+.qcard-end .qend { justify-content: center; align-items: center; text-align: center; gap: 24px; padding-bottom: 24px; }
+.qcard-end[aria-hidden="true"] .qend { opacity: 0; transition: opacity 200ms; }
+.qend-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; }

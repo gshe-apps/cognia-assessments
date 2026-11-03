@@ -36,10 +36,10 @@ body{margin:0}
 <div class="field"><label for="sc">Session code *</label><input class="input" id="sc" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. MATH-27" style="border-style: none" value="{{scVal}}" onInput="{{setSc}}" aria-invalid="{{scInvalid}}" aria-describedby="sc-err">
 <sc-if value="{{scErr}}" hint-placeholder-val="{{ false }}"><p class="t-small field-error" id="sc-err">{{scErr}}</p></sc-if></div>
 <button type="submit" class="btn btn-solid" style="width: 100%">{{signLabel}}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
-<p class="t-small t-muted" style="text-align: center">Both codes are on the board or from your teacher.</p>
+<p class="t-small t-muted" style="text-align: center">Your student passcode is from your teacher and the session code is on the board.</p>
 </form>
 </div>
-<p class="t-small t-muted" style="text-align: center">Prototype: use the passcode and session code from your presenter.</p>
+<p class="t-small t-muted" style="text-align: center">Prototype: Alex has your passcode. Use MATH-27 as the session code.</p>
 </div>
 </div>
 </x-dc>

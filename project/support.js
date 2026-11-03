@@ -7,6 +7,14 @@ window.DCLogic = class {
     this.update();
   }
 };
+// Keep the raw template (with its dialogs and menus) out of sight until the first render, so no modal flashes on load.
+(() => {
+  const hide = document.createElement('style');
+  hide.textContent = 'x-dc:not([data-rendered]){visibility:hidden}';
+  document.head.append(hide);
+  // Never leave a page blank if rendering fails.
+  setTimeout(() => document.querySelectorAll('x-dc').forEach(el => el.setAttribute('data-rendered', '')), 3000);
+})();
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('x-dc');
   const script = document.querySelector('script[data-dc-script]');
@@ -48,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (attr.name.startsWith('on')) {
         const fn = evaluate(attr.value.replace(/^{{|}}$/g, ''), vals);
         node.removeAttribute(attr.name);
-        if (typeof fn === 'function') node.addEventListener(attr.name.slice(2).toLowerCase(), fn);
+        if (typeof fn === 'function') { const type = attr.name.slice(2).toLowerCase(); node.addEventListener(type, fn); (node.__dcH = node.__dcH || []).push([type, fn]); }
       } else if (['checked','disabled','selected','hidden'].includes(attr.name)) {
         const value = evaluate(attr.value.replace(/^{{|}}$/g, ''), vals);
         node.toggleAttribute(attr.name, !!value); node[attr.name] = !!value;
@@ -59,13 +67,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     [...node.childNodes].forEach(child => bind(child, vals));
   }
+  const same = (a, b) => a.nodeType === b.nodeType && (a.nodeType !== 1 || a.localName === b.localName);
+  function morphNode(from, to) {
+    if (from.nodeType !== 1) { if (from.nodeValue !== to.nodeValue) from.nodeValue = to.nodeValue; return; }
+    for (const a of [...from.attributes]) if (!to.hasAttribute(a.name)) from.removeAttribute(a.name);
+    for (const a of [...to.attributes]) if (from.getAttribute(a.name) !== a.value) from.setAttribute(a.name, a.value);
+    for (const prop of ['value', 'checked', 'disabled', 'selected']) if (prop in to && from[prop] !== to[prop]) from[prop] = to[prop];
+    (from.__dcH || []).forEach(([type, fn]) => from.removeEventListener(type, fn));
+    (to.__dcH || []).forEach(([type, fn]) => from.addEventListener(type, fn));
+    from.__dcH = to.__dcH || [];
+    morphChildren(from, to);
+  }
+  function morphChildren(from, to) {
+    const before = [...from.childNodes], after = [...to.childNodes];
+    after.forEach((next, i) => {
+      const prev = before[i];
+      if (prev && same(prev, next)) morphNode(prev, next);
+      else if (prev) from.replaceChild(next, prev);
+      else from.appendChild(next);
+    });
+    before.slice(after.length).forEach(node => node.remove());
+  }
   instance.update = () => {
     const active = document.activeElement;
     const id = active?.id;
     const selection = active?.selectionStart;
     const copy = template.cloneNode(true);
     bind(copy, instance.renderVals?.() || {});
-    root.replaceChildren(...copy.childNodes);
+    // Screens marked data-morph keep their existing elements and only patch what changed, so CSS
+    // transitions (sliding cards, crossfading rooms, opening rows) can run between states.
+    if (root.hasAttribute('data-morph') && root.__dcRendered) morphChildren(root, copy);
+    else root.replaceChildren(...copy.childNodes);
+    root.__dcRendered = true;
     if (id) {
       const next = document.getElementById(id);
       next?.focus({preventScroll:true});
@@ -73,5 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   instance.update();
+  root.setAttribute('data-rendered', '');
   window.cogniaPreview = instance;
 });

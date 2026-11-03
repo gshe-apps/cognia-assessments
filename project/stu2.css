@@ -578,7 +578,10 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .track .tcard > .cbottom + .cta { margin-top: 0; }
 .meta-split { justify-content: space-between; }
 .track img { -webkit-user-drag: none; }
-.track .tcard.side-card { opacity: .75; transform: scale(.96); }
+.track .tcard.side-card { transform: scale(.96); }
+/* Side cards dim their content, but the call to action stays at full opacity */
+.track .tcard.side-card > :not(.cta) { opacity: .75; }
+.track .tcard > :not(.cta) { transition: opacity 200ms ease-out; }
 .hdots { display: flex; justify-content: center; gap: 8px; }
 .hdot { width: 8px; height: 8px; border-radius: var(--rounded-full); background: var(--muted-foreground); opacity: .4; transition: all 200ms; }
 .hdot.on { width: 24px; background: var(--primary); opacity: 1; }
@@ -590,8 +593,8 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .hdot-btn .hdot.on { width: 24px; }
 
 /* Room views crossfade with a slow forward drift, like walking to the next spot */
-.room { opacity: 0; transform: scale(1.08) translateX(24px); transition: opacity 900ms ease-in-out, transform 1600ms cubic-bezier(.22,.61,.36,1); }
-.room.behind { transform: scale(1.08) translateX(-24px); }
+.room { opacity: 0; transform: scale(1.12) translateX(48px); transition: opacity 600ms ease-out, transform 1200ms cubic-bezier(.22,.61,.36,1); }
+.room.behind { transform: scale(1.12) translateX(-48px); }
 .room.on { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .room, .track .tcard { transition: opacity 200ms; } .room { transform: none; } }
 
@@ -671,3 +674,40 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 }
 
 }
+
+/* ---------- Nov 2026 review: student test flow ---------- */
+/* Question number, top left of each question card */
+.qnum { margin: 0; }
+
+/* Answer boxes: a light grey outline, not black (selected states keep their accent border) */
+.opt, .mrow { border-color: var(--opacity-neutral-30, var(--border)); }
+.blank:not(.active):not(.filled) { border-color: var(--opacity-neutral-30, var(--border)); }
+.chip:not(.on) { border-color: var(--opacity-neutral-30, var(--border)); }
+.opt.on, .mrow.open { border-color: var(--accent-400); }
+
+/* Smooth state changes now that elements persist between renders: picking, opening and closing */
+.opt, .mrow, .blank, .chip, .badge { transition: all 200ms ease-out; }
+.opt .letter, .opt .tick, .opt .tick svg { transition: all 200ms ease-out; }
+.mgrid { animation: stu2-open 200ms ease-out both; }
+@keyframes stu2-open { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+/* Entering the test deals the deck in; the review page and trophy rise in */
+.deck { animation: stu2-rise 200ms ease-out both; }
+.stu2-solid + .stu2-layer .rcol { animation: stu2-rise 200ms ease-out both; }
+.stu2-solid { animation: stu2-fade 200ms ease-out both; }
+
+/* Footer actions on the final card, review and hand in dialog */
+.qfoot-end { display: flex; flex-direction: column; gap: 8px; border-top: 0; }
+.rfoot-end { padding: 8px 0; }
+.dlg-actions { display: flex; flex-direction: column; gap: 8px; }
+[data-fill] { width: 100%; }
+
+/* Desktop: buttons hug their label and sit bottom right; the hand in dialog puts its two buttons side by side */
+@container stu2 (min-width: 1200px) {
+  .qfoot-end { flex-direction: row-reverse; justify-content: flex-start; align-items: center; }
+  .rfoot-end { display: flex; justify-content: flex-end; }
+  .qfoot-end [data-fill], .rfoot-end [data-fill], .trophy-wrap > [data-fill] { width: auto; }
+  .dlg-actions { flex-direction: row; }
+  .dlg-actions [data-fill] { flex: 1; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .mgrid, .deck, .stu2-solid, .stu2-solid + .stu2-layer .rcol { animation: none; } .opt, .mrow, .blank, .chip { transition: none; } }
+

@@ -234,10 +234,10 @@ a.sg-school:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
 <div class="sg-goal-wrap">
 <sc-if value="{{focus}}" hint-placeholder-val="{{ false }}"><button type="button" class="sg-back" onClick="{{hideWhere}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg><span>Back</span></button></sc-if>
 <div class="sg-goal">
-<button type="button" class="sg-goal-btn" aria-label="Switch goal">
+<div class="backhead"><sc-if value="{{notFocus}}" hint-placeholder-val="{{ true }}"><a class="backlink backicon" href="{{backHref}}" aria-label="Back to the previous screen" title="Back"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a></sc-if><button type="button" class="sg-goal-btn" aria-label="Switch goal">
 <h1>Accelerate Growth for Every Learner</h1>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
-</button>
+</button></div>
 <span class="sg-badge sg-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>Needs attention</span>
 </div>
 </div>
@@ -540,5 +540,5 @@ class Component extends DCLogic {
 }
 </script>
 <link rel="stylesheet" href="cognia-approved-ui.css"><link rel="stylesheet" href="admin-type.css?v=20261030-heading24">
-<script src="persona-routing.js"></script><link rel="stylesheet" href="brand-emblem.css?v=20261028-emblem"></body>
+<script src="persona-routing.js"></script><link rel="stylesheet" href="brand-emblem.css?v=20261028-emblem"><link rel="stylesheet" href="ds/cognia/back-chevron.css"></body>
 </html>

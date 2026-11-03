@@ -1,0 +1,14 @@
+/* Prototype entry screen (Main.dc.html, index.html).
+   This page sits outside the product, so on purpose it does not use the Cognia look:
+   no Cognia header or footer, square buttons in EPI-USE blue, and the EPI-USE logo top left. */
+.cap-entry { --epi-blue: #184586; --epi-blue-hover: color-mix(in srgb, #184586 85%, var(--card)); }
+.cap-entry .epi-brand { position: absolute; top: var(--space-6); left: var(--horizontal-padding); display: flex; align-items: center; z-index: 10; }
+.cap-entry .epi-logo { display: block; height: 32px; width: auto; }
+.cap-entry .epi-wordmark { font: var(--weight-bold) var(--text-body-base)/1 var(--font-sans); letter-spacing: .04em; color: var(--epi-blue); }
+.cap-entry .entry-main { min-height: 100vh; box-sizing: border-box; }
+html body.cap-entry .home-button,
+html body.cap-entry .home-dialog-heading .home-button.home-ghost { border-radius: 0; }
+html body.cap-entry .persona-card .home-button { border-color: var(--epi-blue); background: var(--epi-blue); color: var(--primary-foreground); box-shadow: none; }
+html body.cap-entry .persona-card:hover .home-button,
+html body.cap-entry .persona-card .home-button:hover { border-color: var(--epi-blue-hover); background: var(--epi-blue-hover); color: var(--primary-foreground); box-shadow: none; }
+html body.cap-entry .home-button:focus-visible { outline: 3px solid var(--epi-blue); outline-offset: 2px; }

@@ -39,14 +39,14 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 
 /* ---------- Observations ---------- */
 .os-chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}
-.os-chip{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--rounded-full);background:var(--card);color:var(--foreground);font:var(--weight-regular) var(--text-body-base)/var(--lh-snug) var(--font-sans);cursor:pointer}
+.os-chip{display:inline-flex;align-items:center;height:32px;padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--rounded-full);background:var(--card);color:var(--foreground);font:var(--weight-regular) var(--text-body-base)/var(--lh-snug) var(--font-sans);cursor:pointer}
 .os-chip:hover{background:var(--secondary)}
 .os-chip[aria-pressed="true"]{border-color:var(--primary);background:var(--primary);color:var(--primary-foreground)}
 .os-obs-layout{display:grid;grid-template-columns:minmax(0,1fr) 328px;gap:var(--space-10);align-items:start}
 .os-list{display:flex;flex-direction:column;gap:var(--space-2)}
 .os-list-head{display:flex;justify-content:flex-end}
 .os-date{margin:var(--space-2) 0 0;color:var(--foreground)}
-.os-obs{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-3);border-radius:var(--os-radius);background:var(--card)}
+.os-obs{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-3);border-radius:var(--os-radius);background:var(--card);box-shadow:none;transition:all 200ms}
 .os-obs-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-4)}
 .os-name{font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);color:var(--foreground)}
 .os-school{display:inline-flex;align-items:center;gap:var(--space-1);color:var(--muted-foreground);white-space:nowrap}
@@ -68,7 +68,6 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 .os-env-label{text-align:right}
 .os-env-track{position:relative;height:56px;background:var(--secondary)}
 .os-env-fill{position:absolute;top:0;right:0;bottom:0;background:var(--accent-300)}
-.os-env-fill.is-top{background:var(--accent-400)}
 .os-env-rows{display:flex;flex-direction:column;gap:var(--space-2)}
 .os-axis{display:flex;justify-content:space-between;color:var(--muted-foreground);padding-right:var(--space-2)}
 .os-legend{display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-2)}
@@ -111,7 +110,7 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 .os-noevents{padding:var(--space-3) var(--space-4);border-radius:var(--radius);background:var(--card);color:var(--muted-foreground)}
 .os-sur-list{display:flex;flex-direction:column;gap:var(--space-2)}
 .os-sur-list-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
-.os-survey{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);padding:var(--space-3);border-radius:var(--os-radius);background:var(--card)}
+.os-survey{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);padding:var(--space-3);border-radius:var(--os-radius);background:var(--card);box-shadow:none;transition:all 200ms}
 .os-survey-txt{display:flex;flex-direction:column;gap:var(--space-1);min-width:0}
 .os-survey-when{display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-2)}
 .os-ring{position:relative;width:100px;height:100px;flex-shrink:0}
@@ -138,8 +137,11 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 }
 @media (prefers-reduced-motion:reduce){.os-btn{transition:none}}
 html body .theme-assessments .top.os-top .navl a{text-decoration:none}
-/* Product tabs other than the current page are placeholders: no destination, no hover. */
+/* Product tabs other than the current page are placeholders: they show the standard nav hover, but have no destination. */
 html body .theme-assessments .top.os-top .navl a[aria-disabled="true"]{cursor:default}
-html body .theme-assessments .top.os-top .navl a[aria-disabled="true"]:hover{background:transparent}
-/* Date headings in the observations list are labels, 14px semibold. */
-.os-main .os-date{font-size:var(--text-body-small)}
+/* Observation tools other than eleot are placeholders: hover shows, clicking does nothing. */
+.os-chip[aria-disabled="true"]{cursor:default}
+/* Date headings in the observations list: 14px regular. */
+.os-main .os-date{font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
+/* Observation and survey cards: hover lifts like other cards, but they are not links (no pointer, no destination). */
+.os-main :is(.os-obs,.os-survey):hover{box-shadow:var(--shadow-md)}

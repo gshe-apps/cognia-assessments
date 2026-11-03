@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    const use=event.target.closest('[data-action="catalogUse"]');if(use&&!use.disabled){
      const model=testModel();if(!model)return;const test=model.tests.find(t=>t.id===model.active)||model.tests[0],id=use.dataset.id,premium=/[ab][56]$/.test(id);if(premium&&!plus())return;
      const row=use.closest('.listline'),description=row.querySelector('p')?.textContent||'',stem=row.querySelector('b')?.textContent||'Library question';
-     const q={id,stem,type:/Extended text/.test(description)?'Extended text':/Text entry/.test(description)?'Text entry':'Multiple choice',marks:Number(description.match(/(\d+) marks?/)?.[1]||1),options:[],correct:null,source:'Library'};
+     const q={id,stem,type:/Extended text/.test(description)?'Extended text':/Text entry/.test(description)?'Text entry':'Multiple choice',marks:Number(description.match(/(\d+) (?:points?|marks?)/)?.[1]||1),options:[],correct:null,source:'Library'};
      test.state||={chosen:['g5a1','g5a2','g5a3'],written:{},edits:{}};test.state.written||={};if(!test.state.chosen.includes(id)){test.state.chosen.push(id);test.state.written[id]=q;test.questions||=[];test.questions.push(q);}localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));apply();
    }
  });

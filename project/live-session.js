@@ -7,7 +7,14 @@
 window.CogniaLive = (() => {
   // ---------- Demo settings (edit these) ----------
   // Paste the config object from Firebase console > Project settings > Your apps.
-  const FIREBASE_CONFIG = null;
+  const FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyAMi0kBT_HB3cw6JezayCA4Xudz6cOaD_4',
+    authDomain: 'cognia-board-demo.firebaseapp.com',
+    projectId: 'cognia-board-demo',
+    storageBucket: 'cognia-board-demo.firebasestorage.app',
+    messagingSenderId: '604798386296',
+    appId: '1:604798386296:web:fa6217895b16f97dfaad8d'
+  };
   // Everyone enters the same session code.
   const SESSION_CODE = 'MATH-27';
   // Short link shown to students on the teacher's screen (e.g. a Bitly link). Leave empty to show the full address.
@@ -44,11 +51,13 @@ window.CogniaLive = (() => {
 
   // ---------- Storage ----------
   let fire = null;
+  // 'local' (no config), 'connecting', 'live' or 'offline' (config set but Firebase unreachable)
+  let connection = FIREBASE_CONFIG ? 'connecting' : 'local';
   function cloud() {
     if (!FIREBASE_CONFIG) return Promise.resolve(null);
     if (!fire) fire = Promise.all([import(SDK + 'firebase-app.js'), import(SDK + 'firebase-firestore.js')])
-      .then(([app, fs]) => ({ fs, db: fs.getFirestore(app.initializeApp(FIREBASE_CONFIG)) }))
-      .catch((err) => { console.warn('Live session: Firebase unavailable, using this browser only.', err); return null; });
+      .then(([app, fs]) => { connection = 'live'; return { fs, db: fs.getFirestore(app.initializeApp(FIREBASE_CONFIG)) }; })
+      .catch((err) => { connection = 'offline'; console.warn('Live session: Firebase unavailable, using this browser only.', err); return null; });
     return fire;
   }
   const readLocal = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
@@ -84,7 +93,7 @@ window.CogniaLive = (() => {
           const all = {};
           snap.forEach((d) => { all[d.id] = d.data(); });
           callback(all);
-        }, (err) => console.warn('Live session: listening failed.', err));
+        }, (err) => { connection = 'offline'; console.warn('Live session: listening failed.', err); callback({}); });
         return;
       }
       const push = () => callback(readLocal());
@@ -120,7 +129,7 @@ window.CogniaLive = (() => {
 
   return {
     SESSION_CODE, ROSTER, score, save, watch, reset, findStudent, sessionMatches, signIn, current,
-    isCloud: () => !!FIREBASE_CONFIG,
+    connection: () => connection,
     joinUrl: () => JOIN_LINK || new URL('STU2-SignIn.dc.html', location.href).href
   };
 })();

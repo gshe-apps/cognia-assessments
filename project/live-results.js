@@ -37,7 +37,12 @@
     const message = joined === 0 ? 'Waiting for students to join'
       : done === total ? 'All ' + total + ' students have handed in'
       : done + ' of ' + total + ' handed in · ' + (joined - done) + ' working';
-    const where = sample ? 'Showing sample results' : live.isCloud() ? 'Live across devices' : 'This browser only (add Firebase to go live)';
+    const where = sample ? 'Showing sample results' : ({
+      live: 'Live across devices',
+      connecting: 'Connecting',
+      offline: 'Can’t reach Firebase on this network. Showing this browser only.',
+      local: 'This browser only (add Firebase to go live)'
+    })[live.connection()];
     const resetControls = confirmReset
       ? '<span class="rr-live-confirm">Clear every result in this session?</span><button type="button" class="btn small" data-live="cancel">Cancel</button><button type="button" class="btn small solid" data-live="reset-yes">Clear results</button>'
       : '<button type="button" class="btn small" data-live="reset">Reset session</button>';

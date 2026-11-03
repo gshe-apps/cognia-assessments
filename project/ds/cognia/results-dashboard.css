@@ -1,4 +1,4 @@
-.rr-main { background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--accent-100) 32%,transparent),transparent 65%),var(--background); }
+.rr-main { background:var(--background); }
 .rr-page { max-width:1440px; margin:auto; padding:var(--space-8); display:flex; flex-direction:column; gap:var(--space-6); }
 .rr-page :is(h1,h2,p) { margin:0; }
 .rr-page h1 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
@@ -30,7 +30,7 @@
 .rr-track { height:12px; border-radius:var(--rounded-full); background:var(--secondary); overflow:hidden; }
 .rr-track span { display:block; height:100%; border-radius:inherit; background:var(--success); }
 .rr-performance-row:nth-child(3) .rr-track span,.rr-performance-row:nth-child(5) .rr-track span { background:var(--warning); }
-.rr-insights { background:linear-gradient(135deg,color-mix(in srgb,var(--accent-100) 24%,var(--card)),var(--card)); }
+.rr-insights { background:var(--card); }
 .rr-insights h2 { display:flex; align-items:center; gap:var(--space-3); }
 .rr-insights h2 .rr-icon { width:32px; height:32px; background:transparent; }
 .rr-insight { display:flex; gap:var(--space-3); margin-top:var(--space-4); }

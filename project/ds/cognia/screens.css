@@ -36,3 +36,11 @@
 @media(prefers-reduced-motion:reduce) {
   :where(.cognia-screen *) { transition-duration:0ms; animation-duration:0ms; }
 }
+/* Legacy overview statistics use the same semantic cards and responsive actions. */
+.cognia-screen .overview-stat{background:var(--card);color:var(--card-foreground);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:none;}
+.cognia-screen .overview-stat p{color:var(--muted-foreground);}
+.cognia-screen .overview-assessment{flex-wrap:wrap;gap:var(--space-4);}
+@media(max-width:639px){.cognia-screen .overview-assessment>div{min-width:0;width:100%;}.cognia-screen .overview-assessment :is(a,button){max-width:100%;white-space:normal;}.cognia-screen .overview-assessment .btn{flex:1;}}
+.cognia-screen .overview-stat :is(h2,strong,svg){color:var(--card-foreground);}
+@media(max-width:639px){.cognia-screen .overview-assessment-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);width:auto;max-width:100%;min-width:0;}.cognia-screen .overview-assessment-actions .btn{flex:1 1 128px;min-width:0;}.cognia-screen .overview-assessment>div{flex-wrap:wrap;}}
+@media(max-width:639px){.cognia-screen .overview-assessment-actions{margin-left:0;flex-basis:100%;}.cognia-screen .overview-assessment>.overview-assessment-info{width:auto;flex:1;}}

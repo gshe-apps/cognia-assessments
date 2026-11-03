@@ -33,7 +33,7 @@
 .allocation-student label{font-weight:var(--weight-semibold);}
 .allocation-student .allocation-select{width:160px;max-width:100%;margin-left:auto;}
 .allocation-student select{min-height:32px;padding:var(--space-1) var(--space-10) var(--space-1) var(--space-3);font-size:var(--text-body-small);}
-.allocation-accommodation{padding:0 var(--space-2);border-radius:var(--rounded-full);background:var(--warning-light);color:var(--warning);font-size:var(--text-body-small);line-height:var(--lh-base);}
+.allocation-accommodation.badge{padding:0 var(--space-2);border-radius:var(--rounded-full);background:var(--warning-light);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);}
 .allocation-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);}
 .allocation-heading .btn{min-height:32px;padding:var(--space-1) var(--space-3);}
 .allocation-add-session{border:1px solid var(--accent-300);background:transparent;color:var(--foreground);font-weight:var(--weight-semibold);border-radius:var(--radius);box-shadow:none;}
@@ -121,10 +121,10 @@
 .allocation-table th:last-child,.allocation-table td:last-child{width:176px;box-sizing:border-box;}
 .allocation-table tbody th{font-weight:var(--weight-semibold);}
 .allocation-table tbody th>span{display:inline-block;vertical-align:middle;}
-.allocation-table .allocation-accommodation{margin-left:var(--space-2);font-weight:var(--weight-regular);}
+.allocation-table .allocation-accommodation.badge{margin-left:var(--space-2);font-weight:var(--weight-regular);}
 .allocation-table tr:last-child :is(th,td){border-bottom:0;}
 .allocation-table select{min-height:32px;padding:var(--space-1) var(--space-10) var(--space-1) var(--space-3);font-size:var(--text-body-small);}
-@media(max-width:639px){.allocation-toolbar-selection{border:0;}.allocation-selection-toolbar .allocation-bulk-controls{width:auto;flex:0 0 auto;}.allocation-selection-toolbar .allocation-bulk-controls>label{width:auto;white-space:nowrap;}.allocation-selection-toolbar .allocation-bulk-controls .allocation-select{min-width:120px;}.allocation-table th:last-child,.allocation-table td:last-child{width:136px;}.allocation-table th,.allocation-table td{padding-left:var(--space-2);padding-right:var(--space-2);}.allocation-table .allocation-accommodation{margin:var(--space-1) 0;white-space:normal;}}
+@media(max-width:639px){.allocation-toolbar-selection{border:0;}.allocation-selection-toolbar .allocation-bulk-controls{width:auto;flex:0 0 auto;}.allocation-selection-toolbar .allocation-bulk-controls>label{width:auto;white-space:nowrap;}.allocation-selection-toolbar .allocation-bulk-controls .allocation-select{min-width:120px;}.allocation-table th:last-child,.allocation-table td:last-child{width:136px;}.allocation-table th,.allocation-table td{padding-left:var(--space-2);padding-right:var(--space-2);}.allocation-table .allocation-accommodation.badge{margin:var(--space-1) 0;white-space:normal;}}
 .allocation-bulk-controls>label{white-space:nowrap;flex-shrink:0;}
 .allocation-selection-toolbar[hidden]{display:none;}
 .allocation-class-view [data-rosters]{margin-top:var(--space-3);}
@@ -140,7 +140,7 @@
 .allocation-class-head .allocation-class-actions .solid{background:var(--accent-300);color:var(--primary-foreground);min-height:32px;padding:var(--space-1) var(--space-3);border-radius:var(--radius);font-weight:var(--weight-semibold);}
 .allocation-class-actions .allocation-clear{border-left:1px solid var(--accent-200);border-radius:0;padding-left:var(--space-3);font-size:var(--text-body-small);}
 .allocation-class-view .allocation-student{padding:var(--space-2) var(--space-4);min-height:40px;}
-.allocation-accommodation{display:inline-flex;align-items:center;gap:var(--space-1);}
+.allocation-accommodation.badge{display:inline-flex;align-items:center;gap:var(--space-1);}
 .allocation-accommodation svg{width:12px;height:12px;flex-shrink:0;}
 @media(max-width:1279px) and (min-width:1101px){.allocation-class-select{flex-wrap:wrap;white-space:normal;}.allocation-class-select span{width:100%;}.allocation-class-actions{gap:var(--space-1);}.allocation-class-actions .allocation-select{width:96px;}}
 @media(max-width:639px){.allocation-class-view .allocation-class-head{flex-wrap:wrap;}.allocation-class-actions{width:100%;margin-left:var(--space-6);}.allocation-class-actions .allocation-select{flex:1;width:auto;}.allocation-class-view [data-rosters]{margin-top:var(--space-3);}}

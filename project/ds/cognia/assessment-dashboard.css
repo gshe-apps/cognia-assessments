@@ -12,3 +12,17 @@
 @media(prefers-reduced-motion:reduce){.od-dashboard .ad-entry{transition:none;}}
 .assessment-catalogue .ar-assessments,.assessment-catalogue .ov-table-scroll{min-width:0;max-width:100%;}.assessment-catalogue .ov-table-scroll{overflow-x:auto;}.assessment-catalogue .ar-table{min-width:720px;}.assessment-catalogue .ar-collections{flex-wrap:wrap;}.assessment-catalogue .ar-tabs{max-width:100%;flex-wrap:wrap;}
 @media(max-width:639px){body:has(.assessment-catalogue) .hubhdr{max-width:100%;box-sizing:border-box;}body:has(.assessment-catalogue) .hubnav{min-width:0;max-width:100%;overflow-x:auto;}body:has(.assessment-catalogue) .hubbrand{min-width:0;}.assessment-catalogue.od-dashboard{width:100%;box-sizing:border-box;}}
+/* Compact outlined entry cards, without decorative media. */
+.od-dashboard .ad-entry{min-height:64px;box-sizing:border-box;padding:var(--space-3) var(--space-4);gap:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-xl);background:var(--card);box-shadow:none;}
+.ad-entry>span:first-child{width:32px;height:32px;background:transparent;border-radius:var(--radius);}
+.ad-entry svg{width:24px;height:24px;}
+.ad-entry strong{font-size:var(--text-body-small);line-height:1.5;}
+.od-dashboard .ad-entry:hover,.od-dashboard .ad-entry:focus-visible{background:var(--background);border-color:var(--accent-300);box-shadow:var(--shadow-sm);}
+/* Compact entry actions with a restrained assessment accent. */
+.od-dashboard .ad-entry{position:relative;isolation:isolate;min-height:72px;padding:var(--space-3) var(--space-4);gap:var(--space-4);background:var(--card);box-shadow:var(--shadow-sm);transition:all 200ms;}
+.ad-entry>span:first-child{width:40px;height:40px;background:var(--accent-100);border-radius:var(--radius);transition:all 200ms;}
+.ad-entry strong{font-size:var(--text-body-base);font-weight:var(--weight-semibold);line-height:1.5;}
+.ad-entry>span:last-child{display:grid;place-items:center;width:32px;height:32px;flex-shrink:0;border-radius:var(--rounded-full);background:var(--background);transition:all 200ms;}
+.od-dashboard .ad-entry:hover,.od-dashboard .ad-entry:focus-visible{background:var(--card);border-color:var(--accent-300);box-shadow:var(--shadow-md);transform:translateY(-4px);}
+.ad-entry:hover>span:last-child,.ad-entry:focus-visible>span:last-child{background:var(--accent-100);transform:translateX(4px);}
+@media(prefers-reduced-motion:reduce){.od-dashboard .ad-entry,.ad-entry>span:first-child,.ad-entry>span:last-child{transition:none;}.od-dashboard .ad-entry:hover,.od-dashboard .ad-entry:focus-visible,.ad-entry:hover>span:last-child,.ad-entry:focus-visible>span:last-child{transform:none;}}

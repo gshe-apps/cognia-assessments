@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Student option 2 · Classroom</title>
 <script src="./support.js"></script>
+<script src="./live-session.js"></script>
 <link rel="stylesheet" href="stu2.css">
 </head>
 <body>
@@ -131,14 +132,16 @@ class Component extends DCLogic {
     const k = s.card, cdx = s.cdx;
     const sz = (window.innerWidth || 390) >= 1200 ? 'd' : (window.innerWidth || 390) >= 768 ? 't' : 'm';
     v.room0 = 'assets/stu2/' + sz + '-land0.jpg'; v.room1 = 'assets/stu2/' + sz + '-land1.jpg'; v.room2 = 'assets/stu2/' + sz + '-land2.jpg'; v.roomTest = 'assets/stu2/' + sz + '-test.jpg';
-    v.headText = s.status === 'done' ? 'Nice work, Jamie!' : 'Hey Jamie';
+    const live = window.CogniaLive, me = live && live.current();
+    const first = me ? me.name.split(' ')[0] : 'Jamie';
+    v.headText = s.status === 'done' ? 'Nice work, ' + first + '!' : 'Hey ' + first;
     v.card0Open = s.status !== 'done'; v.card0Done = s.status === 'done';
     v.newBadge = s.status === 'new'; v.progBadge = s.status === 'progress';
     v.sub0 = s.status === 'progress' ? '4 questions · ' + answered + ' answered' : '4 questions';
     v.ctaText = s.status === 'progress' ? 'Continue test' : 'Start test';
     v.startLabel = (s.status === 'progress' ? 'Continue' : 'Start') + ' Fractions check';
     v.doneAns = answered + '/4';
-    v.startTest = (e) => { if (this._moved) { e.preventDefault(); this._moved = false; return; } this.setState({ scr: 'q', dx: 0, cheer: '', exitOpen: false }); };
+    v.startTest = (e) => { if (this._moved) { e.preventDefault(); this._moved = false; return; } if (s.status === 'new' && live) live.save({ status: 'progress', startedAt: Date.now() }); this.setState({ scr: 'q', dx: 0, cheer: '', exitOpen: false }); };
     v.hint = k === 0 ? 'Swipe to see your past tests' : 'Swipe back for your next test';
     v.hintDesk = k === 0 ? 'Use the arrows to see your past tests' : 'Go back for your next test';
     v.trackStyle = '--k: ' + k + '; --dx: ' + cdx + 'px; transition: ' + (s.cdrag ? 'none' : 'transform 450ms cubic-bezier(.22,.61,.36,1)');
@@ -259,7 +262,11 @@ class Component extends DCLogic {
     v.confirmBack = () => { if (missing === 0) this.setState({ confirm: false }); else this.setState({ confirm: false, scr: 'q', i: firstMissing, dx: 0 }); };
     v.closeConfirm = () => this.setState({ confirm: false });
     v.askHandIn = () => this.setState({ confirm: true });
-    v.handIn = () => this.setState({ confirm: false, trophy: true });
+    v.handIn = () => {
+      // Send the scored answers to the teacher's Results screen.
+      if (live) { const sc = live.score(s); live.save({ status: 'submitted', submittedAt: Date.now(), marks: sc.marks, max: sc.max, byQuestion: sc.byQuestion, answers: { q1: s.a0, q2: s.a1, q3: s.a2, q4: s.a3 } }); }
+      this.setState({ confirm: false, trophy: true });
+    };
     v.toClassroom = () => this.setState({ trophy: false, scr: 'class', status: 'done', card: 0, cdx: 0 });
     return v;
   }

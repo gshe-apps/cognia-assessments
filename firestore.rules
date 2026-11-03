@@ -1,0 +1,17 @@
+rules_version = '2';
+// Board demo rules for the live student session (see project/live-session.js).
+// Demo personas only. Each student record can be written with expected fields only.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sessions/{session}/students/{passcode} {
+      allow read: if true;
+      allow create, update: if request.resource.data.keys().hasOnly(
+          ['passcode', 'name', 'status', 'updatedAt', 'joinedAt', 'startedAt', 'submittedAt', 'marks', 'max', 'byQuestion', 'answers'])
+        && request.resource.data.status in ['joined', 'progress', 'submitted']
+        && request.resource.data.passcode == passcode;
+      // Used by the teacher's Reset session button.
+      allow delete: if true;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

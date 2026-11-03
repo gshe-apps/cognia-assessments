@@ -8,23 +8,31 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .dh-main { --hp-radius:var(--radius-xl, calc(var(--radius) + var(--space-1))); padding-bottom:var(--space-6); }
 .dh-main :is(h1,h2,h3,p) { margin:0; }
 
-/* ---------- Page header: greeting left, Ask a question right ---------- */
-.hp-top { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-6); flex-wrap:wrap; }
-.hp-greet { display:flex; flex-direction:column; gap:var(--space-1); }
-.hp-greet p { font-size:var(--text-body-base); color:var(--muted-foreground); }
-.hp-ask { position:relative; width:288px; max-width:100%; }
-.hp-ask .home-search { margin:0; max-width:none; }
-.hp-ask-row { display:flex; align-items:center; gap:var(--space-2); height:40px; padding:0 var(--space-3) 0 var(--space-4); border:0; border-radius:var(--rounded-full); background:var(--card); }
-.hp-ask-row svg { width:16px; height:16px; flex-shrink:0; color:var(--muted-foreground); }
-.hp-ask-row input { flex:1; min-width:0; height:100%; border:0; outline:0; background:transparent; color:var(--card-foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); }
+/* ---------- Page header: greeting, organisation and stats left; Ask a question right ---------- */
+.hp-top { display:flex; align-items:center; justify-content:space-between; gap:var(--space-6); flex-wrap:wrap; }
+.hp-greet { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-1); }
+.hp-greet h1 { margin-bottom:var(--space-1); }
+.dh-main .hp-org-name { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); color:var(--foreground); }
+.dh-main .hp-org-stats { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2); font-size:var(--text-body-small); color:var(--muted-foreground); }
+.hp-org-stats .hp-dot { font-weight:var(--weight-semibold); }
+
+/* Ask a question: an input field (no border, white fill on the page background, 48px tall) led by the AI icon. */
+.hp-ask { position:relative; flex:0 1 400px; min-width:280px; }
+.hp-ask.home-search { margin:0; max-width:none; }
+.hp-ask-row { display:flex; align-items:center; gap:var(--space-3); height:var(--space-12); padding:0 var(--space-4); border:0; border-radius:var(--rounded-full); background:var(--primary-foreground); }
+.hp-ask-row svg { width:20px; height:20px; flex-shrink:0; color:var(--muted-foreground); }
+.hp-ask-row input { flex:1; min-width:0; height:100%; border:0; outline:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); }
 .hp-ask-row input::placeholder { color:var(--muted-foreground); }
 .hp-ask-row:focus-within { outline:3px solid var(--ring); outline-offset:2px; }
 .hp-ask .home-question-submit { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); border:0; }
-
-.dh-main .hp-org { display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-1); text-align:right; }
-.dh-main .hp-org-name { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); color:var(--foreground); }
-.dh-main .hp-org-stats { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:var(--space-2); font-size:var(--text-body-small); color:var(--muted-foreground); }
-.hp-org-stats .hp-dot { font-weight:var(--weight-semibold); }
+.hp-ask .home-search-error { position:absolute; top:calc(100% + var(--space-1)); left:var(--space-4); margin:0; color:var(--destructive); font-size:var(--text-body-small); }
+.hp-ask-results { position:absolute; right:0; left:0; top:calc(100% + var(--space-2)); z-index:20; display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-3); padding:var(--space-4); border-radius:var(--hp-radius); background:var(--popover); color:var(--popover-foreground); box-shadow:var(--shadow-md); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); }
+.hp-ask-results[hidden] { display:none; }
+.hp-ask-results:focus { outline:none; }
+.hp-ask-results .home-search-links { display:flex; flex-direction:column; gap:var(--space-2); }
+.hp-ask-results .home-search-links a { color:var(--popover-foreground); text-decoration:underline; }
+.hp-ask-clear { min-height:var(--space-10); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:transparent; color:var(--popover-foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); cursor:pointer; transition:all 200ms; }
+.hp-ask-clear:hover { background:var(--secondary); }
 
 /* Ask Cognia panel, opens under the question field */
 .hp-chat { position:absolute; right:0; top:calc(100% + var(--space-2)); z-index:20; display:flex; flex-direction:column; width:400px; max-width:calc(100vw - var(--space-8)); max-height:min(560px, calc(100vh - 200px)); border-radius:var(--hp-radius); background:var(--popover); color:var(--popover-foreground); box-shadow:var(--shadow-md); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); overflow:hidden; }
@@ -182,8 +190,7 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
   .hp-side { flex-basis:auto; }
 }
 @media (max-width:767px) {
-  .dh-main .hp-org { align-items:flex-start; text-align:left; }
-  .dh-main .hp-org-stats { justify-content:flex-start; }
+  .hp-ask { flex-basis:100%; }
   .hp-pair { flex-direction:column; }
   .hp-chart { overflow-x:auto; }
   .hp-chart svg { min-width:640px; }
@@ -193,5 +200,3 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
   .hp-chart .line.draw { animation:none; stroke-dashoffset:0; }
   .hp-chart .marks.draw { animation:none; opacity:1; }
 }
-/* The Data and Reporting title is quieter than the other card titles: 14px regular. */
-.dh-main .hp-dr > .hp-h { font-size:var(--text-body-small); font-weight:var(--weight-regular); }

@@ -1,10 +1,10 @@
 /* Prototype entry screen (Main.dc.html, index.html).
    This page sits outside the product, so on purpose it does not use the Cognia look:
-   no Cognia header or footer, square buttons in EPI-USE blue, and the EPI-USE logo top left. */
-.cap-entry { --epi-blue: #184586; --epi-blue-hover: color-mix(in srgb, #184586 85%, var(--card)); }
+   no Cognia header or footer, square buttons in EPI-USE blue, and the EPI-USE logo top left.
+   EPI-USE colours are sampled from the EPI-USE logo (assets/epi-use-logo.png). */
+.cap-entry { --epi-blue: #133B66; --epi-red: #89162C; --epi-blue-hover: color-mix(in srgb, #133B66 85%, var(--card)); }
 .cap-entry .epi-brand { position: absolute; top: var(--space-6); left: var(--horizontal-padding); display: flex; align-items: center; z-index: 10; }
-.cap-entry .epi-logo { display: block; height: 32px; width: auto; }
-.cap-entry .epi-wordmark { font: var(--weight-bold) var(--text-body-base)/1 var(--font-sans); letter-spacing: .04em; color: var(--epi-blue); }
+.cap-entry .epi-logo { display: block; height: 40px; width: auto; }
 .cap-entry .entry-main { min-height: 100vh; box-sizing: border-box; }
 html body.cap-entry .home-button,
 html body.cap-entry .home-dialog-heading .home-button.home-ghost { border-radius: 0; }
@@ -12,3 +12,19 @@ html body.cap-entry .persona-card .home-button { border-color: var(--epi-blue); 
 html body.cap-entry .persona-card:hover .home-button,
 html body.cap-entry .persona-card .home-button:hover { border-color: var(--epi-blue-hover); background: var(--epi-blue-hover); color: var(--primary-foreground); box-shadow: none; }
 html body.cap-entry .home-button:focus-visible { outline: 3px solid var(--epi-blue); outline-offset: 2px; }
+
+/* Choose an administrator role: EPI-USE dialog. Square corners, the logo's red rule along the top,
+   bordered role options that turn EPI-USE blue on hover, and a plain black close icon. */
+html body.cap-entry .epi-dialog { border-radius: 0; border-top: var(--space-1) solid var(--epi-red); padding: var(--space-8); }
+html body.cap-entry .epi-dialog .home-dialog-heading h2 { color: var(--epi-blue); }
+html body.cap-entry .epi-close { display: grid; place-items: center; flex-shrink: 0; width: var(--space-10); height: var(--space-10); padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--foreground); cursor: pointer; box-shadow: none; transition: all 200ms; }
+html body.cap-entry .epi-close svg { width: 24px; height: 24px; }
+html body.cap-entry .epi-close:hover { background: var(--secondary); }
+html body.cap-entry .epi-close:focus-visible { outline: 3px solid var(--epi-blue); outline-offset: 2px; }
+html body.cap-entry .home-admin-options > a.epi-option { border: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: all 200ms; }
+html body.cap-entry .home-admin-options > a.epi-option:hover { border-color: var(--epi-blue); box-shadow: var(--shadow-md); }
+html body.cap-entry .home-admin-options > a.epi-option:focus-visible { outline: 3px solid var(--epi-blue); outline-offset: 2px; }
+html body.cap-entry .epi-option .home-card-end { color: var(--epi-blue); }
+html body.cap-entry .epi-option .home-card-end svg { color: var(--epi-blue); }
+@media (prefers-reduced-motion: reduce) { html body.cap-entry :is(.epi-close, .epi-option) { transition: none; } }
+html body.cap-entry .epi-dialog h2:focus { outline: none; }

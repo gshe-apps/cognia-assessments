@@ -7,8 +7,6 @@
 .ib-main { display:block; flex:1 0 auto; align-self:stretch; width:100%; padding:0; background:var(--background); overflow-x:clip; }
 .ib { display:grid; grid-template-columns:minmax(0, 500px) minmax(0, 1fr); gap:var(--space-4); align-items:start; max-width:1320px; margin:0 auto; padding:var(--space-8) var(--horizontal-padding) var(--space-6); box-sizing:border-box; font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
 .ib.is-wide { grid-template-columns:minmax(0, 1fr); }
-/* Search and filters keep the list column's width in the table view, so they do not jump when the view changes. */
-.ib.is-wide :is(.ib-search, .ib-filters) { max-width:500px; }
 .ib :is(h1, h2, h3, p, ul) { margin:0; }
 .ib ul { padding:0; list-style:none; }
 .ib-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
@@ -26,18 +24,40 @@
 .ib-btn-ghost, .ib a.ib-btn-ghost:is(:link, :visited) { background:transparent; color:var(--foreground); }
 .ib-btn-ghost:hover, .ib a.ib-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
 .ib-btn-ghost svg { color:var(--muted-foreground); }
+/* Destructive ghost: red icon (icon colour through stroke, as the Home icons); the label stays foreground because
+   the plugin keeps status colours on text to badges and alerts. Usual ghost hover. */
+.ib-btn-ghost.is-destructive svg [stroke="currentColor"], .ib-btn-ghost.is-destructive svg[stroke="currentColor"] { stroke:var(--destructive); }
 /* Success: the confirmed state of Add to assessment. White label on --success meets 4.5:1; hover deepens slightly
    so the label keeps its contrast (lightening would drop it below AA). */
 .ib-btn-success { background:var(--success); border-color:var(--success); color:var(--primary-foreground); }
 .ib-btn-success:hover { background:color-mix(in srgb, var(--success) 88%, var(--foreground)); border-color:color-mix(in srgb, var(--success) 88%, var(--foreground)); }
-.ib-icon-btn { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); padding:0; border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); cursor:pointer; box-shadow:none; transition:all 200ms; }
+.ib-icon-btn { position:relative; display:grid; place-items:center; width:var(--space-10); height:var(--space-10); padding:0; border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); cursor:pointer; box-shadow:none; transition:all 200ms; }
 .ib-icon-btn:hover, .ib-icon-btn[aria-pressed="true"] { background:var(--secondary); }
+/* Tooltip above each icon button: white popover, as the administrator info tooltips. Shows on hover and keyboard focus. */
+.ib-tip { position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); box-shadow:var(--shadow-md); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); white-space:nowrap; pointer-events:none; opacity:0; transform:translate(-50%, var(--space-1)); transition:all 200ms; }
+.ib-icon-btn:is(:hover, :focus-visible) .ib-tip { opacity:1; transform:translate(-50%, 0); }
+.ib-tools > :last-child .ib-tip, .ib-tools > sc-if:last-child .ib-tip { left:auto; right:0; transform:translate(0, var(--space-1)); }
+.ib-tools > sc-if:last-child .ib-icon-btn:is(:hover, :focus-visible) .ib-tip { transform:none; }
 .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-rowlink, .ib-ms-trigger, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-table-wrap, input):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* List panel */
 .ib-list { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
 .ib-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); }
 .ib-tools { display:flex; align-items:center; gap:var(--space-2); }
+.ib-controls { display:none; }
+.ib-controls.has-any { display:flex; flex-direction:column; gap:var(--space-2); margin-top:var(--space-2); }
+.ib-controls > sc-if { display:contents; }
+.ib-slot-search { order:1; }
+.ib-slot-filter { order:2; }
+/* Ease open: the slot's row track grows from 0 with a fade, the same keyframes as the analysis accordion. */
+.ib-slot { display:grid; grid-template-rows:1fr; }
+.ib-slot-in { min-width:0; min-height:0; }
+.ib-controls.is-reveal-search .ib-slot-search, .ib-controls.is-reveal-filter .ib-slot-filter { animation:ib-acc-open 200ms ease-out; }
+.ib-controls.is-reveal-search .ib-slot-search .ib-slot-in, .ib-controls.is-reveal-filter .ib-slot-filter .ib-slot-in { overflow:hidden; }
+/* Table view: filters left, search far right, in one row. */
+.ib.is-wide .ib-controls.has-any { flex-direction:row; align-items:center; justify-content:space-between; gap:var(--space-4); }
+.ib.is-wide .ib-slot-filter { order:1; flex:0 1 640px; }
+.ib.is-wide .ib-slot-search { order:2; flex:0 1 320px; margin-left:auto; }
 .ib-search { display:flex; align-items:center; gap:var(--space-3); padding:0 var(--space-4); border-radius:var(--rounded-full); background:var(--primary-foreground); }
 .ib-search svg { color:var(--muted-foreground); }
 .ib-search input { flex:1; min-width:0; height:var(--space-12); border:0; outline:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
@@ -45,7 +65,6 @@
 .ib-search input::placeholder { color:var(--muted-foreground); }
 .ib-filters { position:relative; z-index:20; display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:var(--space-4); }
 .ib-field { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
-.ib-label { font-weight:var(--weight-semibold); }
 /* Multi-select: the trigger is an input field (no border, white fill on the page background, 48px). */
 .ib-ms { position:relative; }
 .ib-ms-trigger { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); width:100%; height:var(--space-12); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:var(--primary-foreground); color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
@@ -73,6 +92,10 @@
 .ib-empty { display:flex; flex-direction:column; align-items:center; gap:var(--space-4); padding:var(--space-16) var(--space-4); text-align:center; color:var(--muted-foreground); font-size:var(--text-body-base); }
 
 .ib-items { display:flex; flex-direction:column; max-height:calc(100vh - 220px); overflow-y:auto; padding-right:var(--space-2); }
+/* Scrollbars show only while scrolling (item-bank-scroll.js adds is-scrolling). The gutter is always reserved,
+   so showing and hiding the bar never moves anything. */
+.ib-items, html:has(.ib-main) { scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:transparent transparent; transition:scrollbar-color 200ms; }
+.ib-items.is-scrolling, html.is-scrolling:has(.ib-main) { scrollbar-color:color-mix(in srgb, var(--muted-foreground) 40%, transparent) transparent; }
 .ib-item { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-1); width:100%; padding:var(--space-3); border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; color:var(--foreground); font:inherit; text-align:left; cursor:pointer; transition:all 200ms; }
 .ib-item:hover { background:var(--secondary); }
 .ib-item[aria-current="true"] { background:var(--secondary); border-color:transparent; border-radius:var(--radius); }
@@ -95,10 +118,15 @@
 .ib-gr:not(.ib-gh):hover { background:color-mix(in srgb, var(--secondary) 55%, var(--card)); }
 .ib-gr.is-sel, .ib-gr.is-sel:hover { background:var(--secondary); }
 .ib-gt .ib-num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
-.ib-cellv { display:flex; flex-direction:column; gap:var(--space-px); }
+.ib-cellv { display:flex; flex-direction:column; gap:var(--space-px); align-items:flex-start; }
 .ib-rowlink { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding:0; border:0; background:transparent; color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-snug) var(--font-sans); text-align:left; cursor:pointer; }
 .ib-sub { color:var(--muted-foreground); font-weight:var(--weight-regular); }
-.ib-gc .ib-status { font-weight:var(--weight-regular); }
+.ib-gc.ib-reg { font-weight:var(--weight-regular); }
+/* Success rate: green at 50% and above, red below (plugin 1.7.0, data values). The number is the label, and it is
+   Subheading size (20px) so it meets the 3:1 large-text contrast on every row background, including the selected row. */
+.ib-rate { font:var(--weight-regular) var(--text-subheading)/var(--lh-snug) var(--font-sans); }
+.ib-rate.is-up { color:var(--success); }
+.ib-rate.is-down { color:var(--destructive); }
 
 /* Expand and collapse: 200ms out, 200ms in, transform and opacity only (plugin motion rule). */
 @keyframes ib-out-right { to { opacity:0; transform:translateX(var(--space-12)); } }
@@ -115,16 +143,15 @@
 .ib.is-in-split .ib-items { animation:ib-fade-in 200ms ease-out; }
 .ib[class*="is-out-"] { pointer-events:none; }
 
-/* Status badges: status fill, foreground label so it meets 4.5:1 (same approach as the Home alerts).
-   No dot (4 Nov): the label names the status, so colour is never the only cue. */
-.ib-status { display:inline-flex; align-items:center; padding:0 var(--space-2); border-radius:var(--rounded-full); color:var(--foreground); font-size:var(--text-body-small); white-space:nowrap; }
-.ib-status.is-success { background:var(--success-light); }
-.ib-status.is-warning { background:var(--warning-light); }
-.ib-status.is-destructive { background:var(--destructive-light); }
-.ib-status.is-info { background:var(--info-light); }
+/* Status badges, as the plugin Badge variants: success, destructive and info fills with the matching status text.
+   The status text is deepened slightly toward --foreground so the 14px label meets 4.5:1 (as the Home badges). */
+.ib-status { display:inline-flex; align-items:center; padding:0 var(--space-2); border-radius:var(--rounded-full); font-size:var(--text-body-small); font-weight:var(--weight-semibold); white-space:nowrap; }
+.ib-status.is-success { background:var(--success-light); color:color-mix(in srgb, var(--success) 80%, var(--foreground)); }
+.ib-status.is-destructive { background:var(--destructive-light); color:color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+.ib-status.is-info { background:var(--info-light); color:color-mix(in srgb, var(--info) 80%, var(--foreground)); }
 
 /* Detail panel */
-.ib-detail { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; padding-left:var(--space-4); border-left:1px solid var(--border); }
+.ib-detail { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; padding-left:var(--space-4); }
 .ib-d-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-4); }
 .ib-d-title { display:flex; flex-direction:column; gap:var(--space-2); }
 .ib-d-title h2 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
@@ -147,9 +174,9 @@
 
 .ib-sec { display:flex; flex-direction:column; gap:var(--space-2); }
 .ib-sec-h { color:var(--muted-foreground); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
-.ib-acc-row { border-bottom:1px solid var(--border); }
-.ib-acc-row:last-child { border-bottom:0; }
-.ib-acc-btn { display:flex; align-items:center; gap:var(--space-2); width:100%; padding:var(--space-2) 0; border:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-acc { display:flex; flex-direction:column; gap:var(--space-1); }
+.ib-acc-btn { display:flex; align-items:center; gap:var(--space-2); width:100%; padding:var(--space-2); border:0; border-radius:var(--radius); background:transparent; transition:all 200ms; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-acc-btn:hover { background:var(--secondary); }
 .ib-acc-label { flex:1; }
 /* Analysis icons: dark blue tile (Assessments --accent-400) with a white icon, same as the Home solid tile. */
 .ib-tile { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); flex-shrink:0; border-radius:var(--radius); background:var(--accent-400); }
@@ -170,7 +197,7 @@
 @keyframes ib-chev-open { from { transform:none; } to { transform:rotate(180deg); } }
 @keyframes ib-chev-close { from { transform:rotate(180deg); } to { transform:none; } }
 .ib-acc-inner { min-height:0; overflow:hidden; }
-.ib-acc-body { padding:0 0 var(--space-3) var(--space-12); color:var(--muted-foreground); }
+.ib-acc-body { padding:var(--space-1) var(--space-2) var(--space-3) calc(var(--space-12) + var(--space-2)); color:var(--muted-foreground); }
 
 .ib-assoc { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:var(--space-2); }
 .ib-assoc-card { display:flex; align-items:flex-start; gap:var(--space-2); padding:var(--space-4) var(--space-3); border-radius:var(--radius-xl); background:var(--card); color:var(--foreground); box-shadow:none; cursor:pointer; transition:all 200ms; }
@@ -183,10 +210,11 @@
 
 @media (max-width:1023px) {
   .ib { grid-template-columns:minmax(0, 1fr); }
-  .ib-detail { padding-left:0; border-left:0; }
+  .ib-detail { padding-left:0; }
   .ib-items { max-height:none; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-chev, .ib-ms-chev, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-assoc-card, .ib-gr, .ib-acc-panel) { transition:none; }
-  .ib :is(.ib-detail, .ib-items, .ib-table-wrap, .ib-acc-panel, .ib-chev) { animation:none; }
+  .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-chev, .ib-ms-chev, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-assoc-card, .ib-gr, .ib-acc-panel, .ib-acc-btn) { transition:none; }
+  .ib :is(.ib-detail, .ib-items, .ib-table-wrap, .ib-acc-panel, .ib-chev, .ib-slot) { animation:none; }
+  .ib-tip { transition:none; }
 }

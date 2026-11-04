@@ -483,7 +483,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .cta svg { width: 20px; height: 20px; }
 .note { padding: 8px 12px; background: color-mix(in srgb, var(--accent-100) 70%, transparent); border-radius: var(--radius); }
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.stat { display: flex; flex-direction: column; align-items: center; padding: 8px; border-radius: var(--radius); background: color-mix(in srgb, var(--card) 80%, transparent); }
+.stat { display: flex; flex-direction: column; align-items: center; padding: 8px; border-radius: var(--radius); background: var(--secondary); }
 .dots { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; }
 .dot { width: 8px; height: 8px; border-radius: var(--rounded-full); background: color-mix(in srgb, var(--card) 70%, transparent); box-shadow: var(--shadow-sm); transition: all 200ms; }
 .dot.on { height: 24px; background: var(--primary); }
@@ -506,7 +506,9 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .side { flex: none; width: 48px; height: 48px; border-radius: var(--rounded-full); display: inline-flex; align-items: center; justify-content: center; border: 0; cursor: pointer; opacity: .85; }
 .side svg { width: 20px; height: 20px; color: var(--muted-foreground); }
 .side.hide { visibility: hidden; }
-.story { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: var(--radius); background: var(--accent-100); }
+.story { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: var(--radius); background: var(--secondary); }
+/* 4 Nov review 4: question text sits on neutral light grey, not the accent. */
+.qhead .panel { background: var(--secondary); }
 .tile { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius); background: var(--card); flex: none; }
 .tile svg { width: 20px; height: 20px; color: var(--accent-300); }
 .panel { display: flex; flex-direction: column; gap: 16px; padding: 16px; border-radius: var(--radius); background: var(--background); }
@@ -544,7 +546,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .rhead { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--card); border-bottom: 1px solid var(--border); min-height: 64px; }
 .ritem { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 12px; background: var(--card); }
 .num { width: 32px; height: 32px; border-radius: var(--rounded-full); background: var(--accent-400); color: var(--primary-foreground); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex: none; }
-.answer { padding: 8px 12px; border-radius: var(--radius); background: var(--accent-100); }
+.answer { padding: 8px 12px; border-radius: var(--radius); background: var(--background); }
 .rfoot { padding: 12px 16px; background: var(--card); border-top: 1px solid var(--border); }
 
 /* Overlays */
@@ -629,6 +631,9 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
   .nav-arrow { margin: 0 12px; }
   .deck-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6; }
   .nav-arrow.hide, .deck-arrow.hide { visibility: hidden; }
+  /* Once the current question has an answer, the next arrow fills with accent-300 and a white chevron. */
+  .deck-arrow.next.ready { background: var(--accent-300); border-color: var(--accent-300); color: var(--primary-foreground); }
+  .deck-arrow.next.ready:hover { background: color-mix(in srgb, var(--accent-300) 88%, var(--foreground)); }
   .hdots { align-items: center; }
   .deck-arrow.prev { left: -80px; }
   .deck-arrow.next { right: -80px; }
@@ -684,7 +689,9 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .opt, .mrow { border-color: var(--opacity-neutral-30, var(--border)); }
 .blank:not(.active):not(.filled) { border-color: var(--opacity-neutral-30, var(--border)); }
 .chip:not(.on) { border-color: var(--opacity-neutral-30, var(--border)); }
-.opt.on, .mrow.open { border-color: var(--accent-400); }
+.opt.on { border-color: var(--accent-400); }
+/* Question 2: the open row keeps a neutral grey outline (2px), no accent. */
+.mrow.open { border-color: var(--opacity-neutral-30, var(--border)); }
 
 /* Smooth state changes now that elements persist between renders: picking, opening and closing */
 .opt, .mrow, .blank, .chip, .badge { transition: all 200ms ease-out; }

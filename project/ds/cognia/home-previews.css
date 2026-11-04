@@ -20,7 +20,7 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
    and the AI action on the right. 16px text and the full-round field make it the most prominent control in the header. */
 .hp-ask { position:relative; flex:0 1 480px; min-width:280px; }
 .hp-ask.home-search { margin:0; max-width:none; }
-.hp-ask-row { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-2) var(--space-2) var(--space-2) var(--space-4); border:0; border-radius:var(--rounded-full); background:var(--primary-foreground); box-shadow:none; }
+.hp-ask-row { display:flex; align-items:center; gap:var(--space-3); height:var(--space-12); box-sizing:border-box; padding:var(--space-1) var(--space-1) var(--space-1) var(--space-4); border:0; border-radius:var(--rounded-full); background:var(--primary-foreground); box-shadow:none; }
 .hp-ask-row .hp-ask-search { width:20px; height:20px; flex-shrink:0; color:var(--muted-foreground); }
 .hp-ask-row input { flex:1; min-width:0; height:var(--space-10); border:0; outline:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
 .hp-ask-row input::placeholder { color:var(--muted-foreground); }
@@ -58,7 +58,7 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .hp-ask .home-search-error { position:absolute; top:calc(100% + var(--space-1)); right:0; margin:0; color:var(--destructive); font-size:var(--text-body-small); }
 
 /* ---------- Layout ---------- */
-.hp-rows { display:flex; flex-direction:column; gap:var(--space-6); }
+.hp-rows { display:flex; flex-direction:column; gap:var(--space-4); }
 .hp-row { display:flex; gap:var(--space-6); align-items:stretch; }
 .hp-side { flex:0 0 341px; min-width:0; display:flex; flex-direction:column; gap:var(--space-6); }
 .hp-wide { flex:1 1 0; min-width:0; }
@@ -82,6 +82,9 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 /* Ghost: low emphasis, no fill or border at rest; hover is --secondary on any surface (plugin Button rule). */
 .dh-main .hp-btn-ghost,.dh-main a.hp-btn-ghost:is(:link,:visited,:active,:focus) { border:1px solid transparent; background:transparent; color:var(--foreground); text-decoration:none; }
 .dh-main .hp-btn-ghost:hover,.dh-main a.hp-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
+/* The insight card is already close to --secondary, so the ghost hover there darkens with the hover overlay instead
+   (same as the administrator ghost buttons); otherwise the hover would be invisible. */
+.dh-main .hp-insight .hp-btn-ghost:hover,.dh-main .hp-insight a.hp-btn-ghost:hover { background:var(--hover-overlay); }
 :is(.hp-btn,.hp-icon-link,.hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* ---------- Course card (clickable, hover lifts) ---------- */
@@ -114,6 +117,7 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .hp-assess { display:flex; flex-direction:column; gap:var(--space-6); }
 .hp-assess-hd { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); }
 .hp-assess-hd > div { display:flex; align-items:center; gap:var(--space-2); }
+.hp-chart { padding-bottom:var(--space-2); }
 .hp-chart svg { display:block; width:100%; height:auto; overflow:visible; font-family:var(--font-sans); }
 .hp-chart .ax { fill:var(--muted-foreground); font-size:var(--text-body-small); }
 .hp-chart .grid { stroke:var(--border); stroke-width:1; }

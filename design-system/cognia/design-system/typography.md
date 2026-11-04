@@ -74,7 +74,20 @@ Text must always use the neutral semantic tokens. Never apply accent, brand, or 
 | Error / destructive | `text-destructive` |
 | Info | `text-info` |
 
-These status colours are only permitted inside badge and alert components where the colour is paired with a label. Never use them for general body text or headings.
+These status colours are permitted in two places:
+
+- **Badges and alerts**, where the colour is paired with a label.
+- **Data values**, such as a percentage in a table cell or a stat, where the colour shows the value is above or below a threshold (for example green at 50% and above, red below). The number itself is the label, so colour is never the only cue. The value must be large text, at least Subheading (`text-subheading`, 20px), so it meets the 3:1 large-text contrast on every row background.
+
+Never use them for words in body text, labels or headings.
+
+```tsx
+{/* Correct: a success rate in a table cell, large enough for 3:1 */}
+<TableCell className="text-right text-subheading text-success">88%</TableCell>
+
+{/* Wrong: status colour on a 14px label */}
+<span className="text-body-small text-success">Active</span>
+```
 
 **Rules**
 - Never use accent colours (`--accent-100` through `--accent-500`) for text.

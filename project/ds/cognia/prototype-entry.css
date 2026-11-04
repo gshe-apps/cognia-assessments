@@ -13,9 +13,9 @@ html body.cap-entry .persona-card:hover .home-button,
 html body.cap-entry .persona-card .home-button:hover { border-color: var(--epi-blue-hover); background: var(--epi-blue-hover); color: var(--primary-foreground); box-shadow: none; }
 html body.cap-entry .home-button:focus-visible { outline: 3px solid var(--epi-blue); outline-offset: 2px; }
 
-/* Choose an administrator role: EPI-USE dialog. Square corners, the logo's red rule along the top,
+/* Choose an administrator role: EPI-USE dialog. Square corners (no red rule along the top, 4 Nov),
    bordered role options that turn EPI-USE blue on hover, and a plain black close icon. */
-html body.cap-entry .epi-dialog { border-radius: 0; border-top: var(--space-1) solid var(--epi-red); padding: var(--space-8); }
+html body.cap-entry .epi-dialog { border-radius: 0; border-top: 0; padding: var(--space-8); }
 html body.cap-entry .epi-dialog .home-dialog-heading h2 { color: var(--epi-blue); }
 html body.cap-entry .epi-close { display: grid; place-items: center; flex-shrink: 0; width: var(--space-10); height: var(--space-10); padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--foreground); cursor: pointer; box-shadow: none; transition: all 200ms; }
 html body.cap-entry .epi-close svg { width: 24px; height: 24px; }

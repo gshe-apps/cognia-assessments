@@ -24,7 +24,7 @@
 .ib-btn-ghost, .ib a.ib-btn-ghost:is(:link, :visited) { background:transparent; color:var(--foreground); }
 .ib-btn-ghost:hover, .ib a.ib-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
 .ib-btn-ghost svg { color:var(--muted-foreground); }
-/* Destructive ghost (plugin 1.7.0): red label and icon, deepened toward --foreground so the 16px label meets 4.5:1. Usual ghost hover. */
+/* Destructive ghost (plugin 1.8.0): red label and icon, deepened toward --foreground so the 16px label meets 4.5:1. Usual ghost hover. */
 .ib-btn-ghost.is-destructive, .ib-btn-ghost.is-destructive:hover { color:color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 .ib-btn-ghost.is-destructive svg { color:inherit; }
 /* Success: the confirmed state of Add to assessment. White label on --success meets 4.5:1; hover deepens slightly

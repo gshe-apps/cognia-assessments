@@ -226,3 +226,8 @@
   .ib :is(.ib-detail, .ib-items, .ib-table-wrap, .ib-acc-panel, .ib-chev, .ib-slot) { animation:none; }
   .ib-tip { transition:none; }
 }
+
+/* Selected item: no rule above or below it. Its own bottom rule is already clear; this clears the rule
+   of the item above, which reads as the selected item's top border (Nov 2026 review). */
+.ib-item:has(+ .ib-item[aria-current="true"]),
+li:has(+ li > .ib-item[aria-current="true"]) > .ib-item { border-bottom-color:transparent; }

@@ -110,8 +110,7 @@ class Component extends DCLogic {
       const left = [0, 1, 2, 3].filter(j => !this.done(n, j)).length;
       patch.seen = seen;
       patch.cheer = left === 0 ? 'All answered!' : 'Locked in! ' + left + ' to go';
-      // All answered: glide on to the final card
-      if (left === 0 && s.i < 4) setTimeout(() => this.moveTo(4), 700);
+      // All answered: the student still taps the next arrow to reach the final card.
     }
     this.setState(patch);
   }

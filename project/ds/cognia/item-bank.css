@@ -1,10 +1,14 @@
 /* Item Bank (CAP-T12), built from Figma node 1373:24457 (4 Nov).
    Split view: item list left, item detail right. The expand control turns the list into a full-width table;
-   the collapse control returns to the split view. Tokens only; 24 / 16 / 14px type, weights 400 and 600. */
+   the collapse control returns to the split view. Tokens only; 24 / 16 / 14px type, weights 400 and 600.
+   4 Nov review 3: sliding expand and collapse, admin-style table, full-round search, multi-select filters with chips,
+   success Add state, smooth analysis accordion, no status dots. */
 
-.ib-main { display:block; flex:1 0 auto; align-self:stretch; width:100%; padding:0; background:var(--background); }
+.ib-main { display:block; flex:1 0 auto; align-self:stretch; width:100%; padding:0; background:var(--background); overflow-x:clip; }
 .ib { display:grid; grid-template-columns:minmax(0, 500px) minmax(0, 1fr); gap:var(--space-4); align-items:start; max-width:1320px; margin:0 auto; padding:var(--space-8) var(--horizontal-padding) var(--space-6); box-sizing:border-box; font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
 .ib.is-wide { grid-template-columns:minmax(0, 1fr); }
+/* Search and filters keep the list column's width in the table view, so they do not jump when the view changes. */
+.ib.is-wide :is(.ib-search, .ib-filters) { max-width:500px; }
 .ib :is(h1, h2, h3, p, ul) { margin:0; }
 .ib ul { padding:0; list-style:none; }
 .ib-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
@@ -21,26 +25,50 @@
 .ib-btn-outline[aria-pressed="true"] { background:var(--secondary); }
 .ib-btn-ghost, .ib a.ib-btn-ghost:is(:link, :visited) { background:transparent; color:var(--foreground); }
 .ib-btn-ghost:hover, .ib a.ib-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
-.ib-btn-destructive { background:var(--destructive); border-color:var(--destructive); color:var(--primary-foreground); }
-.ib-btn-destructive:hover { background:color-mix(in srgb, var(--destructive) 85%, var(--card)); }
+.ib-btn-ghost svg { color:var(--muted-foreground); }
+/* Success: the confirmed state of Add to assessment. White label on --success meets 4.5:1; hover deepens slightly
+   so the label keeps its contrast (lightening would drop it below AA). */
+.ib-btn-success { background:var(--success); border-color:var(--success); color:var(--primary-foreground); }
+.ib-btn-success:hover { background:color-mix(in srgb, var(--success) 88%, var(--foreground)); border-color:color-mix(in srgb, var(--success) 88%, var(--foreground)); }
 .ib-icon-btn { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); padding:0; border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); cursor:pointer; box-shadow:none; transition:all 200ms; }
 .ib-icon-btn:hover, .ib-icon-btn[aria-pressed="true"] { background:var(--secondary); }
-.ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-assoc-card, .ib-rowlink, input, select):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+.ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-rowlink, .ib-ms-trigger, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-table-wrap, input):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* List panel */
 .ib-list { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
 .ib-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); }
 .ib-tools { display:flex; align-items:center; gap:var(--space-2); }
-.ib-search { display:flex; align-items:center; gap:var(--space-3); padding:0 var(--space-4); border-radius:var(--radius); background:var(--primary-foreground); }
+.ib-search { display:flex; align-items:center; gap:var(--space-3); padding:0 var(--space-4); border-radius:var(--rounded-full); background:var(--primary-foreground); }
 .ib-search svg { color:var(--muted-foreground); }
 .ib-search input { flex:1; min-width:0; height:var(--space-12); border:0; outline:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
 .ib-search:focus-within { outline:3px solid var(--ring); outline-offset:2px; }
 .ib-search input::placeholder { color:var(--muted-foreground); }
-.ib-filters { display:grid; grid-template-columns:1fr; gap:var(--space-4); }
-@media (min-width:640px) { .ib-filters { grid-template-columns:1fr 1fr; } }
-.ib-field { display:flex; flex-direction:column; gap:var(--space-2); }
-.ib-field label { font-weight:var(--weight-semibold); }
-.ib-field select { height:var(--space-12); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:var(--primary-foreground); color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
+.ib-filters { position:relative; z-index:20; display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:var(--space-4); }
+.ib-field { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
+.ib-label { font-weight:var(--weight-semibold); }
+/* Multi-select: the trigger is an input field (no border, white fill on the page background, 48px). */
+.ib-ms { position:relative; }
+.ib-ms-trigger { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); width:100%; height:var(--space-12); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:var(--primary-foreground); color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-ms-val { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ib-ms-val.is-placeholder { color:var(--muted-foreground); }
+.ib-ms-chev { color:var(--muted-foreground); transition:transform 200ms; }
+.ib-ms-trigger[aria-expanded="true"] .ib-ms-chev { transform:rotate(180deg); }
+.ib-ms-pop { position:absolute; left:0; top:calc(100% + var(--space-1)); z-index:20; display:flex; flex-direction:column; min-width:100%; padding:var(--space-1); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); box-shadow:var(--shadow-md); }
+.ib-ms-opt { display:flex; align-items:center; gap:var(--space-2); min-height:var(--space-10); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:transparent; color:var(--popover-foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); text-align:left; white-space:nowrap; cursor:pointer; transition:all 200ms; }
+.ib-ms-opt:hover { background:var(--accent); }
+.ib-check { display:grid; place-items:center; width:var(--space-4); height:var(--space-4); flex-shrink:0; border:1px solid var(--primary); border-radius:var(--space-1); background:var(--card); color:var(--primary-foreground); }
+.ib .ib-check svg { width:12px; height:12px; opacity:0; }
+.ib-ms-opt[aria-selected="true"] .ib-check { background:var(--primary); }
+.ib-ms-opt[aria-selected="true"] .ib-check svg { opacity:1; }
+.ib-scrim { position:fixed; inset:0; z-index:10; }
+/* Applied filter chips (same pattern as the administrator All schools list): label, remove x, Clear all at the end. */
+.ib-chips { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2); }
+.ib-chip { display:inline-flex; align-items:center; gap:var(--space-1); min-height:var(--space-8); padding:0 var(--space-1) 0 var(--space-3); border-radius:var(--rounded-full); background:var(--card); color:var(--foreground); white-space:nowrap; }
+.ib-chip-x { display:grid; place-items:center; width:var(--space-6); height:var(--space-6); padding:0; border:0; border-radius:var(--rounded-full); background:transparent; color:var(--foreground); cursor:pointer; transition:all 200ms; }
+.ib-chip-x:hover { background:var(--secondary); }
+.ib .ib-chip-x svg { width:14px; height:14px; }
+.ib-clear { min-height:var(--space-8); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); cursor:pointer; transition:all 200ms; }
+.ib-clear:hover { background:var(--secondary); }
 .ib-count { align-self:flex-end; color:var(--muted-foreground); }
 .ib-empty { display:flex; flex-direction:column; align-items:center; gap:var(--space-4); padding:var(--space-16) var(--space-4); text-align:center; color:var(--muted-foreground); font-size:var(--text-body-base); }
 
@@ -53,31 +81,47 @@
 .ib-badge { display:inline-flex; align-items:center; padding:0 var(--space-2); border-radius:var(--rounded-full); background:var(--secondary); color:var(--secondary-foreground); font-size:var(--text-body-small); white-space:nowrap; }
 .ib-item[aria-current="true"] .ib-badge, .ib-item:hover .ib-badge { background:var(--card); }
 
-/* Table view: ARIA table roles on a grid, because the template loop cannot sit inside <tbody>. */
+/* Table view, styled like the administrator All schools table: white card, header row with a bottom rule,
+   no row rules, alternate rows tinted, hover tint, selected row --secondary. ARIA table roles on a grid,
+   because the template loop cannot sit inside <tbody>. */
 .ib-table-wrap { overflow-x:auto; border-radius:var(--radius-xl); background:var(--card); }
-.ib-table { display:grid; grid-template-columns:minmax(280px, 3fr) minmax(140px, 1.2fr) auto auto auto auto auto; min-width:960px; }
-.ib-tr { display:contents; cursor:pointer; }
-.ib-tr > span { display:flex; align-items:center; padding:var(--space-3) var(--space-4); border-bottom:1px solid var(--border); white-space:nowrap; transition:all 200ms; }
-.ib-th { cursor:default; }
-.ib-th > span { color:var(--muted-foreground); font-weight:var(--weight-semibold); }
-.ib-tr:not(.ib-th):hover > span { background:var(--accent); }
-.ib-tr:last-child > span { border-bottom:0; }
-.ib-table .ib-num { justify-content:flex-end; text-align:right; font-variant-numeric:tabular-nums; }
-.ib-table .ib-td-item { white-space:normal; }
-.ib-rowlink { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding:0; border:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-gt { display:flex; flex-direction:column; min-width:880px; }
+.ib-gr { display:grid; grid-template-columns:minmax(320px, 3fr) minmax(130px, 1fr) minmax(100px, .8fr) minmax(110px, .8fr) minmax(90px, .7fr) minmax(100px, .7fr); align-items:center; cursor:pointer; transition:all 200ms; font-weight:var(--weight-semibold); }
+.ib-gh { border-bottom:1px solid var(--border); cursor:default; font-weight:var(--weight-regular); }
+.ib-gc { min-width:0; padding:var(--space-3) var(--space-2); }
+.ib-gr > .ib-gc:first-child { padding-left:var(--space-4); }
+.ib-gr > .ib-gc:last-child { padding-right:var(--space-4); }
+.ib-gr:not(.ib-gh):nth-child(even) { background:color-mix(in srgb, var(--background) 50%, var(--card)); }
+.ib-gr:not(.ib-gh):hover { background:color-mix(in srgb, var(--secondary) 55%, var(--card)); }
+.ib-gr.is-sel, .ib-gr.is-sel:hover { background:var(--secondary); }
+.ib-gt .ib-num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.ib-cellv { display:flex; flex-direction:column; gap:var(--space-px); }
+.ib-rowlink { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding:0; border:0; background:transparent; color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-snug) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-sub { color:var(--muted-foreground); font-weight:var(--weight-regular); }
+.ib-gc .ib-status { font-weight:var(--weight-regular); }
 
-/* Status badges: status fill with a status-colour dot; the label stays foreground so it meets 4.5:1
-   (same approach as the Home alerts). Never colour alone: the label always names the status. */
-.ib-status { display:inline-flex; align-items:center; gap:var(--space-1); padding:0 var(--space-2); border-radius:var(--rounded-full); color:var(--foreground); font-size:var(--text-body-small); white-space:nowrap; }
-.ib-status::before { content:""; width:var(--space-2); height:var(--space-2); border-radius:var(--rounded-full); background:currentColor; }
+/* Expand and collapse: 200ms out, 200ms in, transform and opacity only (plugin motion rule). */
+@keyframes ib-out-right { to { opacity:0; transform:translateX(var(--space-12)); } }
+@keyframes ib-in-right { from { opacity:0; transform:translateX(var(--space-12)); } to { opacity:1; transform:none; } }
+@keyframes ib-out-left { to { opacity:0; transform:translateX(calc(-1 * var(--space-6))); } }
+@keyframes ib-in-left { from { opacity:0; transform:translateX(calc(-1 * var(--space-12))); } to { opacity:1; transform:none; } }
+@keyframes ib-fade-out { to { opacity:0; } }
+@keyframes ib-fade-in { from { opacity:0; } to { opacity:1; } }
+.ib.is-out-split .ib-detail { animation:ib-out-right 200ms ease-in forwards; }
+.ib.is-out-split .ib-items { animation:ib-fade-out 200ms ease-in forwards; }
+.ib.is-in-table .ib-table-wrap { transform-origin:left center; animation:ib-in-left 200ms ease-out; }
+.ib.is-out-table .ib-table-wrap { animation:ib-out-left 200ms ease-in forwards; }
+.ib.is-in-split .ib-detail { animation:ib-in-right 200ms ease-out; }
+.ib.is-in-split .ib-items { animation:ib-fade-in 200ms ease-out; }
+.ib[class*="is-out-"] { pointer-events:none; }
+
+/* Status badges: status fill, foreground label so it meets 4.5:1 (same approach as the Home alerts).
+   No dot (4 Nov): the label names the status, so colour is never the only cue. */
+.ib-status { display:inline-flex; align-items:center; padding:0 var(--space-2); border-radius:var(--rounded-full); color:var(--foreground); font-size:var(--text-body-small); white-space:nowrap; }
 .ib-status.is-success { background:var(--success-light); }
-.ib-status.is-success::before { background:var(--success); }
 .ib-status.is-warning { background:var(--warning-light); }
-.ib-status.is-warning::before { background:var(--warning); }
 .ib-status.is-destructive { background:var(--destructive-light); }
-.ib-status.is-destructive::before { background:var(--destructive); }
 .ib-status.is-info { background:var(--info-light); }
-.ib-status.is-info::before { background:var(--info); }
 
 /* Detail panel */
 .ib-detail { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; padding-left:var(--space-4); border-left:1px solid var(--border); }
@@ -107,28 +151,42 @@
 .ib-acc-row:last-child { border-bottom:0; }
 .ib-acc-btn { display:flex; align-items:center; gap:var(--space-2); width:100%; padding:var(--space-2) 0; border:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
 .ib-acc-label { flex:1; }
-/* Icon accent variant: accent icon on a white container (plugin Icon rule). */
-.ib-tile { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); border-radius:var(--radius); background:var(--card); }
-.ib-tile [stroke="currentColor"] { stroke:var(--accent-300); }
+/* Analysis icons: dark blue tile (Assessments --accent-400) with a white icon, same as the Home solid tile. */
+.ib-tile { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); flex-shrink:0; border-radius:var(--radius); background:var(--accent-400); }
+.ib-tile [stroke="currentColor"] { stroke:var(--card); }
 .ib-tile svg { width:20px; height:20px; }
-.ib-chev { color:var(--muted-foreground); transition:transform 200ms; }
-.ib-acc-btn[aria-expanded="true"] .ib-chev { transform:rotate(180deg); }
+.ib-chev { color:var(--muted-foreground); }
+/* Smooth open and close (the page re-renders on each change, so this runs as 200ms keyframe steps keyed to state):
+   the row track eases between 0 and the content height with a fade, as the shadcn Accordion does. */
+.ib-acc-panel { display:grid; grid-template-rows:0fr; opacity:0; }
+.ib-acc-row.is-open .ib-acc-panel { grid-template-rows:1fr; opacity:1; }
+.ib-acc-row.is-open .ib-chev { transform:rotate(180deg); }
+.ib-acc-row.is-opening .ib-acc-panel { animation:ib-acc-open 200ms ease-out; }
+.ib-acc-row.is-opening .ib-chev { animation:ib-chev-open 200ms ease-out; }
+.ib-acc-row.is-closing .ib-acc-panel { animation:ib-acc-close 200ms ease-in forwards; }
+.ib-acc-row.is-closing .ib-chev { animation:ib-chev-close 200ms ease-in forwards; }
+@keyframes ib-acc-open { from { grid-template-rows:0fr; opacity:0; } to { grid-template-rows:1fr; opacity:1; } }
+@keyframes ib-acc-close { from { grid-template-rows:1fr; opacity:1; } to { grid-template-rows:0fr; opacity:0; } }
+@keyframes ib-chev-open { from { transform:none; } to { transform:rotate(180deg); } }
+@keyframes ib-chev-close { from { transform:rotate(180deg); } to { transform:none; } }
+.ib-acc-inner { min-height:0; overflow:hidden; }
 .ib-acc-body { padding:0 0 var(--space-3) var(--space-12); color:var(--muted-foreground); }
 
 .ib-assoc { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:var(--space-2); }
-.ib-assoc-card, .ib a.ib-assoc-card:is(:link, :visited) { display:flex; align-items:flex-start; gap:var(--space-2); padding:var(--space-4) var(--space-3); border-radius:var(--radius-xl); background:var(--card); color:var(--foreground); text-decoration:none; box-shadow:none; transition:all 200ms; }
-.ib-assoc-card:hover { box-shadow:var(--shadow-md); color:var(--foreground); }
+.ib-assoc-card { display:flex; align-items:flex-start; gap:var(--space-2); padding:var(--space-4) var(--space-3); border-radius:var(--radius-xl); background:var(--card); color:var(--foreground); box-shadow:none; cursor:pointer; transition:all 200ms; }
+/* Hover only for now: opening an assessment from here is not wired up yet. */
+.ib-assoc-card:hover { box-shadow:var(--shadow-md); }
 .ib-assoc-card svg { margin-top:var(--space-1); }
 .ib-assoc-card [stroke="currentColor"] { stroke:var(--accent-300); }
 .ib-assoc-card > span { display:flex; flex-direction:column; }
 .ib-assoc-card .ib-strong { font-size:var(--text-body-base); }
-
-.ib-confirm { display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-4); border-radius:var(--radius); background:var(--destructive-light); }
-.ib-confirm-actions { display:flex; justify-content:flex-end; gap:var(--space-2); }
 
 @media (max-width:1023px) {
   .ib { grid-template-columns:minmax(0, 1fr); }
   .ib-detail { padding-left:0; border-left:0; }
   .ib-items { max-height:none; }
 }
-@media (prefers-reduced-motion:reduce) { .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-chev, .ib-assoc-card), .ib-tr > span { transition:none; } }
+@media (prefers-reduced-motion:reduce) {
+  .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-chev, .ib-ms-chev, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-assoc-card, .ib-gr, .ib-acc-panel) { transition:none; }
+  .ib :is(.ib-detail, .ib-items, .ib-table-wrap, .ib-acc-panel, .ib-chev) { animation:none; }
+}

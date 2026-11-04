@@ -1,0 +1,134 @@
+/* Item Bank (CAP-T12), built from Figma node 1373:24457 (4 Nov).
+   Split view: item list left, item detail right. The expand control turns the list into a full-width table;
+   the collapse control returns to the split view. Tokens only; 24 / 16 / 14px type, weights 400 and 600. */
+
+.ib-main { display:block; flex:1 0 auto; align-self:stretch; width:100%; padding:0; background:var(--background); }
+.ib { display:grid; grid-template-columns:minmax(0, 500px) minmax(0, 1fr); gap:var(--space-4); align-items:start; max-width:1320px; margin:0 auto; padding:var(--space-8) var(--horizontal-padding) var(--space-6); box-sizing:border-box; font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
+.ib.is-wide { grid-template-columns:minmax(0, 1fr); }
+.ib :is(h1, h2, h3, p, ul) { margin:0; }
+.ib ul { padding:0; list-style:none; }
+.ib-sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.ib-strong { font-weight:var(--weight-semibold); }
+.ib-muted { color:var(--muted-foreground); }
+.ib svg { width:16px; height:16px; flex-shrink:0; }
+
+/* Buttons (plugin Button: lg is 48px, sentence case, no shadow) */
+.ib-btn { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); min-width:var(--space-16); min-height:var(--space-12); padding:0 var(--space-4); border:1px solid transparent; border-radius:var(--radius); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); text-decoration:none; white-space:nowrap; cursor:pointer; box-shadow:none; transition:all 200ms; box-sizing:border-box; }
+.ib-btn-solid, .ib a.ib-btn-solid:is(:link, :visited) { background:var(--primary); border-color:var(--primary); color:var(--primary-foreground); }
+.ib-btn-solid:hover, .ib a.ib-btn-solid:hover { background:var(--primary-hover); border-color:var(--primary-hover); color:var(--primary-foreground); }
+.ib-btn-outline { background:var(--primary-foreground); border-color:var(--primary); color:var(--foreground); }
+.ib-btn-outline:hover { background:var(--secondary); }
+.ib-btn-outline[aria-pressed="true"] { background:var(--secondary); }
+.ib-btn-ghost, .ib a.ib-btn-ghost:is(:link, :visited) { background:transparent; color:var(--foreground); }
+.ib-btn-ghost:hover, .ib a.ib-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
+.ib-btn-destructive { background:var(--destructive); border-color:var(--destructive); color:var(--primary-foreground); }
+.ib-btn-destructive:hover { background:color-mix(in srgb, var(--destructive) 85%, var(--card)); }
+.ib-icon-btn { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); padding:0; border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); cursor:pointer; box-shadow:none; transition:all 200ms; }
+.ib-icon-btn:hover, .ib-icon-btn[aria-pressed="true"] { background:var(--secondary); }
+.ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-assoc-card, .ib-rowlink, input, select):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+
+/* List panel */
+.ib-list { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
+.ib-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); }
+.ib-tools { display:flex; align-items:center; gap:var(--space-2); }
+.ib-search { display:flex; align-items:center; gap:var(--space-3); padding:0 var(--space-4); border-radius:var(--radius); background:var(--primary-foreground); }
+.ib-search svg { color:var(--muted-foreground); }
+.ib-search input { flex:1; min-width:0; height:var(--space-12); border:0; outline:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
+.ib-search:focus-within { outline:3px solid var(--ring); outline-offset:2px; }
+.ib-search input::placeholder { color:var(--muted-foreground); }
+.ib-filters { display:grid; grid-template-columns:1fr; gap:var(--space-4); }
+@media (min-width:640px) { .ib-filters { grid-template-columns:1fr 1fr; } }
+.ib-field { display:flex; flex-direction:column; gap:var(--space-2); }
+.ib-field label { font-weight:var(--weight-semibold); }
+.ib-field select { height:var(--space-12); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:var(--primary-foreground); color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); }
+.ib-count { align-self:flex-end; color:var(--muted-foreground); }
+.ib-empty { display:flex; flex-direction:column; align-items:center; gap:var(--space-4); padding:var(--space-16) var(--space-4); text-align:center; color:var(--muted-foreground); font-size:var(--text-body-base); }
+
+.ib-items { display:flex; flex-direction:column; max-height:calc(100vh - 220px); overflow-y:auto; padding-right:var(--space-2); }
+.ib-item { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-1); width:100%; padding:var(--space-3); border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; color:var(--foreground); font:inherit; text-align:left; cursor:pointer; transition:all 200ms; }
+.ib-item:hover { background:var(--secondary); }
+.ib-item[aria-current="true"] { background:var(--secondary); border-color:transparent; border-radius:var(--radius); }
+.ib-item-grade { color:var(--muted-foreground); }
+.ib-item-stem { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:var(--text-body-base); }
+.ib-badge { display:inline-flex; align-items:center; padding:0 var(--space-2); border-radius:var(--rounded-full); background:var(--secondary); color:var(--secondary-foreground); font-size:var(--text-body-small); white-space:nowrap; }
+.ib-item[aria-current="true"] .ib-badge, .ib-item:hover .ib-badge { background:var(--card); }
+
+/* Table view: ARIA table roles on a grid, because the template loop cannot sit inside <tbody>. */
+.ib-table-wrap { overflow-x:auto; border-radius:var(--radius-xl); background:var(--card); }
+.ib-table { display:grid; grid-template-columns:minmax(280px, 3fr) minmax(140px, 1.2fr) auto auto auto auto auto; min-width:960px; }
+.ib-tr { display:contents; cursor:pointer; }
+.ib-tr > span { display:flex; align-items:center; padding:var(--space-3) var(--space-4); border-bottom:1px solid var(--border); white-space:nowrap; transition:all 200ms; }
+.ib-th { cursor:default; }
+.ib-th > span { color:var(--muted-foreground); font-weight:var(--weight-semibold); }
+.ib-tr:not(.ib-th):hover > span { background:var(--accent); }
+.ib-tr:last-child > span { border-bottom:0; }
+.ib-table .ib-num { justify-content:flex-end; text-align:right; font-variant-numeric:tabular-nums; }
+.ib-table .ib-td-item { white-space:normal; }
+.ib-rowlink { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding:0; border:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+
+/* Status badges: status fill with a status-colour dot; the label stays foreground so it meets 4.5:1
+   (same approach as the Home alerts). Never colour alone: the label always names the status. */
+.ib-status { display:inline-flex; align-items:center; gap:var(--space-1); padding:0 var(--space-2); border-radius:var(--rounded-full); color:var(--foreground); font-size:var(--text-body-small); white-space:nowrap; }
+.ib-status::before { content:""; width:var(--space-2); height:var(--space-2); border-radius:var(--rounded-full); background:currentColor; }
+.ib-status.is-success { background:var(--success-light); }
+.ib-status.is-success::before { background:var(--success); }
+.ib-status.is-warning { background:var(--warning-light); }
+.ib-status.is-warning::before { background:var(--warning); }
+.ib-status.is-destructive { background:var(--destructive-light); }
+.ib-status.is-destructive::before { background:var(--destructive); }
+.ib-status.is-info { background:var(--info-light); }
+.ib-status.is-info::before { background:var(--info); }
+
+/* Detail panel */
+.ib-detail { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; padding-left:var(--space-4); border-left:1px solid var(--border); }
+.ib-d-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-4); }
+.ib-d-title { display:flex; flex-direction:column; gap:var(--space-2); }
+.ib-d-title h2 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
+.ib-d-badges { display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap; }
+.ib-d-actions { display:flex; align-items:center; gap:var(--space-2); }
+
+.ib-card { display:flex; flex-direction:column; gap:var(--space-4); padding:var(--space-4); border-radius:var(--radius-xl); background:var(--accent-100); }
+.ib-card-hd { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-4); }
+.ib-card-hd .ib-strong { font-size:var(--text-body-base); }
+.ib-stem { font-size:var(--text-body-base); }
+.ib-opts { display:flex; flex-direction:column; gap:var(--space-2); }
+.ib-opt { display:flex; align-items:center; gap:var(--space-2); padding:var(--space-3); border-radius:var(--radius); background:var(--card); font-size:var(--text-body-base); }
+.ib-opt.is-correct { background:var(--success-light); }
+.ib-letter { display:grid; place-items:center; flex-shrink:0; width:28px; height:28px; border-radius:var(--rounded-full); background:var(--secondary); font-size:var(--text-body-small); }
+.ib-opt.is-correct .ib-letter { background:var(--success); color:var(--primary-foreground); }
+.ib-opt-text { flex:1; min-width:0; }
+.ib-correct { display:inline-flex; }
+.ib-correct [stroke="currentColor"] { stroke:var(--success); }
+.ib-sample { display:flex; flex-direction:column; gap:var(--space-1); padding:var(--space-3); border-radius:var(--radius); background:var(--card); font-size:var(--text-body-base); }
+
+.ib-sec { display:flex; flex-direction:column; gap:var(--space-2); }
+.ib-sec-h { color:var(--muted-foreground); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
+.ib-acc-row { border-bottom:1px solid var(--border); }
+.ib-acc-row:last-child { border-bottom:0; }
+.ib-acc-btn { display:flex; align-items:center; gap:var(--space-2); width:100%; padding:var(--space-2) 0; border:0; background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-base)/var(--lh-base) var(--font-sans); text-align:left; cursor:pointer; }
+.ib-acc-label { flex:1; }
+/* Icon accent variant: accent icon on a white container (plugin Icon rule). */
+.ib-tile { display:grid; place-items:center; width:var(--space-10); height:var(--space-10); border-radius:var(--radius); background:var(--card); }
+.ib-tile [stroke="currentColor"] { stroke:var(--accent-300); }
+.ib-tile svg { width:20px; height:20px; }
+.ib-chev { color:var(--muted-foreground); transition:transform 200ms; }
+.ib-acc-btn[aria-expanded="true"] .ib-chev { transform:rotate(180deg); }
+.ib-acc-body { padding:0 0 var(--space-3) var(--space-12); color:var(--muted-foreground); }
+
+.ib-assoc { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:var(--space-2); }
+.ib-assoc-card, .ib a.ib-assoc-card:is(:link, :visited) { display:flex; align-items:flex-start; gap:var(--space-2); padding:var(--space-4) var(--space-3); border-radius:var(--radius-xl); background:var(--card); color:var(--foreground); text-decoration:none; box-shadow:none; transition:all 200ms; }
+.ib-assoc-card:hover { box-shadow:var(--shadow-md); color:var(--foreground); }
+.ib-assoc-card svg { margin-top:var(--space-1); }
+.ib-assoc-card [stroke="currentColor"] { stroke:var(--accent-300); }
+.ib-assoc-card > span { display:flex; flex-direction:column; }
+.ib-assoc-card .ib-strong { font-size:var(--text-body-base); }
+
+.ib-confirm { display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-4); border-radius:var(--radius); background:var(--destructive-light); }
+.ib-confirm-actions { display:flex; justify-content:flex-end; gap:var(--space-2); }
+
+@media (max-width:1023px) {
+  .ib { grid-template-columns:minmax(0, 1fr); }
+  .ib-detail { padding-left:0; border-left:0; }
+  .ib-items { max-height:none; }
+}
+@media (prefers-reduced-motion:reduce) { .ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-chev, .ib-assoc-card), .ib-tr > span { transition:none; } }

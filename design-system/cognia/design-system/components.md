@@ -135,7 +135,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - All text buttons (non-icon) have a minimum width of 64px (`min-w-16`) and horizontal padding of 16px (`px-4`). These are baked into the size variants — never override them.
 - Only one solid button per page section. Never two side by side.
 - Buttons use `--primary` across all product themes — they do not re-skin per theme.
-- Destructive is a state applied to any variant, not a separate button type.
+- Destructive is a state applied to any variant, not a separate button type. On a ghost or outline button the label and icon are red: use `--destructive` mixed 80% with `--foreground` (`text-[color-mix(in_srgb,var(--destructive)_80%,var(--foreground))]`) so a 16px label meets 4.5:1 on both the page and card surfaces. The hover stays the variant's usual hover.
 - Labels are always sentence case. Maximum two words.
 - Never show a hover state on a disabled button.
 - Icons can appear on the left, right, or both sides of the label.

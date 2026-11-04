@@ -79,6 +79,8 @@ These status colours are permitted in two places:
 - **Badges and alerts**, where the colour is paired with a label.
 - **Data values**, such as a percentage in a table cell or a stat, where the colour shows the value is above or below a threshold (for example green at 50% and above, red below). The number itself is the label, so colour is never the only cue. The value must be large text, at least Subheading (`text-subheading`, 20px), so it meets the 3:1 large-text contrast on every row background.
 
+- **Destructive buttons**, where the label and icon of a ghost or outline button with the destructive state are red (see Button in `components.md`).
+
 Never use them for words in body text, labels or headings.
 
 ```tsx

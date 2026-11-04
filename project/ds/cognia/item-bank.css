@@ -24,9 +24,9 @@
 .ib-btn-ghost, .ib a.ib-btn-ghost:is(:link, :visited) { background:transparent; color:var(--foreground); }
 .ib-btn-ghost:hover, .ib a.ib-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
 .ib-btn-ghost svg { color:var(--muted-foreground); }
-/* Destructive ghost: red icon (icon colour through stroke, as the Home icons); the label stays foreground because
-   the plugin keeps status colours on text to badges and alerts. Usual ghost hover. */
-.ib-btn-ghost.is-destructive svg [stroke="currentColor"], .ib-btn-ghost.is-destructive svg[stroke="currentColor"] { stroke:var(--destructive); }
+/* Destructive ghost (plugin 1.7.0): red label and icon, deepened toward --foreground so the 16px label meets 4.5:1. Usual ghost hover. */
+.ib-btn-ghost.is-destructive, .ib-btn-ghost.is-destructive:hover { color:color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+.ib-btn-ghost.is-destructive svg { color:inherit; }
 /* Success: the confirmed state of Add to assessment. White label on --success meets 4.5:1; hover deepens slightly
    so the label keeps its contrast (lightening would drop it below AA). */
 .ib-btn-success { background:var(--success); border-color:var(--success); color:var(--primary-foreground); }
@@ -38,7 +38,7 @@
 .ib-icon-btn:is(:hover, :focus-visible) .ib-tip { opacity:1; transform:translate(-50%, 0); }
 .ib-tools > :last-child .ib-tip, .ib-tools > sc-if:last-child .ib-tip { left:auto; right:0; transform:translate(0, var(--space-1)); }
 .ib-tools > sc-if:last-child .ib-icon-btn:is(:hover, :focus-visible) .ib-tip { transform:none; }
-.ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-rowlink, .ib-ms-trigger, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-table-wrap, input):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+.ib :is(.ib-btn, .ib-icon-btn, .ib-item, .ib-acc-btn, .ib-rowlink, .ib-sortbtn, .ib-ms-trigger, .ib-ms-opt, .ib-chip-x, .ib-clear, .ib-table-wrap, input):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* List panel */
 .ib-list { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
@@ -109,11 +109,19 @@
    because the template loop cannot sit inside <tbody>. */
 .ib-table-wrap { overflow-x:auto; border-radius:var(--radius-xl); background:var(--card); }
 .ib-gt { display:flex; flex-direction:column; min-width:880px; }
-.ib-gr { display:grid; grid-template-columns:minmax(320px, 3fr) minmax(130px, 1fr) minmax(100px, .8fr) minmax(110px, .8fr) minmax(90px, .7fr) minmax(100px, .7fr); align-items:center; cursor:pointer; transition:all 200ms; font-weight:var(--weight-semibold); }
+.ib-gr { display:grid; grid-template-columns:minmax(320px, 3fr) minmax(130px, 1fr) minmax(100px, .8fr) minmax(90px, .7fr) minmax(110px, .8fr) minmax(120px, .8fr); align-items:center; cursor:pointer; transition:all 200ms; font-weight:var(--weight-semibold); }
 .ib-gh { border-bottom:1px solid var(--border); cursor:default; font-weight:var(--weight-regular); }
+/* Sort buttons on every header, as the administrator All schools table: label then a two-way chevron;
+   the active direction is solid, the other hidden; unsorted columns show both faintly. */
+.ib-sortbtn { display:inline-flex; align-items:center; gap:var(--space-1); padding:0; border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); white-space:nowrap; cursor:pointer; }
+.ib-gh .ib-num .ib-sortbtn { width:100%; justify-content:flex-end; }
+.ib .ib-sorti { width:14px; height:14px; color:var(--muted-foreground); }
+.ib-sorti :is(.su, .sd) { opacity:.35; }
+.ib-sorti.asc .su, .ib-sorti.desc .sd { opacity:1; }
+.ib-sorti.asc .sd, .ib-sorti.desc .su { opacity:0; }
 .ib-gc { min-width:0; padding:var(--space-3) var(--space-2); }
-.ib-gr > .ib-gc:first-child { padding-left:var(--space-4); }
-.ib-gr > .ib-gc:last-child { padding-right:var(--space-4); }
+.ib-gr .ib-gc:first-child { padding-left:var(--space-4); }
+.ib-gr .ib-gc:last-child { padding-right:var(--space-4); }
 .ib-gr:not(.ib-gh):nth-child(even) { background:color-mix(in srgb, var(--background) 50%, var(--card)); }
 .ib-gr:not(.ib-gh):hover { background:color-mix(in srgb, var(--secondary) 55%, var(--card)); }
 .ib-gr.is-sel, .ib-gr.is-sel:hover { background:var(--secondary); }

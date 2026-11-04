@@ -36,7 +36,7 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
 <p class="ib-count" role="status">{{ibCount}}</p>
 <sc-if value="{{ibEmpty}}" hint-placeholder-val="{{ false }}"><div class="ib-empty"><p>No items match your search or filters.</p><button type="button" class="ib-btn ib-btn-outline" onClick="{{ibClear}}">Clear filters</button></div></sc-if>
 <sc-if value="{{ibShowList}}" hint-placeholder-val="{{ true }}"><ul class="ib-items"><sc-for list="{{ibItems}}" as="it" hint-placeholder-count="8"><li><button type="button" class="ib-item" aria-current="{{it.cur}}" onClick="{{it.pick}}"><span class="ib-item-grade">{{it.label}}</span><span class="ib-item-stem">{{it.stem}}</span><span class="ib-badge">{{it.type}}</span></button></li></sc-for></ul></sc-if>
-<sc-if value="{{ibShowTable}}" hint-placeholder-val="{{ false }}"><div class="ib-table-wrap" tabindex="0" role="region" aria-label="Items table"><div class="ib-gt" role="table" aria-label="Items" aria-rowcount="{{ibRowCount}}"><div class="ib-gr ib-gh" role="row"><span class="ib-gc" role="columnheader">Item</span><span class="ib-gc" role="columnheader">Type</span><span class="ib-gc" role="columnheader">Standard</span><span class="ib-gc ib-num" role="columnheader">Success rate</span><span class="ib-gc" role="columnheader">Status</span><span class="ib-gc ib-num" role="columnheader">Last edited</span></div><sc-for list="{{ibItems}}" as="it" hint-placeholder-count="8"><div class="{{it.rowCls}}" role="row" onClick="{{it.open}}"><span class="ib-gc" role="cell"><span class="ib-cellv"><span class="ib-sub">{{it.label}}</span><button type="button" class="ib-rowlink" aria-label="Open item: {{it.stem}}" onClick="{{it.open}}">{{it.stem}}</button></span></span><span class="ib-gc ib-reg" role="cell">{{it.type}}</span><span class="ib-gc ib-reg" role="cell">{{it.std}}</span><span class="ib-gc ib-num" role="cell"><span class="{{it.rateTxtCls}}">{{it.rate}}%</span></span><span class="ib-gc" role="cell"><span class="{{it.statusCls}}">{{it.status}}</span></span><span class="ib-gc ib-num ib-reg" role="cell">{{it.edited}}</span></div></sc-for></div></div></sc-if>
+<sc-if value="{{ibShowTable}}" hint-placeholder-val="{{ false }}"><div class="ib-table-wrap" tabindex="0" role="region" aria-label="Items table"><div class="ib-gt" role="table" aria-label="Items" aria-rowcount="{{ibRowCount}}"><div class="ib-gr ib-gh" role="row"><sc-for list="{{ibCols}}" as="h" hint-placeholder-count="6"><span class="{{h.cls}}" role="columnheader" aria-sort="{{h.aria}}"><button type="button" class="ib-sortbtn" onClick="{{h.sort}}">{{h.label}}<svg class="{{h.icon}}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline class="su" points="8 9 12 5 16 9"></polyline><polyline class="sd" points="8 15 12 19 16 15"></polyline></svg></button></span></sc-for></div><sc-for list="{{ibItems}}" as="it" hint-placeholder-count="8"><div class="{{it.rowCls}}" role="row" onClick="{{it.open}}"><span class="ib-gc" role="cell"><span class="ib-cellv"><span class="ib-sub">{{it.label}}</span><button type="button" class="ib-rowlink" aria-label="Open item: {{it.stem}}" onClick="{{it.open}}">{{it.stem}}</button></span></span><span class="ib-gc ib-reg" role="cell">{{it.type}}</span><span class="ib-gc ib-reg" role="cell">{{it.std}}</span><span class="ib-gc" role="cell"><span class="{{it.statusCls}}">{{it.status}}</span></span><span class="ib-gc ib-num ib-reg" role="cell">{{it.edited}}</span><span class="ib-gc ib-num" role="cell"><span class="{{it.rateTxtCls}}">{{it.rate}}%</span></span></div></sc-for></div></div></sc-if>
 </section>
 <sc-if value="{{ibShowDetail}}" hint-placeholder-val="{{ true }}"><section class="ib-detail" aria-labelledby="ib-d-title">
 <div class="ib-d-head"><div class="ib-d-title"><h2 id="ib-d-title">{{ibD.label}}</h2><div class="ib-d-badges"><span class="{{ibD.statusCls}}">{{ibD.status}}</span><span class="{{ibD.rateCls}}">{{ibD.rate}}% success rate</span></div></div><div class="ib-d-actions"><button type="button" class="ib-btn ib-btn-ghost"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>Edit</button><button type="button" class="{{ibAddCls}}" aria-pressed="{{ibAddedPressed}}" onClick="{{ibToggleAdd}}"><sc-if value="{{ibIsAdded}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>{{ibAddLabel}}</button></div></div>
@@ -172,8 +172,19 @@ class Component extends DCLogic {
     const f = st.ibF || {};
     const picked = (k) => f[k] || [];
     const setF = (k, list) => this.setState({ ibF: Object.assign({}, f, { [k]: list }) });
-    const items = all.filter((it) => groups.every((g) => !picked(g.k).length || picked(g.k).includes(it[g.field]))
+    const filtered = all.filter((it) => groups.every((g) => !picked(g.k).length || picked(g.k).includes(it[g.field]))
       && (!q || (it.stem + ' ' + it.std + ' ' + it.subject).toLowerCase().includes(q)));
+    // Table sorting (4 Nov review 5), same behaviour as the administrator All schools table:
+    // click a header to sort ascending, click again for descending. Unsorted keeps the item bank order.
+    const sk = st.ibSk || '', sd = st.ibSd || 'asc';
+    const date = (d) => { const [m, dd, y] = d.split('/').map(Number); return (2000 + y) * 10000 + m * 100 + dd; };
+    const keyOf = {
+      item: (it) => [Number(it.grade), it.subject, it.stem.toLowerCase()],
+      type: (it) => [it.type], std: (it) => [it.std], status: (it) => [it.status],
+      edited: (it) => [date(it.edited)], rate: (it) => [it.rate],
+    };
+    const cmp = (a, b) => { const x = keyOf[sk](a), y = keyOf[sk](b); for (let i = 0; i < x.length; i++) { if (x[i] < y[i]) return -1; if (x[i] > y[i]) return 1; } return 0; };
+    const items = sk ? filtered.slice().sort((a, b) => (sd === 'asc' ? cmp(a, b) : cmp(b, a))) : filtered;
     const wide = !!st.ibWide;
     const phase = st.ibPhase || '';
     const sel = items.find((it) => it.id === st.ibSel) || items[0] || null;
@@ -216,6 +227,12 @@ class Component extends DCLogic {
       ibAnyF: chips.length > 0, ibChips: chips,
       ibClearF: () => this.setState({ ibF: {}, ibMs: null }),
       ibClear: () => this.setState({ ibQ: '', ibF: {}, ibMs: null }),
+      ibCols: [['item', 'Item', 'ib-gc'], ['type', 'Type', 'ib-gc'], ['std', 'Standard', 'ib-gc'], ['status', 'Status', 'ib-gc'], ['edited', 'Last edited', 'ib-gc ib-num'], ['rate', 'Success rate', 'ib-gc ib-num']].map(([k, label, cls]) => ({
+        label, cls,
+        aria: sk === k ? (sd === 'asc' ? 'ascending' : 'descending') : 'none',
+        icon: 'ib-sorti' + (sk === k ? ' ' + sd : ''),
+        sort: () => this.setState({ ibSk: k, ibSd: sk === k && sd === 'asc' ? 'desc' : 'asc' }),
+      })),
       ibRowCount: items.length + 1,
       ibCount: items.length + (items.length === 1 ? ' item' : ' items'),
       ibEmpty: items.length === 0,

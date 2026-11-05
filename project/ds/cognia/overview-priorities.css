@@ -153,7 +153,6 @@
   background: var(--card);
 }
 .od-draft-stages [aria-current="step"] { color: var(--foreground); font-weight: var(--weight-semibold); }
-.od-draft:has([data-restore-work]) .od-draft-progress { display: none; }
 .od-card-heading { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); }
 
 .od-calendar { margin-block-start: var(--space-6); display: grid; gap: var(--space-3); }

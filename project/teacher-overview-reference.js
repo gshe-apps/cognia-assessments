@@ -23,7 +23,34 @@
   setText('[data-draft-count]', String(drafts.length));
   setText('[data-draft-position]', (draftIndex + 1) + ' of ' + drafts.length);
   setText('[data-overview-draft-title]', draft.title);
-  setText('[data-overview-draft-meta]', draft.detail || 'Saved in this browser');
+  const tests = Array.isArray(draft.model?.tests) ? draft.model.tests : [];
+  const itemCounts = tests.map(test => test?.questions?.length ?? test?.state?.chosen?.length ?? 0);
+  const itemCount = itemCounts.reduce((total, count) => total + count, 0);
+  const hasSetup = tests.length > 0 && tests.every(test => test?.title && test.grade && test.subject);
+  const stage = draft.id && !hasSetup && !itemCount ? 0 : 1;
+  const percent = stage === 0 ? 0 : !draft.id || itemCount ? 60 : 33;
+  const progress = card.querySelector('.od-draft-progress progress');
+  progress.value = percent;
+  const label = percent + '%';
+  progress.textContent = label;
+  progress.setAttribute('aria-valuetext', label);
+  card.querySelector('.od-draft-progress > div > span:last-child').textContent = label;
+  card.querySelectorAll('.od-draft-stages li').forEach((step, index) => {
+   step.classList.toggle('is-done', index < stage);
+   if (index === stage) step.setAttribute('aria-current', 'step');
+   else step.removeAttribute('aria-current');
+   const svg = step.querySelector('svg');
+   const icon = '<circle cx="12" cy="12" r="9"/>' + (index < stage
+    ? '<path d="m8 12 3 3 5-6"/>'
+    : index === stage ? '<circle cx="12" cy="12" r="4" fill="currentColor"/>' : '');
+   if (svg.dataset.stageIcon !== icon) {
+    svg.innerHTML = icon;
+    svg.dataset.stageIcon = icon;
+   }
+  });
+  setText('[data-overview-draft-meta]', draft.detail || (draft.id
+   ? itemCount + (itemCount === 1 ? ' item added' : ' items added')
+   : 'Classroom assessment'));
   card.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
   card.querySelector('[data-draft-step="1"]').disabled = draftIndex === drafts.length - 1;
   const resume = card.querySelector('[data-overview-resume]');

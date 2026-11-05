@@ -85,6 +85,8 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 /* The insight card is already close to --secondary, so the ghost hover there darkens with the hover overlay instead
    (same as the administrator ghost buttons); otherwise the hover would be invisible. */
 .dh-main .hp-insight .hp-btn-ghost:hover,.dh-main .hp-insight a.hp-btn-ghost:hover { background:var(--hover-overlay); }
+/* Educator insight: hover feedback only, the button does not navigate in this prototype. */
+.hp-btn-static { cursor:default; }
 :is(.hp-btn,.hp-icon-link,.hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* ---------- Course card (clickable, hover lifts) ---------- */
@@ -159,9 +161,9 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 /* Icons take the accent through stroke and fill; text never uses accent colours. */
 .hp-tile-soft [stroke="currentColor"] { stroke:var(--accent-400); }
 .hp-tile-soft [fill="currentColor"] { fill:var(--accent-400); }
-.hp-tile-solid { background:var(--accent-400); }
-.hp-tile-solid [stroke="currentColor"] { stroke:var(--accent-100); }
-.hp-tile-solid [fill="currentColor"] { fill:var(--accent-100); }
+.hp-tile-solid { background:var(--accent-200); }
+.hp-tile-solid [stroke="currentColor"] { stroke:var(--primary); }
+.hp-tile-solid [fill="currentColor"] { fill:var(--primary); }
 .hp-titled > div { display:flex; flex-direction:column; }
 .hp-weeks { display:flex; align-items:center; gap:var(--space-3); border-bottom:1px solid var(--border); }
 .hp-week { flex:1; display:flex; flex-direction:column; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-4) var(--space-3); text-align:center; }

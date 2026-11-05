@@ -21,7 +21,7 @@
 .cl-current-head { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); padding:var(--space-4); }
 .cl-page .cl-class-title { font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
 .cl-details { display:flex; flex-direction:column; gap:var(--space-1); padding:var(--space-4) var(--space-3); }
-.cl-details>h3 { padding:var(--space-2) var(--space-3); font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--muted-foreground); }
+.cl-details>h3 { font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--card-foreground); }
 .cl-row { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); min-height:48px; padding:var(--space-2) var(--space-3); border-radius:var(--radius); color:var(--card-foreground); text-decoration:none; }
 .cl-row-label { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-2); }
 .cl-page .cl-row strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); }
@@ -54,7 +54,7 @@
 .cl-stack-item { position:relative; display:flex; flex-direction:column; width:100%; padding:0; border:0; background:transparent; color:var(--card-foreground); font-family:var(--font-sans); text-align:left; cursor:pointer; transition:all 200ms; }
 .cl-stack-item+.cl-stack-item { margin-top:calc(var(--folder-h) * -1); }
 .cl-stack-item .cl-tab { display:flex; align-items:center; height:var(--tab-h); padding:0 var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; }
-.cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); }
+.cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) 0 0; background:var(--card); }
 .cl-stack-item { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-1) var(--opacity-primary-10)); }
 .cl-stack-item:not(.is-front) .cl-stack-body>* { visibility:hidden; }
 .cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
@@ -82,12 +82,13 @@
 .cl-performance { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; }
 .cl-performance>h2 { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
 .cl-dist { display:flex; gap:0; height:var(--space-6); }
-.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:0; cursor:default; transition:all 200ms; }
+.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:0; cursor:default; transform:translateY(calc(var(--cl-wave, 0px) * -1)); transition:all 200ms ease-out; }
 .cl-seg:first-child { border-radius:var(--radius) 0 0 var(--radius); }
 .cl-seg:last-child { border-radius:0 var(--radius) var(--radius) 0; }
 .cl-seg:only-child { border-radius:var(--radius); }
 .cl-seg svg { width:16px; height:16px; flex-shrink:0; }
-.cl-seg:hover { transform:translateY(calc(var(--space-1) * -1)); }
+/* Hover wave (5 Nov review 3): classes-wave.js sets --cl-wave on each segment from the pointer position, so the lift
+   peaks under the pointer and eases off on either side, following the pointer left or right. */
 .cl-seg-advancing { background:var(--success-light); }
 .cl-seg-advancing svg { stroke:var(--success); }
 .cl-seg-steady svg { stroke:var(--warning); }
@@ -129,5 +130,5 @@
 @media (prefers-reduced-motion:reduce) {
   .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }
   .cl-folder.cl-entering { animation:none; }
-  .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg:hover,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
+  .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
 }

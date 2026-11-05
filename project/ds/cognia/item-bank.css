@@ -97,7 +97,7 @@
 .ib-items, html:has(.ib-main) { scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:transparent transparent; transition:scrollbar-color 200ms; }
 .ib-items.is-scrolling, html.is-scrolling:has(.ib-main) { scrollbar-color:color-mix(in srgb, var(--muted-foreground) 40%, transparent) transparent; }
 .ib-item { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-1); width:100%; padding:var(--space-3); border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; color:var(--foreground); font:inherit; text-align:left; cursor:pointer; transition:all 200ms; }
-.ib-item:hover { background:var(--secondary); }
+.ib-item:hover { background:var(--secondary); border-color:transparent; border-radius:var(--radius); }
 .ib-item[aria-current="true"] { background:var(--secondary); border-color:transparent; border-radius:var(--radius); }
 .ib-item-grade { color:var(--muted-foreground); }
 .ib-item-stem { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:var(--text-body-base); }
@@ -130,11 +130,8 @@
 .ib-rowlink { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding:0; border:0; background:transparent; color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-snug) var(--font-sans); text-align:left; cursor:pointer; }
 .ib-sub { color:var(--muted-foreground); font-weight:var(--weight-regular); }
 .ib-gc.ib-reg { font-weight:var(--weight-regular); }
-/* Success rate: green at 50% and above, red below (plugin 1.7.0, data values). The number is the label, and it is
-   Subheading size (20px) so it meets the 3:1 large-text contrast on every row background, including the selected row. */
-.ib-rate { font:var(--weight-regular) var(--text-subheading)/var(--lh-snug) var(--font-sans); }
-.ib-rate.is-up { color:var(--success); }
-.ib-rate.is-down { color:var(--destructive); }
+/* Success rate (5 Nov review 3): shown as a badge like the Status column, success fill at 50% and above,
+   destructive fill below. Uses the .ib-status variants below. */
 
 /* Expand and collapse: 200ms out, 200ms in, transform and opacity only (plugin motion rule). */
 @keyframes ib-out-right { to { opacity:0; transform:translateX(var(--space-12)); } }

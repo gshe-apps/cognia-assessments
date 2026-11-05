@@ -730,7 +730,14 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .qcard-end[aria-hidden="true"] .qend { opacity: 0; transition: opacity 200ms; }
 .qend-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
-/* Question cards fill the height between the progress bar and the bottom of the page (Nov 2026 review) */
+/* Question cards hug their content (5 Nov 2026 review). The current card sits in the flow, so the deck
+   is only as tall as that question; the cards waiting behind it fill the deck's height and peek out below.
+   A long question still stops at the space available and its answer area scrolls. */
+.deck { flex: 0 1 auto; display: flex; flex-direction: column; }
+.qcard[aria-hidden="false"] { position: relative; bottom: auto; flex: 0 1 auto; min-height: 0; margin-bottom: 32px; }
+.qcard[aria-hidden="false"] .qbody, .qcard[aria-hidden="false"] .qans { flex: 0 1 auto; }
+/* Waiting cards (the deck script scales them) show only their edge, never a slice of their question */
+.qcard[style*="scale("] > * { visibility: hidden; }
 @container stu2 (min-width: 768px) {
   .deck { max-height: none; margin: 8px auto 24px; }
 }

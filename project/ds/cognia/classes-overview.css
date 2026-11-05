@@ -26,8 +26,9 @@
 .cl-row-label { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-2); }
 .cl-page .cl-row strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); }
 .cl-row { transition:all 200ms; }
-.cl-row:hover { background:var(--accent); }
-.cl-row[aria-current="true"],.cl-row[aria-current="true"]:hover { background:var(--secondary); color:var(--secondary-foreground); }
+.cl-row:hover { background:var(--hover-overlay); }
+.cl-row[aria-current="true"] { background:var(--secondary); color:var(--secondary-foreground); }
+.cl-row[aria-current="true"]:hover { background:linear-gradient(var(--hover-overlay),var(--hover-overlay)),var(--secondary); }
 .cl-page .cl-row[aria-current="true"] .cl-row-name { font-weight:var(--weight-semibold); }
 
 .cl-avatars { display:flex; align-items:center; }
@@ -35,7 +36,7 @@
 .cl-avatars .cl-avatar { outline:2px solid var(--card); transition:all 200ms; }
 .cl-avatars .cl-avatar:is(:hover,:focus-visible) { z-index:10; transform:translateY(calc(var(--space-1) * -1)); }
 .cl-more { margin-left:var(--space-2); padding:var(--space-1); border-radius:var(--radius); cursor:default; transition:all 200ms; }
-.cl-more:hover { background:var(--accent); }
+.cl-more:is(:hover,:focus-visible) { background:var(--secondary); }
 .cl-avatar { position:relative; display:inline-grid; place-items:center; flex-shrink:0; width:32px; height:32px; border-radius:var(--rounded-full); background:var(--secondary); color:var(--secondary-foreground); font-weight:var(--weight-regular); cursor:default; }
 .cl-avatar img { display:block; width:32px; height:32px; border-radius:var(--rounded-full); object-fit:cover; }
 
@@ -50,15 +51,21 @@
 .cl-stack { --tab-h:40px; --folder-h:104px; display:flex; flex-direction:column; margin-top:auto; padding-top:var(--space-2); }
 .cl-stack-item { position:relative; display:flex; flex-direction:column; width:100%; padding:0; border:0; background:transparent; color:var(--card-foreground); font-family:var(--font-sans); text-align:left; cursor:pointer; transition:all 200ms; }
 .cl-stack-item+.cl-stack-item { margin-top:calc(var(--folder-h) * -1); }
-.cl-stack-item .cl-tab { display:flex; align-items:center; height:var(--tab-h); padding:0 var(--space-3); box-shadow:var(--shadow-sm); }
-.cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); box-shadow:var(--shadow-sm); }
+.cl-stack-item .cl-tab { display:flex; align-items:center; height:var(--tab-h); padding:0 var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; }
+.cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); }
+.cl-stack-item { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-1) var(--opacity-primary-10)); }
 .cl-stack-item:not(.is-front) .cl-stack-body>* { visibility:hidden; }
-/* Soft edge where each folder sits on the one behind it, built from colour tokens: one piece above the tab, one above the body. */
-.cl-stack-item .cl-tab,.cl-stack-body { position:relative; }
-.cl-stack-item+.cl-stack-item :is(.cl-tab,.cl-stack-body)::before { content:""; position:absolute; top:calc(var(--space-2) * -1); left:0; right:0; height:var(--space-2); border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:linear-gradient(to top, var(--opacity-primary-10), transparent); pointer-events:none; }
-.cl-stack-item+.cl-stack-item .cl-stack-body::before { left:var(--space-24); }
 .cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
-.cl-stack-item:is(:hover,:focus-visible) :is(.cl-tab,.cl-stack-body) { box-shadow:var(--shadow-xl); }
+.cl-stack-item:is(:hover,:focus-visible) { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-2) var(--opacity-primary-20)); }
+
+/* Switching class: the picked folder slides up into the current folder's place (its title shows as it rises),
+   the current folder fades out, then the new current folder settles in. Transform and opacity only, 200ms. */
+.cl-folder { transition:all 200ms; }
+.cl-folder.cl-leaving { opacity:0; transform:translateY(calc(var(--space-2) * -1)); }
+.cl-stack-item.cl-rising { z-index:20; pointer-events:none; }
+.cl-stack-item.cl-rising .cl-stack-body>* { visibility:visible; }
+.cl-folder.cl-entering { animation:cl-settle 200ms both; }
+@keyframes cl-settle { from { opacity:0; transform:translateY(var(--space-2)); } to { opacity:1; transform:none; } }
 .cl-stack-item:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:var(--radius-xl); }
 
 /* Badges: read-only status labels. Status text is mixed 80% with foreground (as the plugin does for destructive labels) so 14px meets 4.5:1. */
@@ -71,8 +78,11 @@
 /* Learner performance */
 .cl-performance { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; }
 .cl-performance>h2 { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
-.cl-dist { display:flex; gap:var(--space-1); height:var(--space-6); }
-.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:var(--radius); cursor:default; transition:all 200ms; }
+.cl-dist { display:flex; gap:0; height:var(--space-6); }
+.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:0; cursor:default; transition:all 200ms; }
+.cl-seg:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+.cl-seg:last-child { border-radius:0 var(--radius) var(--radius) 0; }
+.cl-seg:only-child { border-radius:var(--radius); }
 .cl-seg svg { width:16px; height:16px; flex-shrink:0; }
 .cl-seg:hover { transform:translateY(calc(var(--space-1) * -1)); }
 .cl-seg-advancing { background:var(--success-light); }
@@ -114,6 +124,7 @@
   .cl-create .btn { width:100%; justify-content:center; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .cl-row,.cl-stack-item,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }
+  .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }
+  .cl-folder.cl-entering { animation:none; }
   .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg:hover,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
 }

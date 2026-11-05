@@ -1,0 +1,119 @@
+/* Educator Classes screen (CAP-T11). Cognia tokens only: 24 / 16 / 14 type, 400 / 600 weights, 8pt spacing. */
+.cl-main { padding:0; background:var(--background); }
+.cl-page { max-width:calc(1320px + (var(--horizontal-padding) * 2)); box-sizing:border-box; margin:0 auto; padding:var(--space-8) var(--horizontal-padding, var(--space-8)) var(--space-12); display:flex; flex-direction:column; gap:var(--space-6); font-family:var(--font-sans); color:var(--foreground); }
+.cl-page :is(h1,h2,h3,p,ul,ol,dl,dd) { margin:0; }
+.cl-page :is(p,span,a,button,td,th,dt,dd,li) { font-size:var(--text-body-small); line-height:var(--lh-base); }
+.cl-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+.cl-create { display:flex; }
+.cl-create .btn { display:inline-flex; align-items:center; gap:var(--space-2); font-size:var(--text-body-base); }
+.cl-create .btn svg { width:16px; height:16px; }
+
+.cl-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:var(--space-4); align-items:stretch; }
+
+/* Class list: folder-style cards. Selected class uses the documented themed card variant. */
+.cl-classes { display:flex; flex-direction:column; gap:var(--space-6); }
+.cl-folder { display:flex; flex-direction:column; }
+.cl-tab { align-self:flex-start; box-sizing:border-box; width:var(--space-24); padding:var(--space-2) var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:var(--card); color:var(--card-foreground); }
+.cl-folder.is-current .cl-tab,.cl-current-head { background:var(--accent-400); color:var(--primary-foreground); }
+.cl-page .cl-folder.is-current .cl-current-head .cl-class-title { color:var(--primary-foreground); }
+.cl-current { display:flex; flex-direction:column; border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); overflow:hidden; }
+.cl-current-head { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); padding:var(--space-4); }
+.cl-page .cl-class-title { font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.cl-details { display:flex; flex-direction:column; gap:var(--space-1); padding:var(--space-4) var(--space-3); }
+.cl-details>h3 { padding:var(--space-2) var(--space-3); font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--muted-foreground); }
+.cl-row { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); min-height:48px; padding:var(--space-2) var(--space-3); border-radius:var(--radius); color:var(--card-foreground); text-decoration:none; }
+.cl-row-label { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-2); }
+.cl-page .cl-row strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); }
+.cl-row { transition:all 200ms; }
+.cl-row:hover { background:var(--accent); }
+.cl-row[aria-current="true"],.cl-row[aria-current="true"]:hover { background:var(--secondary); color:var(--secondary-foreground); }
+.cl-page .cl-row[aria-current="true"] .cl-row-name { font-weight:var(--weight-semibold); }
+
+.cl-avatars { display:flex; align-items:center; }
+.cl-avatars .cl-avatar+.cl-avatar { margin-left:calc(var(--space-1) * -1); }
+.cl-avatars .cl-avatar { outline:2px solid var(--card); transition:all 200ms; }
+.cl-avatars .cl-avatar:is(:hover,:focus-visible) { z-index:10; transform:translateY(calc(var(--space-1) * -1)); }
+.cl-more { margin-left:var(--space-2); padding:var(--space-1); border-radius:var(--radius); cursor:default; transition:all 200ms; }
+.cl-more:hover { background:var(--accent); }
+.cl-avatar { position:relative; display:inline-grid; place-items:center; flex-shrink:0; width:32px; height:32px; border-radius:var(--rounded-full); background:var(--secondary); color:var(--secondary-foreground); font-weight:var(--weight-regular); cursor:default; }
+.cl-avatar img { display:block; width:32px; height:32px; border-radius:var(--rounded-full); object-fit:cover; }
+
+/* Tooltips: shown on hover and keyboard focus. */
+.cl-tip { position:relative; }
+.cl-tip::after { content:attr(data-tip); position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; transform:translate(-50%, var(--space-1)); pointer-events:none; transition:all 200ms; }
+.cl-tip:is(:hover,:focus-visible)::after { opacity:1; transform:translate(-50%, 0); }
+.cl-tip:focus-visible,.cl-seg:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+
+/* Other classes: overlapping folder stack. Every folder is full height; each one sits one tab-height below the one behind it,
+   so the folders behind show only their tab and a strip of their top edge. Only the front folder shows its title. */
+.cl-stack { --tab-h:40px; --folder-h:104px; display:flex; flex-direction:column; margin-top:auto; padding-top:var(--space-2); }
+.cl-stack-item { position:relative; display:flex; flex-direction:column; width:100%; padding:0; border:0; background:transparent; color:var(--card-foreground); font-family:var(--font-sans); text-align:left; cursor:pointer; transition:all 200ms; }
+.cl-stack-item+.cl-stack-item { margin-top:calc(var(--folder-h) * -1); }
+.cl-stack-item .cl-tab { display:flex; align-items:center; height:var(--tab-h); padding:0 var(--space-3); box-shadow:var(--shadow-sm); }
+.cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); box-shadow:var(--shadow-sm); }
+.cl-stack-item:not(.is-front) .cl-stack-body>* { visibility:hidden; }
+/* Soft edge where each folder sits on the one behind it, built from colour tokens: one piece above the tab, one above the body. */
+.cl-stack-item .cl-tab,.cl-stack-body { position:relative; }
+.cl-stack-item+.cl-stack-item :is(.cl-tab,.cl-stack-body)::before { content:""; position:absolute; top:calc(var(--space-2) * -1); left:0; right:0; height:var(--space-2); border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:linear-gradient(to top, var(--opacity-primary-10), transparent); pointer-events:none; }
+.cl-stack-item+.cl-stack-item .cl-stack-body::before { left:var(--space-24); }
+.cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
+.cl-stack-item:is(:hover,:focus-visible) :is(.cl-tab,.cl-stack-body) { box-shadow:var(--shadow-xl); }
+.cl-stack-item:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:var(--radius-xl); }
+
+/* Badges: read-only status labels. Status text is mixed 80% with foreground (as the plugin does for destructive labels) so 14px meets 4.5:1. */
+.cl-badge { display:inline-flex; align-items:center; padding:var(--space-1) var(--space-2); border-radius:var(--rounded-full); font-weight:var(--weight-semibold); white-space:nowrap; }
+.cl-badge-success { background:var(--success-light); color:color-mix(in srgb,var(--success) 80%,var(--foreground)); }
+.cl-badge-warning { background:var(--warning-light); color:color-mix(in srgb,var(--warning) 80%,var(--foreground)); }
+.cl-badge-destructive { background:var(--destructive-light); color:color-mix(in srgb,var(--destructive) 80%,var(--foreground)); }
+.cl-badge-secondary { background:var(--secondary); color:var(--secondary-foreground); }
+
+/* Learner performance */
+.cl-performance { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; }
+.cl-performance>h2 { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.cl-dist { display:flex; gap:var(--space-1); height:var(--space-6); }
+.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:var(--radius); cursor:default; transition:all 200ms; }
+.cl-seg svg { width:16px; height:16px; flex-shrink:0; }
+.cl-seg:hover { transform:translateY(calc(var(--space-1) * -1)); }
+.cl-seg-advancing { background:var(--success-light); }
+.cl-seg-advancing svg { stroke:var(--success); }
+.cl-seg-steady svg { stroke:var(--warning); }
+.cl-seg-attention svg { stroke:var(--destructive); }
+.cl-seg-steady { background:var(--warning-light); }
+.cl-seg-notstarted { background:var(--secondary); }
+.cl-seg-attention { background:var(--destructive-light); }
+.cl-legend { display:flex; flex-wrap:wrap; gap:var(--space-2) var(--space-6); padding:0; list-style:none; }
+.cl-legend li { display:flex; align-items:center; gap:var(--space-2); }
+.cl-legend i { width:var(--space-4); height:var(--space-4); border-radius:var(--space-1); }
+.cl-key-advancing { background:var(--success); }
+.cl-key-steady { background:var(--warning); }
+.cl-key-notstarted { background:var(--ring); }
+.cl-key-attention { background:var(--destructive); }
+
+.cl-table-card { background:var(--card); border-radius:var(--radius-xl); overflow-x:auto; }
+.cl-table { display:flex; flex-direction:column; min-width:800px; }
+.cl-tr { display:grid; grid-template-columns:minmax(176px,1.4fr) minmax(144px,0.9fr) minmax(264px,2fr) minmax(136px,0.9fr) minmax(136px,1fr); align-items:center; gap:var(--space-4); min-height:64px; padding:var(--space-2) var(--space-4); color:var(--card-foreground); }
+.cl-thead { min-height:48px; color:var(--muted-foreground); white-space:nowrap; }
+[role="rowgroup"] .cl-tr { transition:all 200ms; }
+[role="rowgroup"] .cl-tr:nth-child(odd) { background:var(--background); }
+[role="rowgroup"] .cl-tr:hover { background:var(--secondary); }
+.cl-num { text-align:right; }
+.cl-end { justify-self:end; text-align:right; }
+.cl-learner { display:flex; align-items:center; gap:var(--space-3); min-width:0; }
+.cl-progress { display:grid; grid-template-columns:40px minmax(96px,1fr) auto; align-items:center; gap:var(--space-3); }
+.cl-progress-track { height:var(--space-1); border-radius:var(--rounded-full); background:var(--secondary); overflow:hidden; }
+.cl-progress-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
+.cl-muted { color:var(--muted-foreground); }
+
+@media (max-width:1023px) {
+  .cl-layout { grid-template-columns:minmax(0,1fr); }
+  .cl-stack { margin-top:0; }
+}
+@media (max-width:639px) {
+  .cl-page { padding:var(--space-6) var(--horizontal-padding, var(--space-4)) var(--space-8); }
+  .cl-create .btn { width:100%; justify-content:center; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .cl-row,.cl-stack-item,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }
+  .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg:hover,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
+}

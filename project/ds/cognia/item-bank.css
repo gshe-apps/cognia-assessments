@@ -5,7 +5,7 @@
    success Add state, smooth analysis accordion, no status dots. */
 
 .ib-main { display:block; flex:1 0 auto; align-self:stretch; width:100%; padding:0; background:var(--background); overflow-x:clip; }
-.ib { display:grid; grid-template-columns:minmax(0, 500px) minmax(0, 1fr); gap:var(--space-4); align-items:start; max-width:1320px; margin:0 auto; padding:var(--space-8) var(--horizontal-padding) var(--space-6); box-sizing:border-box; font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
+.ib { display:grid; grid-template-columns:minmax(0, 500px) minmax(0, 1fr); gap:var(--space-4); align-items:start; max-width:calc(1320px + (var(--horizontal-padding) * 2)); margin:0 auto; padding:var(--space-8) var(--horizontal-padding) var(--space-6); box-sizing:border-box; font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
 .ib.is-wide { grid-template-columns:minmax(0, 1fr); }
 .ib :is(h1, h2, h3, p, ul) { margin:0; }
 .ib ul { padding:0; list-style:none; }

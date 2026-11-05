@@ -240,3 +240,7 @@ html:active-view-transition body{animation:none;}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}body{animation:none;}}
 
 }
+
+/* Assessment Library is reached from Assessments, not the top nav. Scripts remove the tab, but a screen re-render
+   puts it back for a frame, which made Item Bank jump. Hiding it here stops that flash on every teacher screen. */
+.cap-root .hubnav a[href="CAP-T21-AssessmentLibrary.dc.html"] { display:none; }

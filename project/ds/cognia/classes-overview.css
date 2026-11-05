@@ -26,9 +26,10 @@
 .cl-row-label { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-2); }
 .cl-page .cl-row strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); }
 .cl-row { transition:all 200ms; }
-.cl-row:hover { background:var(--hover-overlay); }
+/* Hover matches the learner table rows (secondary). The selected Learners row already sits on secondary, so it steps one shade darker. */
+.cl-row:hover { background:var(--secondary); }
 .cl-row[aria-current="true"] { background:var(--secondary); color:var(--secondary-foreground); }
-.cl-row[aria-current="true"]:hover { background:linear-gradient(var(--hover-overlay),var(--hover-overlay)),var(--secondary); }
+.cl-row[aria-current="true"]:hover { background:color-mix(in srgb,var(--secondary) 88%,var(--foreground)); }
 .cl-page .cl-row[aria-current="true"] .cl-row-name { font-weight:var(--weight-semibold); }
 
 .cl-avatars { display:flex; align-items:center; }
@@ -42,7 +43,8 @@
 
 /* Tooltips: shown on hover and keyboard focus. */
 .cl-tip { position:relative; }
-.cl-tip::after { content:attr(data-tip); position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; transform:translate(-50%, var(--space-1)); pointer-events:none; transition:all 200ms; }
+/* Tooltips are white (popover) cards with the medium shadow. */
+.cl-tip::after { content:attr(data-tip); position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; transform:translate(-50%, var(--space-1)); pointer-events:none; transition:all 200ms; }
 .cl-tip:is(:hover,:focus-visible)::after { opacity:1; transform:translate(-50%, 0); }
 .cl-tip:focus-visible,.cl-seg:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 
@@ -58,8 +60,9 @@
 .cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
 .cl-stack-item:is(:hover,:focus-visible) { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-2) var(--opacity-primary-20)); }
 
-/* Switching class: the picked folder slides up into the current folder's place (its title shows as it rises),
-   the current folder fades out, then the new current folder settles in. Transform and opacity only, 200ms. */
+/* Switching class, in three 200ms steps so it reads calmly: the current folder fades out, then the picked folder
+   slides up into its place (its title shows as it rises), then the new current folder settles in.
+   Transform and opacity only; each step keeps the plugin's 200ms duration. */
 .cl-folder { transition:all 200ms; }
 .cl-folder.cl-leaving { opacity:0; transform:translateY(calc(var(--space-2) * -1)); }
 .cl-stack-item.cl-rising { z-index:20; pointer-events:none; }
@@ -92,13 +95,13 @@
 .cl-seg-steady { background:var(--warning-light); }
 .cl-seg-notstarted { background:var(--secondary); }
 .cl-seg-attention { background:var(--destructive-light); }
-.cl-legend { display:flex; flex-wrap:wrap; gap:var(--space-2) var(--space-6); padding:0; list-style:none; }
-.cl-legend li { display:flex; align-items:center; gap:var(--space-2); }
-.cl-legend i { width:var(--space-4); height:var(--space-4); border-radius:var(--space-1); }
-.cl-key-advancing { background:var(--success); }
-.cl-key-steady { background:var(--warning); }
-.cl-key-notstarted { background:var(--ring); }
-.cl-key-attention { background:var(--destructive); }
+/* Hover or focus: the segment fills with its solid status colour and the icon turns white. */
+.cl-seg:is(:hover,:focus-visible) { color:var(--primary-foreground); }
+.cl-seg:is(:hover,:focus-visible) svg { stroke:var(--primary-foreground); }
+.cl-seg-advancing:is(:hover,:focus-visible) { background:var(--success); }
+.cl-seg-steady:is(:hover,:focus-visible) { background:var(--warning); }
+.cl-seg-notstarted:is(:hover,:focus-visible) { background:var(--muted-foreground); }
+.cl-seg-attention:is(:hover,:focus-visible) { background:var(--destructive); }
 
 .cl-table-card { background:var(--card); border-radius:var(--radius-xl); overflow-x:auto; }
 .cl-table { display:flex; flex-direction:column; min-width:800px; }

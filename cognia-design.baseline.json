@@ -1,5 +1,5 @@
 {
- "plugin": "1.6.0",
+ "plugin": "1.8.0",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/approved-redesign.css": {
@@ -329,13 +329,11 @@
   "project/teacher-flow-upgrade.css": {
    "type.off-scale-size": 61,
    "radius.off-scale": 19,
-   "colour.hardcoded": 131,
+   "colour.hardcoded": 130,
    "spacing.off-scale": 87,
    "z-index.off-scale": 6,
    "type.font-family": 8,
    "type.raw-size": 11,
-   "motion.duration": 2,
-   "motion.easing": 1,
    "shadow.not-a-token": 3
   },
   "project/teacher-overview-ui.css": {
@@ -358,13 +356,6 @@
   },
   "project/CAP-T07-DraftSaved.dc.html": {
    "spacing.off-scale": 2
-  },
-  "project/CAP-T11-Classes.dc.html": {
-   "spacing.off-scale": 4
-  },
-  "project/CAP-T13-Results.dc.html": {
-   "spacing.off-scale": 1,
-   "render.contrast": 1
   },
   "project/CAP-T15-ScoreResponse.dc.html": {
    "spacing.off-scale": 1
@@ -709,17 +700,8 @@
   "project/CAP-S09-AccessHelp.dc.html": {
    "render.too-many-sizes": 1
   },
-  "project/CAP-T02-OverviewStats.dc.html": {
-   "render.contrast": 1
-  },
   "project/CAP-T06-Review.dc.html": {
    "render.contrast": 11
-  },
-  "project/CAP-T08-AudienceDelivery.dc.html": {
-   "render.contrast": 1
-  },
-  "project/CAP-T10-Scheduled.dc.html": {
-   "render.contrast": 5
   },
   "project/CAP-T21-AssessmentLibrary.dc.html": {
    "shell.nav-selected": 1

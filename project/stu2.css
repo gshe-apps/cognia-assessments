@@ -730,12 +730,12 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .qcard-end[aria-hidden="true"] .qend { opacity: 0; transition: opacity 200ms; }
 .qend-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
-/* Question cards hug their content (5 Nov 2026 review). The current card sits in the flow, so the deck
-   is only as tall as that question; the cards waiting behind it fill the deck's height and peek out below.
-   A long question still stops at the space available and its answer area scrolls. */
+/* Every card is the size of question 1 (5 Nov 2026 review 2). Question 1 always sits in the flow and sets
+   the deck's height, even after it is swiped away (transforms do not change layout); every other card fills
+   that same deck, so the cards never change size between questions. A longer question scrolls its answer area. */
 .deck { flex: 0 1 auto; display: flex; flex-direction: column; }
-.qcard[aria-hidden="false"] { position: relative; bottom: auto; flex: 0 1 auto; min-height: 0; margin-bottom: 32px; }
-.qcard[aria-hidden="false"] .qbody, .qcard[aria-hidden="false"] .qans { flex: 0 1 auto; }
+.qcard:first-of-type { position: relative; bottom: auto; flex: 0 1 auto; min-height: 0; margin-bottom: 32px; }
+.qcard:first-of-type .qbody, .qcard:first-of-type .qans { flex: 0 1 auto; }
 /* Waiting cards (the deck script scales them) show only their edge, never a slice of their question */
 .qcard[style*="scale("] > * { visibility: hidden; }
 @container stu2 (min-width: 768px) {

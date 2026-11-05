@@ -1,16 +1,49 @@
 /* Reference presentation only. Reuse the existing archive/restore-work handler.
    Illustrative reference copy stays visible until the user has a real draft. */
 (() => {
+ let draftIndex = 0;
+ const examples = [
+  { title: 'New classroom assessment', detail: '4 items · Class 7A', page: 'CAP-T05-Questions.dc.html' },
+  { title: 'Algebra practice', detail: 'Classroom assessment', page: 'CAP-T05-Algebra.dc.html' },
+  { title: 'Reading comprehension', detail: 'Classroom assessment', page: 'CAP-T05-Reading.dc.html' }
+ ];
  function apply() {
-  const card=document.querySelector('[data-priority="draft"]');if(!card)return;
-  let entries=[];try{entries=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]')}catch{}
-  const draft=entries.find(e=>e.status==='draft'&&!e.sample);if(!draft)return;
-  const title=card.querySelector('[data-overview-draft-title]');if(title&&title.textContent!==draft.title)title.textContent=draft.title;
-  const meta=card.querySelector('[data-overview-draft-meta]');
-  if(meta&&meta.textContent!=='Saved in this browser')meta.textContent='Saved in this browser';
-  card.querySelectorAll('[data-overview-resume]').forEach(a=>{if(a.dataset.restoreWork!==draft.id)a.dataset.restoreWork=draft.id;});
+  const card = document.querySelector('[data-priority="draft"]');
+  if (!card?.querySelector('[data-draft-count]')) return;
+  let entries;
+  try { entries = JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1') || '[]'); } catch { entries = []; }
+  const saved = Array.isArray(entries) ? entries.filter(entry => entry?.status === 'draft' && !entry.sample && entry.id) : [];
+  const drafts = saved.length ? saved : examples;
+  draftIndex = Math.min(Math.max(draftIndex, 0), drafts.length - 1);
+  const draft = drafts[draftIndex];
+  const setText = (selector, value) => {
+   const element = card.querySelector(selector);
+   if (element.textContent !== value) element.textContent = value;
+  };
+  setText('[data-draft-count]', String(drafts.length));
+  setText('[data-draft-position]', (draftIndex + 1) + ' of ' + drafts.length);
+  setText('[data-overview-draft-title]', draft.title);
+  setText('[data-overview-draft-meta]', draft.detail || 'Saved in this browser');
+  card.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
+  card.querySelector('[data-draft-step="1"]').disabled = draftIndex === drafts.length - 1;
+  const resume = card.querySelector('[data-overview-resume]');
+  if (draft.id) resume.dataset.restoreWork = draft.id;
+  else delete resume.dataset.restoreWork;
+  resume.setAttribute('href', draft.page || 'CAP-T05-Questions.dc.html');
  }
  function ready(){
+  document.addEventListener('click', event => {
+   const button = event.target.closest('[data-draft-step]');
+   if (!button) return;
+   draftIndex += Number(button.dataset.draftStep);
+   apply();
+   if (button.disabled) {
+    button.parentElement.querySelector('button:not(:disabled)')?.focus();
+   }
+  });
+  window.addEventListener('storage', event => {
+   if (event.key === 'cogniaAssessmentArchiveV1') apply();
+  });
   apply();let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;observer.disconnect();apply();observer.observe(document.body,{childList:true,subtree:true});});});
   observer.observe(document.body,{childList:true,subtree:true});
   document.addEventListener('click',event=>{for(const menu of document.querySelectorAll('.ov-menu[open]'))if(!menu.contains(event.target))menu.open=false;});

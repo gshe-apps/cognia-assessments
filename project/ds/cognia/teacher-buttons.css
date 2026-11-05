@@ -1,0 +1,44 @@
+/* Shared Cognia button variants for the educator workflow. */
+.teacher-cta-screen :is(.btn, .ib-btn, .od-button, .af-primary, .af-secondary) {
+  --teacher-button-bg: var(--card);
+  --teacher-button-ink: var(--foreground);
+  --teacher-button-stroke: var(--primary);
+  --teacher-button-hover: var(--secondary);
+}
+.teacher-cta-screen :is(.btn.solid, .btn.p, .ib-btn-solid, .od-create, .od-empty-day .od-button, .af-primary) {
+  --teacher-button-bg: var(--primary);
+  --teacher-button-ink: var(--primary-foreground);
+  --teacher-button-stroke: transparent;
+  --teacher-button-hover: var(--primary-hover);
+}
+.teacher-cta-screen :is(.btn.secondary, .af-secondary, .od-button:not(.od-create, .od-empty-day .od-button)) {
+  --teacher-button-bg: var(--secondary);
+  --teacher-button-ink: var(--secondary-foreground);
+  --teacher-button-stroke: transparent;
+  --teacher-button-hover: var(--hover-overlay);
+}
+.teacher-cta-screen :is(.btn.ghost, .ib-btn-ghost) {
+  --teacher-button-bg: transparent;
+  --teacher-button-stroke: transparent;
+}
+.teacher-cta-screen :is(.btn.destructive, .ib-btn-destructive) {
+  --teacher-button-bg: var(--destructive);
+  --teacher-button-ink: var(--primary-foreground);
+  --teacher-button-stroke: transparent;
+  --teacher-button-hover: color-mix(in srgb, var(--destructive) 85%, var(--card));
+}
+.teacher-cta-screen :is(.btn.ghost.is-destructive, .btn.outline.is-destructive, .ib-btn-ghost.is-destructive) {
+  --teacher-button-ink: color-mix(in srgb, var(--destructive) 80%, var(--foreground));
+}
+html body.teacher-cta-screen :is(.cap-root, .wf, dialog) :is(.btn, .ib-btn, .od-button, .af-primary, .af-secondary):is(a, button, input) {
+  background: var(--teacher-button-bg);
+  border: 1px solid var(--teacher-button-stroke);
+  color: var(--teacher-button-ink);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+html body.teacher-cta-screen :is(.cap-root, .wf, dialog) :is(.btn, .ib-btn, .od-button, .af-primary, .af-secondary):is(a, button, input):hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--teacher-button-hover);
+  color: var(--teacher-button-ink);
+  box-shadow: none;
+}

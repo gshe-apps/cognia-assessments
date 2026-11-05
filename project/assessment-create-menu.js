@@ -12,7 +12,7 @@
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </summary>
         <div class="assessment-create-options">
-          <a href="CAP-T05-Questions.dc.html" data-start-assessment>
+          <a href="CAP-T04-Setup.dc.html">
             ${svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5M14 2l6 6v3m-6-9v6h6m-3 7v6m-3-3h6"/>')}
             Create from scratch
           </a>
@@ -24,13 +24,6 @@
       </details>`;
 
     const menu = host.firstElementChild;
-    menu.querySelector('[data-start-assessment]').addEventListener('click', () => {
-      try {
-        for (const key of Object.keys(sessionStorage)) {
-          if (/^capCreate(Confirmed|Collapsed):/.test(key)) sessionStorage.removeItem(key);
-        }
-      } catch {}
-    });
     menu.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape' || !menu.open) return;
       event.stopPropagation();

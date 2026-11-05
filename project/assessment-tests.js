@@ -34,7 +34,13 @@ document.addEventListener('DOMContentLoaded',()=>{
  },false);
  document.addEventListener('click',event=>{
    const link=event.target.closest('a');if(!link)return;
-   if(page==='CAP-T09-ConfirmAssignment.dc.html'&&link.getAttribute('href')==='CAP-T10-Scheduled.dc.html'){localStorage.setItem('cogniaScheduledAssessmentTests',JSON.stringify(model));}
+   if(page==='CAP-T09-ConfirmAssignment.dc.html'&&link.getAttribute('href')==='CAP-T10-Scheduled.dc.html'&&(!model.tests.length||model.tests.some(t=>!count(t)))){
+     event.preventDefault();
+     event.stopImmediatePropagation();
+     document.getElementById('confirmError').textContent='Return to the assessment and add at least one item to each test.';
+     return;
+   }
+
    if(isSetup&&link.id==='setupContinue'){
      event.preventDefault();event.stopImmediatePropagation();const form=document.getElementById('setupForm');if(!form.reportValidity())return;
      const extra=new URLSearchParams(location.search).has('additionalTest');let t=active();if(extra){t={id:'test-'+Date.now(),state:{chosen:[],written:{},edits:{}},questions:[],page:'CAP-T05-Questions.dc.html'};model.tests.push(t);model.active=t.id;}
@@ -45,6 +51,9 @@ document.addEventListener('DOMContentLoaded',()=>{
      const empty=model.tests.find(t=>count(t)===0);if(empty){event.preventDefault();event.stopImmediatePropagation();const error=document.getElementById('test-flow-error');error.textContent=`Add at least one question to “${empty.title}” or remove that test before continuing.`;error.scrollIntoView({block:'center'});}
    }
  },true);
+ if(page==='CAP-T09-ConfirmAssignment.dc.html')document.addEventListener('click',event=>{
+   if(!event.defaultPrevented&&event.target.closest('a[href="CAP-T10-Scheduled.dc.html"]'))localStorage.setItem('cogniaScheduledAssessmentTests',JSON.stringify(model));
+ });
  persist();
 });
 

@@ -36,9 +36,71 @@ document.addEventListener('DOMContentLoaded',()=>{
  function restore(id){const entry=archive().find(e=>e.id===id);if(!entry)return;preserveCurrent();const restored=JSON.parse(JSON.stringify(entry.model));if(entry.status==='banked'){const suffix='-reuse-'+Date.now();restored.active+=suffix;restored.tests.forEach(t=>t.id+=suffix);restored.origin='builder';}put('cogniaAssessmentTestsV1',restored);location.href=entry.model.tests[0].libraryForm?'CAP-T08-AudienceDelivery.dc.html':entry.model.tests.find(t=>t.id===entry.model.active)?.page||'CAP-T06-Review.dc.html';}
  function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});location.href='CAP-T08-AudienceDelivery.dc.html';}
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form · Grade ${f.grade} · ${escape(f.subject)} · ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions"><button class="btn solid" data-assign-form="${f.id}">Use complete assessment →</button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
- function renderLibrary(){const root=document.getElementById('assessment-library');if(!root)return;
-  root.innerHTML=`<div class="head"><div><p class="client-kicker">Classroom Assessment · Library</p><h1>Ready to teach. Ready to assign.</h1><p>Discover complete Cognia assessments. Preview a form, then choose your class and delivery.</p></div><a class="btn ghost" href="CAP-T04-Setup.dc.html">Build your own instead →</a></div><form class="client-library-filters" role="search"><div class="field"><label for="form-search">Search assessments</label><input id="form-search" type="search" placeholder="Search by title or standard"></div><div class="field"><label for="form-grade">Grade</label><select id="form-grade"><option value="">All grades</option>${['5','6','8'].map(g=>`<option>${g}</option>`).join('')}</select></div><div class="field"><label for="form-subject">Subject</label><select id="form-subject"><option value="">All subjects</option><option>Mathematics</option><option>English</option></select></div></form><p class="client-small">Illustrative catalogue of complete forms · final content, filters and access rules are pending confirmation.</p><p id="form-count" role="status"></p><div class="client-form-grid" id="form-results"></div>`;
-  const draw=()=>{const term=root.querySelector('#form-search').value.trim().toLowerCase(),grade=root.querySelector('#form-grade').value,subject=root.querySelector('#form-subject').value,items=forms.filter(f=>(!term||(f.title+' '+f.standard).toLowerCase().includes(term))&&(!grade||f.grade===grade)&&(!subject||f.subject===subject));root.querySelector('#form-count').textContent=items.length+' complete '+(items.length===1?'assessment':'assessments');root.querySelector('#form-results').innerHTML=items.length?items.map(f=>`<article class="client-form-card"><div class="client-form-top"><span class="client-icon">${icon}</span><span class="tag">Cognia form</span></div><h2>${escape(f.title)}</h2><p>Grade ${f.grade} · ${escape(f.subject)}</p><p>${escape(f.standard)} · ${f.questions.length} questions · ${f.questions.reduce((a,q)=>a+q.marks,0)} points</p><div class="client-card-actions"><button class="btn ghost" data-preview-form="${f.id}">Preview assessment</button><button class="btn solid" data-start-form="${f.id}">Assign →</button></div></article>`).join(''):'<div class="client-empty"><h2>No assessments match</h2><p>Try another title, grade or subject.</p><button type="button" class="btn ghost" data-clear-library>Clear filters</button></div>';};root.querySelector('form').onsubmit=e=>e.preventDefault();root.addEventListener('input',draw);root.addEventListener('change',draw);root.addEventListener('click',e=>{if(e.target.closest('[data-clear-library]')){root.querySelector('form').reset();draw();}});draw();
+ function renderLibrary(){
+  const root=document.getElementById('assessment-library');
+  if(!root)return;
+  root.classList.add('al-library');
+  const svg=path=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
+  const arrow=svg('<path d="M4 12h15m-6-6 6 6-6 6"/>');
+  const fileIcon=svg('<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5"/>');
+  const formatOf=form=>form.format||'Cognia form';
+  const grades=[...new Set(forms.map(form=>form.grade))].sort((a,b)=>Number(a)-Number(b));
+  const subjects=[...new Set(forms.map(form=>form.subject))].sort();
+  const formats=[...new Set(forms.map(formatOf))];
+  const options=(values,label=value=>value)=>values.map(value=>'<option value="'+escape(value)+'">'+escape(label(value))+'</option>').join('');
+  root.innerHTML=`
+   <header class="al-heading">
+    <div>
+     <div class="al-title"><a class="al-action al-ghost al-back" href="CAP-T03-Assessments.dc.html" aria-label="Back to assessments" title="Back to assessments">${svg('<path d="M20 12H5m6-6-6 6 6 6"/>')}</a><h1>Assessment library</h1></div>
+     <p>Discover ready-to-teach Cognia assessments and assign them to your class.</p>
+    </div>
+    <a class="al-action al-outline" href="CAP-T04-Setup.dc.html">${svg('<path d="M13 3H5v18h7M13 3l5 5h-5zM18 12v8m-4-4h8"/>')}Build from scratch${arrow}</a>
+   </header>
+   <form class="al-filters" role="search">
+    <label class="al-search">${svg('<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>')}<input id="form-search" type="search" aria-label="Search assessments" placeholder="Search by title or standard"></label>
+    <select id="form-grade" aria-label="Grade"><option value="">All grades</option>${options(grades,g=>'Grade '+g)}</select>
+    <select id="form-subject" aria-label="Subject"><option value="">All subjects</option>${options(subjects)}</select>
+    <select id="form-format" aria-label="Format"><option value="">All formats</option>${options(formats)}</select>
+   </form>
+   <p class="al-count" id="form-count" role="status"></p>
+   <div class="al-list" id="form-results"></div>`;
+  const filter=root.querySelector('form');
+  const results=root.querySelector('#form-results');
+  function draw(){
+   const term=filter.querySelector('#form-search').value.trim().toLowerCase();
+   const grade=filter.querySelector('#form-grade').value;
+   const subject=filter.querySelector('#form-subject').value;
+   const format=filter.querySelector('#form-format').value;
+   const matches=forms.filter(form=>(!term||(form.title+' '+form.standard).toLowerCase().includes(term))&&
+    (!grade||form.grade===grade)&&(!subject||form.subject===subject)&&(!format||formatOf(form)===format));
+   root.querySelector('#form-count').textContent=matches.length+' complete '+(matches.length===1?'assessment':'assessments');
+   results.innerHTML=matches.length?matches.map(form=>{
+    const count=form.questions.length;
+    const points=form.questions.reduce((total,question)=>total+Number(question.marks||0),0);
+    return `<article class="al-row">
+     <span class="al-file">${fileIcon}</span>
+     <div class="al-copy">
+      <h2>${escape(form.title)}</h2>
+      <p>Grade ${escape(form.grade)} · ${escape(form.subject)} · ${escape(form.standard)} · ${count} ${count===1?'item':'items'} · ${points} ${points===1?'point':'points'}</p>
+      <div class="al-badges"><span>${escape(formatOf(form))}</span><span class="al-status-badge">${svg('<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>')}Ready to assign</span></div>
+     </div>
+     <div class="al-actions">
+      <button type="button" class="al-action al-ghost" data-preview-form="${escape(form.id)}">Preview assessment</button>
+      <button type="button" class="al-action al-primary" data-start-form="${escape(form.id)}">Choose recipients${arrow}</button>
+     </div>
+    </article>`;
+   }).join(''):'<div class="al-empty"><h2>No assessments match</h2><p>Try a different search or clear your filters.</p><button type="button" class="al-action al-outline" data-clear-library>Clear filters</button></div>';
+  }
+  filter.addEventListener('submit',event=>event.preventDefault());
+  filter.querySelector('#form-search').addEventListener('input',draw);
+  filter.addEventListener('change',event=>{if(event.target.matches('select'))draw();});
+  results.addEventListener('click',event=>{
+   if(!event.target.closest('[data-clear-library]'))return;
+   filter.reset();
+   draw();
+   filter.querySelector('input').focus();
+  });
+  draw();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;
   const m=model(),locked=m?.origin==='library',all=forms.flatMap(f=>(f.items||f.questions).map(q=>({...q,id:'bank-'+f.id+'-'+q.id,grade:f.grade,subject:f.subject,standard:f.standard,origin:'cognia',source:'Cognia item'})));
@@ -111,16 +173,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!teacher)return;const a=event.target.closest('a'),bank=event.target.closest('[data-bank]');
   if(bank){const m=model();if(!m?.tests?.length||m.tests.some(t=>!t.questions?.length)){event.preventDefault();event.stopImmediatePropagation();return;}saveSnapshot('banked');return;}
   if(!a)return;const href=a.getAttribute('href')||'';
-  if(href==='CAP-T04-Setup.dc.html'&&/create|build your own/i.test(a.textContent)){preserveCurrent();const id='test-'+Date.now();put('cogniaAssessmentTestsV1',{title:'New classroom assessment',active:id,origin:'builder',tests:[{id,title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.1',page:'CAP-T05-Questions.dc.html',state:{chosen:[],written:{},edits:{}},questions:[]}]});}
+  if(href==='CAP-T04-Setup.dc.html'&&/create|build your own|build from scratch/i.test(a.textContent)){preserveCurrent();const id='test-'+Date.now();put('cogniaAssessmentTestsV1',{title:'New classroom assessment',active:id,origin:'builder',tests:[{id,title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.1',page:'CAP-T05-Questions.dc.html',state:{chosen:[],written:{},edits:{}},questions:[]}]});}
   if(href==='CAP-T07-DraftSaved.dc.html')saveSnapshot('draft');
   if((isReview&&href==='CAP-T08-AudienceDelivery.dc.html')||(page==='CAP-T09-ConfirmAssignment.dc.html'&&href==='CAP-T10-Scheduled.dc.html')){sync();const list=pending();if(list.length){event.preventDefault();event.stopImmediatePropagation();approvalDialog(list[0].key);return;}}
   if(isReview&&model()?.origin!=='library'&&href==='CAP-T08-AudienceDelivery.dc.html'&&!document.getElementById('reviewed')?.checked){event.preventDefault();event.stopImmediatePropagation();const input=document.getElementById('reviewed');input?.setCustomValidity('Check the assessment settings and student instructions before continuing.');input?.reportValidity();input?.addEventListener('change',()=>input.setCustomValidity(''),{once:true});return;}
   if(isReview&&href==='CAP-T08-AudienceDelivery.dc.html'){const m=model();m.itemVersions=m.tests.flatMap(t=>(t.questions||[]).map(q=>{const r=ledger()[t.id+'/'+q.id];return {testId:t.id,itemId:q.id,version:r?.version||1,status:required(t,q)?r?.status:'Cognia approved',approvedAt:r?.approvedAt||null};}));m.settings={...m.settings,instructions:document.getElementById('instructions')?.value||'',limit:document.getElementById('timeLimit')?.value||'None'};put('cogniaAssessmentTestsV1',m);const delivery=read('cogniaDeliverySessions',null);if(delivery){delivery.time=m.settings.limit;put('cogniaDeliverySessions',delivery);}}
-  if(page==='CAP-T09-ConfirmAssignment.dc.html'&&href==='CAP-T10-Scheduled.dc.html'){
-   // The delivery validator may still cancel this navigation; only record on success.
-   queueMicrotask(()=>{if(!event.defaultPrevented)saveSnapshot('assigned');});
-  }
+
  },true);
+ if(page==='CAP-T09-ConfirmAssignment.dc.html')document.addEventListener('click',event=>{
+  if(!event.defaultPrevented&&event.target.closest('a[href="CAP-T10-Scheduled.dc.html"]'))saveSnapshot('assigned');
+ });
  document.addEventListener('click',event=>{
   if(!teacher)return;
   const preview=event.target.closest('.qpreview'),student=event.target.closest('[data-action="preview"],a[href="CAP-S05-Question.dc.html"]');

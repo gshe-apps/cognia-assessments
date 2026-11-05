@@ -2,7 +2,9 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const file=location.pathname.split('/').pop(),confirm=file==='CAP-T09-ConfirmAssignment.dc.html',success=file==='CAP-T10-Scheduled.dc.html';if(!confirm&&!success)return;
  const read=(key,f={})=>{try{return JSON.parse(localStorage.getItem(key))||f}catch{return f}},esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const draft=read('cogniaAssessmentTestsV1',{tests:[]}),m=success?read('cogniaScheduledAssessmentTests',draft):draft,d=read('cogniaDeliverySessions',{recipients:[],sessions:[]}),tests=m.tests||[],t=tests.find(t=>t.id===m.active)||tests[0]||{},qs=tests.flatMap(t=>t.questions||[]),marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),sessions=d.sessions||[],students=d.recipients?.length||0,settings=m.settings||{},className=d.classIds?.length?d.classIds.map(id=>id==='5b'?'Grade 5B':'Grade 5A').join(', '):d.classId==='5b'?'Grade 5B':'Grade 5A';
+ const draft=read('cogniaAssessmentTestsV1',{tests:[]}),m=success?read('cogniaScheduledAssessmentTests',draft):draft,d=read('cogniaDeliverySessions',{recipients:[],sessions:[]}),tests=m.tests||[],t=tests.find(t=>t.id===m.active)||tests[0]||{},qs=tests.flatMap(t=>t.questions||[]),marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),sessions=d.sessions||[],students=d.recipients?.length||0,settings=m.settings||{};
+ const classLabel=delivery=>(delivery.classIds?.length?delivery.classIds:[delivery.classId]).map(id=>id==='5b'?'Grade 5B':'Grade 5A').join(', ');
+ const className=classLabel(d);
  const svg=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>',icons={file:svg('<path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8M8 16h6"/>'),users:svg('<circle cx="9" cy="7" r="3"/><circle cx="18" cy="8" r="2"/><path d="M2 21v-3a7 7 0 0 1 14 0v3M17 13a5 5 0 0 1 5 5v3"/>'),calendar:svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18"/>'),clock:svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),check:svg('<path d="m6 12 4 4 8-9"/>'),circle:svg('<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>'),pen:svg('<path d="m4 20 1-5L17 3l4 4L9 19zM14 6l4 4"/>'),bookmark:svg('<path d="M5 3h14v18l-7-5-7 5z"/>'),mail:svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>'),chart:svg('<path d="M5 20v-6h3v6zM11 20V9h3v11zM17 20V4h3v16z"/>')};
  const dates=value=>{if(!value)return 'Not set';const date=new Date(value.slice(0,10)+'T12:00:00');return Number.isNaN(date.getTime())?'Not set':new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).format(date)};
  const edit=(href,label='Edit')=>`<a class="af-edit" href="${href}">${icons.pen}${label}</a>`;
@@ -16,14 +18,47 @@ document.addEventListener('DOMContentLoaded',()=>{
  const mainColumn=grid.querySelector('.af-main-column'),summaryPanel=grid.querySelector('.af-summary'),audiencePanel=grid.querySelector('.af-audience'),combinedCard=document.createElement('section');combinedCard.className='af-surface af-combined-summary';summaryPanel.classList.remove('af-surface');audiencePanel.classList.remove('af-surface');combinedCard.append(summaryPanel,audiencePanel);mainColumn.replaceChildren(combinedCard);
  grid.querySelector('.af-next')?.remove();
  const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.innerHTML='Confirm &amp; assign <span aria-hidden="true">→</span>';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
- }else{page.classList.add('af-success');
+ }
+
+ function renderSuccess(container, modal){
+ const delivery=read('cogniaDeliverySessions',d),sessions=delivery.sessions||[],students=delivery.recipients?.length||0,className=classLabel(delivery);
  Object.assign(icons,{layers:svg('<path d="m12 3 10 5-10 5L2 8zM2 12l10 5 10-5M2 16l10 5 10-5"/>'),plus:svg('<path d="M12 5v14M5 12h14"/>'),home:svg('<path d="m3 10 9-7 9 7v11h-7v-7h-4v7H3z"/>'),arrow:svg('<path d="M5 12h14m-6-6 6 6-6 6"/>')});
  const title=m.title||t.title||'Your assessment',subjects=[...new Set(tests.map(test=>test.subject).filter(Boolean))],grades=[...new Set(tests.map(test=>test.grade).filter(Boolean))];
  const savedDuration=tests.reduce((sum,test)=>{const minutes=Number(String(test.details?.duration||'').split(' ')[0]);return sum+(Number.isFinite(minutes)?minutes:0)},0),estimatedMinutes=savedDuration||qs.length*2;
  const firstSession=[...sessions].filter(s=>!s.noLimit&&s.opens).sort((a,b)=>a.opens.localeCompare(b.opens))[0],today=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()),availability=sessions.length&&sessions.every(s=>s.noLimit)?'Available anytime':firstSession?(firstSession.opens.slice(0,10)===today?'Available today':'Available '+dates(firstSession.opens)):'Session not set';
  const metric=(ic,label,value)=>'<div class="as-metric"><span class="as-metric-icon">'+icons[ic]+'</span><span><small>'+label+'</small><strong>'+esc(value)+'</strong></span></div>';
- page.innerHTML='<header class="as-hero"><h1>Your assessment is ready</h1><p>'+esc(title)+' has been assigned to '+esc(className)+'.</p></header><section class="as-overview" aria-labelledby="as-assessment-title"><svg class="as-card-wave" viewBox="0 0 900 240" preserveAspectRatio="none" aria-hidden="true"><path d="M400 0C600 210 720 180 900 20V0Z"/><path d="M580 0C760 150 800 240 900 190V0Z"/></svg><div class="as-overview-content"><div class="as-overview-heading"><span>Assessment overview</span><button type="button" data-view-assessment>View assessment</button></div><h2 id="as-assessment-title">'+esc(title)+'</h2><div class="as-metrics">'+metric('layers','Subject',subjects.length>1?'Mixed subjects':subjects[0]||'Not set')+metric('users','Grade level',grades.length>1?'Multiple grades':'Grade '+(grades[0]||'5'))+metric('file','Items',qs.length)+metric('clock','Estimated time',estimatedMinutes?estimatedMinutes+' min':'Not set')+'</div><div class="as-delivery"><div>'+icons.users+'<strong>'+students+' '+(students===1?'student':'students')+'</strong></div><div>'+icons.calendar+'<strong>'+esc(availability)+'</strong></div></div></div></section><nav class="as-next-actions" aria-label="Next steps"><a href="CAP-T13-Results.dc.html">'+icons.chart+'<span>View results</span>'+icons.arrow+'</a><a href="CAP-T04-Setup.dc.html">'+icons.plus+'<span>Create another</span>'+icons.arrow+'</a><a href="CAP-T01-Overview.dc.html">'+icons.home+'<span>Go to home</span>'+icons.arrow+'</a></nav>';
+ const heading=modal?'<span class="as-ready-check">'+icons.check+'</span><h2 id="as-ready-title">Your assessment is ready</h2>':'<h1>Your assessment is ready</h1>';
+ container.innerHTML='<header class="as-hero">'+heading+'<p id="as-ready-description">'+esc(title)+' has been assigned to '+esc(className)+'.</p></header><section class="as-overview" aria-labelledby="as-assessment-title"><svg class="as-card-wave" viewBox="0 0 900 240" preserveAspectRatio="none" aria-hidden="true"><path d="M400 0C600 210 720 180 900 20V0Z"/><path d="M580 0C760 150 800 240 900 190V0Z"/></svg><div class="as-overview-content"><div class="as-overview-heading"><span>Assessment overview</span><button type="button" data-view-assessment>View assessment</button></div><h2 id="as-assessment-title">'+esc(title)+'</h2><div class="as-metrics">'+metric('layers','Subject',subjects.length>1?'Mixed subjects':subjects[0]||'Not set')+metric('users','Grade level',grades.length>1?'Multiple grades':'Grade '+(grades[0]||'5'))+metric('file','Items',qs.length)+metric('clock','Estimated time',estimatedMinutes?estimatedMinutes+' min':'Not set')+'</div><div class="as-delivery"><div>'+icons.users+'<strong>'+students+' '+(students===1?'student':'students')+'</strong></div><div>'+icons.calendar+'<strong>'+esc(availability)+'</strong></div></div></div></section><nav class="as-next-actions" aria-label="Next steps"><a href="CAP-T13-Results.dc.html">'+icons.chart+'<span>View results</span>'+icons.arrow+'</a><a href="CAP-T04-Setup.dc.html">'+icons.plus+'<span>Create another</span>'+icons.arrow+'</a><a href="CAP-T01-Overview.dc.html">'+icons.home+'<span>Go to home</span>'+icons.arrow+'</a></nav>';
 
- page.querySelector('[data-view-assessment]').onclick=()=>{const dialog=document.createElement('dialog');dialog.className='af-assigned-dialog';dialog.innerHTML=`<button type="button" aria-label="Close assessment details">×</button><h2>${esc(m.title||'Assigned assessment')}</h2><p class="af-muted">Assigned · ${className} · ${students} students · ${sessions.length} sessions</p><h3>Included questions</h3>${questionRows()}<h3>Audience and sessions</h3>${audience()}<a class="af-primary" href="CAP-T13-Results.dc.html">View progress and results →</a>`;document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.remove();dialog.oncancel=()=>dialog.remove();dialog.showModal()};
+ if(modal){container.querySelector('.as-card-wave').remove();container.querySelector('[data-view-assessment]').remove();container.querySelector('.as-overview-heading span').textContent='Assessment';return;}
+ container.querySelector('[data-view-assessment]').onclick=()=>{const dialog=document.createElement('dialog');dialog.className='af-assigned-dialog';dialog.innerHTML=`<button type="button" aria-label="Close assessment details">×</button><h2>${esc(m.title||'Assigned assessment')}</h2><p class="af-muted">Assigned · ${className} · ${students} students · ${sessions.length} sessions</p><h3>Included questions</h3>${questionRows()}<h3>Audience and sessions</h3>${audience()}<a class="af-primary" href="CAP-T13-Results.dc.html">View progress and results →</a>`;document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.remove();dialog.oncancel=()=>dialog.remove();dialog.showModal()};
  }
+
+ if(success){
+  page.classList.add('af-success');
+  renderSuccess(page,false);
+  return;
+ }
+
+ function openSuccess(){
+  if(document.querySelector('.as-ready-dialog[open]'))return;
+  const dialog=document.createElement('dialog');
+  dialog.className='as-ready-dialog';
+  dialog.setAttribute('aria-labelledby','as-ready-title');
+  dialog.setAttribute('aria-describedby','as-ready-description');
+  renderSuccess(dialog,true);
+  dialog.addEventListener('cancel',event=>event.preventDefault());
+  page.closest('.cap-root').append(dialog);
+  dialog.showModal();
+ }
+
+ // Run after the recipient validator and the assignment persistence listeners.
+ window.addEventListener('click',event=>{
+  const confirmLink=event.target.closest('.af-confirm a[href="CAP-T10-Scheduled.dc.html"]');
+  if(!confirmLink||event.defaultPrevented)return;
+  event.preventDefault();
+  history.replaceState({...history.state,capConfirmedAssessment:t.id},'');
+  openSuccess();
+ });
+ if(t.id&&history.state?.capConfirmedAssessment===t.id)openSuccess();
 });

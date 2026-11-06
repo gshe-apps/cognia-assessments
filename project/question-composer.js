@@ -40,14 +40,20 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
   const values=inst.renderVals(),rows=values.bank||[];
   for(const row of library.querySelectorAll('.question-card')){
    const q=rows.find(q=>q.stem===row.querySelector('h4')?.textContent.trim());
-   const previous=row.querySelector('.qbottom :is(.btn.small, [data-item-state])');if(!q||!previous)continue;
-   const button=q.isAdded?document.createElement('span'):document.createElement('button');
-   if(!q.isAdded){button.type='button';button.disabled=!q.canAdd;}
-   button.className=q.isAdded?'badge badge-success':'btn small btn-sm'+(q.canAdd?'':' btn-outline');
-   button.textContent=q.isAdded?'✓ Added':q.isLocked?'Classroom+':q.isFull?'Full':'Add';button.dataset.itemState=q.isAdded?'added':q.canAdd?'available':'unavailable';button.title=q.isAdded?'Item added':q.isLocked?'Requires Classroom+':q.isFull?'Assessment is full':'Add item';
-   if(!q.isAdded)button.setAttribute('aria-label','Add item: '+q.stem);
-   if(q.canAdd)button.append(node('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg>'));
-   if(q.canAdd)button.onclick=q.add;previous.replaceWith(button);
+   const actions=row.querySelector('.qbottom');if(!q||!actions)continue;
+   const action=document.createElement(q.canAdd?'button':'span');
+   action.dataset.itemState=q.isAdded?'added':q.canAdd?'available':'unavailable';
+   action.className=q.canAdd?'btn small btn-sm':'badge '+(q.isAdded?'badge-success':'badge-secondary');
+   action.textContent=q.isAdded?'✓ Added':q.isLocked?'Classroom+':q.isFull?'Full':'Add';
+   action.title=q.isAdded?'Item added':q.isLocked?'Requires Classroom+':q.isFull?'Assessment is full':'Add item';
+   if(q.canAdd){
+    action.type='button';
+    action.setAttribute('aria-label','Add item: '+q.stem);
+    action.append(node('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg>'));
+    action.onclick=q.add;
+   }
+   actions.querySelectorAll('.btn.small, [data-item-state]').forEach(previous=>previous.remove());
+   actions.append(action);
   }
   const m=model(),count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0),current=active(m)||{};
   const summary=page.querySelector('.tf-bottom-copy p');

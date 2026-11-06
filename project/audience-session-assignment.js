@@ -12,7 +12,9 @@ window.capReferenceAssign = page => {
  let mode='classes',search='',expanded=new Set((data.classIds||[]).slice(-1)),picker=false,studentExpanded=new Set(data.classIds||[]),bulkSession='',classSessions={};
  const save=()=>{syncAccommodationReview();data.classId=data.classIds[0]||'5a';data.sessions.forEach(s=>{s.customRecipients=true;s.recipients=(s.recipients||[]).filter(id=>data.recipients.includes(id))});Object.keys(data.studentAccommodations).forEach(id=>{if(!data.recipients.includes(id))delete data.studentAccommodations[id]});localStorage.setItem(key,JSON.stringify(data))};
  const hero=page.querySelector('.tf-hero');hero.classList.add('allocation-hero');hero.querySelector('h1').textContent='Select students and sessions';hero.querySelector('p').textContent='Pick one or more classes, select students, and set up one or more sessions.';page.querySelector('.tf-top')?.remove();
- hero.querySelector('.tf-steps').innerHTML='<a class="done" href="CAP-T06-Review.dc.html?stage=details"><span>✓</span>Create</a><i aria-hidden="true"></i><a class="active" aria-current="step" href="CAP-T08-AudienceDelivery.dc.html"><span>2</span>Assign</a><i aria-hidden="true"></i><a href="CAP-T09-ConfirmAssignment.dc.html"><span>3</span>Review</a>';
+ window.capRenderAssessmentProgress(hero.querySelector('.tf-steps'),3,[
+  'href="CAP-T04-Setup.dc.html"','href="CAP-T05-Questions.dc.html"','href="CAP-T06-Review.dc.html?stage=details"'
+ ]);
  page.querySelectorAll(':scope > .tf-test-disclosure, :scope > .assessment-test-list').forEach(el=>el.remove());
  const form=page.querySelector('#deliveryForm');form.querySelector('.reviewgrid').remove();
  const host=document.createElement('div');host.className='allocation-grid';form.prepend(host);

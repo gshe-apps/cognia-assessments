@@ -22,11 +22,18 @@
   if(scopePage!==location.pathname.split('/').pop()){
    t.state||={chosen:[],written:{},edits:{}};t.state.written={...t.state.written,...Object.fromEntries((t.questions||[]).map(q=>[q.id,q]))};t.page=scopePage;localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(m));location.replace(scopePage);return;
   }
-  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your assessment';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create assessment</span><h1>Set up your assessment</h1><p>Start with the essentials. You can add more later.</p></div>');hero.querySelector('h1').replaceWith(intro);
+  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your assessment';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create assessment</span><h1>Set up your assessment</h1></div>');hero.querySelector('h1').replaceWith(intro);
   page.querySelector('.tf-back')?.remove();
   page.querySelector('.tf-steps a').href=t.page;
   hero.append(page.querySelector('.tf-steps'));page.querySelector('.tf-top')?.remove();
-  const progress=hero.querySelector('.tf-steps');progress.innerHTML='<a href="#uc-assessment-details" data-uc-details><span>1</span>Details</a><i aria-hidden="true"></i><a href="#uc-question-methods"><span>2</span>Items</a><i aria-hidden="true"></i><a href="CAP-T06-Review.dc.html?stage=details" data-uc-review><span>3</span>Check</a>';methods.id='uc-question-methods';
+  const icon=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
+  const layers=icon('<path d="m12 3 10 5-10 5L2 8Zm-10 10 10 5 10-5M2 18l10 5 10-5"/>');
+  const progress=hero.querySelector('.tf-steps');
+  window.capRenderAssessmentProgress(progress,1,[
+   'href="#uc-assessment-details" data-uc-details','href="#uc-question-methods"',
+   'href="CAP-T06-Review.dc.html?stage=details" data-uc-review','data-uc-later-step','data-uc-later-step'
+  ]);
+  methods.id='uc-question-methods';
   const {create,itemPage,libraryPath,signature}=window.capAssessmentSetup;
   const readyKey='capCreateConfirmed:'+t.id;
   const useClientSample=sessionStorage.getItem('capSetupUseClientSample')==='true';
@@ -56,7 +63,6 @@
    }
   });
   const openSetup=()=>setup.open(settings);
-  const icon=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
   hero.querySelector('[data-uc-details]').onclick=e=>{e.preventDefault();openSetup()};
   const notice=make('<p class="uc-gate-notice" role="status">Complete assessment details to add items.</p>');methods.before(notice);
   function syncGate(){
@@ -64,10 +70,10 @@
    methods.setAttribute('aria-disabled',String(!ready));page.querySelector('.buildergrid').setAttribute('aria-disabled',String(!ready));
    methods.querySelectorAll('button').forEach(button=>button.disabled=!ready);
    notice.hidden=ready;page.classList.toggle('uc-locked',!ready);
-   hero.querySelector('h1').textContent=ready?'Add your items':'Create your assessment';
-   hero.querySelector('.uc-setup-intro p').textContent=ready?'Choose how you’d like to build this assessment.':'';
+   hero.querySelector('h1').textContent=ready?'Choose how you’d like to create this assessment':'Create your assessment';
    hero.querySelectorAll('.tf-steps a').forEach((link,i)=>{
     link.classList.toggle('active',i===(ready?1:0));
+    link.classList.toggle('done',ready&&i===0);
     link.setAttribute('aria-current',i===(ready?1:0)?'step':'false');
    });
    return ready;
@@ -75,7 +81,6 @@
   window.capSyncCreationGate=syncGate;
   syncGate();
   if(!ready)openSetup();
-  const layers=icon('<path d="m12 3 10 5-10 5L2 8Zm-10 10 10 5 10-5M2 18l10 5 10-5"/>');
   methods.className='qc-methods tabs-list';
   methods.querySelectorAll('[data-qc-method]').forEach(button=>{
    button.className='tab';
@@ -128,6 +133,11 @@
   page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status text-body-small" role="status" hidden></p>'));
   inst.refreshQuestionBoard?.();
   intro.prepend(back);
+  const actionBar=page.querySelector('.tf-bottom');
+  if(actionBar){
+   const barSize=new ResizeObserver(()=>page.style.setProperty('--uc-action-bar-height',actionBar.offsetHeight+'px'));
+   barSize.observe(actionBar);
+  }
   back.onclick=()=>hero.querySelector('[data-uc-details]').click();
   page.querySelectorAll('.tf-bottom a').forEach(a=>{if(a.getAttribute('href')==='CAP-T04-Setup.dc.html'){a.href='CAP-T03-Assessments.dc.html';a.textContent='Back to assessments'}});
   page.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&/CAP-T0[67]-/.test(a.getAttribute('href')||'')){if(!syncGate()){e.preventDefault();e.stopImmediatePropagation();openSetup()}}},true);

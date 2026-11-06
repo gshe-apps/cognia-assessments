@@ -1,4 +1,13 @@
 /* Reference-led teacher journey; keeps the prototype's existing data and validation. */
+window.capRenderAssessmentProgress=(progress,current,attributes)=>{
+ const steps=[['Setup','check'],['Create','layers'],['Review','search'],['Assign','users'],['Finalize','flag']];
+ progress.classList.add('cap-assessment-progress');
+ progress.setAttribute('aria-label','Assessment progress');
+ progress.innerHTML=steps.map(([label,graphic],index)=>{
+  const state=index===current?'class="active" aria-current="step"':index<current?'class="done"':'';
+  return `<a ${attributes[index]||''} ${state}><span><img class="uc-step-halo" src="assets/assessment-progress/halo.svg" alt=""><img src="assets/assessment-progress/${index<current?'check':graphic}.svg" alt=""></span>${label}</a>`;
+ }).join('<i aria-hidden="true"></i>');
+};
 document.addEventListener('DOMContentLoaded',()=>{
  const file=location.pathname.split('/').pop(),setup=file==='CAP-T04-Setup.dc.html',questions=/^CAP-T05-/.test(file),review=file==='CAP-T06-Review.dc.html',details=review&&new URLSearchParams(location.search).get('stage')==='details',assign=file==='CAP-T08-AudienceDelivery.dc.html',confirm=file==='CAP-T09-ConfirmAssignment.dc.html';
  if(!setup&&!questions&&!review&&!assign&&!confirm)return;
@@ -11,6 +20,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   page.prepend(node(`<header class="tf-hero"><div><h1>${setup?'What are you teaching?':questions?'Create your questions':details?'Assessment details':review?'Review and refine your questions':assign?'Assign to students and set up sessions':'Review and confirm'}</h1><p>${setup?'Start with the basics. Choose a grade, subject and learning focus.':questions?'Choose the fastest option for you. You can always edit them later.':details?'Give your assessment a name, add instructions and set key details.':review?'Check the questions, edit if needed, or add more. You can reorder them anytime.':assign?'Choose who will take this assessment and when.':'Check your content, students and sessions before scheduling.'}</p></div></header>`));
   page.prepend(node(`<div class="tf-top"><a class="tf-back" href="${setup?'CAP-T03-Assessments.dc.html':t.page||'CAP-T05-Questions.dc.html'}">← &nbsp; ${setup?'Back to assessments':esc(m.title||'Your assessment')} ${setup?'':'<span class="tf-draft badge badge-secondary">Draft</span>'}</a><nav class="tf-steps" aria-label="Assessment progress">${['Create','Review','Assign'].map((label,i)=>`${i?'<i aria-hidden="true"></i>':''}<a href="${['CAP-T04-Setup.dc.html','CAP-T06-Review.dc.html?stage=details','CAP-T08-AudienceDelivery.dc.html'][i]}" class="${i+1===stage?'active':i+1<stage?'done':''}" ${i+1===stage?'aria-current="step"':''}><span>${i+1<stage?'✓':i+1}</span>${label}</a>`).join('')}</nav></div>`));
   page.querySelector('.tf-hero').append(page.querySelector('.tf-steps'));
+  if(review)window.capRenderAssessmentProgress(page.querySelector('.tf-steps'),2,[
+   'href="CAP-T04-Setup.dc.html"','href="CAP-T05-Questions.dc.html"'
+  ]);
  }
  function footer(page){const bar=page.querySelector('.actionbar');if(!bar)return;const m=model(),t=active(m)||{},count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0);const bottom=node(`<div class="tf-bottom"><span class="tf-bottom-icon">${icon()}</span><div class="tf-bottom-copy"><div><span data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div><p>Grade ${esc(t.grade||'5')} · ${esc(t.subject||'Mathematics')}${count?' · '+count+(count===1?' question':' questions'):''}</p></div><div class="tf-original-actions"></div></div>`);
   const actions=bottom.querySelector('.tf-original-actions');actions.append(bar);page.append(bottom);

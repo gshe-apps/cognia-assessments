@@ -119,6 +119,19 @@
 .cl-progress-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
 .cl-muted { color:var(--muted-foreground); }
 
+/* Learners count badge (6 Nov): solid red, white text, round. Grows into a pill only for two-digit counts. */
+.cl-badge-count { justify-content:center; min-inline-size:var(--space-6); block-size:var(--space-6); padding:0 var(--space-1); background:var(--destructive); color:var(--primary-foreground); line-height:1; }
+
+/* Accommodations column (6 Nov): blue (Assessments accent) icon per learner; hover or keyboard focus shows the list.
+   The tip is position:fixed (placed by classes-accommodations.js) so the table card's overflow does not clip it. */
+.cl-acc { display:inline-flex; align-items:center; justify-content:center; inline-size:var(--space-8); block-size:var(--space-8); border-radius:var(--rounded-full); }
+.cl-acc svg { inline-size:var(--space-6); block-size:var(--space-6); stroke:var(--accent-300); }
+.cl-acc:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.cl-acc-tip { position:fixed; top:0; left:0; z-index:30; display:grid; gap:var(--space-2); padding:var(--space-3) var(--space-4); border:1px solid var(--border); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); text-align:left; white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; visibility:hidden; pointer-events:none; transition:all 200ms; }
+.cl-acc.is-open .cl-acc-tip { opacity:1; visibility:visible; pointer-events:auto; }
+.cl-acc-title { font-weight:var(--weight-semibold); }
+.cl-acc-list { display:grid; gap:var(--space-1); margin:0; padding:0; list-style:none; }
+
 @media (max-width:1023px) {
   .cl-layout { grid-template-columns:minmax(0,1fr); }
   .cl-stack { margin-top:0; }
@@ -128,7 +141,7 @@
   .cl-create .btn { width:100%; justify-content:center;}
 }
 @media (prefers-reduced-motion:reduce) {
-  .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }
+  .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,.cl-acc-tip,[role="rowgroup"] .cl-tr { transition:none; }
   .cl-folder.cl-entering { animation:none; }
   .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
 }

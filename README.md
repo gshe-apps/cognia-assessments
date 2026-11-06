@@ -4,19 +4,19 @@
 
 Cognia Design 1.2.0 governs visual work. Read `AGENTS.md` (or `CLAUDE.md`) and the full rules in `design-system/cognia/` before styling. Historical visual approvals no longer override the design system; interaction flows remain protected. Legacy CSS is in the `cap-legacy` layer, so normal semantic styles win without `!important` or artificial ID selectors. Run the cognia-design plugin check (`node <plugin>/skills/cognia-design/checks/check-project.cjs`), `node scripts/check-design-system.cjs` and `node verify-homepages.cjs` before delivery. The plugin check needs Playwright: `npm i --no-save playwright && npx playwright install chromium`. GitHub runs all three against the latest plugin on every push, and Pages only deploys `main` when they pass (setup: add the `COGNIA_DESIGN_PLUGIN_TOKEN` secret, see `.github/workflows/design-system-check.yml`). The design-system workflow runs these checks after this local change is published.
 
-Interactive wireframes for the Summer 2027 Assessment Hub, exported from the Claude Design canvas. The canvas is the source of truth; this repo is a snapshot of it.
+Interactive wireframes for the Summer 2027 Assessment Hub. This repo is the source of truth. The screens were first exported from a Claude Design canvas, which was retired on 6 November 2026; make every change here.
 
 ## Structure
 
-- `project/canvas.json`, canvas layout, screen titles and flow labels
+- `project/canvas.json`, screen titles and flow labels kept from the retired canvas (nothing reads it at runtime)
 - `project/*.dc.html`, one file per screen
-- `project/ds/cognia/`, Cognia Design System tokens (the single source for colour, type, spacing and radius)
-- `project/cognia-skin.css`, admin screen styles
-- `project/hub-header.css`, shared header, My Hubs launcher, account menu and footer
-- `project/prototype-roles.css`, prototype-only role switcher and plan switch
-- `project/cap-prototype.css` and `project/cap-cognia.css`, teacher and student screen styles
+- `project/ds/cognia/tokens.css`, Cognia Design System tokens (the single source for colour, type, spacing and radius)
+- `project/ds/cognia/cognia-components.css`, the shared components, a read-only copy of the cognia-design plugin
+- `project/admin.css`, `project/educator.css` and `project/stu2.css`, one layout file per flow (District and School administrator, educator, student)
 
-Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they only render inside the canvas.
+Every screen links exactly three stylesheets: the tokens, the shared components and its flow's layout file.
+
+Images live in `project/assets/`. `serve.cjs` still answers old canvas image paths (`/_blob/...`) with placeholders, but no screen uses them.
 
 ## Flows
 
@@ -43,7 +43,7 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 - **Plan**: every account menu has a Basic / Classroom+ switch. On Basic, Classroom+ features are locked, and the teacher Interim hub shows as a paid add-on.
 - The Interim navigation has two tabs, Overview and Library. The Overview summary cards open All schools / All students (pre-filtered) and Subgroups.
 - **All schools / All students**: the selected row opens a side column with a water-fill completion card, a stack of detail cards (click one to bring it to the front) and a follow-up alert for anything below the 50% benchmark.
-- The Follow-up screens (DA 4, School 4) are off the canvas for now but kept here, as other screens still link to them.
+- The Follow-up screens (DA 4, School 4) are kept, as other screens still link to them.
 - **My Hubs**: product tiles take their hub colour (Cognia accent 200). Screeners and Alt Assessments are disabled for now; their status badges show in the hover description.
 
 ## Run the interactive browser prototype

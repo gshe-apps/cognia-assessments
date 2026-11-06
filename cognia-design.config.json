@@ -8,10 +8,8 @@
   ],
   "exclude": [
     "project/ds/cognia/tokens.css",
-    "project/ds/cognia/colors_and_type.css",
     "project/CAP-T00-Home.dc.html",
-    "project/Main.dc.html",
-    "project/ds/cognia/prototype-entry.css"
+    "project/Main.dc.html"
   ],
   "tokenCopy": "project/ds/cognia/tokens.css",
   "logos": {
@@ -36,7 +34,7 @@
   "profiles": [
     {
       "name": "District and School administrator screens",
-      "whenContains": "admin-type.css",
+      "whenContains": "admin.css",
       "typeSizes": [
         24,
         16,

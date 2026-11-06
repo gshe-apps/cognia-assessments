@@ -87,7 +87,9 @@ for(const file of fs.readdirSync(root).filter(n=>n.endsWith('.html'))){
 assert(switches>=50);
 reports.push(`${switches} educator role-switch links checked across existing flows`);
 for(const file of ['home-pages.js','persona-routing.js'])new vm.Script(read(file));
-assert(!/#[a-f\d]{3,8}\b|\brgba?\(/i.test(read('home-pages.css')),'Home CSS must use colour tokens');
+const homeCss=(read('admin.css').split('/* ---- from home-pages.css ---- */')[1]||'').split('/* ---- from ')[0];
+assert(homeCss.trim(),'Home styles section missing from admin.css');
+assert(!/#[a-f\d]{3,8}\b|\brgba?\(/i.test(homeCss),'Home CSS must use colour tokens');
 assert(!read('assets/cognia-logo.svg').includes('<text'),'Official vector wordmark, not text substitute');
 reports.push('New scripts compile; Home colours use tokens; supplied Cognia wordmark present');
 console.log(reports.join('\n'));

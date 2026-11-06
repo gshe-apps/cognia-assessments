@@ -7,17 +7,19 @@ The user authorized removing historical visual locks and bringing existing scree
 ## CSS ownership
 
 - `project/ds/cognia/tokens.css` is the upstream Cognia token copy for the plain-HTML runtime, with only the Tailwind build import omitted. Refresh it from the plugin; do not tune its token values manually.
-- `project/ds/cognia/colors_and_type.css` exposes the existing HTML typography/spacing aliases and documented semantic classes.
-- `project/ds/cognia/components.css` supplies documented semantic helpers and low-specificity shell defaults.
+- `project/ds/cognia/cognia-components.css` is the plugin's shared component copy (see Shared components below).
+- `project/admin.css`, `project/educator.css` and `project/stu2.css` are the one layout file per flow. Every screen links the tokens, the shared components and its flow's file, in that order, and nothing else.
+- The flow files were merged from 66 older sheets on 6 November 2026, so they still hold legacy visual rules (colours, borders, font sizes). Those belong in the shared components; remove them from the flow file as screens move onto the shared classes, and never add new ones. The target is layout only: position, size, grid and spacing.
+- A rule meant for one screen is scoped to it with a marker class, without raising specificity: `:where(:root:has(.marker)) .selector`. Current markers: `ws-frame` (wide educator workspace pages), `od-overview` and `od-assess` (educator Overview and Assessments), `home-previews` (District Home).
 - All historical screen/module CSS belongs to the `cap-legacy` cascade layer. Normal semantic styles outside that layer win without needing extra specificity.
 - Never reintroduce artificial ID selectors, visual `!important` declarations, inline font/colour locks or overrides of canonical tokens on individual screens.
 - Existing `!important` declarations are restricted to functional visibility/pointer safeguards and reduced-motion accessibility. Keep those safeguards when restyling.
-- New components should use semantic classes/tokens. Do not append another high-priority “fix” layer to `cognia-approved-ui.css`.
+- New components should use semantic classes/tokens. Do not append another high-priority “fix” block to a flow file.
 - Run the cognia-design plugin check (`node <plugin>/skills/cognia-design/checks/check-project.cjs`, from the repo root) and `node scripts/check-design-system.cjs` before delivery.
 
 ## Admin type scale
 
-District and School administrator screens (any screen that loads `admin-type.css`) use exactly three sizes from the plugin's type scale:
+District and School administrator screens (any screen that loads `admin.css`) use exactly three sizes from the plugin's type scale:
 
 - 24px Heading (`--text-heading`, semibold): page titles, section headings, headline numbers
 - 16px Body Base or Body Strong (`--text-body-base`): card and panel titles, body copy
@@ -27,7 +29,7 @@ Rules:
 
 - Load the cognia-design plugin skill before changing any screen, and follow it over legacy styling.
 - Never use `--text-subheading` (20px) on admin screens.
-- Never write inline font sizes (`style="font-size: ..."`). The canvas properties panel adds these when text is resized there, so make type changes in code, not in the panel.
+- Never write inline font sizes (`style="font-size: ..."`). Make type changes in the flow's stylesheet or the shared components.
 - Use tokens, not raw `px` sizes. Known legacy `px` sizes are recorded in `cognia-design.baseline.json`; replace a screen's ones whenever you touch it.
 - Numbers inside scaled charts (bubbles, waves) must still appear at 24, 16 or 14px on screen. Where a 24px value does not fit the shape, use 16px semibold.
 - If a screen seems to need a fourth size or weight, simplify the content or ask the designer. Report conflicts with interaction requirements separately; design rules are not permission to change flows or framework.
@@ -50,6 +52,6 @@ Every screen builds its components from `project/ds/cognia/cognia-components.css
 
 - Use the shared classes: `btn` (with `btn-outline`, `btn-ghost`, `btn-destructive`, `btn-lg`, `btn-sm`, `btn-icon`), `card` with `card-content` (or `card-ghost` for charts), `badge` variants, `input`, `textarea`, `label`, `field`, `tabs-list` and `tab` (toggle groups too, with `aria-pressed`), `dialog`, `menu`, `table` and the `shell-*` header and footer classes.
 - Never restyle these classes in a screen or legacy stylesheet, and never edit the copy. The plugin check fails if the copy differs from the plugin.
-- Do not create stylesheets. `node scripts/check-design-system.cjs` fails on a new stylesheet file or a screen that links a stylesheet it did not link before. `scripts/stylesheet-lock.json` may only shrink.
+- Do not create stylesheets. Each screen links only the tokens, the shared components and its flow's layout file (`admin.css`, `educator.css` or `stu2.css`). `node scripts/check-design-system.cjs` fails on a new stylesheet file or a screen that links a stylesheet it did not link before. `scripts/stylesheet-lock.json` may only shrink.
 - If something is missing (a component, a variant, a toggle style), ask the designer to add it to the plugin. Patterns still waiting for a spec: test cards, answer options, number chips, fraction boxes, filter chips, day pickers, steppers, pagination, stat tiles, the hub window and the item editor dialogs.
 - Legacy class names such as `solid`, `ghost` and `small` stay on some elements only as markers for scripts. They carry no styling of their own.

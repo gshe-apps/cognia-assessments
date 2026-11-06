@@ -1,5 +1,5 @@
 {
- "plugin": "1.9.0",
+ "plugin": "1.10.0",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/admin.css": {
@@ -19,22 +19,22 @@
    "shadow.not-a-token": 5
   },
   "project/educator.css": {
-   "type.raw-size": 194,
+   "type.raw-size": 193,
    "motion.duration": 36,
-   "type.off-scale-size": 600,
-   "type.weight": 45,
+   "type.off-scale-size": 572,
+   "type.weight": 42,
    "z-index.off-scale": 52,
-   "spacing.off-scale": 1141,
+   "spacing.off-scale": 1117,
    "shadow.not-a-token": 35,
    "motion.easing": 6,
    "motion.layout-property": 2,
    "colour.opacity-on-text": 1,
-   "colour.accent-text": 14,
+   "colour.accent-text": 12,
    "colour.status-text-outside-badge": 7,
    "colour.surface-token-as-text": 5,
-   "radius.off-scale": 99,
-   "type.font-family": 108,
-   "colour.hardcoded": 637
+   "radius.off-scale": 91,
+   "type.font-family": 105,
+   "colour.hardcoded": 616
   },
   "project/stu2.css": {
    "z-index.off-scale": 2,

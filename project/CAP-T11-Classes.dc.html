@@ -124,7 +124,7 @@ class Component extends DCLogic {
         accId: 'cl-acc-' + sel.id + '-' + i, accLabel: 'Accommodations for ' + l.name,
         done: done + ' of ' + sel.assigned, progressLabel: l.name + ': ' + done + ' of ' + sel.assigned + ' assessments completed',
         score: l.score === null ? 'No score yet' : l.score, scoreCls: l.score === null ? 'cl-muted' : '',
-        statusText: meta[l.status].label, badgeCls: 'cl-badge cl-badge-' + meta[l.status].badge,
+        statusText: meta[l.status].label, badgeCls: 'cl-badge cl-badge-' + meta[l.status].badge + ' badge badge-' + meta[l.status].badge,
       };
     });
     const shown = sel.educators.slice(0, 3);

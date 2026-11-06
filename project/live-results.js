@@ -129,7 +129,7 @@
         const fresh = done && arrived[r.passcode] && now - arrived[r.passcode] < 4000;
         const action = done ? '<a class="btn small btn-outline btn-sm" href="CAP-T15-ScoreResponse.dc.html">View response <span aria-hidden="true">→</span></a>' : '<a class="btn small btn-outline btn-sm" href="CAP-T19-MissingSubmissions.dc.html">Review missing <span aria-hidden="true">→</span></a>';
         return '<tr data-result-row data-status="' + filter + '"' + (fresh ? ' class="rr-new"' : '') + '><td><span class="rr-student"><span class="rr-avatar">' + icon + '</span><strong>' + esc(r.name) + '</strong></span></td>'
-          + '<td><span class="rr-status' + (done ? ' rr-scored' : r.status === 'progress' ? ' rr-review' : '') + '">' + label + '</span></td>'
+          + '<td><span class="rr-status badge badge-' + (done ? 'success rr-scored' : r.status === 'progress' ? 'info rr-review' : r.status === 'joined' ? 'info' : 'secondary') + '">' + label + '</span></td>'
           + '<td>' + (done ? esc(r.marks) + ' / ' + esc(r.max) : '–') + '</td><td>Private</td><td>' + action + '</td></tr>';
       }).join('');
     }

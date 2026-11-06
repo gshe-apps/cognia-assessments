@@ -58,7 +58,7 @@
     root.querySelector('[data-session-total]').textContent = items===sessions?'3 scheduled sessions':items===updates?'2 assessment updates':'No scheduled sessions';
     root.querySelector('[data-day-sessions]').innerHTML = items.length
       ? items.map(item=>'<a class="od-agenda-card is-'+item.kind+'" href="'+item.href+'" aria-label="'+item.action+'">'+
-          '<div class="od-agenda-top"><span class="od-agenda-status">'+item.label+'</span>'+(item.time?'<span class="od-agenda-time">'+item.time+'</span>':'')+'</div>'+
+          '<div class="od-agenda-top"><span class="od-agenda-status badge badge-'+({completed:'success',review:'warning'}[item.kind]||'info')+'">'+item.label+'</span>'+(item.time?'<span class="od-agenda-time">'+item.time+'</span>':'')+'</div>'+
           '<div class="od-agenda-content"><div><h3>'+item.title+'</h3><p>'+item.detail+'</p></div><span class="od-agenda-arrow" aria-hidden="true">'+item.actionLabel+' &rarr;</span></div></a>').join('')
       : '<div class="od-empty-day"><h3>No assessments scheduled</h3><p>Create an assessment to get started.</p><a class="od-button btn btn-lg" href="CAP-T05-Questions.dc.html">+ Add assessment</a></div>';
   }

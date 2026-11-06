@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  if(page==='CAP-T10-Scheduled.dc.html'){try{const scheduled=JSON.parse(localStorage.getItem('cogniaScheduledAssessmentTests'));if(scheduled?.tests?.length)model=scheduled;}catch{}}
  const active=()=>model.tests.find(t=>t.id===model.active)||model.tests[0];
  const count=t=>t.questions?.length??(t.state?.chosen?.length??3);
+ if(isQuestions)window.capCanReviewAssessment=()=>model.tests.length>0&&model.tests.every(t=>count(t)>0);
  const marks=t=>t.questions?.reduce((n,q)=>n+Number(q.marks||1),0)??count(t);
  const stats=t=>`${count(t)} ${count(t)===1?'question':'questions'} · ${marks(t)} ${marks(t)===1?'point':'points'}`;
  const totals=()=>({questions:model.tests.reduce((n,t)=>n+count(t),0),marks:model.tests.reduce((n,t)=>n+marks(t),0)});

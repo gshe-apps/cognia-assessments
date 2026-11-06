@@ -56,6 +56,8 @@ If you are an AI assistant, read this file and all files listed above before wri
 
 Inline the `:root`, `.dark` and `theme-*` blocks from `assets/globals.css` in a `<style>` tag (drop the `@import "tailwindcss"` line), load Open Sans from Google Fonts, and use only those CSS variables.
 
+Build components with the classes in `assets/components.css`, the plain-HTML equivalents of the shadcn variants in `components.md`. `assets/components-reference.html` shows every one. Never restyle them in a project; changes belong in this plugin.
+
 ### When the design system updates
 
 Update the plugin (`claude plugin update` or `codex plugin update`), then re-copy `assets/globals.css` into any project that uses it.

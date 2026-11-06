@@ -121,7 +121,7 @@
 .od-result-classes svg { width: var(--space-4); height: var(--space-4); color: var(--muted-foreground); }
 .od-draft-content { position: relative; display: flex; flex: 1; min-width: 0; }
 .od-draft-content .od-card-heading { padding-inline-end: calc(var(--space-24) + var(--space-6)); }
-.od-draft-pager { position: absolute; z-index: 1; inset-block-start: var(--space-3); inset-inline-end: var(--space-3); display: inline-flex; align-items: center; gap: var(--space-1); white-space: nowrap; color: var(--foreground); }
+.od-draft-pager { position: absolute; z-index: 10; inset-block-start: var(--space-3); inset-inline-end: var(--space-3); display: inline-flex; align-items: center; gap: var(--space-1); white-space: nowrap; color: var(--foreground); }
 .od-draft-pager button { display: grid; place-items: center; width: var(--space-8); height: var(--space-8); padding: 0; border: 0; border-radius: var(--rounded-full); background: var(--secondary); color: var(--secondary-foreground); font: inherit; font-size: var(--text-body-base); cursor: pointer; }
 .od-draft-pager button:enabled:hover { background: var(--accent-100); }
 .od-draft-pager button:disabled { color: var(--muted-foreground); cursor: default; }
@@ -142,7 +142,7 @@
 }
 .od-draft-stages li { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); padding-block-start: var(--space-2); }
 .od-draft-stages svg { flex: none; width: var(--space-6); height: var(--space-6); }
-.od-draft-stages :is(.is-done,[aria-current="step"]) svg { color: var(--accent-400); }
+.od-draft-stages :is(.is-done,[aria-current="step"]) svg { color: var(--accent-300); }
 .od-draft-stages li + li::before {
   content: '';
   position: absolute;
@@ -191,7 +191,7 @@
 .od-days > :nth-child(7n) { border-inline-end: 0; }
 .od-days > :nth-last-child(-n+7) { border-block-end: 0; }
 .od-days button:hover { background: var(--background); }
-.od-days button[aria-pressed=true] { background: var(--accent-100); box-shadow: inset 0 var(--space-1) var(--accent-300); }
+.od-days button[aria-pressed=true] { background-color: var(--accent-100); background-image: linear-gradient(var(--accent-300), var(--accent-300)); background-size: 100% var(--space-1); background-repeat: no-repeat; }
 .od-day-number { display: grid; place-items: center; min-width: var(--space-6); min-height: var(--space-6); font-weight: var(--weight-semibold); }
 .od-days button[aria-pressed=true] .od-day-number { background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius); }
 .od-today-label { color: var(--foreground); }

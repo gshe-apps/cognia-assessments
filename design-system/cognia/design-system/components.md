@@ -108,6 +108,36 @@ Every page that displays a list or table must handle the empty case:
 
 ---
 
+### Plain HTML prototypes
+
+HTML prototypes have no React, so they use `assets/components.css`: one class per documented variant, mapped 1:1 to shadcn so a prototype doubles as a dev spec. See `assets/components-reference.html` for every component live.
+
+| shadcn | Plain HTML class |
+|---|---|
+| `<Button>` / `variant="outline"` / `"ghost"` / `"destructive"` | `.btn` / `.btn-outline` / `.btn-ghost` / `.btn-destructive`; destructive state `.is-destructive` |
+| `size="lg"` / `"sm"` / `"xs"` / `"icon"` | `.btn-lg` / `.btn-sm` / `.btn-xs` / `.btn-icon` |
+| `<Card>`, ghost, themed, clickable | `.card`, `.card-ghost`, `.card-themed`, `a.card-link > .card` |
+| `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `.card-header`, `.card-title`, `.card-description`, `.card-content`, `.card-footer` |
+| `<Badge variant="...">` | `.badge` + `.badge-secondary`, `-outline`, `-success`, `-warning`, `-destructive`, `-info`, `-theme-solid`, `-theme-light` |
+| `<Input>`, `<Textarea>`, `<Select>` | `.input`, `.textarea`, `.select` inside `.select-wrap` |
+| `<Label>`, field, error | `.label`, `.field`, `.field-error`; forms use `.form` and `.form-grid` |
+| `<Checkbox>`, `<RadioGroupItem>`, `<Switch>` | `.checkbox`, `.radio` inside `label.check`; `button.switch[role=switch]` |
+| `<TabsList>`, `<TabsTrigger>` | `.tabs-list`, `.tab[role=tab][aria-selected]` |
+| `<Table>` | `table.table`, numeric cells `.num` |
+| `<Alert variant="...">` | `.alert` + `.alert-info`, `-success`, `-warning`, `-destructive` |
+| `<Dialog>`, `<Sheet>` | `dialog.dialog`, `dialog.dialog.sheet` |
+| `<DropdownMenu>` | `.menu`, `.menu-item`, `.menu-separator` |
+| `<Tooltip>` | `.tooltip-wrap` > `.tooltip[role=tooltip]` |
+| `<Avatar>` | `.avatar`, `.avatar-sm`, `.avatar-lg` |
+| `<Progress>`, `<Skeleton>`, `<Separator>`, `<Accordion>` | `.progress`, `.skeleton`, `.separator`, `details.accordion-item` |
+| Navigation shell, Footer | `body.shell`, `.shell-header`, `.shell-main`, `.shell-footer` |
+
+**Rules**
+- Never add CSS for these components in a project, and never edit the project's copy of `components.css`. The check fails if the copy differs from the plugin.
+- If a screen needs something not in this table, ask the designer to add it here and in `components.css` first.
+
+---
+
 ### Button
 
 Buttons trigger actions. Use them for form submissions, confirmations, and decisions. Never use a button where a link is more appropriate.

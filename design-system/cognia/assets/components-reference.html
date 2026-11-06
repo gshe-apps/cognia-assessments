@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cognia components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="globals.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  /* Reference page layout only. Positioning and widths, no colour or type. */
+  .ref { display: flex; flex-direction: column; gap: var(--space-16); max-width: 1120px; margin: 0 auto; }
+  .ref-section { display: flex; flex-direction: column; gap: var(--space-6); }
+  .ref-intro { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ref-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6); }
+  .ref-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); }
+  .ref-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+  .ref-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+  .ref-skeleton-lines { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ref-menu-demo { position: relative; display: inline-block; }
+  .ref-menu-demo .menu { position: absolute; top: calc(100% + var(--space-1)); left: 0; }
+  .ref-menu-demo .menu[hidden] { display: none; }
+  .ref-inline-demo { position: static; }
+  code { font-family: inherit; font-weight: 600; }
+</style>
+</head>
+<body class="shell">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16v-4M12 16V8M17 16v-7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+</svg>
+
+<header class="shell-header">
+  <a class="shell-brand" href="#top"><img src="logos/logo.svg" alt="Cognia"><span class="shell-product">Components</span></a>
+  <nav class="shell-nav" aria-label="Sections">
+    <a href="#buttons" aria-current="page">Buttons</a>
+    <a href="#cards">Cards</a>
+    <a href="#forms">Forms</a>
+    <a href="#data">Data</a>
+    <a href="#overlays">Overlays</a>
+  </nav>
+  <div class="shell-actions">
+    <span class="tooltip-wrap">
+      <button class="btn btn-ghost btn-icon" aria-label="Apps"><svg><use href="#i-grid"/></svg></button>
+      <span class="tooltip" role="tooltip">Apps</span>
+    </span>
+    <button class="shell-profile" aria-label="Account: Sam Sun">SS</button>
+  </div>
+</header>
+
+<main class="shell-main" id="top">
+<div class="ref">
+
+  <section class="ref-section">
+    <div class="ref-intro">
+      <h1 class="text-heading">Cognia components for HTML prototypes</h1>
+      <p class="text-body-base text-muted-foreground">Every component and variant documented in <code>components.md</code>, built from <code>components.css</code> and the tokens in <code>globals.css</code>. Prototypes use these classes and never restyle them.</p>
+    </div>
+    <div class="ref-controls">
+      <div class="field">
+        <label class="label" for="theme">Product theme</label>
+        <span class="select-wrap"><select class="select" id="theme">
+          <option value="">Default, Data and Reporting</option>
+          <option value="theme-assessments" selected>Assessments</option>
+          <option value="theme-learn">Learning</option>
+          <option value="theme-performance">Performance</option>
+          <option value="theme-observations-surveys">Observations and Surveys</option>
+        </select></span>
+      </div>
+      <label class="check"><button class="switch" role="switch" aria-checked="false" id="dark" aria-label="Dark mode"></button> Dark mode</label>
+    </div>
+  </section>
+
+  <section class="ref-section" id="buttons">
+    <h2 class="text-heading">Buttons</h2>
+    <div class="ref-stack">
+      <p class="text-body-small text-muted-foreground"><code>.btn</code> solid, <code>.btn-outline</code>, <code>.btn-ghost</code>, <code>.btn-destructive</code>. Use <code>.btn-lg</code> (48px) by default.</p>
+      <div class="ref-row">
+        <button class="btn btn-lg">Save changes</button>
+        <button class="btn btn-outline btn-lg">Cancel</button>
+        <button class="btn btn-ghost btn-lg">Learn more</button>
+        <button class="btn btn-destructive btn-lg">Delete record</button>
+      </div>
+      <div class="ref-row">
+        <button class="btn btn-lg"><svg><use href="#i-plus"/></svg>Add item</button>
+        <button class="btn btn-outline btn-lg">Continue<svg><use href="#i-arrow"/></svg></button>
+        <button class="btn btn-outline btn-lg is-destructive"><svg><use href="#i-trash"/></svg>Remove</button>
+        <button class="btn btn-ghost btn-lg is-destructive"><svg><use href="#i-trash"/></svg>Remove</button>
+        <button class="btn btn-lg" disabled>Save changes</button>
+      </div>
+      <div class="ref-row">
+        <button class="btn btn-lg">Large</button>
+        <button class="btn">Medium</button>
+        <button class="btn btn-sm">Small</button>
+        <button class="btn btn-xs">Extra small</button>
+        <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon" aria-label="Settings"><svg><use href="#i-settings"/></svg></button><span class="tooltip" role="tooltip">Settings</span></span>
+        <span class="tooltip-wrap"><button class="btn btn-outline btn-icon btn-sm" aria-label="More actions"><svg><use href="#i-more"/></svg></button><span class="tooltip" role="tooltip">More actions</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="ref-section" id="cards">
+    <h2 class="text-heading">Cards</h2>
+    <div class="ref-grid">
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">Default</h3><p class="card-description">Standard content grouping.</p></div>
+        <div class="card-content text-body-small">No border, no shadow, 12px corners.</div>
+        <div class="card-footer"><button class="btn btn-sm">View report</button></div>
+      </div>
+      <div class="card card-themed">
+        <div class="card-header"><h3 class="card-title">Themed</h3><p class="card-description">Selected or highlighted.</p></div>
+        <div class="card-content text-body-small">Re-skins with the product theme.</div>
+      </div>
+      <a class="card-link" href="#cards">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Clickable</h3><p class="card-description">The whole card is a link.</p></div>
+          <div class="card-content text-body-small">Lifts to a medium shadow on hover.</div>
+        </div>
+      </a>
+      <div class="card card-ghost">
+        <div class="card-header"><h3 class="card-title">Ghost</h3><p class="card-description">Always used for graph cards.</p></div>
+        <div class="card-content"><span class="icon-accent"><svg class="icon"><use href="#i-chart"/></svg></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ref-section">
+    <h2 class="text-heading">Badges</h2>
+    <div class="ref-row">
+      <span class="badge">Default</span>
+      <span class="badge badge-secondary">Secondary</span>
+      <span class="badge badge-outline">Outline</span>
+      <span class="badge badge-success">Completed</span>
+      <span class="badge badge-warning">Pending</span>
+      <span class="badge badge-destructive">Cancelled</span>
+      <span class="badge badge-info">Processing</span>
+      <span class="badge badge-theme-solid">Featured</span>
+      <span class="badge badge-theme-light">Featured</span>
+    </div>
+  </section>
+
+  <section class="ref-section" id="forms">
+    <h2 class="text-heading">Forms</h2>
+    <div class="ref-grid-2">
+      <div class="form">
+        <p class="text-body-small text-muted-foreground">On the page: white fields.</p>
+        <div class="field">
+          <label class="label" for="f-title">Assessment title *</label>
+          <input class="input" id="f-title" placeholder="Fractions check">
+        </div>
+        <div class="field">
+          <label class="label" for="f-subject">Subject *</label>
+          <span class="select-wrap"><select class="select" id="f-subject"><option>Select an option</option><option>Mathematics</option><option>English language arts</option></select></span>
+        </div>
+        <div class="field">
+          <label class="label" for="f-email">Email address *</label>
+          <input class="input" id="f-email" type="email" value="jordan@" aria-invalid="true" aria-describedby="f-email-error">
+          <p class="field-error" id="f-email-error">Please enter a valid email.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content form">
+          <p class="text-body-small text-muted-foreground">Inside a card: grey fields.</p>
+          <div class="field">
+            <label class="label" for="f-notes">Notes</label>
+            <textarea class="textarea" id="f-notes" placeholder="Add a note for teachers"></textarea>
+          </div>
+          <div class="form-grid">
+            <div class="field"><label class="label" for="f-start">Start time *</label><input class="input" id="f-start" placeholder="09:00"></div>
+            <div class="field"><label class="label" for="f-end">End time</label><input class="input" id="f-end" placeholder="10:00"></div>
+          </div>
+          <label class="check"><input class="checkbox" type="checkbox" checked> Show results to students</label>
+          <label class="check"><input class="radio" type="radio" name="r" checked> All classes</label>
+          <label class="check"><input class="radio" type="radio" name="r"> Selected classes</label>
+          <div class="check"><span>Email notifications</span><button class="switch" role="switch" aria-checked="true" aria-label="Email notifications"></button></div>
+          <div class="btn-row"><button class="btn btn-outline btn-lg">Cancel</button><button class="btn btn-lg">Save changes</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ref-section" id="data">
+    <h2 class="text-heading">Tabs</h2>
+    <div class="ref-row">
+      <div class="tabs-list" role="tablist" aria-label="Results view">
+        <button class="tab" role="tab" aria-selected="true">Overview</button>
+        <button class="tab" role="tab" aria-selected="false">Results</button>
+        <button class="tab" role="tab" aria-selected="false">History</button>
+      </div>
+    </div>
+
+    <h2 class="text-heading">Table</h2>
+    <div class="card">
+      <div class="card-content table-wrap">
+        <table class="table">
+          <thead><tr><th>School</th><th>Status</th><th class="num">Completion</th><th class="actions"><span class="sr-only">Actions</span></th></tr></thead>
+          <tbody>
+            <tr><td>Lincoln Middle</td><td><span class="badge badge-success">Completed</span></td><td class="num">92%</td><td class="actions"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Actions for Lincoln Middle"><svg><use href="#i-more"/></svg></button></td></tr>
+            <tr><td>Baldwin Middle</td><td><span class="badge badge-warning">In review</span></td><td class="num">64%</td><td class="actions"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Actions for Baldwin Middle"><svg><use href="#i-more"/></svg></button></td></tr>
+            <tr><td>Mebane Middle</td><td><span class="badge badge-destructive">Overdue</span></td><td class="num">31%</td><td class="actions"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Actions for Mebane Middle"><svg><use href="#i-more"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 class="text-heading">Alerts</h2>
+    <div class="ref-grid-2">
+      <div class="alert alert-info" role="status"><svg><use href="#i-info"/></svg><p class="alert-title">Heads up</p><p class="alert-description">This report has not been reviewed yet.</p></div>
+      <div class="alert alert-success" role="status"><svg><use href="#i-check"/></svg><p class="alert-title">Assessment assigned</p><p class="alert-description">Three classes can now start it.</p></div>
+      <div class="alert alert-warning" role="status"><svg><use href="#i-alert"/></svg><p class="alert-title">Window closes Friday</p><p class="alert-description">Four students have not started.</p></div>
+      <div class="alert alert-destructive" role="alert"><svg><use href="#i-alert"/></svg><p class="alert-title">Error</p><p class="alert-description">Your session has expired. Please log in again.</p></div>
+    </div>
+
+    <h2 class="text-heading">Progress, avatars and loading</h2>
+    <div class="ref-grid">
+      <div class="ref-stack">
+        <div class="progress-label"><span>Draft progress</span><span>65%</span></div>
+        <div class="progress" role="progressbar" aria-label="Draft progress" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value: 65%"><div class="progress-indicator"></div></div>
+      </div>
+      <div class="ref-row">
+        <span class="avatar avatar-sm">JE</span>
+        <span class="avatar">JE</span>
+        <span class="avatar avatar-lg">JE</span>
+      </div>
+      <div class="ref-skeleton-lines" aria-hidden="true">
+        <div class="skeleton" style="height: 16px; width: 192px"></div>
+        <div class="skeleton" style="height: 16px; width: 128px"></div>
+      </div>
+    </div>
+
+    <h2 class="text-heading">Accordion and separator</h2>
+    <div>
+      <details class="accordion-item" open><summary class="accordion-trigger">What counts as on time?</summary><div class="accordion-content">Submitted before the window closes.</div></details>
+      <details class="accordion-item"><summary class="accordion-trigger">Who can see results?</summary><div class="accordion-content">Teachers of the class and school administrators.</div></details>
+    </div>
+    <hr class="separator">
+
+    <h2 class="text-heading">Empty state</h2>
+    <div class="card"><div class="empty-state"><p>No results found.</p><button class="btn btn-lg">Add record</button></div></div>
+  </section>
+
+  <section class="ref-section" id="overlays">
+    <h2 class="text-heading">Overlays</h2>
+    <div class="ref-row">
+      <button class="btn btn-destructive btn-lg" data-open="demo-dialog">Delete record</button>
+      <button class="btn btn-outline btn-lg" data-open="demo-sheet">Open filters</button>
+      <div class="ref-menu-demo">
+        <button class="btn btn-outline btn-lg" aria-haspopup="menu" aria-expanded="false" id="menu-btn">Actions<svg><use href="#i-down"/></svg></button>
+        <div class="menu" role="menu" hidden id="menu">
+          <button class="menu-item" role="menuitem">Edit record</button>
+          <button class="menu-item" role="menuitem">Duplicate</button>
+          <div class="menu-separator" role="separator"></div>
+          <button class="menu-item is-destructive" role="menuitem">Delete record</button>
+        </div>
+      </div>
+    </div>
+    <div class="ref-row">
+      <div class="toast toast-success" role="status"><svg class="icon"><use href="#i-check"/></svg><span class="toast-message">Assessment saved</span><button class="btn btn-ghost btn-icon btn-xs" aria-label="Close"><svg><use href="#i-x"/></svg></button></div>
+      <div class="toast toast-error" role="alert"><svg class="icon"><use href="#i-alert"/></svg><span class="toast-message">Could not save the assessment</span><button class="btn btn-ghost btn-icon btn-xs" aria-label="Close"><svg><use href="#i-x"/></svg></button></div>
+    </div>
+  </section>
+
+  <section class="ref-section">
+    <h2 class="text-heading">Not in the system yet</h2>
+    <p class="text-body-base text-muted-foreground">The prototype uses these patterns, but <code>components.md</code> does not document them. Until the designer adds a spec, do not build your own.</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Pattern</th><th>Seen in</th><th>Use for now</th></tr></thead>
+        <tbody>
+          <tr><td>Toggle buttons, such as Week and Month</td><td>Admin and teacher</td><td>Tabs</td></tr>
+          <tr><td>Stepper for multi-step flows</td><td>Teacher and student</td><td>Ask the designer</td></tr>
+          <tr><td>Pagination and pagers</td><td>All flows</td><td>Ask the designer</td></tr>
+          <tr><td>Stat or KPI tile</td><td>Admin and teacher</td><td>Card with a heading value</td></tr>
+          <tr><td>Filter chips</td><td>Admin and teacher</td><td>Ask the designer</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<dialog class="dialog" id="demo-dialog" aria-labelledby="dlg-title" aria-describedby="dlg-desc">
+  <div class="dialog-header"><h2 class="dialog-title" id="dlg-title">Delete this record?</h2><p class="dialog-description" id="dlg-desc">This action cannot be undone.</p></div>
+  <div class="btn-row"><button class="btn btn-outline btn-lg" data-close>Cancel</button><button class="btn btn-destructive btn-lg" data-close>Delete record</button></div>
+</dialog>
+
+<dialog class="dialog sheet" id="demo-sheet" aria-labelledby="sheet-title" aria-describedby="sheet-desc">
+  <div class="dialog-header"><h2 class="dialog-title" id="sheet-title">Filters</h2><p class="dialog-description" id="sheet-desc">Narrow down your results.</p></div>
+  <div class="form">
+    <div class="field"><label class="label" for="s-grade">Grade</label><span class="select-wrap"><select class="select" id="s-grade"><option>Select an option</option><option>Grade 6</option><option>Grade 7</option></select></span></div>
+    <label class="check"><input class="checkbox" type="checkbox"> Below benchmark only</label>
+  </div>
+  <div class="btn-row"><button class="btn btn-outline btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Apply</button></div>
+</dialog>
+
+<footer class="shell-footer">
+  <div class="shell-footer-inner">
+    <p class="shell-copyright">© 2026 Cognia, Inc. All rights reserved.</p>
+    <nav aria-label="Footer">
+      <button class="shell-language" aria-haspopup="listbox" aria-label="Language: English">English <svg class="icon"><use href="#i-down"/></svg></button>
+      <a href="#top">Help &amp; Support</a>
+      <a href="https://www.cognia.org">cognia.org</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const themes = ['theme-assessments', 'theme-learn', 'theme-performance', 'theme-observations-surveys'];
+  const theme = document.getElementById('theme');
+  const applyTheme = () => { document.body.classList.remove(...themes); if (theme.value) document.body.classList.add(theme.value); };
+  theme.addEventListener('change', applyTheme); applyTheme();
+
+  document.querySelectorAll('.switch').forEach(s => s.addEventListener('click', () => {
+    const on = s.getAttribute('aria-checked') !== 'true';
+    s.setAttribute('aria-checked', String(on));
+    if (s.id === 'dark') root.classList.toggle('dark', on);
+  }));
+
+  document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+
+  const menuBtn = document.getElementById('menu-btn'), menu = document.getElementById('menu');
+  menuBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); });
+  document.addEventListener('click', e => { if (!e.target.closest('.ref-menu-demo')) { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); } });
+
+  document.querySelectorAll('.tabs-list').forEach(list => list.addEventListener('click', e => {
+    const t = e.target.closest('.tab'); if (!t) return;
+    list.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+  }));
+</script>
+</body>
+</html>

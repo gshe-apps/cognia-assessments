@@ -62,6 +62,9 @@
   --accent-400: #800600;
   --accent-500: #3F1513;
 
+  /* Brand: the red underline on the selected nav item and the footer language selector (components.md) */
+  --brand-coral: #FF554D;
+
   /* Status surface colours */
   --info-light: #E5F2F8;
   --success-light: #E7F3EB;

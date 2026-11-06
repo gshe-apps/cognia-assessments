@@ -1,0 +1,650 @@
+/* ============================================================
+   COGNIA COMPONENTS, PLAIN HTML
+   Plain-CSS equivalents of the shadcn components and variants documented in
+   design-system/components.md, for HTML prototypes and mockups that have no
+   React build. One class per documented variant, so every class maps 1:1 to
+   a shadcn component a developer can use.
+
+   Load order in a prototype:
+     1. a copy of assets/globals.css (tokens, without @import "tailwindcss")
+     2. a copy of this file (components)
+     3. one layout file per flow (positioning and widths only)
+
+   Rules
+   - Do not edit a project's copy. Change this file in the plugin and re-copy.
+   - Never restyle these classes from a project stylesheet. If a component or
+     variant is missing, ask the designer to add it to components.md and here.
+   - Only tokens from globals.css and the aliases below. No hex values.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Plain-HTML aliases of documented values
+   typography.md (type scale) and spacing.md (8 point scale). Tailwind
+   projects get these from classes; plain HTML needs them as variables.
+   ------------------------------------------------------------ */
+:root {
+  --text-title-hero: 72px;
+  --text-title-page: 48px;
+  --text-subtitle: 30px;
+  --text-heading: 24px;
+  --text-subheading: 20px;
+  --text-body-base: 16px;
+  --text-body-small: 14px;
+
+  --space-px: 1px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  --duration: 200ms;
+}
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; border-color: var(--border); }
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-family), sans-serif;
+  font-size: var(--text-body-base);
+  line-height: 1.5;
+}
+:where(button, input, select, textarea) { font: inherit; color: inherit; }
+:where(h1, h2, h3, h4, p) { margin: 0; }
+
+/* ------------------------------------------------------------
+   Typography (typography.md)
+   ------------------------------------------------------------ */
+.text-title-hero { font-size: var(--text-title-hero); line-height: 1.1; font-weight: 700; }
+.text-title-page { font-size: var(--text-title-page); line-height: 1.2; font-weight: 700; }
+.text-subtitle   { font-size: var(--text-subtitle); line-height: 1.3; font-weight: 400; }
+.text-heading    { font-size: var(--text-heading); line-height: 1.3; font-weight: 600; }
+.text-subheading { font-size: var(--text-subheading); line-height: 1.4; font-weight: 400; }
+.text-body-base  { font-size: var(--text-body-base); line-height: 1.5; }
+.text-body-small { font-size: var(--text-body-small); line-height: 1.5; }
+.font-normal   { font-weight: 400; }
+.font-semibold { font-weight: 600; }
+.font-bold     { font-weight: 700; }
+.underline     { text-decoration: underline; }
+.text-foreground       { color: var(--foreground); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.text-card-foreground  { color: var(--card-foreground); }
+/* Status text: only badges, alerts, data values (20px+) and destructive buttons. */
+.text-success-value     { color: var(--success); }
+.text-warning-value     { color: var(--warning); }
+.text-destructive-value { color: var(--destructive); }
+.text-info-value        { color: var(--info); }
+.text-right { text-align: right; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ------------------------------------------------------------
+   Focus (accessibility.md): 3px --ring
+   ------------------------------------------------------------ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 0;
+}
+
+/* ------------------------------------------------------------
+   Navigation shell (components.md, Navigation shell and Footer)
+   <body class="shell"> <header class="shell-header">...</header>
+   <main class="shell-main">...</main> <footer class="shell-footer">...</footer>
+   ------------------------------------------------------------ */
+.shell { min-height: 100vh; display: flex; flex-direction: column; background-color: var(--background); }
+.shell-main { flex: 1 0 auto; padding: var(--vertical-padding) var(--horizontal-padding); }
+
+.shell-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: 52px;
+  padding: 0 var(--space-8);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.shell-brand { display: flex; align-items: center; gap: var(--space-3); color: var(--foreground); text-decoration: none; }
+.shell-brand img { height: 28px; width: auto; display: block; }
+.shell-product { font-size: var(--text-body-base); font-weight: 700; color: var(--foreground); }
+.shell-nav { display: flex; justify-content: center; gap: var(--space-1); }
+.shell-nav a {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-body-small);
+  font-weight: 600;
+  color: var(--foreground);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--radius);
+  transition: background-color var(--duration);
+}
+.shell-nav a:hover { background-color: var(--hover-overlay); }
+.shell-nav a[aria-current="page"] { border-bottom-color: var(--brand-coral); border-radius: 0; }
+.shell-nav a[aria-current="page"]:hover { background-color: transparent; }
+.shell-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+.shell-profile {
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: var(--rounded-full);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--text-body-small);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--duration);
+}
+.shell-profile:hover { background-color: var(--primary-hover); }
+
+.shell-footer {
+  margin-top: auto;
+  padding: var(--space-3) var(--space-8);
+  border-top: 1px solid var(--border);
+  background: transparent;
+}
+.shell-footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.shell-copyright { font-size: var(--text-body-small); font-weight: 600; color: var(--muted-foreground); }
+.shell-footer nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.shell-footer nav a { font-size: var(--text-body-small); color: var(--muted-foreground); text-decoration: none; }
+.shell-footer nav a:hover { text-decoration: underline; }
+.shell-language {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-1) var(--space-1);
+  border: 0; border-bottom: 2px solid var(--brand-coral);
+  background: transparent;
+  font-size: var(--text-body-small);
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .shell-header { grid-template-columns: 1fr auto; row-gap: var(--space-2); padding: var(--space-2) var(--space-4); }
+  .shell-nav { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; overflow-x: auto; }
+  .shell-nav a { white-space: nowrap; }
+  .shell-footer { padding: var(--space-3) var(--space-4); }
+}
+
+/* ------------------------------------------------------------
+   Button (components.md, Button)
+   .btn                 solid (shadcn default)
+   .btn-outline         outline
+   .btn-ghost           ghost
+   .btn-destructive     solid destructive
+   .is-destructive      destructive state on .btn-outline or .btn-ghost
+   Sizes: .btn-lg (48px, the default to reach for), .btn-sm, .btn-xs, .btn-icon
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+  min-width: 64px;
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--text-body-small);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color var(--duration), color var(--duration);
+}
+.btn:hover { background-color: var(--primary-hover); }
+.btn svg { width: 16px; height: 16px; flex: none; }
+
+.btn-lg { height: 48px; font-size: var(--text-body-base); }
+.btn-sm { height: 32px; }
+.btn-xs { height: 24px; }
+.btn-icon { min-width: 0; width: 40px; padding: 0; }
+.btn-icon.btn-lg { width: 48px; }
+.btn-icon.btn-sm { width: 32px; }
+.btn-icon.btn-xs { width: 24px; }
+.btn-pill { border-radius: var(--rounded-full); }
+
+.btn-outline { background-color: transparent; color: var(--foreground); border-color: var(--primary); }
+.btn-outline:hover { background-color: var(--secondary); }
+
+.btn-ghost { background-color: transparent; color: var(--foreground); }
+.btn-ghost:hover { background-color: var(--secondary); }
+
+.btn-destructive { background-color: var(--destructive); color: var(--primary-foreground); }
+.btn-destructive:hover { background-color: color-mix(in srgb, var(--destructive) 78%, var(--card)); }
+.btn-outline.is-destructive,
+.btn-ghost.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+/* Buttons in a form or modal: full width on mobile (components.md, Responsive width). */
+.btn-row { display: flex; flex-direction: column; gap: var(--space-2); }
+.btn-row .btn { width: 100%; }
+@media (min-width: 768px) {
+  .btn-row { flex-direction: row; justify-content: flex-end; }
+  .btn-row .btn { width: auto; }
+}
+
+/* ------------------------------------------------------------
+   Card (components.md, Card)
+   .card          default
+   .card-ghost    graph cards and subtle grouping
+   .card-themed   product-accented, selected or highlighted
+   a.card-link    clickable card (wrap the card in a link)
+   ------------------------------------------------------------ */
+.card {
+  display: flex; flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+  border: 0;
+  border-radius: var(--radius-xl);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  box-shadow: none;
+}
+.card-header { display: flex; flex-direction: column; gap: var(--space-1); padding: 0 var(--space-6); }
+.card-title { font-size: var(--text-body-base); font-weight: 600; }
+.card-description { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.card-content { padding: 0 var(--space-6); }
+.card-footer { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-6); }
+
+.card-ghost { background-color: transparent; padding: 0; border-radius: 0; }
+.card-ghost > .card-header, .card-ghost > .card-content, .card-ghost > .card-footer { padding-left: 0; padding-right: 0; }
+
+.card-themed { background-color: var(--accent-100); color: var(--foreground); }
+.card-themed .card-description { color: var(--foreground); }
+
+a.card-link { display: block; color: inherit; text-decoration: none; border-radius: var(--radius-xl); }
+a.card-link > .card { height: 100%; transition: box-shadow var(--duration); cursor: pointer; }
+a.card-link:hover > .card { box-shadow: var(--shadow-md); }
+
+/* ------------------------------------------------------------
+   Badge (components.md, Badge). Read-only labels.
+   ------------------------------------------------------------ */
+.badge {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  min-height: 24px;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-full);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--text-body-small);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.badge svg { width: 12px; height: 12px; }
+.badge-secondary   { background-color: var(--secondary); color: var(--secondary-foreground); }
+.badge-outline     { background-color: transparent; color: var(--foreground); border-color: var(--border); }
+/* Status text is the status colour mixed 80% with --foreground, the same
+   recipe components.md uses for destructive button labels. The plain status
+   tokens on their -light surfaces measure 3.96 to 4.12:1 at 14px, under AA. */
+.badge-success     { background-color: var(--success-light); color: color-mix(in srgb, var(--success) 80%, var(--foreground)); }
+.badge-warning     { background-color: var(--warning-light); color: color-mix(in srgb, var(--warning) 80%, var(--foreground)); }
+.badge-destructive { background-color: var(--destructive-light); color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+.badge-info        { background-color: var(--info-light); color: color-mix(in srgb, var(--info) 80%, var(--foreground)); }
+.badge-theme-solid { background-color: var(--accent-300); color: var(--primary-foreground); }
+.badge-theme-light { background-color: var(--accent-100); color: var(--secondary-foreground); }
+
+/* ------------------------------------------------------------
+   Form fields (forms.md, components.md Input, Select, Checkbox, Switch)
+   <div class="form"> <div class="field"> label + control + .field-error </div> </div>
+   Fields sit on the page by default. Inside a .card they switch to the
+   white-surface fill automatically.
+   ------------------------------------------------------------ */
+.form { display: flex; flex-direction: column; gap: var(--space-6); }
+.form-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+.field { display: flex; flex-direction: column; gap: var(--space-2); }
+.label { font-size: var(--text-body-small); font-weight: 600; color: var(--foreground); }
+.field-hint { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.field-error { font-size: var(--text-body-small); color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+
+.input, .textarea, .select {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3);
+  border: 0;
+  border-radius: var(--radius);
+  background-color: var(--primary-foreground);
+  color: var(--foreground);
+  font-size: var(--text-body-base);
+  box-shadow: none;
+  transition: outline-color var(--duration);
+}
+.textarea { min-height: 96px; resize: vertical; }
+.input::placeholder, .textarea::placeholder { color: var(--muted-foreground); }
+.card .input, .card .textarea, .card .select,
+.dialog .input, .dialog .textarea, .dialog .select { background-color: var(--secondary); }
+.input[aria-invalid="true"], .textarea[aria-invalid="true"], .select[aria-invalid="true"] {
+  outline: 3px solid var(--destructive);
+}
+
+.select { appearance: none; padding-right: var(--space-10); cursor: pointer; }
+.select-wrap { position: relative; display: block; }
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  right: var(--space-4);
+  top: calc(50% - 6px);
+  width: 8px; height: 8px;
+  border-right: 2px solid var(--muted-foreground);
+  border-bottom: 2px solid var(--muted-foreground);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.check { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-base); cursor: pointer; }
+.checkbox, .radio { width: 16px; height: 16px; margin: 0; accent-color: var(--primary); cursor: pointer; flex: none; }
+
+/* Switch: <button class="switch" role="switch" aria-checked="false"> */
+.switch {
+  position: relative;
+  width: 32px; height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--rounded-full);
+  background-color: var(--input);
+  cursor: pointer;
+  flex: none;
+  transition: background-color var(--duration);
+}
+.switch::after {
+  content: "";
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: var(--rounded-full);
+  background-color: var(--card);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration);
+}
+.switch[aria-checked="true"] { background-color: var(--primary); }
+.switch[aria-checked="true"]::after { transform: translateX(12px); }
+
+/* ------------------------------------------------------------
+   Tabs (components.md, Tabs)
+   <div class="tabs-list" role="tablist"> <button class="tab" role="tab" aria-selected="true">
+   On the page the list is white (bg-card); inside a card it is grey.
+   ------------------------------------------------------------ */
+.tabs-list {
+  display: inline-flex; align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius);
+  background-color: var(--card);
+}
+.card .tabs-list { background-color: var(--secondary); }
+.tab {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: var(--text-body-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--duration), color var(--duration);
+}
+.tab:hover { color: var(--foreground); background-color: var(--hover-overlay); }
+.tab[aria-selected="true"] { background-color: var(--secondary); color: var(--foreground); }
+.card .tab[aria-selected="true"] { background-color: var(--card); box-shadow: var(--shadow-sm); }
+
+/* ------------------------------------------------------------
+   Table (components.md, Table)
+   ------------------------------------------------------------ */
+.table-wrap { width: 100%; overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-body-small); }
+.table th {
+  padding: var(--space-3) var(--space-2);
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.table td { padding: var(--space-3) var(--space-2); border-bottom: 1px solid var(--border); color: var(--foreground); }
+.table tbody tr { transition: background-color var(--duration); }
+.table tbody tr:hover { background-color: var(--hover-overlay); }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.table .actions { width: 1%; text-align: right; }
+
+/* ------------------------------------------------------------
+   Alert (components.md, Alert)
+   <div class="alert alert-info" role="status"> icon + .alert-title + .alert-description
+   ------------------------------------------------------------ */
+.alert {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  background-color: var(--card);
+  color: var(--foreground);
+}
+.alert > svg { grid-row: 1 / span 2; width: 16px; height: 16px; margin-top: var(--space-1); }
+.alert-title { font-size: var(--text-body-small); font-weight: 600; }
+.alert-description { font-size: var(--text-body-small); color: var(--foreground); }
+.alert:not(:has(> svg)) { grid-template-columns: 1fr; }
+.alert-info        { background-color: var(--info-light); }
+.alert-success     { background-color: var(--success-light); }
+.alert-warning     { background-color: var(--warning-light); }
+.alert-destructive { background-color: var(--destructive-light); }
+.alert-info > svg, .alert-info .alert-title { color: color-mix(in srgb, var(--info) 80%, var(--foreground)); }
+.alert-success > svg, .alert-success .alert-title { color: color-mix(in srgb, var(--success) 80%, var(--foreground)); }
+.alert-warning > svg, .alert-warning .alert-title { color: color-mix(in srgb, var(--warning) 80%, var(--foreground)); }
+.alert-destructive > svg, .alert-destructive .alert-title { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+
+/* ------------------------------------------------------------
+   Dialog and Sheet (components.md, Dialog and Sheet)
+   Use the native <dialog> element: dialog.showModal() / dialog.close()
+   ------------------------------------------------------------ */
+.dialog {
+  width: calc(100% - var(--space-8));
+  max-width: 512px;
+  padding: var(--space-6);
+  border: 0;
+  border-radius: var(--radius);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-lg);
+}
+.dialog[open] { display: flex; flex-direction: column; gap: var(--space-4); }
+.dialog::backdrop { background-color: var(--backdrop-overlay); }
+.dialog-header { display: flex; flex-direction: column; gap: var(--space-2); }
+.dialog-title { font-size: var(--text-body-base); font-weight: 600; }
+.dialog-description { font-size: var(--text-body-small); color: var(--muted-foreground); }
+
+.sheet {
+  margin: 0 0 0 auto;
+  width: 75%;
+  max-width: 384px;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+}
+@media (max-width: 767px) {
+  .sheet { margin: auto 0 0; width: 100%; max-width: none; height: auto; max-height: 85vh; }
+}
+
+/* ------------------------------------------------------------
+   Dropdown menu (components.md, Dropdown Menu)
+   ------------------------------------------------------------ */
+.menu {
+  min-width: 128px;
+  padding: var(--space-1);
+  border-radius: var(--radius);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-md);
+  z-index: 20;
+}
+.menu-item {
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  font-size: var(--text-body-small);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.menu-item:hover { background-color: var(--secondary); }
+.menu-item.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+.menu-separator { height: 1px; margin: var(--space-1) 0; background-color: var(--border); }
+
+/* ------------------------------------------------------------
+   Tooltip (components.md, Tooltip). Shows on hover and keyboard focus.
+   <span class="tooltip-wrap"> trigger <span class="tooltip" role="tooltip">Text</span> </span>
+   ------------------------------------------------------------ */
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: var(--text-body-small);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duration), visibility var(--duration);
+  z-index: 30;
+}
+.tooltip-wrap:hover .tooltip,
+.tooltip-wrap:focus-within .tooltip { opacity: 1; visibility: visible; }
+
+/* ------------------------------------------------------------
+   Avatar (components.md, Avatar)
+   ------------------------------------------------------------ */
+.avatar {
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  border-radius: var(--rounded-full);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: var(--text-body-small);
+  font-weight: 400;
+  flex: none;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-sm { width: 24px; height: 24px; }
+.avatar-lg { width: 40px; height: 40px; }
+
+/* ------------------------------------------------------------
+   Progress (components.md, Progress). Always labelled.
+   <div class="progress" role="progressbar" aria-valuenow="65" style="--value: 65%">
+     <div class="progress-indicator"></div></div>
+   ------------------------------------------------------------ */
+.progress {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--rounded-full);
+  background-color: var(--opacity-primary-20);
+}
+.progress-indicator {
+  height: 100%;
+  width: var(--value, 0%);
+  border-radius: var(--rounded-full);
+  background-color: var(--primary);
+}
+.progress-label { display: flex; justify-content: space-between; gap: var(--space-2); font-size: var(--text-body-small); }
+
+/* ------------------------------------------------------------
+   Skeleton, Separator, Accordion, Icon, Empty state, Toast
+   ------------------------------------------------------------ */
+.skeleton { border-radius: var(--radius); background-color: var(--secondary); }
+
+.separator { height: 1px; width: 100%; border: 0; margin: 0; background-color: var(--border); }
+.separator-vertical { width: 1px; height: auto; align-self: stretch; }
+
+.accordion-item { border-bottom: 1px solid var(--border); }
+.accordion-trigger {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-4) 0;
+  font-size: var(--text-body-base);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+.accordion-trigger::-webkit-details-marker { display: none; }
+.accordion-trigger::after {
+  content: "";
+  width: 8px; height: 8px;
+  margin-right: var(--space-1);
+  border-right: 2px solid var(--muted-foreground);
+  border-bottom: 2px solid var(--muted-foreground);
+  transform: rotate(45deg);
+  transition: transform var(--duration);
+}
+.accordion-item[open] > .accordion-trigger::after { transform: rotate(-135deg); }
+.accordion-content { padding-bottom: var(--space-4); font-size: var(--text-body-small); }
+
+.icon { width: 16px; height: 16px; color: var(--muted-foreground); flex: none; }
+.icon-accent { display: inline-flex; padding: var(--space-2); border-radius: var(--radius); background-color: var(--card); }
+.icon-accent .icon { color: var(--accent-300); }
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-16) 0;
+  text-align: center;
+}
+.empty-state p { font-size: var(--text-body-base); color: var(--muted-foreground); }
+
+.toast {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  width: 100%;
+  max-width: 384px;
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-xl);
+  font-size: var(--text-body-small);
+}
+.toast > .toast-message { flex: 1; }
+.toast-success > svg { color: var(--success); }
+.toast-info > svg { color: var(--info); }
+.toast-warning > svg { color: var(--warning); }
+.toast-error > svg { color: var(--destructive); }
+.toast-region {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+
+/* ------------------------------------------------------------
+   Floating action button (components.md, Button, FABs)
+   ------------------------------------------------------------ */
+.fab { position: fixed; bottom: var(--space-6); right: var(--space-6); }
+
+/* ------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none; }
+}

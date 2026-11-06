@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bank) { save({banked:true}); bank.textContent = 'Assessment banked ✓'; bank.disabled = true; }
     if (event.target.closest('a[href="CAP-T07-DraftSaved.dc.html"]')) save({draftSaved:true});
     const preview = event.target.closest('[data-action="preview"],[data-action="overviewPreview"]');
-    if(preview) window.open('CAP-S05-Question.dc.html','_blank');
+    if(preview) window.open('STU2-Classroom.dc.html','_blank');
     if(event.target.closest('[data-action="allDrafts"]')) location.href='CAP-T03-Assessments.dc.html?view=drafts';
     if(event.target.closest('[data-action="allAssessments"]')) location.href='CAP-T03-Assessments.dc.html';
   });
   const banked = document.getElementById('banked-assessments');
-  if(banked && work.banked) banked.innerHTML = '<div class="bank-notice"><b>Banked for later: Fractions check</b><p>Your assessment is saved in this browser and ready to continue.</p><a class="btn ghost" href="CAP-T06-Review.dc.html">Review &amp; assign →</a></div>';
+  if(banked && work.banked) banked.innerHTML = '<div class="bank-notice"><b>Banked for later: Fractions check</b><p>Your assessment is saved in this browser and ready to continue.</p><a class="btn ghost btn-ghost btn-lg" href="CAP-T06-Review.dc.html">Review &amp; assign →</a></div>';
   const tabs = document.querySelector('.assessment-view-tabs');
   if(tabs) {
     const requested = new URLSearchParams(location.search).get('view');

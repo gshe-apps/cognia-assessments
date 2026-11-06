@@ -48,19 +48,24 @@
 }
 
 /* ------------------------------------------------------------
-   Base
+   Base resets
+   In their own layer so they never override a project's existing styles,
+   including styles a project keeps in its own cascade layer. Components
+   below are unlayered and always apply.
    ------------------------------------------------------------ */
-*, *::before, *::after { box-sizing: border-box; border-color: var(--border); }
-body {
-  margin: 0;
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-family), sans-serif;
-  font-size: var(--text-body-base);
-  line-height: 1.5;
+@layer cognia-base {
+  *, *::before, *::after { box-sizing: border-box; border-color: var(--border); }
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-family), sans-serif;
+    font-size: var(--text-body-base);
+    line-height: 1.5;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  h1, h2, h3, h4, p { margin: 0; }
 }
-:where(button, input, select, textarea) { font: inherit; color: inherit; }
-:where(h1, h2, h3, h4, p) { margin: 0; }
 
 /* ------------------------------------------------------------
    Typography (typography.md)

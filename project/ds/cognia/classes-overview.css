@@ -6,7 +6,7 @@
 .cl-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
 .cl-create { display:flex; }
-.cl-create .btn { display:inline-flex; align-items:center; gap:var(--space-2); font-size:var(--text-body-base); }
+.cl-create .btn { display:inline-flex; align-items:center; gap:var(--space-2);}
 .cl-create .btn svg { width:16px; height:16px; }
 
 .cl-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:var(--space-4); align-items:stretch; }
@@ -125,7 +125,7 @@
 }
 @media (max-width:639px) {
   .cl-page { padding:var(--space-6) var(--horizontal-padding, var(--space-4)) var(--space-8); }
-  .cl-create .btn { width:100%; justify-content:center; }
+  .cl-create .btn { width:100%; justify-content:center;}
 }
 @media (prefers-reduced-motion:reduce) {
   .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,[role="rowgroup"] .cl-tr { transition:none; }

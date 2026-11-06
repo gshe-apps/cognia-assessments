@@ -315,8 +315,8 @@ html body .acctmenu .acctav{border-radius:50% ;width:40px;height:40px;flex-shrin
 .theme-assessments .proddc{font-size:var(--text-body-small);color:var(--foreground);line-height:1.35;}
 .theme-assessments .prodcard .tag{font-size:var(--text-body-small);padding:1px 8px;}
 /* progress bars inside stacked tiles: keep their height */
-html body .theme-assessments .card > .bar,html body .theme-assessments .kpi > .bar{flex:none;height:10px;width:100%;overflow:hidden;}
-html body .theme-assessments .card > .bar i,html body .theme-assessments .kpi > .bar i{height:100%;}
+html body .theme-assessments :is(.card, .card > .card-content)> .bar,html body .theme-assessments .kpi > .bar{flex:none;height:10px;width:100%;overflow:hidden;}
+html body .theme-assessments :is(.card, .card > .card-content)> .bar i,html body .theme-assessments .kpi > .bar i{height:100%;}
 html body .theme-assessments .card.tint.trendcard{background:transparent;border:0 ;gap:var(--space-2);} /* 2 Nov: the trend chart sits on the page, no white card */
 html body .theme-assessments .card.tint.trendcard .lbl,html body .theme-assessments .card.tint.trendcard .n{color:var(--foreground);}
 /* Schools with changed results */

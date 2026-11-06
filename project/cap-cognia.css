@@ -23,7 +23,7 @@
 .cap-root.theme-assessments :is(.formcard h2,.overview-stat h2,.student-reading h2){font-size:var(--text-body-base);font-weight:var(--weight-semibold);letter-spacing:0;}
 .cap-root.theme-assessments :is(h3,h4,.overview-links b,.overview-dashboard .overview-links b,.overview-dashboard .resume-strip b,.overview-assessment-info b,.assessments-dashboard .draftcard h3,.recent-heading h3,.journey-links b){font-size:var(--text-body-base);font-weight:var(--weight-semibold);letter-spacing:0;line-height:var(--lh-snug);}
 .cap-root.theme-assessments .student-question-card legend{font-size:var(--text-subheading);font-weight:var(--weight-semibold);line-height:var(--lh-snug);}
-.cap-root.theme-assessments :is(p,.muted,small,.tiny,.hint,.note,.qmeta,.head > div > p,.assessment-subtitle p,.student-title p,.overview-stat p,.pathway-card > p,.student-support){color:var(--foreground);}
+.cap-root.theme-assessments :is(p,.muted,small,.tiny,.hint,.note,.qmeta,.head > div > p,.assessment-subtitle p,.student-title p,.overview-stat p,:is(.pathway-card, .pathway-card > .card-content)> p,.student-support){color:var(--foreground);}
 .cap-root.theme-assessments :is(.eyebrow,.context-label,.hub-current,.pill,th,.hub-brand small){text-transform:none;letter-spacing:0;}
 .cap-root.theme-assessments th{font-size:var(--text-body-small);font-weight:var(--weight-semibold);color:var(--foreground);}
 .cap-root.theme-assessments td{border-bottom-color:var(--border);}
@@ -145,5 +145,9 @@
 .cap-root img[src*="teacher-flow-architecture"],
 .cap-root img[src*="assessment-hero-hd"],
 .cap-root img[src*="overview-folder-hd"]{filter:grayscale(1);}
+
+/* Cards now use the shared card structure (card > card-content). Keep the
+   folder card's column layout and the room for its tab inside the wrapper. */
+.pathway-card > .card-content { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-4); flex:1; padding-top:var(--space-4); }
 
 }

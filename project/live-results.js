@@ -44,11 +44,11 @@
       local: 'This browser only (add Firebase to go live)'
     })[live.connection()];
     const resetControls = confirmReset
-      ? '<span class="rr-live-confirm">Clear every result in this session?</span><button type="button" class="btn small" data-live="cancel">Cancel</button><button type="button" class="btn small solid" data-live="reset-yes">Clear results</button>'
-      : '<button type="button" class="btn small" data-live="reset">Reset session</button>';
+      ? '<span class="rr-live-confirm">Clear every result in this session?</span><button type="button" class="btn small btn-outline btn-sm" data-live="cancel">Cancel</button><button type="button" class="btn small solid btn-sm" data-live="reset-yes">Clear results</button>'
+      : '<button type="button" class="btn small btn-outline btn-sm" data-live="reset">Reset session</button>';
     return '<section class="rr-panel rr-live" aria-labelledby="live-title" data-live-panel>'
       + '<div class="rr-live-main"><div class="rr-live-code"><h2 id="live-title">Session code</h2><strong>' + esc(live.SESSION_CODE) + '</strong></div>'
-      + '<div class="rr-live-join"><h2>Students join at</h2><p><span class="rr-live-url">' + esc(live.joinUrl()) + '</span><button type="button" class="btn small" data-live="copy">' + (copied ? 'Copied' : 'Copy link') + '</button></p></div>'
+      + '<div class="rr-live-join"><h2>Students join at</h2><p><span class="rr-live-url">' + esc(live.joinUrl()) + '</span><button type="button" class="btn small btn-outline btn-sm" data-live="copy">' + (copied ? 'Copied' : 'Copy link') + '</button></p></div>'
       + '<div class="rr-live-progress"><h2>Progress</h2><p role="status" aria-live="polite"><strong>' + esc(message) + '</strong></p><p>' + esc(where) + '</p></div></div>'
       + '<div class="rr-live-actions">' + resetControls + '</div></section>';
   }
@@ -127,7 +127,7 @@
         const filter = done ? 'scored' : 'missing';
         const label = done ? 'Scored' : r.status === 'progress' ? 'In progress' : r.status === 'joined' ? 'Signed in' : 'Not started';
         const fresh = done && arrived[r.passcode] && now - arrived[r.passcode] < 4000;
-        const action = done ? '<a class="btn small" href="CAP-T15-ScoreResponse.dc.html">View response <span aria-hidden="true">→</span></a>' : '<a class="btn small" href="CAP-T19-MissingSubmissions.dc.html">Review missing <span aria-hidden="true">→</span></a>';
+        const action = done ? '<a class="btn small btn-outline btn-sm" href="CAP-T15-ScoreResponse.dc.html">View response <span aria-hidden="true">→</span></a>' : '<a class="btn small btn-outline btn-sm" href="CAP-T19-MissingSubmissions.dc.html">Review missing <span aria-hidden="true">→</span></a>';
         return '<tr data-result-row data-status="' + filter + '"' + (fresh ? ' class="rr-new"' : '') + '><td><span class="rr-student"><span class="rr-avatar">' + icon + '</span><strong>' + esc(r.name) + '</strong></span></td>'
           + '<td><span class="rr-status' + (done ? ' rr-scored' : r.status === 'progress' ? ' rr-review' : '') + '">' + label + '</span></td>'
           + '<td>' + (done ? esc(r.marks) + ' / ' + esc(r.max) : '–') + '</td><td>Private</td><td>' + action + '</td></tr>';

@@ -43,7 +43,7 @@ const shell=(instance,file)=>{
  assert(old.includes("setItem('cogniaPersona', 'educator')")&&old.includes("location.replace('District-Home.dc.html')"),'CAP-T00-Home.dc.html: forwards to the shared Home as the educator');
  const instance=runDC(read('District-Home.dc.html'),{cogniaPersona:'educator'});const vals=instance.renderVals();
  assert.equal(vals.firstName,'Sara');assert.equal(vals.orgName,'Lincoln Middle School');assert.equal(vals.overviewHref,'CAP-T01-Overview.dc.html','educator results open the classroom assessment Overview');
- assert(read('District-Home.dc.html').includes('<sc-if value="{{isEducator}}" hint-placeholder-val="{{ false }}"><span class="hp-btn hp-btn-ghost hp-btn-static"'),'educator Show me where has hover only and does not navigate (5 Nov)');assert.equal(vals.assessTitle,'Assessment results this month');assert(/English/.test(vals.courseTitle),'educator course is about English');assert.equal(vals.isAdmin,false);
+ assert(/<sc-if value="\{\{isEducator\}\}" hint-placeholder-val="\{\{ false \}\}"><span class="hp-btn hp-btn-ghost hp-btn-static[^"]*"/.test(read('District-Home.dc.html')),'educator Show me where has hover only and does not navigate (5 Nov)');assert.equal(vals.assessTitle,'Assessment results this month');assert(/English/.test(vals.courseTitle),'educator course is about English');assert.equal(vals.isAdmin,false);
  assert.equal(vals.hubFmShow,true);assert.equal(vals.hubDiShow,false);assert.equal(vals.hubAssignHref,'CAP-T04-Setup.dc.html');
  shell(instance,'District-Home.dc.html (educator)');
  reports.push('District-Home.dc.html: educator Home with school, classes, past-month results, class insight, English course and educator hub passed');

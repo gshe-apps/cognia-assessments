@@ -61,5 +61,6 @@
     "height": 1000
   },
   "baseline": "cognia-design.baseline.json",
-  "componentsCopy": "project/ds/cognia/cognia-components.css"
+  "componentsCopy": "project/ds/cognia/cognia-components.css",
+  "componentsScriptCopy": "project/ds/cognia/cognia-components.js"
 }

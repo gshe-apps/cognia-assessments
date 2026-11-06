@@ -19,9 +19,6 @@
   .ref-stack { display: flex; flex-direction: column; gap: var(--space-4); }
   .ref-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
   .ref-skeleton-lines { display: flex; flex-direction: column; gap: var(--space-2); }
-  .ref-menu-demo { position: relative; display: inline-block; }
-  .ref-menu-demo .menu { position: absolute; top: calc(100% + var(--space-1)); left: 0; }
-  .ref-menu-demo .menu[hidden] { display: none; }
   .ref-inline-demo { position: static; }
   code { font-family: inherit; font-weight: 600; }
 </style>
@@ -256,13 +253,13 @@
     <div class="ref-row">
       <button class="btn btn-destructive btn-lg" data-open="demo-dialog">Delete record</button>
       <button class="btn btn-outline btn-lg" data-open="demo-sheet">Open filters</button>
-      <div class="ref-menu-demo">
-        <button class="btn btn-outline btn-lg" aria-haspopup="menu" aria-expanded="false" id="menu-btn">Actions<svg><use href="#i-down"/></svg></button>
-        <div class="menu" role="menu" hidden id="menu">
-          <button class="menu-item" role="menuitem">Edit record</button>
-          <button class="menu-item" role="menuitem">Duplicate</button>
+      <div class="dropdown">
+        <button type="button" class="btn btn-outline btn-lg" id="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu">Actions<svg aria-hidden="true"><use href="#i-down"/></svg></button>
+        <div class="menu" role="menu" id="menu" aria-labelledby="menu-btn" hidden>
+          <button type="button" class="menu-item" role="menuitem" tabindex="-1">Edit record</button>
+          <button type="button" class="menu-item" role="menuitem" tabindex="-1">Duplicate</button>
           <div class="menu-separator" role="separator"></div>
-          <button class="menu-item is-destructive" role="menuitem">Delete record</button>
+          <button type="button" class="menu-item is-destructive" role="menuitem" tabindex="-1"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete record</button>
         </div>
       </div>
     </div>
@@ -317,6 +314,7 @@
   </div>
 </footer>
 
+<script src="components.js"></script>
 <script>
   const root = document.documentElement;
   const themes = ['theme-assessments', 'theme-learn', 'theme-performance', 'theme-observations-surveys'];
@@ -333,9 +331,6 @@
   document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
 
-  const menuBtn = document.getElementById('menu-btn'), menu = document.getElementById('menu');
-  menuBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); });
-  document.addEventListener('click', e => { if (!e.target.closest('.ref-menu-demo')) { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); } });
 
   document.querySelectorAll('.tabs-list').forEach(list => list.addEventListener('click', e => {
     const t = e.target.closest('.tab'); if (!t) return;

@@ -9,6 +9,7 @@
      1. a copy of assets/globals.css (tokens, without @import "tailwindcss")
      2. a copy of this file (components)
      3. one layout file per flow (positioning and widths only)
+   Screens with a dropdown menu also load a copy of assets/components.js.
 
    Rules
    - Do not edit a project's copy. Change this file in the plugin and re-copy.
@@ -494,7 +495,20 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 
 /* ------------------------------------------------------------
    Dropdown menu (components.md, Dropdown Menu)
+   Plain HTML: .dropdown > button[aria-haspopup="menu"] + .menu[role="menu"][hidden].
+   Opening, keyboard, Escape and click outside come from assets/components.js.
+   Add .dropdown-end to line the menu up with the trigger's right edge.
    ------------------------------------------------------------ */
+.dropdown { position: relative; display: inline-block; }
+.dropdown > .menu {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  z-index: 20;
+  min-width: 100%;
+}
+.dropdown-end > .menu { left: auto; right: 0; }
+.menu[hidden] { display: none; }
 .menu {
   padding: var(--space-1);
   border-radius: var(--radius);
@@ -511,11 +525,16 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
   background: transparent;
   font-size: var(--text-body-small);
   text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
   color: inherit;
   cursor: pointer;
 }
-.menu-item:hover { background-color: var(--secondary); }
+.menu-item svg { width: 16px; height: 16px; flex: none; color: var(--muted-foreground); }
+.menu-item:hover, .menu-item:focus-visible { background-color: var(--secondary); }
+.menu-item:focus-visible { outline-offset: -3px; }
 .menu-item.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+.menu-item.is-destructive svg { color: inherit; }
 .menu-separator { height: 1px; margin: var(--space-1) 0; background-color: var(--border); }
 
 /* ------------------------------------------------------------

@@ -126,7 +126,7 @@ HTML prototypes have no React, so they use `assets/components.css`: one class pe
 | `<Table>` | `table.table`, numeric cells `.num` |
 | `<Alert variant="...">` | `.alert` + `.alert-info`, `-success`, `-warning`, `-destructive` |
 | `<Dialog>`, `<Sheet>` | `dialog.dialog`, `dialog.dialog.sheet` |
-| `<DropdownMenu>` | `.menu`, `.menu-item`, `.menu-separator` |
+| `<DropdownMenu>` | `.dropdown` (`.dropdown-end` to align right) > trigger + `.menu`, `.menu-item`, `.menu-separator`; behaviour from `assets/components.js` |
 | `<Tooltip>` | `.tooltip-wrap` > `.tooltip[role=tooltip]` |
 | `<Avatar>` | `.avatar`, `.avatar-sm`, `.avatar-lg` |
 | `<Progress>`, `<Skeleton>`, `<Separator>`, `<Accordion>` | `.progress`, `.skeleton`, `.separator`, `details.accordion-item` |
@@ -571,7 +571,9 @@ Alerts communicate important information inline within the page.
 Dropdown menus reveal a list of actions related to a trigger element.
 
 **Rules**
-- Use a dropdown for 3 or more related actions. For fewer, use buttons directly.
+- Use a dropdown for 3 or more related actions, or for different ways to start one task (for example Create assessment: from scratch or from the library). Otherwise, for fewer than 3, use buttons directly.
+- A trigger that opens a menu shows a chevron and does nothing else. If the button also needs a default action of its own, that is a split button, which is not documented yet: ask the designer.
+- Items may lead with a 16px icon. Items that go to another page are links (`<a>`); items that act on the page are buttons.
 - Place destructive actions at the bottom, separated from other actions.
 - Keep labels in verb + noun format: "Edit record", "Delete record".
 
@@ -587,6 +589,20 @@ Dropdown menus reveal a list of actions related to a trigger element.
     <DropdownMenuItem className="text-destructive">Delete record</DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
+```
+
+Plain HTML (load a copy of `assets/components.js`, which adds opening, keyboard, Escape and click-outside behaviour):
+
+```html
+<div class="dropdown dropdown-end">
+  <button type="button" class="btn btn-lg" id="create-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-menu">
+    Create assessment <svg aria-hidden="true"><!-- chevron-down --></svg>
+  </button>
+  <div class="menu" role="menu" id="create-menu" aria-labelledby="create-trigger" hidden>
+    <a class="menu-item" role="menuitem" tabindex="-1" href="create.html"><svg aria-hidden="true"></svg>Create from scratch</a>
+    <a class="menu-item" role="menuitem" tabindex="-1" href="library.html"><svg aria-hidden="true"></svg>Use assessment library</a>
+  </div>
+</div>
 ```
 
 ---

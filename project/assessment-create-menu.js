@@ -1,3 +1,6 @@
+/* Create assessment: the shared dropdown menu from the cognia-design plugin
+   (btn, .dropdown, .menu in cognia-components.css). Opening, keyboard, Escape
+   and click outside come from ds/cognia/cognia-components.js. */
 (() => {
   const svg = (path) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + path + '</svg>';
 
@@ -6,36 +9,21 @@
     if (!host || host.firstElementChild) return;
 
     host.innerHTML = `
-      <details class="assessment-create-menu">
-        <summary>
-          <span>Create assessment</span>
+      <div class="dropdown dropdown-end">
+        <button type="button" class="btn btn-lg" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
+          Create assessment
           ${svg('<path d="m6 9 6 6 6-6"/>')}
-        </summary>
-        <div class="assessment-create-options">
-          <a href="CAP-T04-Setup.dc.html">
+        </button>
+        <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html">
             ${svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5M14 2l6 6v3m-6-9v6h6m-3 7v6m-3-3h6"/>')}
             Create from scratch
           </a>
-          <a href="CAP-T21-AssessmentLibrary.dc.html">
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html">
             ${svg('<path d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/>')}
             Use assessment library
           </a>
         </div>
-      </details>`;
-
-    const menu = host.firstElementChild;
-    menu.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape' || !menu.open) return;
-      event.stopPropagation();
-      menu.open = false;
-      menu.querySelector('summary').focus();
-    });
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target)) menu.open = false;
-    });
-    menu.addEventListener('focusout', (event) => {
-      if (event.relatedTarget && !menu.contains(event.relatedTarget)) menu.open = false;
-    });
-    window.addEventListener('pageshow', () => { menu.open = false; });
+      </div>`;
   };
 })();

@@ -1,11 +1,11 @@
 /* Overview reference, expressed using Cognia assessment tokens. */
 .od-dashboard{max-width:1600px;margin:0 auto;padding:var(--space-8) var(--horizontal-padding) var(--space-6);display:flex;flex-direction:column;gap:var(--space-16);color:var(--foreground);font-family:var(--font-sans);}
-.od-dashboard :is(h1,h2,h3,p){margin:0;}
+.od-dashboard :is(h1, h2, h3, p){margin:0;}
 .od-dashboard h1,.od-dashboard h2{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:1.3;}
 .od-dashboard h3{font-size:var(--text-body-base);font-weight:var(--weight-bold);line-height:1.5;}
 .od-dashboard p{font-size:var(--text-body-small);line-height:1.5;color:var(--muted-foreground);}
 .od-dashboard a{color:var(--foreground);}
-.od-dashboard :is(a,button):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1);}
+.od-dashboard :is(a:not(.btn), button:not(.btn)):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1);}
 .od-hero{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);margin-bottom:calc(-1 * var(--space-8));}
 .od-hero>div>p{margin-top:var(--space-1);}
 .od-hero-actions{display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3);}
@@ -78,10 +78,10 @@
 .od-folder{transition:all 200ms;}
 .od-papers{transition:all 200ms;}
 .od-folder-face{transition:all 200ms;}
-.od-folder:is(:hover,:focus-within){transform:translateY(-4px);}
-.od-folder:is(:hover,:focus-within) .od-papers{transform:translateY(-8px);}
-.od-folder:is(:hover,:focus-within) .od-folder-face{box-shadow:var(--shadow-md);}
-@media(prefers-reduced-motion:reduce){.od-folder,.od-papers,.od-folder-face{transition:none;}.od-folder:is(:hover,:focus-within),.od-folder:is(:hover,:focus-within) .od-papers{transform:none;}}
+.od-folder:is(:hover, :focus-within){transform:translateY(-4px);}
+.od-folder:is(:hover, :focus-within) .od-papers{transform:translateY(-8px);}
+.od-folder:is(:hover, :focus-within) .od-folder-face{box-shadow:var(--shadow-md);}
+@media(prefers-reduced-motion:reduce){.od-folder,.od-papers,.od-folder-face{transition:none;}.od-folder:is(:hover, :focus-within),.od-folder:is(:hover, :focus-within) .od-papers{transform:none;}}
 .od-card-indicator,.od-card-progress{display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-body-small);color:var(--muted-foreground);min-width:0;}
 .od-response-dots,.od-missing-dots{display:flex;gap:var(--space-1);}
 .od-response-dots i,.od-missing-dots i{display:block;width:12px;height:12px;border-radius:var(--rounded-full);background:var(--accent-300);}
@@ -198,8 +198,8 @@
 .od-days button>span{flex-shrink:0;}
 /* Paper layers emerge only while interacting with a folder. */
 .od-folder .od-papers{opacity:0;transform:translateY(var(--space-4));pointer-events:none;}
-.od-folder:is(:hover,:focus-within) .od-papers{opacity:1;transform:translateY(-4px);}
-@media(prefers-reduced-motion:reduce){.od-folder .od-papers,.od-folder:is(:hover,:focus-within) .od-papers{transform:none;transition:none;}}
+.od-folder:is(:hover, :focus-within) .od-papers{opacity:1;transform:translateY(-4px);}
+@media(prefers-reduced-motion:reduce){.od-folder .od-papers,.od-folder:is(:hover, :focus-within) .od-papers{transform:none;transition:none;}}
 .od-empty-day{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:var(--space-3);min-height:100%;box-sizing:border-box;padding:var(--space-6);}
 .od-empty-day .od-button{margin-top:var(--space-2);}
 .od-snapshot[hidden]{display:none;}

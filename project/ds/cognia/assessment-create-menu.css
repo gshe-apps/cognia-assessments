@@ -79,7 +79,7 @@
   background: var(--accent);
 }
 
-.assessment-create-menu :is(summary, a):focus-visible {
+.assessment-create-menu :is(summary, a:not(.btn)):focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 1px;
 }
@@ -95,7 +95,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .assessment-create-menu :is(summary, a) {
+  .assessment-create-menu :is(summary, a:not(.btn)) {
     transition: none;
   }
 }

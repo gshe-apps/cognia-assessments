@@ -28,7 +28,7 @@
 :where(.cognia-screen .hublogo,.cognia-screen .hublogo:hover,.cognia-screen .logo) { background:transparent; filter:none; opacity:1; box-shadow:none; }
 :where(.cognia-screen .hublogo img,.cognia-screen .logo img) { height:28px; width:auto; filter:none; opacity:1; }
 :where(.cognia-screen button,.cognia-screen a,.cognia-screen input,.cognia-screen select,.cognia-screen textarea) { transition-duration:200ms; }
-:where(.cognia-screen :is(a,button,input,select,textarea):focus-visible) { outline:3px solid var(--ring); outline-offset:4px; }
+:where(.cognia-screen :is(a:not(.btn), button:not(.btn), input, select, textarea):focus-visible) { outline:3px solid var(--ring); outline-offset:4px; }
 @media(max-width:639px) {
   :where(.cognia-screen .fields2) { grid-template-columns:minmax(0,1fr); }
   :where(.cognia-screen .actionbar>.btn) { width:100%; }
@@ -40,7 +40,7 @@
 .cognia-screen .overview-stat{background:var(--card);color:var(--card-foreground);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:none;}
 .cognia-screen .overview-stat p{color:var(--muted-foreground);}
 .cognia-screen .overview-assessment{flex-wrap:wrap;gap:var(--space-4);}
-@media(max-width:639px){.cognia-screen .overview-assessment>div{min-width:0;width:100%;}.cognia-screen .overview-assessment :is(a,button){max-width:100%;white-space:normal;}.cognia-screen .overview-assessment .btn{flex:1;}}
-.cognia-screen .overview-stat :is(h2,strong,svg){color:var(--card-foreground);}
+@media(max-width:639px){.cognia-screen .overview-assessment>div{min-width:0;width:100%;}.cognia-screen .overview-assessment :is(a:not(.btn), button:not(.btn)){max-width:100%;white-space:normal;}.cognia-screen .overview-assessment .btn{flex:1;}}
+.cognia-screen .overview-stat :is(h2, strong, svg){color:var(--card-foreground);}
 @media(max-width:639px){.cognia-screen .overview-assessment-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);width:auto;max-width:100%;min-width:0;}.cognia-screen .overview-assessment-actions .btn{flex:1 1 128px;}.cognia-screen .overview-assessment>div{flex-wrap:wrap;}}
 @media(max-width:639px){.cognia-screen .overview-assessment-actions{margin-left:0;flex-basis:100%;}.cognia-screen .overview-assessment>.overview-assessment-info{width:auto;flex:1;}}

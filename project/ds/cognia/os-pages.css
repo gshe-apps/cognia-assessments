@@ -8,7 +8,7 @@ html body .theme-assessments .top.os-top .topr{justify-self:end;margin-left:0}
 body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 
 .os-main{--os-radius:var(--radius-xl,calc(var(--radius) + var(--space-1)));width:100%;max-width:1440px;margin:0 auto;padding:var(--space-12) var(--horizontal-padding) var(--space-12);display:flex;flex:1;flex-direction:column;gap:var(--space-6);color:var(--foreground);font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans);box-sizing:border-box}
-.os-main :is(h1,h2,h3,p){margin:0}
+.os-main :is(h1, h2, h3, p){margin:0}
 .os-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
 .os-main h1{font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans)}
 .os-muted{color:var(--muted-foreground)}
@@ -24,7 +24,7 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 .os-icon-btn svg{width:18px;height:18px}
 .os-icon-btn[aria-disabled="true"]{color:var(--muted-foreground);cursor:not-allowed}
 .os-icon-btn[aria-disabled="true"]:hover{background:transparent}
-.os-main :is(.os-btn,.os-icon-btn,.os-chip,.os-day):focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+.os-main :is(.os-btn, .os-icon-btn, .os-chip, .os-day):focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 
 /* Badges */
 .os-badge{display:inline-flex;align-items:center;padding:0 var(--space-2);border-radius:var(--rounded-full);font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans);white-space:nowrap}
@@ -144,4 +144,4 @@ html body .theme-assessments .top.os-top .navl a[aria-disabled="true"]{cursor:de
 /* Date headings in the observations list: 14px regular. */
 .os-main .os-date{font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
 /* Observation and survey cards: hover lifts like other cards, but they are not links (no pointer, no destination). */
-.os-main :is(.os-obs,.os-survey):hover{box-shadow:var(--shadow-md)}
+.os-main :is(.os-obs, .os-survey):hover{box-shadow:var(--shadow-md)}

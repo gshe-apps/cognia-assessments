@@ -92,8 +92,8 @@
 .ar-folder-arrow { position:relative; z-index:10; display:flex; align-items:center; justify-content:center; width:48px; height:48px; margin-top:auto; border-radius:var(--rounded-full); background:var(--primary); color:var(--primary-foreground); font-size:var(--text-body-base); box-shadow:var(--shadow-sm); }
 .ar-library .ar-folder-arrow { background:var(--info-light); color:var(--foreground); border:1px solid var(--border); }
 .ar-folder-wave { position:absolute; inset:auto 0 0; width:100%; height:96px; pointer-events:none; fill:var(--card); fill-opacity:.25; stroke:var(--card); stroke-width:1; }
-.ar-folder:is(:hover,:focus-visible) .ar-folder-file { transform:translateY(-24px) rotate(-3deg); }
-.ar-folder:is(:hover,:focus-visible) .ar-folder-front { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.ar-folder:is(:hover, :focus-visible) .ar-folder-file { transform:translateY(-24px) rotate(-3deg); }
+.ar-folder:is(:hover, :focus-visible) .ar-folder-front { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
 .ar-continue { padding:0; }
 .ar-continue .ov-section-heading { margin-bottom:var(--space-2); padding:0 var(--space-2); }
 .ar-continue h2 { font:var(--weight-bold) var(--text-body-base)/var(--lh-base) var(--font-sans); }
@@ -113,7 +113,7 @@
 .ar-status-scheduled { background:var(--destructive-light); color:color-mix(in srgb,var(--destructive) 80%,var(--foreground)); }
 @media(max-width:1199px) { .ar-intro-grid { gap:var(--space-4); padding:0; grid-template-columns:1.15fr 1fr 1fr; } .ar-intro h1 { font-size:var(--text-subtitle); } .ar-folder-front { padding:var(--space-6); } .ar-continue-list { grid-template-columns:repeat(2,minmax(0,1fr)); } .ar-collection-heading .ar-tabs { margin-left:auto;} }
 @media(max-width:767px) { .ar-page { padding-top:var(--space-8); } .ar-intro-grid { grid-template-columns:1fr; gap:var(--space-8); } .ar-intro h1 { font-size:var(--text-subtitle); } .ar-folder { min-height:288px; } .ar-folder-front { min-height:264px; } .ar-continue-list { grid-template-columns:1fr; } .ar-assessments { padding:var(--space-4); } .ar-search { width:100%; margin:0; } .ar-collection-heading .ar-tabs { justify-content:flex-start; flex-wrap:wrap; margin:0;} }
-@media(prefers-reduced-motion:reduce) { .ar-folder-file,.ar-folder-front,.ar-resume { transition:none; } .ar-folder:is(:hover,:focus-visible) .ar-folder-file,.ar-folder:is(:hover,:focus-visible) .ar-folder-front,.ar-resume:hover { transform:none; } }
+@media(prefers-reduced-motion:reduce) { .ar-folder-file,.ar-folder-front,.ar-resume { transition:none; } .ar-folder:is(:hover, :focus-visible) .ar-folder-file,.ar-folder:is(:hover, :focus-visible) .ar-folder-front,.ar-resume:hover { transform:none; } }
 
 .ar-folder-back { clip-path:polygon(0 0,42% 0,50% 8%,100% 8%,100% 100%,0 100%); }
 .ar-folder-front { border-radius:var(--radius); }
@@ -158,4 +158,4 @@
 @media(max-width:1279px){.ar-continue-list{grid-template-columns:repeat(3,minmax(0,1fr));}.ar-resume{column-gap:var(--space-2);padding:var(--space-3);}.ar-resume-results{grid-template-columns:40px minmax(0,1fr) auto 16px;}.ar-resume-results .ar-resume-change-badge{grid-column:3;grid-row:2;justify-self:end;}.ar-resume-results .ar-resume-stat{grid-column:3;grid-row:1;}.ar-resume-results .ar-resume-chevron{grid-column:4;grid-row:1/3;}.ar-resume-stat{padding-left:var(--space-2);}}
 @media(max-width:1000px){.ar-continue-list{grid-template-columns:1fr;}.ar-resume-results{grid-template-columns:48px minmax(0,1fr) auto auto 16px;}.ar-resume-results .ar-resume-change-badge{grid-column:auto;grid-row:auto;}.ar-resume-results .ar-resume-stat{grid-column:auto;grid-row:auto;}.ar-resume-results .ar-resume-chevron{grid-column:auto;grid-row:auto;}}
 @media(max-width:767px){.ar-resume-results{grid-template-columns:40px minmax(0,1fr) auto 16px;}.ar-resume-results .ar-resume-change-badge{grid-column:3;grid-row:2;}.ar-resume-results .ar-resume-stat{grid-column:3;grid-row:1;}.ar-resume-results .ar-resume-chevron{grid-column:4;grid-row:1/3;}.ar-resume-icon{width:40px;height:40px;}}
-@media(prefers-reduced-motion:reduce){.ar-resume{transition:none;}.ar-resume:is(:hover,:focus-visible){transform:none;}}
+@media(prefers-reduced-motion:reduce){.ar-resume{transition:none;}.ar-resume:is(:hover, :focus-visible){transform:none;}}

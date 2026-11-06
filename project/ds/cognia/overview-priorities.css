@@ -8,11 +8,11 @@
   color: var(--foreground);
   font: var(--weight-regular) var(--text-body-small)/1.5 var(--font-sans);
 }
-.od-dashboard :is(h1,h2,h3,p,dl,dd) { margin: 0; }
-.od-dashboard :is(h1,h2) { font: var(--weight-semibold) var(--text-heading)/1.3 var(--font-sans); }
+.od-dashboard :is(h1, h2, h3, p, dl, dd) { margin: 0; }
+.od-dashboard :is(h1, h2) { font: var(--weight-semibold) var(--text-heading)/1.3 var(--font-sans); }
 .od-dashboard h3 { font: var(--weight-semibold) var(--text-body-base)/1.4 var(--font-sans); }
 .od-dashboard p { color: var(--muted-foreground); }
-.od-dashboard :is(a,button):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.od-dashboard :is(a:not(.btn), button:not(.btn)):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .od-hero { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding-block-end: var(--space-1); }
 .od-hero h1 { position: relative; inset-block-start: var(--space-1); }
 .od-dashboard .od-button {
@@ -32,8 +32,8 @@
   transition: background 200ms;
 }
 .od-dashboard .od-button:hover { background: var(--ring); }
-.od-dashboard :is(.od-create,.od-review .od-button) { background: var(--primary); color: var(--primary-foreground); }
-.od-dashboard :is(.od-create,.od-review .od-button):hover { background: var(--primary-hover, var(--muted-foreground)); }
+.od-dashboard :is(.od-create, .od-review .od-button) { background: var(--primary); color: var(--primary-foreground); }
+.od-dashboard :is(.od-create, .od-review .od-button):hover { background: var(--primary-hover, var(--muted-foreground)); }
 
 .od-folder-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: var(--space-4); }
 .od-folder {
@@ -92,8 +92,8 @@
   background: var(--card);
   transition: transform 200ms, box-shadow 200ms;
 }
-.od-folder:is(:hover,:focus-within) .od-folder-face { transform: translateY(calc(-1 * var(--space-1))); box-shadow: var(--shadow-md); }
-.od-folder:is(:hover,:focus-within) .od-papers { opacity: 1; transform: translateY(calc(-1 * var(--space-3))) rotate(-2deg); }
+.od-folder:is(:hover, :focus-within) .od-folder-face { transform: translateY(calc(-1 * var(--space-1))); box-shadow: var(--shadow-md); }
+.od-folder:is(:hover, :focus-within) .od-papers { opacity: 1; transform: translateY(calc(-1 * var(--space-3))) rotate(-2deg); }
 .od-entry { display: flex; align-items: center; gap: var(--space-3); }
 .od-entry svg { width: var(--space-6); height: var(--space-6); flex: none; color: var(--muted-foreground); }
 .od-entry > div { min-width: 0; overflow-wrap: anywhere; }
@@ -142,7 +142,7 @@
 }
 .od-draft-stages li { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); padding-block-start: var(--space-2); }
 .od-draft-stages svg { flex: none; width: var(--space-6); height: var(--space-6); }
-.od-draft-stages :is(.is-done,[aria-current="step"]) svg { color: var(--accent-300); }
+.od-draft-stages :is(.is-done, [aria-current="step"]) svg { color: var(--accent-300); }
 .od-draft-stages li + li::before {
   content: '';
   position: absolute;
@@ -216,7 +216,7 @@
 .od-day-title p { color: var(--primary-foreground); }
 .od-timeline { display: grid; gap: var(--space-3); padding: var(--space-4); }
 .od-dashboard .od-agenda-card { display: block; overflow: hidden; border: 0; border-radius: var(--radius-xl); background: var(--card); color: var(--card-foreground); text-decoration: none; transition: transform 200ms, box-shadow 200ms; }
-.od-agenda-card:is(:hover,:focus-visible) { transform: translateY(calc(-1 * var(--space-1))); box-shadow: var(--shadow-md); }
+.od-agenda-card:is(:hover, :focus-visible) { transform: translateY(calc(-1 * var(--space-1))); box-shadow: var(--shadow-md); }
 .od-agenda-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4) 0; }
 .od-agenda-status { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--rounded-full); padding: 0 var(--space-2); font-weight: var(--weight-semibold); }
 .od-agenda-status::before { content: ''; width: var(--space-2); height: var(--space-2); border-radius: var(--rounded-full); background: var(--event-ink); }
@@ -240,7 +240,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .od-dashboard .od-button,.od-folder-face,.od-papers,.od-dashboard .od-agenda-card { transition: none; }
-  .od-folder:is(:hover,:focus-within) :is(.od-folder-face,.od-papers),.od-agenda-card:is(:hover,:focus-visible) { transform: none; }
+  .od-folder:is(:hover, :focus-within) :is(.od-folder-face, .od-papers),.od-agenda-card:is(:hover, :focus-visible) { transform: none; }
 }
 .od-create-dialog{width:calc(100% - var(--space-8));max-width:560px;box-sizing:border-box;padding:var(--space-6);border:1px solid var(--border);border-radius:var(--radius-xl);background:var(--popover);color:var(--popover-foreground);box-shadow:var(--shadow-lg);font-family:var(--font-sans);}
 .od-create-dialog::backdrop{background:var(--backdrop-overlay);}

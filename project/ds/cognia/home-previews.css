@@ -6,7 +6,7 @@
 /* Page surface is --background (plugin shell rule); the legacy prototype shell painted it --secondary. */
 body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .dh-main { --hp-radius:var(--radius-xl, calc(var(--radius) + var(--space-1))); padding-bottom:var(--space-6); }
-.dh-main :is(h1,h2,h3,p) { margin:0; }
+.dh-main :is(h1, h2, h3, p) { margin:0; }
 
 /* ---------- Page header: greeting, organisation and stats left; Ask a question right ---------- */
 .hp-top { display:flex; align-items:center; justify-content:space-between; gap:var(--space-6); flex-wrap:wrap; }
@@ -73,21 +73,21 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .hp-badge { display:inline-flex; align-items:center; gap:var(--space-1); padding:0 var(--space-2); border-radius:var(--rounded-full); font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); white-space:nowrap; }
 .hp-badge svg { width:14px; height:14px; }
 .hp-badge-destructive { background:var(--destructive-light); color:color-mix(in srgb,var(--destructive) 80%,var(--foreground)); }
-.hp-btn { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); min-width:64px; min-height:40px; padding:var(--space-2) var(--space-4); border-radius:var(--radius); font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); text-decoration:none; white-space:nowrap; cursor:pointer; box-shadow:none; transition:all 200ms; }
-.dh-main .hp-btn-solid,.dh-main a.hp-btn-solid:is(:link,:visited,:active,:focus) { border:1px solid var(--primary); background:var(--primary); color:var(--primary-foreground); text-decoration:none; }
+.hp-btn { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2); min-width:64px; padding:var(--space-2) var(--space-4); border-radius:var(--radius); text-decoration:none; white-space:nowrap; cursor:pointer; transition:all 200ms;}
+.dh-main .hp-btn-solid,.dh-main a.hp-btn-solid:is(:link, :visited, :active, :focus) { border:1px solid var(--primary); background:var(--primary); color:var(--primary-foreground); text-decoration:none; }
 /* Solid hover: same as the prototype's primary-cta-hover (dark ink lightens to 78%) */
 .dh-main .hp-btn-solid:hover,.dh-main a.hp-btn-solid:hover { border-color:color-mix(in srgb, var(--primary) 78%, var(--card)); background:color-mix(in srgb, var(--primary) 78%, var(--card)); color:var(--primary-foreground); text-decoration:none; }
 .dh-main .hp-btn-outline { border:1px solid var(--primary); background:var(--primary-foreground); color:var(--foreground); }
 .hp-btn-outline:hover { background:var(--secondary); }
 /* Ghost: low emphasis, no fill or border at rest; hover is --secondary on any surface (plugin Button rule). */
-.dh-main .hp-btn-ghost,.dh-main a.hp-btn-ghost:is(:link,:visited,:active,:focus) { border:1px solid transparent; background:transparent; color:var(--foreground); text-decoration:none; }
+.dh-main .hp-btn-ghost,.dh-main a.hp-btn-ghost:is(:link, :visited, :active, :focus) { border:1px solid transparent; background:transparent; color:var(--foreground); text-decoration:none; }
 .dh-main .hp-btn-ghost:hover,.dh-main a.hp-btn-ghost:hover { background:var(--secondary); color:var(--foreground); }
 /* The insight card is already close to --secondary, so the ghost hover there darkens with the hover overlay instead
    (same as the administrator ghost buttons); otherwise the hover would be invisible. */
 .dh-main .hp-insight .hp-btn-ghost:hover,.dh-main .hp-insight a.hp-btn-ghost:hover { background:var(--hover-overlay); }
 /* Educator insight: hover feedback only, the button does not navigate in this prototype. */
 .hp-btn-static { cursor:default; }
-:is(.hp-btn,.hp-icon-link,.hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+:is(.hp-btn, .hp-icon-link, .hp-alert-action):focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
 
 /* ---------- Course card (clickable, hover lifts) ---------- */
 .hp-course { position:relative; display:flex; align-items:stretch; justify-content:space-between; gap:var(--space-4); padding:var(--space-4) var(--space-3); border:0; border-radius:var(--hp-radius); background:var(--accent-100); color:var(--secondary-foreground); text-align:left; font-family:var(--font-sans); box-shadow:none; transition:all 200ms; }
@@ -196,7 +196,7 @@ body:has(.dh-main),.wf:has(.dh-main) { background:var(--background); }
 .hp-alert-success > svg { color:var(--success); }
 .hp-alert-warning { background:var(--warning-light); }
 .hp-alert-warning > svg { color:var(--warning); }
-.dh-main .hp-alert-action,.dh-main a.hp-alert-action:is(:link,:visited) { text-decoration:none; } 
+.dh-main .hp-alert-action,.dh-main a.hp-alert-action:is(:link, :visited) { text-decoration:none; } 
 .hp-alert-action { margin-top:var(--space-1); padding:var(--space-px) var(--space-2); border:0; border-radius:var(--rounded-full); background:color-mix(in srgb, var(--warning) 10%, transparent); color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); cursor:pointer; }
 .hp-alert-action:hover { background:color-mix(in srgb, var(--warning) 18%, transparent); }
 

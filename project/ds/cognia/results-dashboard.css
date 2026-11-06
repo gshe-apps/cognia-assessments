@@ -1,6 +1,6 @@
 .rr-main { background:var(--background); }
 .rr-page { max-width:1440px; margin:auto; padding:var(--space-8); display:flex; flex-direction:column; gap:var(--space-6); }
-.rr-page :is(h1,h2,p) { margin:0; }
+.rr-page :is(h1, h2, p) { margin:0; }
 .rr-page h1 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
 .rr-page h2 { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
 .rr-page p,.rr-page span,.rr-page a,.rr-page button,.rr-page label,.rr-page input,.rr-page td,.rr-page th { font-size:var(--text-body-small); }
@@ -59,6 +59,6 @@
 .rr-status.rr-scored { background:var(--success-light); color:var(--foreground); }
 .rr-status.rr-review { background:var(--warning-light); color:var(--foreground); }
 .rr-review-panel .rr-table-note { margin-top:var(--space-4); }
-.rr-page :is(button,input,a):focus-visible { outline:2px solid var(--ring); outline-offset:var(--space-1); }
+.rr-page :is(button:not(.btn), input, a:not(.btn)):focus-visible { outline:2px solid var(--ring); outline-offset:var(--space-1); }
 @media(max-width:1100px) { .rr-visuals { grid-template-columns:1fr 1fr; } .rr-insights { grid-column:1/-1; } .rr-insights .rr-insight { display:inline-flex; width:48%; vertical-align:top; } .rr-stats { grid-template-columns:1fr 1fr; } }
 @media(max-width:650px) { .rr-page { padding:var(--space-4); } .rr-heading,.rr-review-heading,.rr-review-toolbar { flex-direction:column; align-items:flex-start; } .rr-context { text-align:left; } .rr-stats,.rr-visuals { grid-template-columns:1fr; } .rr-insights .rr-insight { display:flex; width:auto; } .rr-review-toolbar label { width:100%; } }

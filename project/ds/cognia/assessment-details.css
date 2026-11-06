@@ -2,9 +2,9 @@
 @font-face{font-family:'Open Sans';src:url('../../assets/fonts/OpenSans-variable.ttf');font-weight:300 800;font-display:swap}
 .main:has(.rj-details){padding:0;background:var(--background)}
 .rj-details{display:flex;flex-direction:column;gap:var(--space-6);max-width:1600px;width:100%;margin:0 auto;padding:var(--space-6) var(--horizontal-padding) var(--space-8);color:var(--foreground);font-family:var(--font-sans)}
-.rj-details :is(h1,h2,h3,p){margin:0;font-family:var(--font-sans)}
-.rj-details :is(button,input,textarea,select,a){font-family:var(--font-sans)}
-.rj-details :is(a,button,summary,input,select,textarea,[contenteditable]):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1)}
+.rj-details :is(h1, h2, h3, p){margin:0;font-family:var(--font-sans)}
+.rj-details :is(button:not(.btn), input, textarea, select, a:not(.btn)){font-family:var(--font-sans)}
+.rj-details :is(a:not(.btn), button:not(.btn), summary, input, select, textarea, [contenteditable]):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1)}
 .rj-details .tf-top{display:flex;align-items:center;gap:var(--space-8);min-height:48px;padding:0;position:relative}
 .rj-details .tf-back{display:inline-flex;align-items:center;gap:var(--space-4);font-size:var(--text-body-base);color:var(--muted-foreground);text-decoration:none}
 .rj-details .tf-draft{display:inline-flex;align-items:center;min-height:24px;padding:var(--space-1) var(--space-3);border-radius:var(--radius);background:var(--secondary);color:var(--secondary-foreground);font-size:var(--text-body-small)}
@@ -31,12 +31,12 @@
 .rj-details .rj-test-tab summary{display:grid;place-items:center;width:24px;height:32px;list-style:none;cursor:pointer}
 .rj-details summary::-webkit-details-marker{display:none}
 .rj-details .rj-test-tab details>div{position:absolute;right:0;top:100%;min-width:160px;padding:var(--space-2);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);background:var(--popover);z-index:20}
-.rj-details .rj-test-tab details :is(a,button){display:block;padding:var(--space-2);font-size:var(--text-body-small);color:var(--popover-foreground);text-decoration:none;background:transparent;border:0}
+.rj-details .rj-test-tab details :is(a:not(.btn), button:not(.btn)){display:block;padding:var(--space-2);font-size:var(--text-body-small);color:var(--popover-foreground);text-decoration:none;background:transparent;border:0}
 .rj-details .rj-add-test{display:inline-flex;align-items:center;gap:var(--space-2);margin-left:auto;min-height:48px;padding:var(--space-3) var(--space-4);border:1px solid var(--primary);border-radius:var(--radius);background:var(--primary);color:var(--primary-foreground);font-size:var(--text-body-base);font-weight:600;text-decoration:none;transition:all 200ms}
 .rj-details .rj-details-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:var(--space-6);align-items:start;margin:0}
-.rj-details :is(.tf-surface,.rj-settings,.rj-tag-panel){padding:var(--space-6);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);min-width:0}
+.rj-details :is(.tf-surface, .rj-settings, .rj-tag-panel){padding:var(--space-6);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);min-width:0}
 .rj-details .rj-details-layout>aside{display:flex;flex-direction:column;gap:var(--space-4);min-width:0}
-.rj-details :is(.rj-panel-heading,.rj-tag-panel h2){display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6)}
+.rj-details :is(.rj-panel-heading, .rj-tag-panel h2){display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6)}
 .rj-details .rj-panel-heading{justify-content:space-between}
 .rj-details h2{font-size:var(--text-body-base);font-weight:700;line-height:1.5}
 .rj-details .rj-panel-heading a{display:inline-flex;align-items:center;gap:var(--space-2);color:var(--foreground);font-size:var(--text-body-small);text-decoration:none;padding:var(--space-2);border:0;background:transparent}
@@ -93,7 +93,7 @@
 @media(prefers-reduced-motion:reduce){.rj-details .btn,.rj-details .rj-add-test{transition:none}}
 
 .cap-root .rj-details { filter:none; }
-.rj-details .tf-field :is(input,select,textarea) { margin:0; }
+.rj-details .tf-field :is(input, select, textarea) { margin:0; }
 .rj-details .rj-panel-heading svg,.rj-details .rj-settings h2 svg { width:24px; height:24px;flex-shrink:0; }
 
 /* Compact details composition requested after review. */

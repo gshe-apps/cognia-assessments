@@ -17,12 +17,12 @@
 .allocation-search{display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-body-small);margin-bottom:var(--space-4);}
 .allocation-panel input:not([type=checkbox]),.allocation-panel select,.allocation-panel textarea{box-sizing:border-box;min-width:0;min-height:48px;width:100%;padding:var(--space-2);border:0;border-radius:var(--radius);background:var(--secondary);color:var(--secondary-foreground);font:inherit;}
 .allocation-panel input[type=checkbox]{width:var(--space-4);height:var(--space-4);min-height:0;flex-shrink:0;accent-color:var(--accent-300);}
-.allocation-panel :is(button,input,select,textarea,summary):focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+.allocation-panel :is(button:not(.btn), input, select, textarea, summary):focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
 .allocation-class{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:var(--space-4);overflow:hidden;}
 .allocation-class-head{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-3);background:var(--accent-100);padding:var(--space-2) var(--space-4);}
 .allocation-class-head label{font-weight:var(--weight-semibold);}
 .allocation-class-head span{font-size:var(--text-body-small);color:var(--muted-foreground);}
-.allocation-class-head button{padding:var(--space-1) 0;border:0;background:transparent;color:var(--foreground);font:inherit;cursor:pointer;}
+.allocation-class-head button:not(.btn){padding:var(--space-1) 0;border:0;background:transparent;color:var(--foreground);font:inherit;cursor:pointer;}
 .allocation-class-head label,.allocation-student label,.allocation-bulk label,.allocation-check{display:flex;gap:var(--space-2);align-items:center;}
 .allocation-bulk{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-bottom:1px solid var(--border);font-size:var(--text-body-small);}
 .allocation-bulk>span{margin-left:auto;}
@@ -33,7 +33,7 @@
 .allocation-student select{min-height:32px;padding:var(--space-1) var(--space-10) var(--space-1) var(--space-3);font-size:var(--text-body-small);}
 .allocation-accommodation.badge{padding:0 var(--space-2);border-radius:var(--rounded-full);background:var(--warning-light);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);}
 .allocation-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3);}
-.allocation-add-session{border:1px solid var(--accent-300);background:transparent;color:var(--foreground);font-weight:var(--weight-semibold);border-radius:var(--radius);box-shadow:none;}
+.allocation-add-session{border:1px solid var(--accent-300);background:transparent;color:var(--foreground);border-radius:var(--radius);box-shadow:none;}
 .allocation-add-session:hover{background:var(--secondary);}
 .allocation-heading h2{font-size:var(--text-body-base);font-weight:var(--weight-semibold);margin:0;}
 .allocation-session{border:1px solid var(--border);border-radius:var(--radius-xl);margin-bottom:var(--space-4);background:var(--card);}
@@ -118,7 +118,7 @@
 .allocation-table tbody th{font-weight:var(--weight-semibold);}
 .allocation-table tbody th>span{display:inline-block;vertical-align:middle;}
 .allocation-table .allocation-accommodation.badge{margin-left:var(--space-2);font-weight:var(--weight-regular);}
-.allocation-table tr:last-child :is(th,td){border-bottom:0;}
+.allocation-table tr:last-child :is(th, td){border-bottom:0;}
 .allocation-table select{min-height:32px;padding:var(--space-1) var(--space-10) var(--space-1) var(--space-3);font-size:var(--text-body-small);}
 @media(max-width:639px){.allocation-toolbar-selection{border:0;}.allocation-selection-toolbar .allocation-bulk-controls{width:auto;flex:0 0 auto;}.allocation-selection-toolbar .allocation-bulk-controls>label{width:auto;white-space:nowrap;}.allocation-selection-toolbar .allocation-bulk-controls .allocation-select{min-width:120px;}.allocation-table th:last-child,.allocation-table td:last-child{width:136px;}.allocation-table th,.allocation-table td{padding-left:var(--space-2);padding-right:var(--space-2);}.allocation-table .allocation-accommodation.badge{margin:var(--space-1) 0;white-space:normal;}}
 .allocation-bulk-controls>label{white-space:nowrap;flex-shrink:0;}

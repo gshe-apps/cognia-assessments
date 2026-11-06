@@ -36,5 +36,5 @@
 :where(.hubfootnav a, .hublang) { color: var(--muted-foreground); font-size: 14px; text-decoration: none; }
 :where(.hubfootnav a:hover) { text-decoration: underline; }
 :where(.hublang) { border-bottom: 2px solid var(--brand-coral); }
-:where(.hubfoot :is(a, button):focus-visible) { outline: 3px solid var(--ring); }
+:where(.hubfoot :is(a:not(.btn), button:not(.btn)):focus-visible) { outline: 3px solid var(--ring); }
 :where(.hublogo img, .logo img) { filter: none; opacity: 1; }

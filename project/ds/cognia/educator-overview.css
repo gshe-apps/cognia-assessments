@@ -3,9 +3,9 @@
 @font-face { font-family:'Open Sans'; font-style:normal; font-weight:300 800; font-stretch:75% 100%; font-display:swap; src:url('../../assets/fonts/OpenSans-variable.ttf') format('truetype'); }
 .ov-main { position:relative; flex:1; padding:0; background:var(--background); }
 .ov-page { position:relative; width:100%; padding:var(--space-2) var(--horizontal-padding) var(--space-8); display:flex; flex-direction:column; gap:var(--space-4); }
-.ov-page :is(h1,h2,h3,p) { margin:0; }
-.ov-page :is(a,button,summary) { -webkit-tap-highlight-color:transparent; }
-.ov-page :is(a,button,summary):focus-visible { outline:3px solid var(--ring); outline-offset:var(--space-1); }
+.ov-page :is(h1, h2, h3, p) { margin:0; }
+.ov-page :is(a:not(.btn), button:not(.btn), summary) { -webkit-tap-highlight-color:transparent; }
+.ov-page :is(a:not(.btn), button:not(.btn), summary):focus-visible { outline:3px solid var(--ring); outline-offset:var(--space-1); }
 .ov-backdrop { position:absolute; inset:0 0 auto; height:280px; overflow:hidden; pointer-events:none; background:var(--card); mask-image:none; }
 .ov-backdrop svg { width:100%; height:100%; fill:var(--accent-200); opacity:.24; }
 .ov-backdrop path+path { fill:var(--card); }
@@ -73,7 +73,7 @@
 .ov-row-menu > div { bottom:100%; top:auto; }
 .ov-sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
 /* Overlays remain in the same three-size type set as this screen. */
-.educator-overview-screen :is(.appdlg,.acctmenu,.roledlg) :is(h1,h2,h3,h4) { font-size:var(--text-body-base); }
+.educator-overview-screen :is(.appdlg, .acctmenu, .roledlg) :is(h1, h2, h3, h4) { font-size:var(--text-body-base); }
 @media(max-width:1279px) { .ov-priority { grid-template-columns:48px minmax(0,1fr); gap:var(--space-4); padding:var(--space-4); } .ov-priority-icon { width:48px; height:48px; } .ov-priority-art { width:144px; height:144px; } .ov-priority h3 { padding-right:var(--space-6); } }
 @media(max-width:900px) { .ov-priority-grid { grid-template-columns:1fr; } .ov-priority { min-height:192px; } .ov-priority-art { width:192px; height:192px; } .ov-hero { align-items:flex-start; padding:var(--space-6) 0; } .ov-hero h1 { font-size:var(--text-heading); } .ov-hero-actions { gap:var(--space-4); } }
 @media(max-width:639px) { .ov-page { padding-top:var(--space-2); } .ov-hero { flex-direction:column; gap:var(--space-4); } .ov-hero-actions { align-items:flex-start; gap:var(--space-3); } .ov-panel { padding:var(--space-4); } .ov-section-heading { flex-wrap:wrap; gap:var(--space-2); } .ov-priority-grid { gap:var(--space-3); } .ov-priority .ov-button { width:auto; } .ov-schedule td,.ov-schedule th { padding-left:var(--space-3); padding-right:var(--space-3); } }

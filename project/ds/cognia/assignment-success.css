@@ -3,7 +3,7 @@
 .main:has(.af-success){padding:0;background:var(--background);}
 .cap-root .af-success{display:flex;flex-direction:column;gap:var(--space-12);width:100%;max-width:1440px;margin:0 auto;padding:var(--space-16) var(--horizontal-padding);font-family:var(--font-sans);color:var(--foreground);filter:none;}
 .cap-root .af-success:before{content:none;}
-.af-success :is(h1,h2,p){margin:0;font-family:var(--font-sans);}
+.af-success :is(h1, h2, p){margin:0;font-family:var(--font-sans);}
 .as-hero{text-align:center;}
 .af-success .as-hero h1{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:1.2;letter-spacing:-.025em;}
 .as-hero p{margin-top:var(--space-3);font-size:var(--text-body-base);line-height:1.5;color:var(--muted-foreground);}
@@ -42,7 +42,7 @@
 .as-next-actions a>svg:first-child{width:32px;height:32px;flex-shrink:0;stroke:var(--accent-300);}
 .as-next-actions a>svg:last-child{width:24px;height:24px;margin-left:auto;flex-shrink:0;color:var(--muted-foreground);}
 .as-next-actions a:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);}
-.af-success :is(a,button):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1);}
+.af-success :is(a:not(.btn), button:not(.btn)):focus-visible{outline:3px solid var(--ring);outline-offset:var(--space-1);}
 .af-success>.cf-bank{display:none;}
 @media(max-width:1199px){.as-overview{grid-template-columns:192px minmax(0,1fr);gap:var(--space-6);padding:var(--space-6);}.as-overview-content{padding-left:var(--space-6);}.as-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6);}.as-metric:nth-child(3){border-left:0;padding-left:0;}.as-next-actions{padding:0;gap:var(--space-4);}.as-next-actions a{padding:var(--space-4);}.as-illustration{height:192px;}}
 @media(max-width:767px){.cap-root .af-success{padding-top:var(--space-8);gap:var(--space-8);}.af-success .as-hero h1,.af-success .as-overview h2{font-size:var(--text-heading);}.as-overview{grid-template-columns:1fr;}.as-overview-content{padding:0;border:0;}.as-illustration{width:192px;}.as-next-actions{grid-template-columns:1fr;}.as-delivery{gap:var(--space-4);}.as-delivery>div+div{border-left:0;padding-left:0;}}

@@ -1,8 +1,8 @@
 /* Educator Classes screen (CAP-T11). Cognia tokens only: 24 / 16 / 14 type, 400 / 600 weights, 8pt spacing. */
 .cl-main { padding:0; background:var(--background); }
 .cl-page { max-width:calc(1320px + (var(--horizontal-padding) * 2)); box-sizing:border-box; margin:0 auto; padding:var(--space-8) var(--horizontal-padding, var(--space-8)) var(--space-12); display:flex; flex-direction:column; gap:var(--space-6); font-family:var(--font-sans); color:var(--foreground); }
-.cl-page :is(h1,h2,h3,p,ul,ol,dl,dd) { margin:0; }
-.cl-page :is(p,span,a,button,td,th,dt,dd,li) { font-size:var(--text-body-small); line-height:var(--lh-base); }
+.cl-page :is(h1, h2, h3, p, ul, ol, dl, dd) { margin:0; }
+.cl-page :is(p, span, a:not(.btn), button:not(.btn), td, th, dt, dd, li) { font-size:var(--text-body-small); line-height:var(--lh-base); }
 .cl-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
 .cl-create { display:flex; }
@@ -35,9 +35,9 @@
 .cl-avatars { display:flex; align-items:center; }
 .cl-avatars .cl-avatar+.cl-avatar { margin-left:calc(var(--space-1) * -1); }
 .cl-avatars .cl-avatar { outline:2px solid var(--card); transition:all 200ms; }
-.cl-avatars .cl-avatar:is(:hover,:focus-visible) { z-index:10; transform:translateY(calc(var(--space-1) * -1)); }
+.cl-avatars .cl-avatar:is(:hover, :focus-visible) { z-index:10; transform:translateY(calc(var(--space-1) * -1)); }
 .cl-more { margin-left:var(--space-2); padding:var(--space-1); border-radius:var(--radius); cursor:default; transition:all 200ms; }
-.cl-more:is(:hover,:focus-visible) { background:var(--secondary); }
+.cl-more:is(:hover, :focus-visible) { background:var(--secondary); }
 .cl-avatar { position:relative; display:inline-grid; place-items:center; flex-shrink:0; width:32px; height:32px; border-radius:var(--rounded-full); background:var(--secondary); color:var(--secondary-foreground); font-weight:var(--weight-regular); cursor:default; }
 .cl-avatar img { display:block; width:32px; height:32px; border-radius:var(--rounded-full); object-fit:cover; }
 
@@ -45,7 +45,7 @@
 .cl-tip { position:relative; }
 /* Tooltips are white (popover) cards with the medium shadow. */
 .cl-tip::after { content:attr(data-tip); position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; transform:translate(-50%, var(--space-1)); pointer-events:none; transition:all 200ms; }
-.cl-tip:is(:hover,:focus-visible)::after { opacity:1; transform:translate(-50%, 0); }
+.cl-tip:is(:hover, :focus-visible)::after { opacity:1; transform:translate(-50%, 0); }
 .cl-tip:focus-visible,.cl-seg:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 
 /* Other classes: overlapping folder stack. Every folder is full height; each one sits one tab-height below the one behind it,
@@ -58,7 +58,7 @@
 .cl-stack-item { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-1) var(--opacity-primary-10)); }
 .cl-stack-item:not(.is-front) .cl-stack-body>* { visibility:hidden; }
 .cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
-.cl-stack-item:is(:hover,:focus-visible) { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-2) var(--opacity-primary-20)); }
+.cl-stack-item:is(:hover, :focus-visible) { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-2) var(--opacity-primary-20)); }
 
 /* Switching class, in three 200ms steps so it reads calmly: the current folder fades out, then the picked folder
    slides up into its place (its title shows as it rises), then the new current folder settles in.
@@ -97,12 +97,12 @@
 .cl-seg-notstarted { background:var(--secondary); }
 .cl-seg-attention { background:var(--destructive-light); }
 /* Hover or focus: the segment fills with its solid status colour and the icon turns white. */
-.cl-seg:is(:hover,:focus-visible) { color:var(--primary-foreground); }
-.cl-seg:is(:hover,:focus-visible) svg { stroke:var(--primary-foreground); }
-.cl-seg-advancing:is(:hover,:focus-visible) { background:var(--success); }
-.cl-seg-steady:is(:hover,:focus-visible) { background:var(--warning); }
-.cl-seg-notstarted:is(:hover,:focus-visible) { background:var(--muted-foreground); }
-.cl-seg-attention:is(:hover,:focus-visible) { background:var(--destructive); }
+.cl-seg:is(:hover, :focus-visible) { color:var(--primary-foreground); }
+.cl-seg:is(:hover, :focus-visible) svg { stroke:var(--primary-foreground); }
+.cl-seg-advancing:is(:hover, :focus-visible) { background:var(--success); }
+.cl-seg-steady:is(:hover, :focus-visible) { background:var(--warning); }
+.cl-seg-notstarted:is(:hover, :focus-visible) { background:var(--muted-foreground); }
+.cl-seg-attention:is(:hover, :focus-visible) { background:var(--destructive); }
 
 .cl-table-card { background:var(--card); border-radius:var(--radius-xl); overflow-x:auto; }
 .cl-table { display:flex; flex-direction:column; min-width:800px; }
@@ -143,5 +143,5 @@
 @media (prefers-reduced-motion:reduce) {
   .cl-row,.cl-stack-item,.cl-folder,.cl-seg,.cl-avatar,.cl-more,.cl-tip::after,.cl-acc-tip,[role="rowgroup"] .cl-tr { transition:none; }
   .cl-folder.cl-entering { animation:none; }
-  .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg,.cl-avatars .cl-avatar:is(:hover,:focus-visible) { transform:none; }
+  .cl-stack-item:hover,.cl-stack-item:focus-visible,.cl-seg,.cl-avatars .cl-avatar:is(:hover, :focus-visible) { transform:none; }
 }

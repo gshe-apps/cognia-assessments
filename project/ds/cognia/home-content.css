@@ -13,7 +13,7 @@
 }
 /* Cognia semantic content components. No shell styles or token overrides. */
 .dh-main { width:100%; max-width:1440px; margin:0 auto; padding:var(--space-12) var(--horizontal-padding) var(--space-6); display:flex; flex:1; flex-direction:column; gap:var(--space-8); color:var(--foreground); }
-.dh-main :is(h1,h2,h3,p) { margin:0; }
+.dh-main :is(h1, h2, h3, p) { margin:0; }
 .dh-main h1,.dh-main h2 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
 .dh-main h3 { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
 .dh-main p { font-size:var(--text-body-small); line-height:var(--lh-base); color:var(--muted-foreground); }

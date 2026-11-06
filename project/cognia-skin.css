@@ -258,13 +258,13 @@ html body .theme-assessments .ai .ln + .ln{margin-top:calc(-1 * var(--space-1));
 
 
 /* Home account menu */
-.menu .acct{position:relative;display:flex;align-items:center;}
-html body .menu .acctbtn{border-radius:50% ;width:36px;height:36px;min-height:36px;padding:0;border:2px solid var(--border);background:var(--card);color:var(--foreground);font:700 var(--text-body-small) var(--font-sans);letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-html body .menu .acctbtn[aria-expanded="true"]{outline:2px solid var(--border);outline-offset:2px;}
-.menu .acctmenu{position:absolute;top:calc(100% + 12px);right:0;z-index:60;min-width:220px;background:var(--card);color:var(--foreground);border:1px solid var(--border);box-shadow:var(--shadow-md);display:flex;flex-direction:column;padding:8px 0;font-family:var(--font-sans);}
-.menu .acctname{margin:0;padding:8px 16px 12px;font-weight:700;font-size:15px;border-bottom:1px solid var(--border);margin-bottom:4px;}
-.menu .acctmenu a{display:flex;align-items:center;min-height:40px;padding:0 16px;color:var(--foreground);text-decoration:none;font-size:14px;font-weight:600;}
-.menu .acctmenu a:hover{background:var(--hover-overlay);color:var(--foreground);}
+.hdr-actions .acct{position:relative;display:flex;align-items:center;}
+html body .hdr-actions .acctbtn{border-radius:50% ;width:36px;height:36px;min-height:36px;padding:0;border:2px solid var(--border);background:var(--card);color:var(--foreground);font:700 var(--text-body-small) var(--font-sans);letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+html body .hdr-actions .acctbtn[aria-expanded="true"]{outline:2px solid var(--border);outline-offset:2px;}
+.hdr-actions .acctmenu{position:absolute;top:calc(100% + 12px);right:0;z-index:60;min-width:220px;background:var(--card);color:var(--foreground);border:1px solid var(--border);box-shadow:var(--shadow-md);display:flex;flex-direction:column;padding:8px 0;font-family:var(--font-sans);}
+.hdr-actions .acctname{margin:0;padding:8px 16px 12px;font-weight:700;font-size:15px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.hdr-actions .acctmenu a{display:flex;align-items:center;min-height:40px;padding:0 16px;color:var(--foreground);text-decoration:none;font-size:14px;font-weight:600;}
+.hdr-actions .acctmenu a:hover{background:var(--hover-overlay);color:var(--foreground);}
 
 
 
@@ -273,13 +273,13 @@ html body .menu .acctbtn[aria-expanded="true"]{outline:2px solid var(--border);o
 
 /* Account menu (all admin screens) */
 .acct{position:relative;display:flex;align-items:center;}
-html body .theme-assessments .acctbtn,html body .menu .acctbtn{border-radius:50% ;width:36px;height:36px;min-height:36px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font:700 var(--text-body-small) var(--font-sans);letter-spacing:.02em;}
+html body .theme-assessments .acctbtn,html body .hdr-actions .acctbtn{border-radius:50% ;width:36px;height:36px;min-height:36px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font:700 var(--text-body-small) var(--font-sans);letter-spacing:.02em;}
 html body .theme-assessments .acctbtn{background:var(--primary);color:var(--primary-foreground);border:2px solid var(--border);}
 html body .theme-assessments .acctbtn[aria-expanded="true"]{outline:2px solid var(--ring);outline-offset:2px;}
 .acctmenu{position:absolute;top:calc(100% + 12px);right:0;z-index:60;width:300px;border-radius:var(--radius);overflow:hidden;background:var(--popover);color:var(--foreground);border:1px solid var(--border);box-shadow:var(--shadow-md);display:flex;flex-direction:column;padding:8px 0;font-family:var(--font-sans);text-align:left;}
 .acctmenu .accthd{display:flex;gap:12px;align-items:center;padding:8px 16px 12px;}
 html body .acctmenu .acctav{border-radius:50% ;width:40px;height:40px;flex-shrink:0;background:var(--primary);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;font:700 14px var(--font-sans);}
-.menu .acctmenu .acctname,.acctmenu .acctname{margin:0;padding:0;border:0;font-weight:700;font-size:15px;}
+.hdr-actions .acctmenu .acctname,.acctmenu .acctname{margin:0;padding:0;border:0;font-weight:700;font-size:15px;}
 .acctmenu .acctrole{margin:2px 0 0;font-size:var(--text-body-small);color:var(--foreground);}
 
 
@@ -959,7 +959,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 .theme-assessments .cicta{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;margin-top:4px;text-align:center;}
 .theme-assessments .cicta svg{width:16px;height:16px;}
 .theme-assessments .hdrbadge{white-space:nowrap;flex-shrink:0;}
-.theme-assessments .top .menu{display:flex;align-items:center;gap:var(--space-3);}
+.theme-assessments .top .hdr-actions{display:flex;align-items:center;gap:var(--space-3);}
 .theme-assessments .main .row.sp > :only-child{margin-left:auto;}
 .theme-assessments .wipnote > .sub:first-child{margin-top:0;}
 
@@ -1020,7 +1020,7 @@ html body .theme-assessments .fxtab{border-radius:var(--radius-full) ;}
 .realhome{--home-bar:#2E1D2E;--home-menu:#3C263D;--home-plum:#432843;--home-btn:#4C2D4A;--home-btn-hover:#3A2238;--home-canvas:var(--background);}
 html body .wf.realhome{background:var(--home-canvas) ;}
 html body .realhome .top{background:var(--home-bar);}
-html body .realhome .menu{background:var(--home-menu);}
+html body .realhome .hdr-actions{background:var(--home-menu);}
 html body .realhome .welcome{border-bottom:0;padding:16px 32px;}
 html body .realhome .wav{width:60px;height:60px;border-radius:0;background:var(--home-plum);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;}
 .realhome .wav svg{width:30px;height:30px;}
@@ -1081,4 +1081,6 @@ html body .hc-badge{border-radius:var(--radius-full) ;}
 .theme-assessments .crumbs .backlink:hover{background:var(--hover-overlay);text-decoration:none;}
 .theme-assessments .crumbs .backlink svg{width:16px;height:16px;color:currentColor;}
 
+/* Shared dialog component: the assign and filter dialogs keep their width */
+.ildlg.dialog { width: min(560px, calc(100% - var(--space-8))); max-width: none; }
 }

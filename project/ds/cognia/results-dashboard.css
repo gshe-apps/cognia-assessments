@@ -40,9 +40,8 @@
 .rr-success { background:var(--success-light); }.rr-success svg { stroke:var(--success); }
 .rr-warning { background:var(--warning-light); }.rr-warning svg { stroke:var(--warning); }
 .rr-review-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--space-4); }
-.rr-filters { display:flex; flex-wrap:wrap; gap:var(--space-1); background:var(--secondary); border-radius:var(--rounded-full); padding:var(--space-1); }
-.rr-filters button { padding:var(--space-2) var(--space-4); min-height:40px; border:0; border-radius:var(--rounded-full); background:transparent; color:var(--foreground); font-family:var(--font-sans); cursor:pointer; }
-.rr-filters button[aria-pressed="true"] { background:var(--primary); color:var(--primary-foreground); }
+.rr-filters { display:flex; flex-wrap:wrap;}
+.rr-filters button { font-family:var(--font-sans); cursor:pointer;}
 .rr-review-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:var(--space-6); margin:var(--space-4) 0; }
 .rr-review-toolbar label { display:flex; flex-direction:column; gap:var(--space-2); width:280px; max-width:100%; color:var(--muted-foreground); }
 .rr-review-toolbar input { padding:var(--space-3); min-height:40px; border:0; border-radius:var(--radius); background:var(--secondary); color:var(--foreground); font-family:var(--font-sans); }
@@ -62,4 +61,4 @@
 .rr-review-panel .rr-table-note { margin-top:var(--space-4); }
 .rr-page :is(button,input,a):focus-visible { outline:2px solid var(--ring); outline-offset:var(--space-1); }
 @media(max-width:1100px) { .rr-visuals { grid-template-columns:1fr 1fr; } .rr-insights { grid-column:1/-1; } .rr-insights .rr-insight { display:inline-flex; width:48%; vertical-align:top; } .rr-stats { grid-template-columns:1fr 1fr; } }
-@media(max-width:650px) { .rr-page { padding:var(--space-4); } .rr-heading,.rr-review-heading,.rr-review-toolbar { flex-direction:column; align-items:flex-start; } .rr-context { text-align:left; } .rr-stats,.rr-visuals { grid-template-columns:1fr; } .rr-insights .rr-insight { display:flex; width:auto; } .rr-review-toolbar label { width:100%; } .rr-filters { border-radius:var(--radius); } }
+@media(max-width:650px) { .rr-page { padding:var(--space-4); } .rr-heading,.rr-review-heading,.rr-review-toolbar { flex-direction:column; align-items:flex-start; } .rr-context { text-align:left; } .rr-stats,.rr-visuals { grid-template-columns:1fr; } .rr-insights .rr-insight { display:flex; width:auto; } .rr-review-toolbar label { width:100%; } }

@@ -35,7 +35,7 @@ Images (logo and Home cards) are stored as canvas blobs (`/_blob/...`), so they 
 - Formative: create an assessment; assign, classes and question library; results, scoring and feedback
 
 **Student, take an assessment**
-- Formative: access and complete an assessment
+- Formative: sign in with a passcode and session code, then complete an assessment (STU2-SignIn, STU2-Classroom). Option 1 (CAP-S01 to S09) is retired.
 
 ## Prototype controls
 
@@ -54,6 +54,6 @@ Requires Node.js. No dependency installation is needed.
 node serve.cjs
 ```
 
-Open http://127.0.0.1:4174/CAP-T01-Overview.dc.html for the teacher flow or http://127.0.0.1:4174/CAP-S01-SignIn.dc.html for the student flow. Progress is stored locally in the browser. The account menu switches Basic / Classroom+; AI drafting uses labelled sample content, not an external AI service.
+Open http://127.0.0.1:4174/CAP-T01-Overview.dc.html for the teacher flow or http://127.0.0.1:4174/STU2-SignIn.dc.html for the student flow (Option 2; Option 1 was retired in November 2026). Progress is stored locally in the browser. The account menu switches Basic / Classroom+; AI drafting uses labelled sample content, not an external AI service.
 
 This branch includes the updated teacher and student screens, multiple tests, delivery sessions, draft and banked assessment navigation, consistent progress bars, and subtle hover effects. Newer administrator screen content from main is preserved.

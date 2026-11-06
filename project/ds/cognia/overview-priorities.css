@@ -159,15 +159,12 @@
 .od-workspace { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-4); }
 .od-month-panel,.od-day-panel { min-width: 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
 .od-month-panel { padding: var(--space-4); display: flex; flex-direction: column; }
-.od-month-heading,.od-date-controls,.od-view-toggle { display: flex; align-items: center; gap: var(--space-2); }
+.od-month-heading,.od-date-controls,.od-view-toggle { display: flex; align-items: center;}
 .od-month-heading { justify-content: space-between; flex-wrap: wrap; margin-bottom: var(--space-4); }
 .od-date-controls { flex-wrap: wrap; }
 .od-date-controls strong { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
 .od-month-heading button { min-height: var(--space-8); min-width: var(--space-8); padding: 0 var(--space-2); border: 0; border-radius: var(--radius); background: var(--background); color: var(--foreground); font: inherit; cursor: pointer; }
 .od-month-heading button:hover { background: var(--secondary); }
-.od-view-toggle { gap: 0; border: 1px solid var(--border); border-radius: var(--radius); }
-.od-view-toggle button { background: var(--card); }
-.od-view-toggle button[aria-pressed=true] { background: var(--accent-100); font-weight: var(--weight-semibold); }
 .od-calendar-week,.od-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .od-calendar-week { text-align: center; color: var(--muted-foreground); font-weight: var(--weight-semibold); background: var(--background); border-radius: var(--radius) var(--radius) 0 0; padding-block: var(--space-2); }
 .od-days { border: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); }

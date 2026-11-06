@@ -77,4 +77,6 @@ html body .acctmenu .planseg button[aria-pressed="true"]{background:var(--card);
 .capacct .accthd + .acctplan{border-top:0;}
 .acctmenu .plannote{margin:0;font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans);color:var(--muted-foreground);}
 
+/* Shared dialog component: this dialog keeps its wider layout */
+.roledlg.dialog { max-width: none; }
 }

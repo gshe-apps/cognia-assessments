@@ -28,9 +28,7 @@
 }
 :where(.hubnav a, .navl a)[aria-current="page"] {
   border-bottom: 2px solid var(--brand-coral);
-  color: var(--foreground);
-  background: transparent;
-}
+  background: transparent;}
 :where(.hubfoot, .hubfootin) { background: transparent; }
 :where(.hubfoot) { border-top: 1px solid var(--border); margin-top: auto; }
 :where(.hubfootin) { padding: 12px 32px; }

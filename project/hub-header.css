@@ -186,7 +186,7 @@ html body .hublang{display:inline-flex;align-items:center;gap:var(--space-2);min
 .theme-assessments .appt.applocked:hover .apphint,.theme-assessments .appt.applocked:focus-visible .apphint{display:inline-flex;}
 
 /* Account menu: a click anywhere outside it closes it (transparent layer under the menu) */
-.acctscrim{position:fixed;inset:0;z-index:55;background:transparent;cursor:default;}
+.acctscrim{position:fixed;inset:0;z-index:10;background:transparent;cursor:default;}
 
 /* Status colours (Cognia DS status tokens): good results green, results that need attention red */
 html body .theme-assessments span.tag.above{background:var(--success-light) ;color:var(--success) ;border:0 ;}

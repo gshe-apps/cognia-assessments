@@ -2146,7 +2146,7 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .ib-count { align-self:flex-end; color:var(--muted-foreground); }
 .ib-empty { display:flex; flex-direction:column; align-items:center; gap:var(--space-4); padding:var(--space-16) var(--space-4); text-align:center; color:var(--muted-foreground); font-size:var(--text-body-base); }
 
-.ib-items { display:flex; flex-direction:column; max-height:calc(100vh - 220px); overflow-y:auto; padding-right:var(--space-2); }
+.ib-items { display:flex; flex-direction:column; gap:var(--space-3); max-height:calc(100vh - 220px); overflow-y:auto; padding-right:var(--space-2); }
 /* Scrollbars show only while scrolling (item-bank-scroll.js adds is-scrolling). The gutter is always reserved,
    so showing and hiding the bar never moves anything. */
 .ib-items, html:has(.ib-main) { scrollbar-gutter:stable; scrollbar-width:thin; scrollbar-color:transparent transparent; transition:scrollbar-color 200ms; }
@@ -2156,6 +2156,8 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
    reflows when the button appears.
    States: selected is --secondary; hover is a step darker (--opacity-neutral-20) so it reads over the
    selected row too. The type badge turns silver on the selected row so it doesn't blend into it. */
+/* 12px between items. sc-for steps aside so the gap lands between the rows themselves. */
+.ib-items > sc-for { display:contents; }
 .ib-row { position:relative; }
 .ib-item { display:flex; flex-direction:column; align-items:stretch; gap:var(--space-1); width:100%; padding:var(--space-3); border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; color:var(--foreground); font:inherit; text-align:left; cursor:pointer; transition:background-color var(--duration), border-radius var(--duration); }
 .ib-item[aria-current="true"] { background:var(--secondary); border-bottom-color:transparent; border-radius:var(--radius); }

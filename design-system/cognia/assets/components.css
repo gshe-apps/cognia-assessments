@@ -428,6 +428,8 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
                 [role=row] > [role=columnheader] / [role=cell]
               Use this only where a template engine cannot render <table>.
               The flow's layout file sets --table-columns, nothing else.
+   - 12px corner radius (--radius-xl), the same as a card. The wrapper
+     (or the templated table itself) clips the header and last row.
    - Header row 48px and white; body rows 64px, first row 50% white,
      second row white, and so on.
    - Numbers (.num) and the last column are right aligned.
@@ -437,7 +439,7 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
        <button class="table-sort">Label <svg>Lucide chevrons-up-down
        with paths .sort-up (m7 9 5-5 5 5) and .sort-down (m7 15 5 5 5-5)</svg>
    ------------------------------------------------------------ */
-.table-wrap { width: 100%; overflow-x: auto; background: transparent; }
+.table-wrap { width: 100%; overflow-x: auto; background: transparent; border-radius: var(--radius-xl); }
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -495,7 +497,7 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 .table :where([role="row"]:has([role="columnheader"])) { background-color: var(--card); }
 
 /* Templated (role) tables lay rows out as grids */
-.table[role="table"] { display: block; }
+.table[role="table"] { display: block; border-radius: var(--radius-xl); overflow: hidden; }
 .table[role="table"] [role="row"] {
   display: grid;
   grid-template-columns: var(--table-columns, repeat(auto-fit, minmax(0, 1fr)));

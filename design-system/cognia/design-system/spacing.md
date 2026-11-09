@@ -75,8 +75,8 @@ Only three values are used across the entire system:
 
 | Class | Value | Use for |
 |---|---|---|
-| `rounded-lg` | 8px | All components except cards |
-| `rounded-xl` | 12px | Cards |
+| `rounded-lg` | 8px | All components except cards and tables |
+| `rounded-xl` | 12px | Cards and tables |
 | `rounded-full` | 9999px | Badges, pills, avatars |
 
 In plain CSS, use `var(--radius)` for 8px and `var(--radius-xl)` for 12px.

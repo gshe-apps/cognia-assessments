@@ -236,7 +236,7 @@ Cards group related content and actions into a single container.
 | Themed | `rounded-xl` + `style={{ backgroundColor: 'var(--accent-100)' }}` | Product-accented surfaces, highlighted or selected sections |
 
 **Rules**
-- Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Every other component keeps 8px (`rounded-lg`).
+- Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Tables share it (see Table). Every other component keeps 8px (`rounded-lg`).
 - Cards never have a border, in any variant or state, including selected and highlighted. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. To mark a card as selected or highlighted, use the themed variant.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
@@ -518,6 +518,7 @@ Tables display structured data for comparison and reference. Always use the shad
 - The header row is 48px (`h-12`), white (`bg-card`), and uses Body Small at regular weight (`text-body-small font-normal text-muted-foreground`).
 - Body rows are 64px (`h-16`). Rows alternate from the top: the first row is 50% white (`bg-card/50`), the second white (`bg-card`), and so on.
 - No lines between rows or around the table (`border-0`). The alternating rows separate them.
+- The table has a 12px corner radius (`rounded-xl` on the table container, `var(--radius-xl)` in plain CSS), the same as a card. The corners clip the white header row and the last row, including its hover colour, so never round individual cells or rows.
 - No container background. Do not put a table inside a white card; it sits straight on the page (or the card's surface) with its own white header row.
 - Right-align numbers (counts, percentages, scores, dates written as numbers) and the last column. Left-align other text.
 - Only rows that open something get a hover state (`hover:bg-secondary cursor-pointer`). A clickable row holds a link or button to the same place in its first cell, so it works with a keyboard. Rows that only show data have no hover.
@@ -530,6 +531,7 @@ Tables display structured data for comparison and reference. Always use the shad
 
 ```tsx
 // components/ui/table.tsx, Cognia overrides on the shadcn defaults
+Container:   "relative w-full overflow-x-auto rounded-xl"       // the div with data-slot="table-container"; 12px corners
 Table:       "w-full caption-bottom text-body-small"           // no wrapper background
 TableHeader: "[&_tr]:border-0"
 TableBody:   "[&_tr:nth-child(odd)]:bg-card/50 [&_tr:nth-child(even)]:bg-card"
@@ -559,7 +561,7 @@ TableCell:   "h-16 px-4 align-middle last:text-right"
 </Table>
 ```
 
-**Plain HTML** (`assets/components.css`): `div.table-wrap > table.table`, numeric cells `.num`, the actions cell `.actions`, a sortable header button `.table-sort` (sort direction from the header's `aria-sort`), clickable rows `tr.row-link` (open row `aria-selected="true"`) (`assets/components.js` makes the whole row follow its first link). Where a template engine cannot render `<table>`, use `div.table[role=table]` with `[role=row]`, `[role=columnheader]` and `[role=cell]`; the flow's layout file sets only the column widths through `--table-columns`.
+**Plain HTML** (`assets/components.css`): `div.table-wrap > table.table` (the wrapper gives the 12px corners, so never leave it out), numeric cells `.num`, the actions cell `.actions`, a sortable header button `.table-sort` (sort direction from the header's `aria-sort`), clickable rows `tr.row-link` (open row `aria-selected="true"`) (`assets/components.js` makes the whole row follow its first link). Where a template engine cannot render `<table>`, use `div.table[role=table]` with `[role=row]`, `[role=columnheader]` and `[role=cell]`; the flow's layout file sets only the column widths through `--table-columns`.
 
 ---
 

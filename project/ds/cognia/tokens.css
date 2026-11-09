@@ -34,7 +34,7 @@
   --warning: #B95E04;
   --border: #EDEDEF;
   --input: #EDEDEF;
-  --ring: #C7C7CA;
+  --ring: #7C7C85;
 
   /* Chart colours — default (data & reporting palette) */
   --chart-1: #FFCFCD;
@@ -59,6 +59,9 @@
   --accent-300: #FF554D;
   --accent-400: #800600;
   --accent-500: #3F1513;
+
+  /* Brand: the red underline on the selected nav item and the footer language selector (components.md) */
+  --brand-coral: #FF554D;
 
   /* Status surface colours */
   --info-light: #E5F2F8;

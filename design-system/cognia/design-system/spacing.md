@@ -77,6 +77,6 @@ Only three values are used across the entire system:
 |---|---|---|
 | `rounded-lg` | 8px | All components except cards and tables |
 | `rounded-xl` | 12px | Cards and tables |
-| `rounded-full` | 9999px | Badges, pills, avatars |
+| `rounded-full` | 9999px | Badges, pills, avatars, search inputs |
 
 In plain CSS, use `var(--radius)` for 8px and `var(--radius-xl)` for 12px.

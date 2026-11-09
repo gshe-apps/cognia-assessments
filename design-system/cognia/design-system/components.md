@@ -120,6 +120,7 @@ HTML prototypes have no React, so they use `assets/components.css`: one class pe
 | `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `.card-header`, `.card-title`, `.card-description`, `.card-content`, `.card-footer` |
 | `<Badge variant="...">` | `.badge` + `.badge-secondary`, `-outline`, `-success`, `-warning`, `-destructive`, `-info`, `-theme-solid`, `-theme-light` |
 | `<Input>`, `<Textarea>`, `<Select>` | `.input`, `.textarea`, `.select` inside `.select-wrap` |
+| Search input | `.search[role=search]` > `.search-icon`, `input.search-input[type=search]`, `.tooltip-wrap.search-clear`; clear button and Escape from `assets/components.js` |
 | `<Label>`, field, error | `.label`, `.field`, `.field-error`; forms use `.form` and `.form-grid` |
 | `<Checkbox>`, `<RadioGroupItem>`, `<Switch>` | `.checkbox`, `.radio` inside `label.check`; `button.switch[role=switch]` |
 | `<TabsList>`, `<TabsTrigger>` | `.tabs-list`, `.tab[role=tab][aria-selected]` |
@@ -367,6 +368,63 @@ Inputs collect single-line text from the user.
   <p className="text-body-small text-destructive">Please enter a valid email.</p>
 </div>
 ```
+
+---
+
+### Search input
+
+Search inputs filter or find content on the current screen, for example the rows of a table or the items in a list. A search input is an input field, so every Input rule applies unless this section says otherwise.
+
+**Anatomy**
+
+1. Container: pill shaped, holds the icon, the field and the clear button.
+2. Search icon: Lucide `Search`, 16px, on the left, decorative.
+3. Field: `type="search"`, with placeholder text that names what is being searched.
+4. Clear button: Lucide `X`, shown only when the field has a value.
+5. Results count (optional): sits outside the container, for example "11 items".
+
+**Rules**
+
+- Corner radius is fully round: `rounded-full` (9999px, token `--rounded-full`). Search is the only input field that is pill shaped. Every other field keeps `rounded-lg`.
+- Minimum height 48px (`h-12`).
+- No border, on any surface:
+  - Directly on the theme background (`--background`): white fill, `bg-[var(--primary-foreground)]`, no border.
+  - On a white surface (`--card`, `--popover`, dialog): `bg-secondary`, no border.
+- Focus: one 3px `--ring` outline on the pill container, following the pill shape. The inner `<input>` never draws its own ring, so there is never a double outline or a square ring inside a round field.
+- The clear button is a ghost icon button (`btn-ghost btn-icon btn-sm`), fully round, with the tooltip "Clear search". When it is focused, it shows its own focus ring and the container does not.
+- `Esc` clears the field. Clearing returns focus to the field. In plain HTML, `assets/components.js` does this.
+- Placeholder names the scope in sentence case: "Search assessments", "Search wording or standard". Do not use a generic "Search items...", and do not end with an ellipsis.
+- Labelling:
+  - Search in a toolbar above the content it filters: the visible label may be left out. The field must have an `aria-label` that matches the placeholder, and the container uses `role="search"`.
+  - A standalone search (the main task of the page, or a search field inside a form): use a visible label, as with any other input.
+- Results: filter as the user types, after a 300ms pause (debounce, not an animation). Announce the updated count with `aria-live="polite"`.
+- No results: show the empty state in place of the content, naming the term, with a way out: "No assessments match "biology"" plus a "Clear search" button.
+- Keep the search term in the URL (`?q=`) so it survives Back and can be shared.
+- A filter button beside the search is a separate ghost icon button with a tooltip. It never sits inside the pill.
+
+```tsx
+<div role="search" className="relative flex items-center w-full h-12 rounded-full border-0 bg-[var(--primary-foreground)] transition-all duration-200 has-[input:focus-visible]:outline has-[input:focus-visible]:outline-[3px] has-[input:focus-visible]:outline-[var(--ring)]">
+  <Search className="absolute left-4 size-4 text-muted-foreground pointer-events-none" aria-hidden="true" />
+  <Input
+    type="search"
+    aria-label="Search assessments"
+    placeholder="Search assessments"
+    className="h-12 border-0 bg-transparent rounded-full pl-10 pr-12 shadow-none focus-visible:ring-0 focus-visible:outline-none"
+  />
+  {value && (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="ghost" size="icon" className="absolute right-2 size-8 rounded-full" aria-label="Clear search" onClick={clear}>
+          <X className="size-4 text-muted-foreground" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Clear search</TooltipContent>
+    </Tooltip>
+  )}
+</div>
+```
+
+On a card or dialog, swap `bg-[var(--primary-foreground)]` for `bg-secondary`.
 
 ---
 

@@ -26,6 +26,11 @@
      buttons and fields in the row keep their own behaviour.
    - Keyboard users reach the row through that link, so the row itself
      is not focusable.
+
+   Search input (components.md, Search input):
+     <div class="search" role="search"> icon, input.search-input, .search-clear </div>
+   - The clear button and Escape empty the field, fire an input event so the
+     screen's own filtering runs again, and put focus back in the field.
    ============================================================ */
 (() => {
   if (window.cogniaComponents) return;
@@ -63,6 +68,13 @@
     if (item) item.focus();
   };
 
+  const clearSearch = (input) => {
+    if (!input) return;
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+  };
+
   const INTERACTIVE = 'a[href], button, input, select, textarea, label, summary, [role="menuitem"], [tabindex]:not([tabindex="-1"])';
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
@@ -70,6 +82,11 @@
     if (row && !event.target.closest(INTERACTIVE)) {
       const target = row.querySelector('[data-row-target]') || row.querySelector('a[href], button');
       if (target) target.click();
+    }
+    const clear = event.target.closest('.search .search-clear button');
+    if (clear) {
+      clearSearch(clear.closest('.search').querySelector('.search-input'));
+      return;
     }
     const trigger = event.target.closest(TRIGGER);
     if (trigger) {
@@ -89,6 +106,11 @@
 
   document.addEventListener('keydown', (event) => {
     if (!(event.target instanceof Element)) return;
+    if (event.key === 'Escape' && event.target.matches('.search .search-input') && event.target.value) {
+      event.preventDefault();
+      clearSearch(event.target);
+      return;
+    }
     const trigger = event.target.closest(TRIGGER);
     if (trigger && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
       event.preventDefault();

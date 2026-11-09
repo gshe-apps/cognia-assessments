@@ -359,6 +359,64 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
   pointer-events: none;
 }
 
+/* ------------------------------------------------------------
+   Search input (components.md, Search input)
+   <div class="search" role="search">
+     <svg class="search-icon" aria-hidden="true">...</svg>
+     <input class="search-input" type="search" aria-label="Search assessments" placeholder="Search assessments">
+     <span class="tooltip-wrap search-clear">
+       <button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">...</button>
+       <span class="tooltip" role="tooltip">Clear search</span>
+     </span>
+   </div>
+   The input must come before the clear button and must have a placeholder:
+   the clear button hides itself while the placeholder is showing.
+   ------------------------------------------------------------ */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: var(--rounded-full);
+  background-color: var(--primary-foreground);
+  transition: outline-color var(--duration);
+}
+.card .search, .dialog .search { background-color: var(--secondary); }
+.search:has(.search-input:focus-visible) { outline: 3px solid var(--ring); outline-offset: 0; }
+
+.search-icon {
+  position: absolute;
+  left: var(--space-4);
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 var(--space-4) 0 var(--space-10);
+  border: 0;
+  border-radius: var(--rounded-full);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-body-base);
+  box-shadow: none;
+  appearance: none;
+}
+.search-input::placeholder { color: var(--muted-foreground); }
+.search-input:focus-visible { outline: none; }
+.search-input::-webkit-search-cancel-button { appearance: none; }
+.search-input:not(:placeholder-shown) { padding-right: var(--space-12); }
+
+.search-clear { position: absolute; right: var(--space-2); }
+.search-clear .btn { border-radius: var(--rounded-full); }
+.search-input:placeholder-shown ~ .search-clear { display: none; }
+
 .check { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-base); cursor: pointer; }
 .checkbox, .radio { width: 16px; height: 16px; margin: 0; accent-color: var(--primary); cursor: pointer; flex: none; }
 

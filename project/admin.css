@@ -1714,7 +1714,7 @@ html body :is(.student-symbol,.assessment-reference-arrow,.assessment-reference-
  body summary:hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 30%,transparent);}
  body :is(a.btn,button.btn):not(:disabled):active{filter:brightness(.92);box-shadow:none;}
 }
-body :is(a,button,summary,input,select,textarea):focus-visible{outline:2px solid var(--accent-300,#4f5cbe);outline-offset:3px;}
+body :is(a,button,summary,input:not(.search-input),select,textarea):focus-visible{outline:2px solid var(--accent-300,#4f5cbe);outline-offset:3px;}
 body :is(button:disabled,[aria-disabled=true]){cursor:not-allowed;}
 @media(prefers-reduced-motion:reduce){body *,body *::before,body *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
 /* Header icon buttons (My Hubs grid, account): neutral hover, no product tint */
@@ -2333,7 +2333,7 @@ html body .cap-root .ef-form-actions .btn{min-height:40px;padding-left:16px;padd
 html body .cap-root .ef-form-actions .solid{background:var(--primary);color:var(--primary-foreground);}
 html body .cap-root .ef-form-row{padding:24px;}
 html body .cap-root .ef-form-kind .folder-icon,html body .cap-root .ef-form-kind .reference-icon{background:transparent;color:var(--muted-foreground);}
-html body .cap-root #form-search,html body .cap-root #form-grade,html body .cap-root #form-subject{min-height:48px;font-size:16px;background:var(--card);color:var(--foreground);border-radius:var(--radius);}
+html body .cap-root #form-grade,html body .cap-root #form-subject{min-height:48px;font-size:16px;background:var(--card);color:var(--foreground);border-radius:var(--radius);}
 html body.student-friendly .sj-root .student-title h1{font-size:48px;line-height:1.2;font-weight:700;letter-spacing:normal;color:var(--foreground);}
 html body.student-friendly .sj-root .student-title p{font-size:16px;line-height:1.5;color:var(--muted-foreground);}
 html body.student-friendly .sj-root .sj-signin-form>label{font-size:14px;font-weight:600;color:var(--foreground);}
@@ -3016,3 +3016,7 @@ html body.cap-entry .epi-option .home-card-end { color: var(--epi-blue); }
 html body.cap-entry .epi-option .home-card-end svg { color: var(--epi-blue); }
 @media (prefers-reduced-motion: reduce) { html body.cap-entry :is(.epi-close, .epi-option) { transition: none; } }
 html body.cap-entry .epi-dialog h2:focus { outline: none; }
+
+/* Search input widths in the admin table toolbars (layout only, components.md Search input) */
+.search.v2srch { width:280px; max-width:100%; flex:none; }
+.v2bar .search.v2srch-bar { width:240px; }

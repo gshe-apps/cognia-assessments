@@ -1930,7 +1930,8 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 /* Class list: folder-style cards. Selected class uses the documented themed card variant. */
 .cl-classes { display:flex; flex-direction:column; gap:var(--space-6); }
 .cl-folder { display:flex; flex-direction:column; }
-.cl-tab { align-self:flex-start; box-sizing:border-box; width:var(--space-24); padding:var(--space-2) var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:var(--card); color:var(--card-foreground); }
+/* Tabs (9 Nov): one width for every folder tab (fits the longest short name), text centred vertically. */
+.cl-tab { align-self:flex-start; box-sizing:border-box; display:flex; align-items:center; width:calc(var(--space-16) * 2); height:var(--space-10); padding:0 var(--space-3); white-space:nowrap; overflow:hidden; border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:var(--card); color:var(--card-foreground); }
 .cl-folder.is-current .cl-tab,.cl-current-head { background:var(--accent-400); color:var(--primary-foreground); }
 .cl-page .cl-folder.is-current .cl-current-head .cl-class-title { color:var(--primary-foreground); }
 .cl-current { display:flex; flex-direction:column; border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); overflow:hidden; }
@@ -1962,6 +1963,10 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 /* Tooltips are white (popover) cards with the medium shadow. */
 .cl-tip::after { content:attr(data-tip); position:absolute; bottom:calc(100% + var(--space-2)); left:50%; z-index:30; padding:var(--space-1) var(--space-2); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; transform:translate(-50%, var(--space-1)); pointer-events:none; transition:all 200ms; }
 .cl-tip:is(:hover, :focus-visible)::after { opacity:1; transform:translate(-50%, 0); }
+.cl-seg.cl-tip::after { top:calc(100% + var(--space-2)); bottom:auto; transform:translate(-50%, calc(-1 * var(--space-1))); }
+.cl-seg.cl-tip:is(:hover, :focus-visible)::after { transform:translate(-50%, 0); }
+.cl-more.cl-tip::after { left:auto; right:0; transform:translateY(var(--space-1)); }
+.cl-more.cl-tip:is(:hover, :focus-visible)::after { transform:none; }
 .cl-tip:focus-visible,.cl-seg:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 
 /* Other classes: overlapping folder stack. Every folder is full height; each one sits one tab-height below the one behind it,
@@ -1969,10 +1974,12 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .cl-stack { --tab-h:40px; --folder-h:104px; display:flex; flex-direction:column; margin-top:auto; padding-top:var(--space-2); }
 .cl-stack-item { position:relative; display:flex; flex-direction:column; width:100%; padding:0; border:0; background:transparent; color:var(--card-foreground); font-family:var(--font-sans); text-align:left; cursor:pointer; transition:all 200ms; }
 .cl-stack-item+.cl-stack-item { margin-top:calc(var(--folder-h) * -1); }
-.cl-stack-item .cl-tab { display:flex; align-items:center; height:var(--tab-h); padding:0 var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; }
+/* Stack tabs (9 Nov) carry the short class name; width and centring come from .cl-tab. */
+.cl-stack-item .cl-tab { height:var(--tab-h); }
 .cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) 0 0; background:var(--card); }
 .cl-stack-item { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-1) var(--opacity-primary-10)); }
-.cl-stack-item:not(.is-front) .cl-stack-body>* { visibility:hidden; }
+/* Folder stack (9 Nov): every folder shows only its tab code; the title and badge appear only while a folder rises into place. */
+.cl-stack-item .cl-stack-body>* { visibility:hidden; }
 .cl-stack-item:hover,.cl-stack-item:focus-visible { transform:translateY(calc(var(--space-2) * -1)); }
 .cl-stack-item:is(:hover, :focus-visible) { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-2) var(--opacity-primary-20)); }
 
@@ -1992,14 +1999,12 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 /* Learner performance */
 .cl-performance { display:flex; flex-direction:column; gap:var(--space-4); min-width:0; }
 .cl-performance>h2 { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
-.cl-dist { display:flex; gap:0; height:var(--space-6); }
-.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:0; cursor:default; transform:translateY(calc(var(--cl-wave, 0px) * -1)); transition:all 200ms ease-out; }
+.cl-dist { display:flex; gap:var(--space-1); height:var(--space-6); }
+.cl-seg { display:flex; align-items:center; color:var(--muted-foreground); min-width:var(--space-8); padding:0 var(--space-2); border-radius:0; cursor:default; transition:background-color 200ms ease-out, color 200ms ease-out; }
 .cl-seg:first-child { border-radius:var(--radius) 0 0 var(--radius); }
 .cl-seg:last-child { border-radius:0 var(--radius) var(--radius) 0; }
 .cl-seg:only-child { border-radius:var(--radius); }
 .cl-seg svg { width:16px; height:16px; flex-shrink:0; }
-/* Hover wave (5 Nov review 3): classes-wave.js sets --cl-wave on each segment from the pointer position, so the lift
-   peaks under the pointer and eases off on either side, following the pointer left or right. */
 .cl-seg-advancing { background:var(--success-light); }
 .cl-seg-advancing svg { stroke:var(--success); }
 .cl-seg-steady svg { stroke:var(--warning); }
@@ -2023,17 +2028,23 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .cl-progress-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
 .cl-muted { color:var(--muted-foreground); }
 
-/* Learners count badge (6 Nov): solid red, white text, round. Grows into a pill only for two-digit counts. */.cl-badge-count{justify-content:center;min-inline-size:var(--space-6);block-size:var(--space-6)}
+/* Learners count badge (6 Nov, solid 9 Nov): 26px, solid red, white text, round. Grows into a pill only for two-digit counts.
+   The plugin has no solid destructive badge yet, so this page sets it; move it to the plugin when it gets one. */
+.cl-badge-count{justify-content:center;min-inline-size:26px;block-size:26px;min-height:26px;padding:0 var(--space-2);border-radius:var(--rounded-full)}
+.cl-badge-count.badge-destructive{background-color:var(--destructive);color:var(--primary-foreground)}
 
 
 /* Accommodations column (6 Nov): blue (Assessments accent) icon per learner; hover or keyboard focus shows the list.
    The tip is position:fixed (placed by classes-accommodations.js) so the table card's overflow does not clip it. */
-.cl-acc { display:inline-flex; align-items:center; justify-content:center; inline-size:var(--space-8); block-size:var(--space-8); border-radius:var(--rounded-full); }
-.cl-acc svg { inline-size:var(--space-6); block-size:var(--space-6); stroke:var(--accent-300); }
+/* Accommodations count (9 Nov): a 26px round badge, centred in its column under a centred heading. */
+.cl-center { justify-self:center; text-align:center; }
+.cl-acc-count { justify-content:center; inline-size:26px; block-size:26px; min-height:26px; padding:0; border-radius:var(--rounded-full); }
+.cl-acc { display:inline-flex; align-items:center; justify-content:center; min-inline-size:var(--space-8); block-size:var(--space-8); border-radius:var(--rounded-full); cursor:default; }
 .cl-acc:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
-.cl-acc-tip { position:fixed; top:0; left:0; z-index:30; display:grid; gap:var(--space-2); padding:var(--space-3) var(--space-4); border:1px solid var(--border); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); text-align:left; white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; visibility:hidden; pointer-events:none; transition:all 200ms; }
+.cl-acc-tip { position:fixed; top:0; left:0; z-index:30; display:grid; gap:var(--space-2); padding:var(--space-3) var(--space-4); border:1px solid var(--border); border-radius:var(--radius); background:var(--popover); color:var(--popover-foreground); font-size:var(--text-body-small); font-weight:var(--weight-regular); line-height:var(--lh-base); text-align:left; white-space:nowrap; box-shadow:var(--shadow-md); opacity:0; visibility:hidden; pointer-events:none; transition:opacity 200ms, visibility 200ms; }
 .cl-acc.is-open .cl-acc-tip { opacity:1; visibility:visible; pointer-events:auto; }
-.cl-acc-title { font-weight:var(--weight-semibold); }
+.cl-acc-title { display:flex; align-items:center; gap:var(--space-2); font-weight:var(--weight-semibold); }
+.cl-acc-title svg { inline-size:var(--space-4); block-size:var(--space-4); flex-shrink:0; stroke:var(--accent-300); }
 .cl-acc-list { display:grid; gap:var(--space-1); margin:0; padding:0; list-style:none; }
 
 @media (max-width:1023px) {

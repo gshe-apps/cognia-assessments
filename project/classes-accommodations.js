@@ -1,5 +1,5 @@
-/* Classes (CAP-T11): Accommodations tooltip (6 Nov).
-   Hover or keyboard focus on a learner's accommodations icon opens the list of accommodations.
+/* Classes (CAP-T11): Accommodations tooltip (6 Nov, count badge 9 Nov).
+   Hover or keyboard focus on a learner's accommodations count badge opens the list of accommodations.
    The tip is position:fixed so the scrolling table card does not clip it; this script places it beside the icon
    (right, or left when there is no room) and keeps it inside the window.
    Meets WCAG 1.4.13: the tip stays open while the pointer is over it, and Escape dismisses it. */
@@ -24,17 +24,27 @@
     tip.style.left = Math.round(left) + 'px';
   }
 
+  // Hover state for the count badge: swap the plugin's light theme badge for its solid one while the tip is open.
+  function setBadge(trigger, on) {
+    var badge = trigger.querySelector('.badge');
+    if (!badge) return;
+    badge.classList.toggle('badge-theme-solid', on);
+    badge.classList.toggle('badge-theme-light', !on);
+  }
+
   function show(trigger) {
     clearTimeout(closeTimer);
-    if (open && open !== trigger) open.classList.remove('is-open');
+    if (open && open !== trigger) { open.classList.remove('is-open'); setBadge(open, false); }
     open = trigger;
     place(trigger);
     trigger.classList.add('is-open');
+    setBadge(trigger, true);
   }
 
   function hide(trigger) {
     if (!trigger) return;
     trigger.classList.remove('is-open');
+    setBadge(trigger, false);
     if (open === trigger) open = null;
   }
 

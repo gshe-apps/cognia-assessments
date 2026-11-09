@@ -123,7 +123,7 @@ HTML prototypes have no React, so they use `assets/components.css`: one class pe
 | `<Label>`, field, error | `.label`, `.field`, `.field-error`; forms use `.form` and `.form-grid` |
 | `<Checkbox>`, `<RadioGroupItem>`, `<Switch>` | `.checkbox`, `.radio` inside `label.check`; `button.switch[role=switch]` |
 | `<TabsList>`, `<TabsTrigger>` | `.tabs-list`, `.tab[role=tab][aria-selected]` |
-| `<Table>` | `table.table`, numeric cells `.num` |
+| `<Table>` | `.table-wrap > table.table` (or `div.table[role=table]` in templates); numeric cells `.num`, clickable rows `.row-link`, sortable headers `.table-sort` |
 | `<Alert variant="...">` | `.alert` + `.alert-info`, `-success`, `-warning`, `-destructive` |
 | `<Dialog>`, `<Sheet>` | `dialog.dialog`, `dialog.dialog.sheet` |
 | `<DropdownMenu>` | `.dropdown` (`.dropdown-end` to align right) > trigger + `.menu`, `.menu-item`, `.menu-separator`; behaviour from `assets/components.js` |
@@ -280,7 +280,7 @@ Cards group related content and actions into a single container.
 
 ### Icon
 
-Icons use Lucide React. The default icon colour is `--muted-foreground` (charcoal).
+Icons use Lucide only (Lucide React in code, Lucide's SVG markup from lucide.dev in HTML prototypes). The default icon colour is `--muted-foreground` (charcoal).
 
 **Standard usage**
 
@@ -299,6 +299,8 @@ import { BarChart } from 'lucide-react'
 ```
 
 **Rules**
+- Use Lucide icons only, in every product and prototype. Never draw your own SVG icon, use another icon set, or use emoji or text symbols (such as →, ▲, ▼, ✓, ×) as icons. If Lucide has no fitting icon, ask the designer.
+- In HTML prototypes, paste the Lucide SVG unchanged: `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`, `stroke-width="2"`, round caps and joins, and `aria-hidden="true"` unless it is the only label.
 - Default icon colour is always `--muted-foreground`. Use `text-muted-foreground` on all icons unless a specific variant applies.
 - Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context.
 - Never hardcode a colour value for icons — always use a CSS variable.
@@ -509,30 +511,46 @@ Tabs organise content into parallel sections.
 
 ### Table
 
-Tables display structured data for comparison and reference.
+Tables display structured data for comparison and reference. Always use the shadcn `Table` with the Cognia overrides below; never build a table from cards, lists or a custom grid.
 
 **Rules**
-- Always include a column header row.
-- Right-align numeric columns. Left-align text columns.
+- Always include a column header row. Header labels are in sentence case ("Last updated", not "Last Updated" or "LAST UPDATED").
+- The header row is 48px (`h-12`), white (`bg-card`), and uses Body Small at regular weight (`text-body-small font-normal text-muted-foreground`).
+- Body rows are 64px (`h-16`). Rows alternate from the top: the first row is 50% white (`bg-card/50`), the second white (`bg-card`), and so on.
+- No lines between rows or around the table (`border-0`). The alternating rows separate them.
+- No container background. Do not put a table inside a white card; it sits straight on the page (or the card's surface) with its own white header row.
+- Right-align numbers (counts, percentages, scores, dates written as numbers) and the last column. Left-align other text.
+- Only rows that open something get a hover state (`hover:bg-secondary cursor-pointer`). A clickable row holds a link or button to the same place in its first cell, so it works with a keyboard. Rows that only show data have no hover.
+- In a list and detail layout, the open row keeps the hover colour (`bg-secondary`, `aria-selected="true"`).
+- Sortable columns use a plain header button with the Lucide `ChevronsUpDown` icon, which becomes `ChevronUp` or `ChevronDown` for the sorted column. The sorted header turns `text-foreground`.
 - Paginate tables with more than 25 rows.
-- Show an empty state when there is no data — never show an empty table.
+- Show an empty state when there is no data, never an empty table.
 - Keep row actions in a `DropdownMenu` in the last column.
+- Icons in tables follow the Icon rules: Lucide only.
 
 ```tsx
+// components/ui/table.tsx, Cognia overrides on the shadcn defaults
+Table:       "w-full caption-bottom text-body-small"           // no wrapper background
+TableHeader: "[&_tr]:border-0"
+TableBody:   "[&_tr:nth-child(odd)]:bg-card/50 [&_tr:nth-child(even)]:bg-card"
+TableRow:    "border-0"                                        // no hover by default
+TableHead:   "h-12 px-4 bg-card text-left align-middle font-normal text-muted-foreground whitespace-nowrap last:text-right"
+TableCell:   "h-16 px-4 align-middle last:text-right"
+
 <Table>
   <TableHeader>
     <TableRow>
       <TableHead>Name</TableHead>
       <TableHead>Status</TableHead>
       <TableHead className="text-right">Amount</TableHead>
-      <TableHead></TableHead>
+      <TableHead><span className="sr-only">Actions</span></TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
-    <TableRow>
-      <TableCell>Alice Johnson</TableCell>
+    <TableRow className="cursor-pointer hover:bg-secondary">   {/* only when the row opens something */}
+      <TableCell><Link href="/people/alice">Alice Johnson</Link></TableCell>
       <TableCell><Badge variant="success">Completed</Badge></TableCell>
-      <TableCell className="text-right">$320.00</TableCell>
+      <TableCell className="text-right tabular-nums">$320.00</TableCell>
       <TableCell>
         <DropdownMenu>{/* actions */}</DropdownMenu>
       </TableCell>
@@ -540,6 +558,8 @@ Tables display structured data for comparison and reference.
   </TableBody>
 </Table>
 ```
+
+**Plain HTML** (`assets/components.css`): `div.table-wrap > table.table`, numeric cells `.num`, the actions cell `.actions`, a sortable header button `.table-sort` (sort direction from the header's `aria-sort`), clickable rows `tr.row-link` (open row `aria-selected="true"`) (`assets/components.js` makes the whole row follow its first link). Where a template engine cannot render `<table>`, use `div.table[role=table]` with `[role=row]`, `[role=columnheader]` and `[role=cell]`; the flow's layout file sets only the column widths through `--table-columns`.
 
 ---
 

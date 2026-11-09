@@ -5,7 +5,7 @@
   if (!live) return;
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
-  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>';
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 
   let records = {};
   let sample = false;          // Shift + D: sample results if the venue connection drops
@@ -127,10 +127,10 @@
         const filter = done ? 'scored' : 'missing';
         const label = done ? 'Scored' : r.status === 'progress' ? 'In progress' : r.status === 'joined' ? 'Signed in' : 'Not started';
         const fresh = done && arrived[r.passcode] && now - arrived[r.passcode] < 4000;
-        const action = done ? '<a class="btn small btn-outline btn-sm" href="CAP-T15-ScoreResponse.dc.html">View response <span aria-hidden="true">→</span></a>' : '<a class="btn small btn-outline btn-sm" href="CAP-T19-MissingSubmissions.dc.html">Review missing <span aria-hidden="true">→</span></a>';
-        return '<tr data-result-row data-status="' + filter + '"' + (fresh ? ' class="rr-new"' : '') + '><td><span class="rr-student"><span class="rr-avatar">' + icon + '</span><strong>' + esc(r.name) + '</strong></span></td>'
+        const action = done ? '<a class="btn small btn-outline btn-sm" href="CAP-T15-ScoreResponse.dc.html">View response <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>' : '<a class="btn small btn-outline btn-sm" href="CAP-T19-MissingSubmissions.dc.html">Review missing <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>';
+        return '<tr data-result-row data-status="' + filter + '"' + ' class="row-link' + (fresh ? ' rr-new' : '') + '"' + '><td><span class="rr-student"><span class="rr-avatar">' + icon + '</span><strong>' + esc(r.name) + '</strong></span></td>'
           + '<td><span class="rr-status badge badge-' + (done ? 'success rr-scored' : r.status === 'progress' ? 'info rr-review' : r.status === 'joined' ? 'info' : 'secondary') + '">' + label + '</span></td>'
-          + '<td>' + (done ? esc(r.marks) + ' / ' + esc(r.max) : '–') + '</td><td>Private</td><td>' + action + '</td></tr>';
+          + '<td class="num">' + (done ? esc(r.marks) + ' / ' + esc(r.max) : '–') + '</td><td>Private</td><td>' + action + '</td></tr>';
       }).join('');
     }
     // Let the existing filter and search re-run over the new rows.

@@ -43,6 +43,8 @@ Paths below are relative to this skill folder.
 - Type and spacing: only the classes and values in `typography.md` and `spacing.md`.
 - Shell: every screen uses the standard top navigation header (no background colour, red underline on the selected item), `bg-background` for the page, and the standard footer. See Navigation shell and Footer in `components.md`.
 - Themes: product theme class (`theme-assessments`, `theme-learn`, `theme-performance`, `theme-observations-surveys`) in `layout.tsx` only. Dark mode via `.dark` on `<html>`, never `dark:` variants.
+- Icons: Lucide only, everywhere. No hand-drawn SVG icons, other icon sets, emoji or text symbols used as icons.
+- Tables: only the documented Table (white 48px header, 64px alternating rows, no lines, no container background). See Table in `components.md`.
 - Logos: never redraw, recolour or add hover states.
 - Never edit a project's `globals.css` by hand. Changes to tokens belong in this plugin.
 

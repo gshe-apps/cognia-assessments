@@ -419,22 +419,129 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)
+   No container background: the white header row and the alternating
+   rows do the work, so there are no lines between rows.
+   Semantic:  <div class="table-wrap"><table class="table">
+                <thead><tr><th>..</th></tr></thead>
+                <tbody><tr class="row-link">..</tr></tbody></table></div>
+   Templated: <div class="table" role="table" style="--table-columns: 2fr 1fr 1fr">
+                [role=row] > [role=columnheader] / [role=cell]
+              Use this only where a template engine cannot render <table>.
+              The flow's layout file sets --table-columns, nothing else.
+   - Header row 48px and white; body rows 64px, first row 50% white,
+     second row white, and so on.
+   - Numbers (.num) and the last column are right aligned.
+   - Only rows that go somewhere (.row-link) have a hover state; the open
+     row of a list and detail layout has aria-selected="true".
+   - Sortable headers: <th aria-sort="none|ascending|descending">
+       <button class="table-sort">Label <svg>Lucide chevrons-up-down
+       with paths .sort-up (m7 9 5-5 5 5) and .sort-down (m7 15 5 5 5-5)</svg>
    ------------------------------------------------------------ */
-.table-wrap { width: 100%; overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; font-size: var(--text-body-small); }
-.table th {
-  padding: var(--space-3) var(--space-2);
-  text-align: left;
-  font-weight: 600;
-  color: var(--muted-foreground);
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+.table-wrap { width: 100%; overflow-x: auto; background: transparent; }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 0;
+  background: transparent;
+  font-size: var(--text-body-small);
+  color: var(--foreground);
 }
-.table td { padding: var(--space-3) var(--space-2); border-bottom: 1px solid var(--border); color: var(--foreground); }
-.table tbody tr { transition: background-color var(--duration); }
-.table tbody tr:hover { background-color: var(--hover-overlay); }
-.table .num { text-align: right; font-variant-numeric: tabular-nums; }
-.table .actions { width: 1%; text-align: right; }
+.table caption {
+  caption-side: top;
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-size: var(--text-body-small);
+  color: var(--muted-foreground);
+}
+
+/* Header row */
+.table th,
+.table [role="columnheader"] {
+  height: var(--space-12);
+  padding: 0 var(--space-4);
+  border: 0;
+  background-color: var(--card);
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: var(--text-body-small);
+  font-weight: 400;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Body rows */
+.table td,
+.table tbody th,
+.table [role="cell"],
+.table [role="rowheader"] {
+  height: var(--space-16);
+  padding: 0 var(--space-4);
+  border: 0;
+  background-color: transparent;
+  text-align: left;
+  font-size: var(--text-body-small);
+  font-weight: 400;
+  color: var(--foreground);
+  vertical-align: middle;
+}
+/* Kept at low specificity (:where) so row states below always win.
+   Rows hidden by a filter ([hidden]) are skipped, so the stripes stay even. */
+.table :where(tbody tr, [role="row"]) { border: 0; background-color: var(--card); }
+.table :where(tbody tr:nth-child(odd of :not([hidden])), [role="row"]:nth-child(odd of [role="row"]:not([hidden], :has([role="columnheader"])))) {
+  background-color: color-mix(in srgb, var(--card) 50%, transparent);
+}
+.table :where([role="row"]:has([role="columnheader"])) { background-color: var(--card); }
+
+/* Templated (role) tables lay rows out as grids */
+.table[role="table"] { display: block; }
+.table[role="table"] [role="row"] {
+  display: grid;
+  grid-template-columns: var(--table-columns, repeat(auto-fit, minmax(0, 1fr)));
+  align-items: center;
+}
+.table[role="table"] :is([role="columnheader"], [role="cell"], [role="rowheader"]) {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+/* Alignment: numbers and the last column sit on the right */
+.table :is(th, td, [role="columnheader"], [role="cell"]):is(.num, :last-child) {
+  text-align: right;
+  justify-content: flex-end;
+}
+.table .num { font-variant-numeric: tabular-nums; }
+.table .actions { width: 1%; white-space: nowrap; }
+.table .icon { display: inline-block; vertical-align: middle; margin-inline-end: var(--space-1); }
+
+/* Sortable header: a plain button that keeps the header's type */
+.table .table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.table .table-sort svg { width: var(--space-4); height: var(--space-4); flex: none; }
+/* Lucide chevrons-up-down, with its two paths marked .sort-up and .sort-down.
+   The header's aria-sort leaves only the chevron for the current direction. */
+.table :is([aria-sort="ascending"], [aria-sort="descending"]) { color: var(--foreground); }
+.table [aria-sort="ascending"] .table-sort .sort-down,
+.table [aria-sort="descending"] .table-sort .sort-up { visibility: hidden; }
+
+/* Clickable rows. The row must hold a link or button to the same place
+   (components.js makes a click anywhere on the row use it). */
+.table .row-link { cursor: pointer; transition: background-color var(--duration); }
+.table .row-link:hover { background-color: var(--secondary); }
+/* The open row in a list and detail layout */
+.table .row-link[aria-selected="true"] { background-color: var(--secondary); }
 
 /* ------------------------------------------------------------
    Alert (components.md, Alert)

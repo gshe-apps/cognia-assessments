@@ -380,10 +380,6 @@ html body .theme-assessments .ai .ln + .ln{margin-top:calc(-1 * var(--space-1));
 .theme-assessments .chk input,.theme-assessments .seg input,.theme-assessments input[type="checkbox"],.theme-assessments input[type="radio"]{accent-color:var(--primary);}
 
 /* Tables */
-.theme-assessments table{font-family:var(--font-sans);}
-.theme-assessments th{font-weight:var(--weight-semibold);color:var(--foreground);border-bottom:1px solid var(--border);}
-.theme-assessments td{border-bottom:1px solid var(--border);}
-.theme-assessments tr.hl td{background:var(--accent-100);font-weight:var(--weight-semibold);}
 
 /* Data viz: assessments accent ramp */
 .theme-assessments .bar{background:var(--accent-100);border-radius:var(--radius-full);}
@@ -774,11 +770,6 @@ html body .theme-assessments .btn.locked{color:var(--muted-foreground) ;border-c
 html body .theme-assessments .card.prem.locked{border-color:var(--ring);}
 html body .theme-assessments .card.prem.locked h3,html body .theme-assessments .card.prem.locked p,html body .theme-assessments .card.prem.locked .lockic{color:var(--muted-foreground) ;}
 /* one-page Analytics / School Overview */
-.theme-assessments table{width:100%;border-collapse:collapse;font-size:14px;}
-.theme-assessments th{text-align:left;font-weight:600;font-size:var(--text-body-small);padding:10px 12px;border-bottom:1px solid var(--border);}
-.theme-assessments td{padding:12px;border-bottom:1px solid var(--border);vertical-align:middle;}
-.theme-assessments td.num{font-weight:700;}
-.theme-assessments td svg{vertical-align:-3px;}
 .theme-assessments .snapmain > .schsec:first-child{margin-top:0;}
 .theme-assessments .filters + .snaprow{margin-top:var(--space-2);}
 .theme-assessments .nextcard .btn{align-self:flex-start;}
@@ -855,11 +846,9 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 .theme-assessments .linkbtn:hover{text-decoration:none;}
 
 /* Schools: list view */
-.theme-assessments .schtbl td{vertical-align:middle;}
 .theme-assessments .schrowlink{display:flex;align-items:center;gap:var(--space-3);color:var(--foreground);text-decoration:none;}
 .theme-assessments .schrowlink:hover .schnm{text-decoration:underline;}
 .theme-assessments .schrowlink .schid{display:flex;flex-direction:column;}
-.theme-assessments .schtbl .schchg{display:inline-flex;vertical-align:middle;}
 
 /* Chart point tooltips */
 .theme-assessments svg .pt{cursor:pointer;outline:none;}
@@ -878,7 +867,6 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 .theme-assessments .filttxt strong{font-weight:700;}
 .theme-assessments .filtclear{margin-left:var(--space-3);font:600 var(--text-body-small) var(--font-sans);color:var(--foreground);text-decoration:underline;text-underline-offset:3px;}
 .theme-assessments .filtclear:hover{text-decoration:none;}
-.theme-assessments tr.selrow td{background:var(--secondary);font-weight:700;}
 
 /* Filter chips */
 .theme-assessments .filtchips{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);}
@@ -895,7 +883,6 @@ html body .theme-assessments .tag.st-wip{background:var(--destructive-light) ;co
 /* Status badges outside the themed area (Home welcome bar) */
 html body .tag.st-ok{background:var(--success-light) ;color:var(--success) ;border:1px solid var(--success) ;font:600 var(--text-body-small) var(--font-sans) ;text-transform:none ;padding:3px 11px ;}
 html body .tag.st-wip{background:var(--destructive-light) ;color:var(--destructive) ;border:1px solid var(--destructive-light) ;font:600 var(--text-body-small) var(--font-sans) ;text-transform:none ;padding:3px 11px ;}
-.theme-assessments .schtbl th:last-child,.theme-assessments .schtbl td:last-child{text-align:right;}
 
 /* Overview side cards: roomier lists, quieter links */
 .theme-assessments .expcard .expbody{display:flex;flex-direction:column;gap:var(--space-4);padding-top:var(--space-2);}
@@ -997,9 +984,6 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 .theme-assessments .clcard{display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-5,20px);border:1px solid var(--border);background:var(--card);}
 .theme-assessments .clhd h3{margin:0;font:700 20px var(--font-sans);}
 .theme-assessments .clhd .sub{margin:4px 0 0;font-size:var(--text-body-small);}
-.theme-assessments .cltbl th{vertical-align:bottom;}
-.theme-assessments .cltbl .clth{display:block;font-weight:400;color:var(--foreground);font-size:var(--text-body-small);}
-.theme-assessments .cltbl td{vertical-align:middle;}
 .theme-assessments .clv{display:block;font:700 14px var(--font-sans);margin-bottom:6px;}
 .theme-assessments .clbar{display:block;height:8px;width:100%;max-width:180px;background:var(--secondary);}
 .theme-assessments .clbar i{display:block;height:100%;background:var(--primary);}

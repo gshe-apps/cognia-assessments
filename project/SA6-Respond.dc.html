@@ -47,9 +47,6 @@ p{margin:0;}
 .tabs{display:flex;gap:4px;border-bottom:1.5px solid var(--ring);flex-wrap:wrap;}
 .tabs a{padding:10px 14px;text-decoration:none;color:var(--foreground);}
 .tabs a.on{color:var(--foreground);font-weight:600;border-bottom:2px solid var(--primary);margin-bottom:-1.5px;}
-table{width:100%;border-collapse:collapse;font-size:var(--text-body-small);}
-th{text-align:left;font-weight:500;color:var(--foreground);font-size:var(--text-body-small);padding:8px;border-bottom:1.5px solid var(--ring);}
-td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
 .scroll{overflow-x:auto;}
 .cols{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;}
 .cols > .body{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px;}
@@ -84,8 +81,8 @@ td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle;
       <div class="body">
         <section class="card ghost card-ghost" aria-labelledby="fl">
           <div class="row sp"><h2 id="fl">Follow-up (6)</h2><a class="btn btn-ghost btn-lg" href="SA3-Dashboard.dc.html">+ Add from Analytics</a></div>
-          <div class="scroll">
-            <table>
+          <div class="scroll table-wrap">
+            <table class="table">
               <thead><tr><th scope="col">School</th><th scope="col">Why flagged</th><th scope="col">Principal</th><th scope="col">Review</th><th scope="col">Since Jan 12 window</th><th scope="col">Status</th></tr></thead>
               <tbody>
                 <tr><td><strong>Northside Elementary</strong></td><td>Low participation · Grades 4–5</td><td>Dana Reyes</td><td>Jan 23</td><td class="evcell"><strong>38%</strong> completion, was 31%<span class="evtr">Improving</span></td><td><span class="tag overdue badge badge-destructive">Overdue</span></td></tr>

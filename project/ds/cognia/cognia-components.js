@@ -18,6 +18,14 @@
    - Escape closes it and returns focus to the trigger. Tab, choosing an
      item or clicking outside closes it.
    - Works for menus that scripts add later, so it needs no setup call.
+
+   Clickable table row (components.md, Table):
+     <tr class="row-link"><td><a href="...">Name</a></td>...</tr>
+   - A click anywhere on the row follows the row's first link or button
+     (or the element marked data-row-target). Clicks on other links,
+     buttons and fields in the row keep their own behaviour.
+   - Keyboard users reach the row through that link, so the row itself
+     is not focusable.
    ============================================================ */
 (() => {
   if (window.cogniaComponents) return;
@@ -55,7 +63,14 @@
     if (item) item.focus();
   };
 
+  const INTERACTIVE = 'a[href], button, input, select, textarea, label, summary, [role="menuitem"], [tabindex]:not([tabindex="-1"])';
   document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const row = event.target.closest('.table .row-link');
+    if (row && !event.target.closest(INTERACTIVE)) {
+      const target = row.querySelector('[data-row-target]') || row.querySelector('a[href], button');
+      if (target) target.click();
+    }
     const trigger = event.target.closest(TRIGGER);
     if (trigger) {
       const parts = partsOf(trigger);

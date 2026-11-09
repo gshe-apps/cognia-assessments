@@ -2024,6 +2024,8 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .cl-table { min-width:800px; --table-columns:minmax(176px,1.4fr) minmax(144px,0.9fr) minmax(264px,2fr) minmax(136px,0.9fr) minmax(136px,1fr); }
 .cl-learner { display:flex; align-items:center; gap:var(--space-3); min-width:0; }
 .cl-progress { display:grid; grid-template-columns:40px minmax(96px,1fr) auto; align-items:center; gap:var(--space-3); }
+/* The plugin table makes every cell flex; the progress cell keeps its own grid so the bar has width (9 Nov). */
+.cl-table .cl-progress[role="cell"] { display:grid; }
 .cl-progress-track { height:var(--space-1); border-radius:var(--rounded-full); background:var(--secondary); overflow:hidden; }
 .cl-progress-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
 .cl-muted { color:var(--muted-foreground); }

@@ -46,72 +46,46 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!stepTwo&&window.capAssessmentSetup){const t=entry.model.tests.find(t=>t.id===entry.model.active)||entry.model.tests[0];if(t)sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(t))}
   restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null);}
  window.capRestoreWork=restore;window.capOpenSaved=openSaved;
- function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});location.href='CAP-T08-AudienceDelivery.dc.html';}
+ function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;const usage=read('cogniaLibraryUsageV1',{});usage[id]=Date.now();put('cogniaLibraryUsageV1',usage);preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});location.href='CAP-T08-AudienceDelivery.dc.html';}
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form · Grade ${f.grade} · ${escape(f.subject)} · ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions"><button class="btn solid btn-lg" data-assign-form="${f.id}">Use complete assessment →</button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
  function renderLibrary(){
-  const root=document.getElementById('assessment-library');
-  if(!root)return;
-  root.classList.add('al-library');
-  const svg=path=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
-  const arrow=svg('<path d="M4 12h15m-6-6 6 6-6 6"/>');
-  const fileIcon=svg('<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5"/>');
-  const formatOf=form=>form.format||'Cognia form';
-  const grades=[...new Set(forms.map(form=>form.grade))].sort((a,b)=>Number(a)-Number(b));
-  const subjects=[...new Set(forms.map(form=>form.subject))].sort();
-  const formats=[...new Set(forms.map(formatOf))];
-  const options=(values,label=value=>value)=>values.map(value=>'<option value="'+escape(value)+'">'+escape(label(value))+'</option>').join('');
-  root.innerHTML=`
-   <header class="al-heading">
-    <div>
-     <div class="al-title"><a class="al-action al-ghost al-back" href="CAP-T03-Assessments.dc.html" aria-label="Back to assessments" title="Back to assessments">${svg('<path d="M20 12H5m6-6-6 6 6 6"/>')}</a><h1>Assessment library</h1></div>
-     <p>Discover ready-to-teach Cognia assessments and assign them to your class.</p>
-    </div>
-    <a class="al-action al-outline" href="CAP-T04-Setup.dc.html">${svg('<path d="M13 3H5v18h7M13 3l5 5h-5zM18 12v8m-4-4h8"/>')}Build from scratch${arrow}</a>
-   </header>
-   <form class="al-filters" role="search">
-    <div class="search al-search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input class="search-input" id="form-search" type="search" aria-label="Search by title or standard" placeholder="Search by title or standard" autocomplete="off"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div>
-    <select id="form-grade" aria-label="Grade"><option value="">All grades</option>${options(grades,g=>'Grade '+g)}</select>
-    <select id="form-subject" aria-label="Subject"><option value="">All subjects</option>${options(subjects)}</select>
-    <select id="form-format" aria-label="Format"><option value="">All formats</option>${options(formats)}</select>
-   </form>
-   <p class="al-count" id="form-count" role="status"></p>
-   <div class="al-list" id="form-results"></div>`;
-  const filter=root.querySelector('form');
-  const results=root.querySelector('#form-results');
+  const root=document.getElementById('assessment-library');if(!root)return;root.classList.add('al-library');
+  const svg=path=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
+  const arrow=svg('<path d="M5 12h14m-6-6 6 6-6 6"/>'),chevron=svg('<path d="m6 9 6 6 6-6"/>');
+  const eye=svg('<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>');
+  const icons={calculator:svg('<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M8 10h.01M12 10h.01M16 10h.01M12 14h.01M8 14h.01M8 18h.01M12 18h.01"/>'),book:svg('<path d="M12 7v14M3 18a1 1 0 0 0 1 1h5a3 3 0 0 1 3 3 3 3 0 0 1 3-3h5a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-5a3 3 0 0 0-3 3 3 3 0 0 0-3-3H4a1 1 0 0 0-1 1z"/>'),clipboard:svg('<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4"/>')};
+  icons.shapes=svg('<path d="M8.3 10a.7.7 0 0 0 .6 1h10.2a.7.7 0 0 0 .6-1L14.6 1.8a.7.7 0 0 0-1.2 0Z"/><rect width="8" height="8" x="14" y="14" rx="1"/><circle cx="6" cy="18" r="4"/>');
+  const formatNames={'Text entry':'Short answer','Extended text':'Extended response'};
+  const formatsOf=form=>{const types=[...new Set((form.questions||[]).map(q=>formatNames[q.type]||q.displayType||q.type).filter(Boolean))];return [...new Set([...(form.format?[form.format]:[]),...types,...(types.length>1?['Mixed formats']:[])])];};
+  const grades=[...new Set(['K',...Array.from({length:12},(_,i)=>String(i+1)),...forms.map(f=>String(f.grade))])].sort((a,b)=>(a==='K'?-1:Number(a))-(b==='K'?-1:Number(b)));
+  const subjects=[...new Set(['English','Mathematics','Science','Social studies',...forms.map(f=>f.subject)])].sort();
+  const formats=[...new Set(['Multiple choice','Short answer','Extended response','Mixed formats',...forms.flatMap(formatsOf)])];
+  const options=(values,label=v=>v)=>values.map(v=>'<option value="'+escape(v)+'">'+escape(label(v))+'</option>').join('');
+  root.innerHTML='<header class="al-heading"><div class="al-heading-content"><a class="btn btn-ghost btn-icon btn-sm al-back" href="CAP-T03-Assessments.dc.html" aria-label="Back to assessments">'+svg('<path d="m12 19-7-7 7-7M5 12h14"/>')+'</a><div><h1 class="text-heading font-semibold">Assessment library</h1><p>Discover ready-to-teach Cognia assessments and assign them to your class.</p></div></div></header>'
+   +'<form class="al-filters" role="search"><div class="search al-search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" id="form-search" type="search" aria-label="Search by title or standard" placeholder="Search by title or standard" autocomplete="off"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">'+svg('<path d="M18 6 6 18M6 6l12 12"/>')+'</button><span class="tooltip" role="tooltip">Clear search</span></span></div>'
+   +'<label class="al-sort"><span>Sort by:</span><select id="form-sort" class="select" aria-label="Sort assessments"><option value="recent">Recently used</option><option value="title">Title A–Z</option><option value="grade">Grade level</option></select>'+chevron+'</label>'
+   +'<div class="al-filter-control"><button type="button" class="btn btn-outline btn-lg al-action" data-toggle-library-filters aria-expanded="false" aria-controls="al-filter-panel">'+svg('<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>')+'Filter<span data-filter-count hidden></span></button><div class="al-filter-panel" id="al-filter-panel" hidden><h2>Filter assessments</h2><label class="field"><span class="label">Grade</span><span class="al-filter-select"><select id="form-grade" class="select"><option value="">All grades</option>'+options(grades,g=>g==='K'?'Kindergarten':'Grade '+g)+'</select>'+chevron+'</span></label><label class="field"><span class="label">Subject</span><span class="al-filter-select"><select id="form-subject" class="select"><option value="">All subjects</option>'+options(subjects)+'</select>'+chevron+'</span></label><label class="field"><span class="label">Format</span><span class="al-filter-select"><select id="form-format" class="select"><option value="">All formats</option>'+options(formats)+'</select>'+chevron+'</span></label><button type="button" class="btn btn-ghost btn-sm" data-reset-library-filters>Clear filters</button></div></div></form>'
+   +'<section class="al-list" aria-label="Assessments"><h2 class="al-count" id="form-count" role="status"></h2><div id="form-results"></div></section>';
+  const filter=root.querySelector('form'),results=root.querySelector('#form-results'),panel=root.querySelector('#al-filter-panel'),toggle=root.querySelector('[data-toggle-library-filters]');
   function draw(){
-   const term=filter.querySelector('#form-search').value.trim().toLowerCase();
-   const grade=filter.querySelector('#form-grade').value;
-   const subject=filter.querySelector('#form-subject').value;
-   const format=filter.querySelector('#form-format').value;
-   const matches=forms.filter(form=>(!term||(form.title+' '+form.standard).toLowerCase().includes(term))&&
-    (!grade||form.grade===grade)&&(!subject||form.subject===subject)&&(!format||formatOf(form)===format));
-   root.querySelector('#form-count').textContent=matches.length+' complete '+(matches.length===1?'assessment':'assessments');
+   const term=filter.querySelector('#form-search').value.trim().toLowerCase(),grade=filter.querySelector('#form-grade').value,subject=filter.querySelector('#form-subject').value,format=filter.querySelector('#form-format').value,sort=filter.querySelector('#form-sort').value;
+   const usage=read('cogniaLibraryUsageV1',{});
+   const matches=forms.filter(f=>(!term||(f.title+' '+f.standard).toLowerCase().includes(term))&&(!grade||String(f.grade)===grade)&&(!subject||f.subject===subject)&&(!format||formatsOf(f).includes(format)));
+   if(sort==='title')matches.sort((a,b)=>a.title.localeCompare(b.title));else if(sort==='grade')matches.sort((a,b)=>Number(a.grade)-Number(b.grade)||a.title.localeCompare(b.title));else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
+   root.querySelector('#form-count').textContent=matches.length+' '+(matches.length===1?'assessment':'assessments');
+   const count=[grade,subject,format].filter(Boolean).length,badge=root.querySelector('[data-filter-count]');badge.hidden=!count;badge.textContent=count?'('+count+')':'';
    results.innerHTML=matches.length?matches.map(form=>{
-    const count=form.questions.length;
-    const points=form.questions.reduce((total,question)=>total+Number(question.marks||0),0);
-    return `<article class="al-row">
-     <span class="al-file">${fileIcon}</span>
-     <div class="al-copy">
-      <h2>${escape(form.title)}</h2>
-      <p>Grade ${escape(form.grade)} · ${escape(form.subject)} · ${escape(form.standard)} · ${count} ${count===1?'item':'items'} · ${points} ${points===1?'point':'points'}</p>
-      <div class="al-badges"><span class="badge badge-secondary">${escape(formatOf(form))}</span><span class="al-status-badge badge badge-success">${svg('<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>')}Ready to assign</span></div>
-     </div>
-     <div class="al-actions">
-      <button type="button" class="al-action al-ghost" data-preview-form="${escape(form.id)}">Preview assessment</button>
-      <button type="button" class="al-action al-primary" data-start-form="${escape(form.id)}">Choose recipients${arrow}</button>
-     </div>
-    </article>`;
+    const n=form.questions.length,points=form.questions.reduce((total,q)=>total+Number(q.marks||0),0);
+    return '<article class="al-row" data-library-row="'+escape(form.id)+'" tabindex="0"><span class="al-file icon-accent">'+(form.subject==='English'?icons.clipboard:form.id==='fractions'?icons.calculator:/shapes/i.test(form.title)?icons.shapes:icons.book)+'</span><div class="al-copy"><h2>'+escape(form.title)+'</h2><p>Grade '+escape(form.grade)+' · '+escape(form.subject)+'</p></div><div class="al-badges"><span class="badge badge-secondary">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+n+' '+(n===1?'item':'items')+'</span><span class="badge badge-secondary">'+points+' '+(points===1?'point':'points')+'</span></div><div class="al-actions"><span class="tooltip-wrap"><button type="button" class="btn btn-outline btn-icon btn-lg al-preview" data-preview-form="'+escape(form.id)+'" aria-label="Preview '+escape(form.title)+'">'+eye+'</button><span class="tooltip" role="tooltip">Preview assessment</span></span><button type="button" class="btn btn-lg al-primary" data-start-form="'+escape(form.id)+'">Use assessment'+arrow+'</button></div></article>';
    }).join(''):'<div class="al-empty"><h2>No assessments match</h2><p>Try a different search or clear your filters.</p><button type="button" class="al-action al-outline" data-clear-library>Clear filters</button></div>';
   }
-  filter.addEventListener('submit',event=>event.preventDefault());
-  filter.querySelector('#form-search').addEventListener('input',draw);
-  filter.addEventListener('change',event=>{if(event.target.matches('select'))draw();});
-  results.addEventListener('click',event=>{
-   if(!event.target.closest('[data-clear-library]'))return;
-   filter.reset();
-   draw();
-   filter.querySelector('input').focus();
+  filter.addEventListener('submit',e=>e.preventDefault());filter.querySelector('#form-search').addEventListener('input',draw);filter.addEventListener('change',e=>{if(e.target.matches('select'))draw();});
+  toggle.addEventListener('click',()=>{panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));});
+  root.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.focus();}});
+  root.addEventListener('click',e=>{
+   if(e.target.closest('[data-reset-library-filters],[data-clear-library]')){for(const id of ['form-grade','form-subject','form-format'])filter.querySelector('#'+id).value='';if(e.target.closest('[data-clear-library]'))filter.querySelector('#form-search').value='';draw();return;}
   });
+  document.addEventListener('click',e=>{if(!panel.hidden&&!e.target.closest('.al-filter-control')){panel.hidden=true;toggle.setAttribute('aria-expanded','false');}});
   draw();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;

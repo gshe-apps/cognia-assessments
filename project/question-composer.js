@@ -32,7 +32,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
  function questionPreview(q){
   const type=q.displayType||({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[q.type]||q.type);
   const variant=({easy:'success',medium:'warning',hard:'destructive'})[String(q.difficulty).toLowerCase()];
-  return `<p class="qc-stem">${esc(q.stem)}</p><div class="qc-item-badges">${type?`<span class="badge badge-secondary">${esc(type)}</span>`:''}${variant?`<span class="badge badge-${variant}">${esc(q.difficulty)}</span>`:''}</div>`;
+  return `<div class="qc-item-badges">${type?`<span class="qc-item-type text-body-small text-muted-foreground">${esc(type)}</span>`:''}${variant?`<span class="badge badge-${variant}">${esc(q.difficulty)}</span>`:''}</div><p class="qc-stem text-body-base" title="${esc(q.stem)}">${esc(q.stem)}</p>`;
  }
  function updateQuestions(chosen){inst.setState({chosen});inst.update()}
  let displayedIds=new Set(getQuestions().map(q=>q.id));
@@ -43,26 +43,34 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
    const actions=row.querySelector('.qbottom');if(!q||!actions)continue;
    const action=document.createElement(q.canAdd?'button':'span');
    action.dataset.itemState=q.isAdded?'added':q.canAdd?'available':'unavailable';
-   action.className=q.canAdd?'btn small btn-sm':'badge '+(q.isAdded?'badge-success':'badge-secondary');
-   action.textContent=q.isAdded?'✓ Added':q.isLocked?'Classroom+':q.isFull?'Full':'Add';
+   action.className=q.canAdd?'btn btn-ghost btn-lg':'badge '+(q.isAdded?'badge-success':'badge-secondary');
+   action.textContent=q.isAdded?'Added':q.isLocked?'Classroom+':q.isFull?'Full':'Add';
+   if(q.isAdded)action.prepend(node('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'));
    action.title=q.isAdded?'Item added':q.isLocked?'Requires Classroom+':q.isFull?'Assessment is full':'Add item';
    if(q.canAdd){
     action.type='button';
     action.setAttribute('aria-label','Add item: '+q.stem);
-    action.append(node('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg>'));
+    action.prepend(node('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>'));
     action.onclick=q.add;
    }
    actions.querySelectorAll('.btn.small, [data-item-state]').forEach(previous=>previous.remove());
    actions.append(action);
   }
+  /* Item count beside the search and filter buttons (Figma: "124 questions"). */
+  const shown=library.querySelectorAll('.question-card').length,countLabel=page.querySelector('.uc-bank-count');
+  if(countLabel){const text=shown+(shown===1?' item':' items');if(countLabel.textContent!==text)countLabel.textContent=text}
+  /* Clicking anywhere on an available row adds it; the Add button stays for keyboard users. */
+  if(!library.dataset.rowAdd){library.dataset.rowAdd='true';library.addEventListener('click',e=>{const row=e.target.closest('.question-card');if(!row||e.target.closest('button,a,summary,input,select,label,details'))return;row.querySelector('[data-item-state="available"]')?.click()})}
   const m=model(),count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0),current=active(m)||{};
-  const summary=page.querySelector('.tf-bottom-copy p');
+  /* The bar's second line is now the step name (Figma), so no grade or subject summary is written into it. */
+  const summary=page.querySelector('.tf-bottom-summary');
   const reviewStatus=page.querySelector('.uc-review-status');
   if(summary)summary.textContent='Grade '+(current.grade||'5')+' · '+(current.subject||'Mathematics')+(!reviewStatus&&count?' · '+count+(count===1?' item':' items'):'');
   if(reviewStatus){
    const canReview=window.capCanReviewAssessment();
    const message=canReview?count+(count===1?' item':' items')+' added · Ready to review':'Add at least one item to each test to review.';
-   reviewStatus.hidden=false;
+   /* Only explain the disabled button; when ready the right panel already shows the count. */
+   reviewStatus.hidden=canReview;
    if(reviewStatus.textContent!==message)reviewStatus.textContent=message;
    page.querySelectorAll('.tf-bottom .actionbar a.solid, [data-uc-review]').forEach(link=>{
     link.dataset.reviewHref||=link.getAttribute('href');
@@ -77,7 +85,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
  }
  board.addEventListener('click',e=>{const button=e.target.closest('[data-edit-item]');if(!button)return;e.preventDefault();const questions=getQuestions(),q=questions.find(q=>q.id===button.dataset.editItem);if(!q)return;window.capOpenItemEditor({question:q,scope:active(model()),index:questions.indexOf(q),count:questions.length,onSave:updated=>{if(inst.state.written?.[updated.id])inst.setState({written:{...inst.state.written,[updated.id]:updated}});else inst.setState({edits:{...inst.state.edits,[updated.id]:updated}});inst.update()},onClose:()=>board.querySelector('[data-edit-item="'+CSS.escape(q.id)+'"]')?.focus()});});
  function drawBoard(){syncBank();const qs=getQuestions(),generated=qs.filter(q=>q.composerAI),isAI=prefs.method==='ai';board.querySelector('h2').textContent=isAI?`${generated.length} questions generated`:`${qs.length} ${qs.length===1?'item':'items'} added`;board.querySelector('[data-qc-clear]').hidden=isAI||!qs.length;board.querySelector('[data-qc-clear]').disabled=!qs.length;board.querySelector('[data-qc-regenerate]').hidden=!isAI;board.querySelector('[data-qc-regenerate]').disabled=!plus()||!generated.length;
-  board.querySelector('.qc-preview-list').innerHTML=qs.length?qs.map((q,i)=>`<article class="qc-preview-card ${q.visual?'qc-has-visual':''}" draggable="true" data-question-id="${esc(q.id)}"><span class="qc-drag" aria-hidden="true">⠿</span><span class="qc-number">${i+1}</span><div class="qc-question-content">${questionPreview(q)}</div><div class="uc-card-actions"><button type="button" class="btn btn-outline btn-sm uc-edit-question" aria-label="Edit item ${i+1}" title="Edit item" data-edit-item="${esc(q.id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5L7 22H2v-5zM13 6l5 5"/></svg> Edit</button><button type="button" class="btn btn-ghost btn-icon btn-lg" aria-label="Remove item ${i+1}" data-qc-remove="${esc(q.id)}">×</button></div></article>`).join(''):`<div class="qc-empty">${icon(prefs.method==='ai'?'spark':'book')}<h3>${isAI?'Your draft questions will appear here':'Build your assessment'}</h3><p>${isAI?'Describe what you need, choose your settings and generate a set of sample questions.':'Choose questions from the bank or create your own.'}</p></div>`;
+  board.querySelector('.qc-preview-list').innerHTML=qs.length?qs.map((q,i)=>`<article class="qc-preview-card ${q.visual?'qc-has-visual':''}" draggable="true" data-question-id="${esc(q.id)}"><div class="qc-question-content">${questionPreview(q)}</div><div class="uc-card-actions"><button type="button" class="btn btn-ghost btn-icon" aria-label="Edit item ${i+1}" title="Edit item" data-edit-item="${esc(q.id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg></button><button type="button" class="btn btn-ghost btn-icon" aria-label="Remove item ${i+1}" title="Remove item" data-qc-remove="${esc(q.id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div></article>`).join(''):isAI?`<div class="qc-empty">${icon('spark')}<h3>Your draft questions will appear here</h3><p>Describe what you need, choose your settings and generate a set of sample questions.</p></div>`:`<div class="qc-empty empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg><p>${prefs.method==='manual'?'Items you create will appear here':'Click on items on the left to add them here'}</p></div>`;
   for(const row of board.querySelectorAll('[data-question-id]'))if(!displayedIds.has(row.dataset.questionId))row.classList.add('qc-item-enter');
   displayedIds=new Set(qs.map(q=>q.id));
   board.querySelector('.qc-board-note').textContent=isAI&&qs.length>generated.length?`${qs.length-generated.length} additional bank or manually created ${qs.length-generated.length===1?'question is':'questions are'} included. Regenerate replaces only the AI draft set.`:'';

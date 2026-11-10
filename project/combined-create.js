@@ -13,8 +13,8 @@
   const currentModel=read(),currentTest=currentModel?.tests?.find(t=>t.id===currentModel.active)||currentModel?.tests?.[0],bank=window.cogniaPreview?.bankItems?.()||[];
   document.querySelectorAll('.uc-page .question-card').forEach(row=>{const q=bank.find(q=>q.stem===row.querySelector('h4')?.textContent.trim());if(!q)return;if(!row.querySelector('.bank-row-standard')&&currentTest?.standard){const badge=document.createElement('span');badge.className='bank-row-standard badge badge-secondary';badge.textContent=q.standard||currentTest.standard;row.append(badge)}if(!row.querySelector('.bank-row-difficulty')&&q.difficulty){const badge=document.createElement('span');badge.className='bank-row-difficulty badge badge-'+({easy:'success',medium:'warning',hard:'destructive'}[String(q.difficulty).toLowerCase()]||'secondary');badge.textContent=q.difficulty;row.append(badge)}});
   document.querySelectorAll('.uc-page .bank-row-difficulty').forEach(el=>{el.dataset.level=el.textContent.trim().toLowerCase()});
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{if(!row.querySelector('.bank-row-difficulty')){const badge=document.createElement('span');badge.className='bank-row-difficulty badge badge-secondary';badge.dataset.level='unspecified';badge.textContent='—';badge.setAttribute('aria-label','Difficulty not specified');row.append(badge)}});
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}row.querySelectorAll(':scope > .bank-row-difficulty,:scope > .bank-row-standard').forEach(b=>tags.append(b));});
+  
+  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}row.querySelectorAll(':scope > .bank-row-difficulty,:scope > .bank-row-standard').forEach(b=>tags.append(b));});
   const page=document.querySelector('main>.page'),methods=page?.querySelector('.qc-methods');if(!methods||page.querySelector('.uc-setup-intro'))return;
   observer.disconnect();page.classList.add('uc-page');document.body.classList.add('unified-create-screen');document.body.classList.remove('cap-monochrome');
   const m=read(),t=m?.tests?.find(t=>t.id===m.active)||m?.tests?.[0];if(!t){observe();return;}
@@ -70,7 +70,7 @@
    methods.setAttribute('aria-disabled',String(!ready));page.querySelector('.buildergrid').setAttribute('aria-disabled',String(!ready));
    methods.querySelectorAll('button').forEach(button=>button.disabled=!ready);
    notice.hidden=ready;page.classList.toggle('uc-locked',!ready);
-   hero.querySelector('h1').textContent=ready?'Choose how you’d like to create this assessment':'Create your assessment';
+   hero.querySelector('h1').textContent=ready?'Add your items':'Create your assessment';
    hero.querySelectorAll('.tf-steps a').forEach((link,i)=>{
     link.classList.toggle('active',i===(ready?1:0));
     link.classList.toggle('done',ready&&i===0);
@@ -85,22 +85,33 @@
   methods.querySelectorAll('[data-qc-method]').forEach(button=>{
    button.className='tab';
    const manual=button.dataset.qcMethod==='manual';
-   const graphic=manual?icon('<path d="m16 3 5 5L7 22H2v-5zM13 6l5 5"/>'):layers;
-   button.replaceChildren(make(graphic),document.createTextNode(manual?'Create manually':'Use item bank'));
+   button.replaceChildren(document.createTextNode(manual?'Create manually':'Use item bank'));
   });
   /* Reuse the runtime's existing multiple-choice form and validation. The old
      conditional drawer is detached by the legacy page composition. */
   const inst=window.cogniaPreview;
-  page.addEventListener('click',event=>{if(!event.target.closest('[data-qc-write]'))return;event.preventDefault();event.stopImmediatePropagation();
-   inst.renderVals().openWrite();
-
-   const d=make('<dialog class="uc-native-editor" aria-labelledby="uc-editor-title"><form><h2 id="uc-editor-title">Write an item</h2><p>Add at least two answer options and select the correct answer.</p><label>Item<textarea class="textarea" name="stem" rows="3"></textarea></label><fieldset><legend>Answer options</legend>'+['A','B','C','D'].map((l,i)=>'<label class="uc-editor-option"><input class="radio" type="radio" name="correct" value="'+i+'" aria-label="Option '+l+' is correct"><span>'+l+'</span><input class="input" name="option'+i+'" aria-label="Option '+l+'"></label>').join('')+'</fieldset><label>Difficulty *<span class="select-wrap"><select class="select" name="difficulty" required><option value="">Select difficulty</option><option>Easy</option><option>Medium</option><option>Hard</option></select></span></label><label>Points<span class="select-wrap"><select class="select" name="marks"><option value="1">1 point</option><option value="2">2 points</option></select></span></label><p role="alert"></p><div class="uc-editor-actions"><button type="button" class="btn btn-ghost btn-lg" data-cancel>Cancel</button><button type="submit" class="btn solid btn-lg">Add to assessment</button></div></form></dialog>');
-   document.body.append(d);const form=d.querySelector('form');
-   const close=()=>{inst.renderVals().closeWrite();d.close();d.remove();page.querySelector('[data-qc-write]').focus()};
-   d.querySelector('[data-cancel]').onclick=close;d.oncancel=e=>{e.preventDefault();close()};
-   form.onsubmit=e=>{e.preventDefault();inst.setState({form:{stem:form.elements.stem.value,opts:[0,1,2,3].map(i=>form.elements['option'+i].value),correct:form.elements.correct.value===''?null:Number(form.elements.correct.value),marks:form.elements.marks.value},fError:''});inst.renderVals().saveWrite();if(!inst.state.writeOpen){const id=inst.state.chosen.at(-1),item=inst.state.written[id];if(item)inst.setState({written:{...inst.state.written,[id]:{...item,difficulty:form.elements.difficulty.value,standard:settings.standard}}});d.close();d.remove();page.querySelector('[data-qc-write]').focus()}else d.querySelector('[role=alert]').textContent=inst.state.fError;};
-   d.showModal();form.elements.stem.focus();
-  },true);
+  /* Create manually: the item form sits in the left panel (no modal). It reuses the runtime's
+     multiple-choice validation through openWrite/saveWrite. */
+  const manualPanel=page.querySelector('.qc-manual');
+  if(manualPanel&&!manualPanel.querySelector('.uc-manual-form')){
+   const letters=['A','B','C','D'];
+   const form=make('<form class="uc-manual-form form" novalidate><div class="field"><label class="label" for="uc-manual-stem">Item</label><textarea class="textarea" id="uc-manual-stem" name="stem" rows="3" placeholder="Write the item"></textarea></div><fieldset class="field uc-manual-options"><legend class="label">Answer options</legend><p class="field-hint">Add at least two options and select the correct answer.</p>'+letters.map((l,i)=>'<div class="uc-manual-option"><input class="radio" type="radio" name="correct" value="'+i+'" id="uc-manual-correct-'+i+'" aria-label="Option '+l+' is correct"><label class="label" for="uc-manual-option-'+i+'">'+l+'</label><input class="input" id="uc-manual-option-'+i+'" name="option'+i+'" aria-label="Option '+l+'"></div>').join('')+'</fieldset><div class="uc-manual-meta"><div class="field"><label class="label" for="uc-manual-difficulty">Difficulty</label><span class="select-wrap"><select class="select" id="uc-manual-difficulty" name="difficulty" required><option value="">Select difficulty</option><option>Easy</option><option>Medium</option><option>Hard</option></select></span></div><div class="field"><label class="label" for="uc-manual-marks">Points</label><span class="select-wrap"><select class="select" id="uc-manual-marks" name="marks"><option value="1">1 point</option><option value="2">2 points</option></select></span></div></div><p class="field-error" role="alert"></p><div class="uc-manual-actions"><button type="reset" class="btn btn-ghost btn-lg">Clear</button><button type="submit" class="btn btn-outline btn-lg">Add to assessment</button></div></form>');
+   manualPanel.replaceChildren(form);
+   const alert=form.querySelector('[role=alert]');
+   form.addEventListener('reset',()=>{alert.textContent=''});
+   form.onsubmit=e=>{
+    e.preventDefault();alert.textContent='';
+    if(!form.elements.stem.value.trim()){alert.textContent='Write the item first.';form.elements.stem.focus();return}
+    if(!form.elements.difficulty.value){alert.textContent='Select a difficulty.';form.elements.difficulty.focus();return}
+    inst.renderVals().openWrite();
+    inst.setState({form:{stem:form.elements.stem.value,opts:[0,1,2,3].map(i=>form.elements['option'+i].value),correct:form.elements.correct.value===''?null:Number(form.elements.correct.value),marks:form.elements.marks.value},fError:''});
+    inst.renderVals().saveWrite();
+    if(inst.state.writeOpen){alert.textContent=inst.state.fError;inst.renderVals().closeWrite();return}
+    const id=inst.state.chosen.at(-1),item=inst.state.written[id];
+    if(item)inst.setState({written:{...inst.state.written,[id]:{...item,difficulty:form.elements.difficulty.value,standard:settings.standard}}});
+    form.reset();form.elements.stem.focus();
+   };
+  }
   page.querySelector('.ef-decision-note')?.remove();
   const library=page.querySelector('.library');
   const toolbar=make('<div class="uc-bank-toolbar"></div>'),search=library.querySelector('#search'),type=library.querySelector('#typeFilter');
@@ -116,21 +127,44 @@
   library.querySelector('.approved-bank-heading')?.after(toolbar);if(!toolbar.isConnected)library.prepend(toolbar);
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
   const bankHeading=library.querySelector('.approved-bank-heading')||make('<div class="approved-bank-heading"><h2></h2></div>');
-  bankHeading.querySelector('h2').replaceChildren(make('<span class="uc-board-icon" aria-hidden="true">'+layers+'</span>'),document.createTextNode('Find and add items'));
+  bankHeading.querySelector('h2').textContent='Find and add items';
   library.before(bankHeading);
+  bankHeading.querySelector('h2').className='sr-only';
+  page.querySelector('.buildergrid>section')?.classList.remove('card');
+  const board=page.querySelector('.qc-board');
+  if(board){
+   board.querySelector('.qc-board-header .uc-board-icon')?.remove();
+   board.querySelector('.qc-board-header h2')?.classList.add('text-body-small','text-muted-foreground');
+   const clear=board.querySelector('[data-qc-clear]');if(clear){clear.classList.remove('is-destructive','qc-destructive','btn-lg');clear.classList.add('btn-sm')}
+   board.querySelector('.qc-preview-list')?.classList.add('card');
+  }
   bankHeading.append(methods);
   methods.setAttribute('aria-label','Choose how to add items');
   methods.setAttribute('role','group');
-  const extraFilters=make('<details class="uc-extra-filters"><summary class="btn btn-ghost btn-icon btn-lg" aria-label="Filters" title="Filters">'+icon('<path d="M3 7h6m4 0h8M3 17l10 0m4 0h4"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/>')+'</summary><div class="filters uc-filter-fields"></div></details>');
+  const extraFilters=make('<details class="uc-extra-filters"><summary class="btn btn-ghost btn-icon btn-sm" aria-label="Filters" title="Filters">'+icon('<path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/>')+'</summary><div class="filters uc-filter-fields"></div></details>');
   const filterFields=extraFilters.querySelector('.filters');
   filterFields.append(...toolbar.querySelectorAll('.uc-bank-select-control'));
   library.querySelectorAll('.filters').forEach(filters=>{
    filterFields.append(...filters.children);
    filters.remove();
   });
+  /* Figma: item count on the left, search and filter as icon buttons on the right. Search opens a full-width field below. */
+  const count=make('<p class="uc-bank-count text-body-small text-muted-foreground" role="status"></p>');
+  const searchToggle=make('<button type="button" class="btn btn-ghost btn-icon btn-sm uc-search-toggle" aria-label="Search items" title="Search items" aria-expanded="false" aria-controls="search">'+icon('<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>')+'</button>');
+  const setSearch=open=>{toolbar.toggleAttribute('data-search-open',open);searchToggle.setAttribute('aria-expanded',String(open));if(open)search.focus()};
+  searchToggle.onmousedown=e=>e.preventDefault();
+  searchToggle.onclick=()=>setSearch(!toolbar.hasAttribute('data-search-open'));
+  search.addEventListener('keydown',e=>{if(e.key==='Escape'&&!search.value){setSearch(false);searchToggle.focus()}});
+  search.addEventListener('blur',()=>{if(!search.value)setSearch(false)});
+  const searchSlot=make('<div class="uc-search-slot"><div class="uc-search-clip"></div></div>');
+  searchBox.before(searchSlot);searchSlot.firstElementChild.append(searchBox);
+  toolbar.prepend(count);searchSlot.before(searchToggle);
+  /* Only real filter controls in the popover: no empty select wraps (stray chevrons) or info badges. */
+  filterFields.querySelectorAll('.select-wrap').forEach(wrap=>{if(!wrap.querySelector('select'))wrap.remove()});
+  filterFields.querySelectorAll(':scope > .badge').forEach(badge=>badge.remove());
   toolbar.append(extraFilters);
-  const back=make('<button class="btn uc-items-back btn-ghost btn-lg" type="button" aria-label="Back to assessment details" title="Back to assessment details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg></button>');
-  page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status text-body-small" role="status" hidden></p>'));
+  const back=make('<button class="btn uc-items-back btn-ghost btn-icon btn-sm" type="button" aria-label="Back to assessment details" title="Back to assessment details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>');
+  page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status sr-only" role="status" hidden></p>'));
   inst.refreshQuestionBoard?.();
   intro.prepend(back);
   const actionBar=page.querySelector('.tf-bottom');

@@ -24,10 +24,27 @@ document.addEventListener('DOMContentLoaded',()=>{
    'href="CAP-T04-Setup.dc.html"','href="CAP-T05-Questions.dc.html"'
   ]);
  }
- function footer(page){const bar=page.querySelector('.actionbar');if(!bar)return;const m=model(),t=active(m)||{},count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0);const bottom=node(`<div class="tf-bottom"><span class="tf-bottom-icon">${icon()}</span><div class="tf-bottom-copy"><div><span data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div><p>Grade ${esc(t.grade||'5')} · ${esc(t.subject||'Mathematics')}${count?' · '+count+(count===1?' question':' questions'):''}</p></div><div class="tf-original-actions"></div></div>`);
+ /* Floating bar progress (Figma): four steps after setup. Setup is the details dialog, not a step here. */
+ function stepNow(){const steps=['Create','Review','Assign','Finalize'];const n=confirm?4:assign?3:review?2:1;return {n,total:steps.length,label:steps[n-1]}}
+ function progressRing(){const {n,total}=stepNow(),r=22,c=2*Math.PI*r,done=(c*n/total).toFixed(2);return `<div class="tf-progress" role="img" aria-label="Step ${n} of ${total}"><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle class="tf-progress-track" cx="24" cy="24" r="${r}" fill="none" stroke-width="3"/><circle class="tf-progress-value" cx="24" cy="24" r="${r}" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${done} ${c.toFixed(2)}" transform="rotate(-90 24 24)"/></svg><span class="text-body-base font-semibold" aria-hidden="true">${n}/${total}</span></div>`}
+ function footer(page){const bar=page.querySelector('.actionbar');if(!bar)return;const m=model(),t=active(m)||{},count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0);const bottom=node(`<div class="tf-bottom card card-themed" role="region" aria-label="Assessment progress and actions">${progressRing()}<div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">${esc(stepNow().label)}</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div></div><div class="tf-original-actions"></div></div>`);
   const actions=bottom.querySelector('.tf-original-actions');actions.append(bar);page.append(bottom);
+  /* The bar now shows progress, so the stepper at the top right is hidden on every step. */
+  page.querySelectorAll('.tf-hero :is(.tf-steps, .cap-assessment-progress, .ra-journey)').forEach(el=>{el.hidden=true;el.style.display='none'});
+  /* Floating bar: reserve its height at the bottom of the page so it never covers content. */
+  if(window.ResizeObserver)new ResizeObserver(()=>page.style.setProperty('--tf-bar-height',bottom.offsetHeight+'px')).observe(bottom);
+  /* One look for the actions on every step: ghost secondary actions, one solid primary, plain labels. */
+  const tidy=()=>{bottom.querySelectorAll('.tf-original-actions :is(a,button).btn').forEach(el=>{
+   if(el.textContent.trim())el.querySelectorAll('svg').forEach(svg=>svg.remove());
+   el.querySelectorAll('span[aria-hidden="true"]').forEach(span=>{if(/^[←→]$/.test(span.textContent.trim()))span.remove()});
+   for(const n of [...el.childNodes])if(n.nodeType===3){const text=n.textContent.replace(/[←→]/g,'').replace(/ /g,' ').replace(/\s+/g,' ');if(text!==n.textContent)n.textContent=text}
+   if(el.textContent.trim()==='Save draft')el.textContent='Save as draft';
+   if(!el.classList.contains('solid')&&(!el.classList.contains('btn-ghost')||el.classList.contains('btn-outline'))){el.classList.remove('btn-outline');el.classList.add('btn-ghost')}
+   if(!el.classList.contains('btn-lg'))el.classList.add('btn-lg');
+  })};
+  tidy();new MutationObserver(tidy).observe(bottom,{childList:true,subtree:true,characterData:true});
   if(!bar.querySelector('[href="CAP-T07-DraftSaved.dc.html"]')&&!confirm&&!assign){const draft=node('<a class="btn ghost btn-ghost btn-lg" href="CAP-T07-DraftSaved.dc.html">Save as draft</a>');actions.prepend(draft)}
-  const back=bar.querySelector('a:not(.solid)');if(details&&back){back.href='CAP-T06-Review.dc.html';back.textContent='← Back to questions'}if(assign&&back)back.href='CAP-T06-Review.dc.html?stage=details';const next=bar.querySelector('.solid');if(next){if(setup)next.innerHTML='Continue &nbsp; →';if(questions){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to review &nbsp; →';}if(review&&!details){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to details &nbsp; →'}if(details)next.innerHTML='Continue to assign &nbsp; →';if(assign)next.innerHTML='Continue to final review &nbsp; →'}
+  const back=bar.querySelector('a:not(.solid)');if(details&&back){back.href='CAP-T06-Review.dc.html';back.textContent='← Back to questions'}if(assign&&back)back.href='CAP-T06-Review.dc.html?stage=details';const next=bar.querySelector('.solid');if(next){if(setup)next.innerHTML='Continue';if(questions){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to review';}if(review&&!details){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to details'}if(details)next.innerHTML='Continue to assign';if(assign)next.innerHTML='Continue to final review'}
  }
  function setupUI(page){const grid=page.querySelector('.setupgrid'),left=grid?.children[0],right=grid?.children[1];if(!left||!right)return;
   left.querySelector('h2').remove();left.querySelector('p').remove();

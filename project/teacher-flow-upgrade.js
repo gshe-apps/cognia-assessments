@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(window.ResizeObserver)new ResizeObserver(()=>page.style.setProperty('--tf-bar-height',bottom.offsetHeight+'px')).observe(bottom);
   /* One look for the actions on every step: ghost secondary actions, one solid primary, plain labels. */
   const tidy=()=>{bottom.querySelectorAll('.tf-original-actions :is(a,button).btn').forEach(el=>{
-   if(el.textContent.trim())el.querySelectorAll('svg').forEach(svg=>svg.remove());
+   if(el.textContent.trim()&&!el.dataset.tfBack)el.querySelectorAll('svg').forEach(svg=>svg.remove());
    el.querySelectorAll('span[aria-hidden="true"]').forEach(span=>{if(/^[←→]$/.test(span.textContent.trim()))span.remove()});
    for(const n of [...el.childNodes])if(n.nodeType===3){const text=n.textContent.replace(/[←→]/g,'').replace(/ /g,' ').replace(/\s+/g,' ');if(text!==n.textContent)n.textContent=text}
    if(el.textContent.trim()==='Save draft')el.textContent='Save as draft';
@@ -43,8 +43,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    if(!el.classList.contains('btn-lg'))el.classList.add('btn-lg');
   })};
   tidy();new MutationObserver(tidy).observe(bottom,{childList:true,subtree:true,characterData:true});
-  if(!bar.querySelector('[href="CAP-T07-DraftSaved.dc.html"]')&&!confirm&&!assign){const draft=node('<a class="btn ghost btn-ghost btn-lg" href="CAP-T07-DraftSaved.dc.html">Save as draft</a>');actions.prepend(draft)}
-  const back=bar.querySelector('a:not(.solid)');if(details&&back){back.href='CAP-T06-Review.dc.html';back.textContent='← Back to questions'}if(assign&&back)back.href='CAP-T06-Review.dc.html?stage=details';const next=bar.querySelector('.solid');if(next){if(setup)next.innerHTML='Continue';if(questions){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to review';}if(review&&!details){next.href='CAP-T06-Review.dc.html?stage=details';next.innerHTML='Continue to details'}if(details)next.innerHTML='Continue to assign';if(assign)next.innerHTML='Continue to final review'}
+  const back=bar.querySelector('a:not(.solid)');if(details&&back)back.href=t.page||'CAP-T05-Questions.dc.html';if(assign&&back)back.href='CAP-T06-Review.dc.html?stage=details';const next=bar.querySelector('.solid');if(next){if(setup)next.innerHTML='Continue';if(questions||(review&&!details))next.href='CAP-T06-Review.dc.html?stage=details';if(!confirm)next.innerHTML='Continue'}
  }
  function setupUI(page){const grid=page.querySelector('.setupgrid'),left=grid?.children[0],right=grid?.children[1];if(!left||!right)return;
   left.querySelector('h2').remove();left.querySelector('p').remove();
@@ -88,3 +87,66 @@ document.addEventListener('DOMContentLoaded',()=>{
  function observe(){observer.observe(document.body,{childList:true,subtree:true})}
  observer=new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;decorate()})});decorate();
 });
+
+/* Floating bar, 10 Nov: plain "Back" (arrow + word, goes to the previous screen), plain "Continue" and
+   "Create assessment" on the last step. Save as draft leaves the bar and sits top right of the page on steps 1 and 2.
+   It is a toggle: click to save (turns into a green "Draft saved" button with a check), click again to unsave.
+   The saved state is read from the draft archive, so it shows as unsaved again once the assessment changes. */
+(()=>{
+ const file=location.pathname.split('/').pop();
+ const step=/^CAP-T05-/.test(file)?1:file==='CAP-T06-Review.dc.html'?2:file==='CAP-T08-AudienceDelivery.dc.html'?3:file==='CAP-T09-ConfirmAssignment.dc.html'?4:0;
+ if(!step)return;
+ const key='cogniaAssessmentTestsV1',archiveKey='cogniaAssessmentArchiveV1',workKey='cogniaAssessmentWork';
+ const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+ const arrowLeft=svg('<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'),check=svg('<path d="M20 6 9 17l-5-5"/>');
+ const stored=k=>{try{return localStorage.getItem(k)||''}catch{return ''}};
+ const readJSON=(k,f)=>{try{return JSON.parse(stored(k))??f}catch{return f}};
+ const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+ const itemsPage=()=>{const m=readJSON(key,{});return (m.tests?.find(t=>t.id===m.active)||m.tests?.[0])?.page||'CAP-T05-Questions.dc.html'};
+ const previous=()=>step===2?itemsPage():step===3?'CAP-T06-Review.dc.html?stage=details':'CAP-T08-AudienceDelivery.dc.html';
+ /* Same entry shape as the draft archive used by the Assessments list (client-connected-feedback.js). */
+ const draftId=m=>m?.tests?.length?'assessment-'+m.tests.map(t=>t.id).join('-'):null;
+ function isSaved(){const id=draftId(readJSON(key,null));if(!id)return false;const entry=readJSON(archiveKey,[]).find(e=>e.id===id&&e.status==='draft');return !!entry&&JSON.stringify(entry.model)===stored(key)}
+ function setSaved(on){
+  const m=readJSON(key,null),id=draftId(m);if(!id)return;
+  const entries=readJSON(archiveKey,[]).filter(e=>!(e.id===id&&e.status==='draft'));
+  if(on)entries.unshift({id,title:m.title,status:'draft',updatedAt:new Date().toISOString(),model:m,delivery:readJSON('cogniaDeliverySessions',null)});
+  write(archiveKey,entries);write(workKey,{...readJSON(workKey,{tests:1}),draftSaved:on});
+ }
+ function paintDraft(button,saved){
+  if(button.getAttribute('aria-pressed')===String(saved))return;
+  button.setAttribute('aria-pressed',String(saved));
+  button.classList.toggle('btn-outline',!saved);button.classList.toggle('tf-draft-saved',saved);
+  button.innerHTML=saved?check+'Draft saved':'Save as draft';
+  button.title=saved?'Click to unsave this draft':'';
+ }
+ function draftButton(){
+  const button=document.createElement('button');button.type='button';button.className='btn btn-outline btn-lg tf-hero-draft';button.dataset.tfDraft='';
+  button.addEventListener('click',()=>{const saved=button.getAttribute('aria-pressed')!=='true';setSaved(saved);paintDraft(button,saved)});
+  return button;
+ }
+ function normalise(){
+  const bar=document.querySelector('.tf-bottom');
+  if(bar){
+   bar.querySelectorAll('a[href="CAP-T07-DraftSaved.dc.html"]').forEach(a=>a.remove());
+   if(step>1)bar.querySelectorAll('a:not(.solid)').forEach(a=>{
+    if(!a.dataset.tfBack&&!/^back\b/i.test(a.textContent.trim()))return;
+    const href=previous();
+    if(a.dataset.tfBack&&a.getAttribute('href')===href&&a.querySelector('svg')&&a.textContent.trim()==='Back')return;
+    a.dataset.tfBack='1';a.href=href;a.removeAttribute('title');a.removeAttribute('aria-label');a.innerHTML=arrowLeft+'Back';
+   });
+   const label=step<4?'Continue':'Create assessment';
+   bar.querySelectorAll('.solid').forEach(b=>{if(b.textContent.trim()!==label)b.textContent=label});
+  }
+  if(step<=2){
+   const hero=document.querySelector('.tf-page .tf-hero');if(!hero)return;
+   let draft=hero.querySelector(':scope>[data-tf-draft]');
+   if(!draft){draft=draftButton();hero.append(draft)}
+   paintDraft(draft,isSaved());
+  }
+ }
+ let queued=false;
+ const run=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;normalise()})};
+ const start=()=>{normalise();new MutationObserver(run).observe(document.body,{childList:true,subtree:true,characterData:true});document.addEventListener('change',run,true)};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();

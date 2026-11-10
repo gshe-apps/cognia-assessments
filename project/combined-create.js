@@ -163,10 +163,11 @@
   filterFields.querySelectorAll('.select-wrap').forEach(wrap=>{if(!wrap.querySelector('select'))wrap.remove()});
   filterFields.querySelectorAll(':scope > .badge').forEach(badge=>badge.remove());
   toolbar.append(extraFilters);
-  const back=make('<button class="btn uc-items-back btn-ghost btn-icon btn-sm" type="button" aria-label="Back to assessment details" title="Back to assessment details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>');
+  /* Back sits in the floating bar next to Continue (as on the other steps) and reopens the setup modal. */
+  const back=make('<button class="btn btn-ghost btn-lg uc-items-back" type="button" data-tf-back="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back</button>');
   page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status sr-only" role="status" hidden></p>'));
   inst.refreshQuestionBoard?.();
-  intro.prepend(back);
+  page.querySelector('.tf-bottom .solid')?.before(back);
   const actionBar=page.querySelector('.tf-bottom');
   if(actionBar){
    const barSize=new ResizeObserver(()=>page.style.setProperty('--uc-action-bar-height',actionBar.offsetHeight+'px'));

@@ -5,18 +5,22 @@
   const svg = (path) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + path + '</svg>';
 
 
-  window.capOpenNewAssessment = (trigger) => {
+  /* options.onClose(submitted) replaces the default focus return, e.g. to reopen a previous modal. */
+  window.capOpenNewAssessment = (trigger, options = {}) => {
     const {create,itemPage,libraryPath,signature}=window.capAssessmentSetup;
     const initial={title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
     const host=trigger.closest('.theme-assessments')||document.body;
+    let submitted=false;
     const setup=create({
       host,
       initial,
       onClose(){
         setup.remove();
+        if(options.onClose)return options.onClose(submitted);
         (trigger.isConnected?trigger:document.getElementById(trigger.id))?.focus();
       },
       onSubmit(details){
+        submitted=true;
         const id='test-'+Date.now();
         const page=itemPage(details);
         const test={id,...details,page,state:{chosen:[],written:{},edits:{}},questions:[]};

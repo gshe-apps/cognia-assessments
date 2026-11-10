@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  const grid=page.querySelector('.reviewgrid'),error=page.querySelector('#confirmError');grid.className='af-confirm-grid';grid.innerHTML=`<div class="af-main-column"><section class="af-surface af-summary"><div class="af-panel-heading"><span class="af-panel-icon">${icons.file}</span><h2>Assessment summary</h2>${edit('CAP-T06-Review.dc.html?stage=details')}</div><div class="af-assessment-intro"><h3>${esc(m.title||t.title||'Your assessment')}</h3><div class="af-meta"><span class="badge badge-secondary">Year ${esc(t.grade||'5')}</span><span class="badge badge-secondary">${esc(t.subject||'Mathematics')}</span><span class="badge badge-secondary">${qs.length} items</span><span class="badge badge-secondary">${marks} total points</span></div>${(m.details?.description||t.details?.description)?`<p>${esc(t.details?.description||m.details?.description)}</p>`:''}</div><div class="af-question-list"><h3>Included items (${qs.length})</h3>${questionRows()}</div></section><section class="af-surface af-audience"><div class="af-panel-heading"><span class="af-panel-icon">${icons.users}</span><h2>Audience and sessions</h2>${edit('CAP-T08-AudienceDelivery.dc.html')}</div>${audience()}</section></div><aside class="af-side-column"><section class="af-surface af-ready"><div class="af-panel-heading"><span class="af-panel-icon">${icons.circle}</span><h2>Ready to assign</h2></div><div class="af-settings-heading"><h3>Assignment settings</h3></div><dl class="af-settings">${[['Attempts',settings.attempts||(d.attempts==='2'?'2 attempts':d.attempts==='3'?'3 attempts':'One attempt only')],['Show results',settings.results||'After submission'],['Item order',settings.questionOrder||'As created'],['Calculator',settings.calculator||'Not allowed']].map(([a,b])=>`<div><dt>${a}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl><h3 class="af-final-title">Final check</h3><div class="af-final-checks">${[['Items reviewed',qs.length+' items included','CAP-T06-Review.dc.html',qs.length>0],['Details added','Title, subject, standards and points','CAP-T06-Review.dc.html?stage=details',!!m.title],['Students selected',className+' ('+students+' students)','CAP-T08-AudienceDelivery.dc.html',students>0]].map(([a,b,href,ok])=>`<a href="${href}" class="af-final-row ${ok?'complete':''}"><span class="af-check-icon">${ok?icons.check:'!'}</span><span><b>${a}</b><small>${esc(b)}</small></span><i>›</i></a>`).join('')}</div><div data-af-error></div></section>${next()}</aside>`;if(error)grid.querySelector('[data-af-error]').append(error);
  const mainColumn=grid.querySelector('.af-main-column'),summaryPanel=grid.querySelector('.af-summary'),audiencePanel=grid.querySelector('.af-audience'),combinedCard=document.createElement('section');combinedCard.className='af-surface af-combined-summary';summaryPanel.classList.remove('af-surface');audiencePanel.classList.remove('af-surface');combinedCard.append(summaryPanel,audiencePanel);mainColumn.replaceChildren(combinedCard);
  grid.querySelector('.af-next')?.remove();
- const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.innerHTML='Confirm &amp; assign <span aria-hidden="true">→</span>';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
+ const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.textContent='Create assessment';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
  }
 
  function renderSuccess(container, modal){
@@ -44,13 +44,27 @@ document.addEventListener('DOMContentLoaded',()=>{
  }
 
  function openSuccess(){
-  if(document.querySelector('.as-ready-dialog[open]'))return;
+  if(document.querySelector('.as-created-dialog'))return;
   const dialog=document.createElement('dialog');
-  dialog.className='as-ready-dialog dialog';
-  dialog.setAttribute('aria-labelledby','as-ready-title');
-  dialog.setAttribute('aria-describedby','as-ready-description');
-  renderSuccess(dialog,true);
+  /* Figma CAP 1480:11324: compact "Assessment created" alert with two equal actions.
+     It fades and lifts in, the check circle pops and the tick draws itself (educator.css). */
+  dialog.className='as-created-dialog dialog';
+  dialog.setAttribute('aria-labelledby','as-created-title');
+  dialog.setAttribute('aria-describedby','as-created-description');
+  const delivery=read('cogniaDeliverySessions',d);
+  dialog.innerHTML='<span class="as-created-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M20 6 9 17l-5-5"/></svg></span>'
+   +'<div class="as-created-copy"><h2 class="text-body-base font-semibold" id="as-created-title">Assessment created</h2>'
+   +'<p class="text-body-small" id="as-created-description">'+esc(m.title||t.title||'Your assessment')+' has been created for '+esc(classLabel(delivery))+'</p></div>'
+   +'<div class="as-created-actions"><button type="button" class="btn btn-outline btn-lg" data-create-another>Create another</button><a class="btn btn-lg" href="CAP-T03-Assessments.dc.html">Go to assessments</a></div>';
   dialog.addEventListener('cancel',event=>event.preventDefault());
+  /* Create another: stay on this page and swap the success alert for the setup modal.
+     Cancelling setup brings the success alert back. */
+  dialog.querySelector('[data-create-another]').onclick=()=>{
+   if(!window.capOpenNewAssessment)return void(location.href='CAP-T03-Assessments.dc.html');
+   const swap=()=>{dialog.close();dialog.remove();window.capOpenNewAssessment(page.querySelector('.tf-bottom .solid')||page,{onClose:submitted=>{if(!submitted)openSuccess()}})};
+   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return swap();
+   dialog.classList.add('is-closing');setTimeout(swap,200);
+  };
   page.closest('.cap-root').append(dialog);
   dialog.showModal();
  }

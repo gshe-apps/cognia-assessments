@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  function setSaved(on){
   const m=readJSON(key,null),id=draftId(m);if(!id)return;
   const entries=readJSON(archiveKey,[]).filter(e=>!(e.id===id&&e.status==='draft'));
-  if(on)entries.unshift({id,title:m.title,status:'draft',updatedAt:new Date().toISOString(),model:m,delivery:readJSON('cogniaDeliverySessions',null)});
+  if(on)entries.unshift({id,title:m.title,status:'draft',step,updatedAt:new Date().toISOString(),model:m,delivery:readJSON('cogniaDeliverySessions',null)});
   write(archiveKey,entries);write(workKey,{...readJSON(workKey,{tests:1}),draftSaved:on});
  }
  function paintDraft(button,saved){

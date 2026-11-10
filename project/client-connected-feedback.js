@@ -30,14 +30,22 @@ document.addEventListener('DOMContentLoaded',()=>{
   const check=d.querySelector('[data-item-check]'),button=d.querySelector('[data-approve-item]');if(check)check.onchange=()=>button.disabled=!check.checked;if(button)button.onclick=()=>{const records=ledger();records[key]={...records[key],status:'approved',approvedAt:new Date().toISOString(),approvedBy:'Sara Lee'};put('cogniaItemLifecycleV1',records);d.close();apply();};
  }
  const modelId=m=>'assessment-'+m.tests.map(t=>t.id).join('-');
- function saveSnapshot(status){const m=model();if(!m)return;const entries=archive(),id=modelId(m)+(status==='banked'?'-banked':'');let index=entries.findIndex(e=>e.id===id);if(index>=0&&entries[index].status==='assigned'){entries[index].id=id+'-scheduled-'+Date.parse(entries[index].updatedAt);index=-1;}const entry={id,title:m.title,status,updatedAt:new Date().toISOString(),model:JSON.parse(JSON.stringify(m)),delivery:read('cogniaDeliverySessions',null)};if(index<0)entries.unshift(entry);else entries[index]=entry;put('cogniaAssessmentArchiveV1',entries);}
+ function saveSnapshot(status){const m=model();if(!m)return;const entries=archive(),id=modelId(m)+(status==='banked'?'-banked':'');let index=entries.findIndex(e=>e.id===id);if(index>=0&&entries[index].status==='assigned'){entries[index].id=id+'-scheduled-'+Date.parse(entries[index].updatedAt);index=-1;}const entry={id,title:m.title,status,...(index>=0&&entries[index].step?{step:entries[index].step}:{}),updatedAt:new Date().toISOString(),model:JSON.parse(JSON.stringify(m)),delivery:read('cogniaDeliverySessions',null)};if(index<0)entries.unshift(entry);else entries[index]=entry;put('cogniaAssessmentArchiveV1',entries);}
  function preserveCurrent(){const m=model();if(!m)return;const saved=archive().find(e=>e.id===modelId(m));if(saved?.status==='assigned')return;saveSnapshot(saved?.status||'draft');}
 
- function restore(id,details){const entry=archive().find(e=>e.id===id);if(!entry)return;preserveCurrent();const restored=JSON.parse(JSON.stringify(entry.model));if(entry.status==='banked'){const suffix='-reuse-'+Date.now();restored.active+=suffix;restored.tests.forEach(t=>t.id+=suffix);restored.origin='builder';}
+ function restore(id,details,target){const entry=archive().find(e=>e.id===id);if(!entry)return;preserveCurrent();const restored=JSON.parse(JSON.stringify(entry.model));if(entry.status==='banked'){const suffix='-reuse-'+Date.now();restored.active+=suffix;restored.tests.forEach(t=>t.id+=suffix);restored.origin='builder';}
   /* Details confirmed in the setup dialog on the Assessments table: apply them so the builder opens ready, without asking again. */
   if(details&&window.capAssessmentSetup){const {itemPage,libraryPath,signature}=window.capAssessmentSetup,t=restored.tests.find(t=>t.id===restored.active)||restored.tests[0];Object.assign(t,details,{page:itemPage(details)});if(restored.tests.length===1)restored.title=t.title;put('cogniaAssessmentTestsV1',restored);sessionStorage.setItem('capCreateConfirmed:'+t.id,signature(t));location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':t.page;return;}
-  put('cogniaAssessmentTestsV1',restored);location.href=entry.model.tests[0].libraryForm?'CAP-T08-AudienceDelivery.dc.html':entry.model.tests.find(t=>t.id===entry.model.active)?.page||'CAP-T06-Review.dc.html';}
- window.capRestoreWork=restore;
+  put('cogniaAssessmentTestsV1',restored);location.href=target||(entry.model.tests[0].libraryForm?'CAP-T08-AudienceDelivery.dc.html':entry.model.tests.find(t=>t.id===entry.model.active)?.page||'CAP-T06-Review.dc.html');}
+ /* Opening a saved assessment, 10 Nov: drafts reopen on the step where Save as draft was clicked (1 Create or 2 Review),
+    banked ones on step 2 (as a fresh copy) and assigned ones on step 4 Finalize. */
+ function openSaved(id){const entry=archive().find(e=>e.id===id);if(!entry)return;
+  if(entry.status==='assigned'){preserveCurrent();put('cogniaAssessmentTestsV1',JSON.parse(JSON.stringify(entry.model)));if(entry.delivery)put('cogniaDeliverySessions',entry.delivery);location.href='CAP-T09-ConfirmAssignment.dc.html';return;}
+  const stepTwo=entry.status==='banked'||entry.step===2;
+  /* Step 1 drafts were already set up, so the item builder opens without the setup dialog. */
+  if(!stepTwo&&window.capAssessmentSetup){const t=entry.model.tests.find(t=>t.id===entry.model.active)||entry.model.tests[0];if(t)sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(t))}
+  restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null);}
+ window.capRestoreWork=restore;window.capOpenSaved=openSaved;
  function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});location.href='CAP-T08-AudienceDelivery.dc.html';}
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form · Grade ${f.grade} · ${escape(f.subject)} · ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions"><button class="btn solid btn-lg" data-assign-form="${f.id}">Use complete assessment →</button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
  function renderLibrary(){
@@ -170,7 +178,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(el.dataset.previewForm)libraryPreview(el.dataset.previewForm);
   if(el.dataset.startForm)startForm(el.dataset.startForm);
   if(el.dataset.reviewItem)approvalDialog(el.dataset.reviewItem);
-  if(el.dataset.restoreWork){event.preventDefault();restore(el.dataset.restoreWork);}
+  if(el.dataset.restoreWork){event.preventDefault();openSaved(el.dataset.restoreWork);}
   if(el.dataset.openScheduled){const entry=archive().find(e=>e.id===el.dataset.openScheduled);if(entry){put('cogniaScheduledAssessmentTests',entry.model);if(entry.delivery)put('cogniaDeliverySessions',entry.delivery);}}
  });
  document.addEventListener('click',event=>{

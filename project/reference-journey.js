@@ -26,36 +26,106 @@ window.capReferenceEditor=(page,{model,active,save,esc,node,icon})=>{
  }
  draw();page.addEventListener('click',e=>{if(e.target.closest('a'))capture()},true);
 };
-window.capReferenceDetails=(page,{model,active,save,esc,node,icon})=>{
- page.classList.add('rj-details');page.querySelector('.tf-hero p').textContent='Build your assessment by adding one or more tests.';
- const detailsHero=page.querySelector('.tf-hero'),detailsTop=page.querySelector('.tf-top');if(detailsTop){const progress=detailsTop.querySelector('.tf-steps');if(progress)detailsHero.append(progress);detailsTop.remove();}
- const m=model();let t=active(m);if(!t)return;const original=page.querySelector('.reviewgrid aside section'),instructions=original.querySelector('#instructions'),time=original.querySelector('#timeLimit'),reviewed=original.querySelector('#reviewed');
- const tabs=node('<nav class="rj-tests" aria-label="Tests in this assessment"></nav>');page.querySelector('.tf-hero').after(tabs);
- const host=node('<section class="tf-details-layout rj-details-layout"><section class="tf-surface"></section><aside></aside></section>');page.querySelector('.reviewgrid').before(host);
- let selected=t.id;
- const select=(id)=>{selected=id;m.active=id;save(m);draw()};
- function chips(values,key){return `<div class="rj-chip-list">${values.map((v,i)=>`<button type="button" data-remove-${key}="${i}" aria-label="Remove ${esc(v)}">${esc(v)} <span>×</span></button>`).join('')}</div>`}
- function draw(){t=m.tests.find(x=>x.id===selected)||m.tests[0];t.details=t.details||{description:m.details?.description||'',instructions:m.details?.instructions||instructions.value};const d=t.details;const marks=(t.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0);const settings=m.settings||{};
- const selectedStandards=d.standards||[t.standard].filter(Boolean),availableStandards=[...new Set([...selectedStandards,t.standard,...(String(t.grade)==="5"&&t.subject==="Mathematics"?["5.NF.A.1","5.NF.A.2","5.NF.B.3","5.NF.B.4"]:[]),...(t.questions||[]).map(q=>q.standard),...(window.cogniaAssessmentForms||[]).filter(f=>String(f.grade)===String(t.grade)&&f.subject===t.subject).map(f=>f.standard)].filter(Boolean))];
- const standardChoices=[[],...availableStandards.map(value=>[value])];if(selectedStandards.length>1)standardChoices.push(selectedStandards);
- const standardOptions=standardChoices.map(values=>'<option value="'+esc(JSON.stringify(values))+'" '+(JSON.stringify(values)===JSON.stringify(selectedStandards)?'selected':'')+'>'+esc(values.length?values.join(', '):'No standard')+'</option>').join('');
- tabs.innerHTML=m.tests.map((v,i)=>`<div class="rj-test-tab" draggable="true" data-test="${esc(v.id)}" aria-current="${v.id===t.id?'true':'false'}"><span aria-hidden="true">⠿</span><button type="button" data-select-test="${esc(v.id)}"><strong>${i+1}</strong><span><b>${esc(v.title)}</b><small>${v.questions?.length||0} questions · ${(v.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0)} points${v.details?.duration&&v.details.duration!=='None'?' · '+esc(v.details.duration):''}</small></span></button><details><summary aria-label="Options for ${esc(v.title)}">⋮</summary><div><a href="${esc(v.page)}" data-open-test="${esc(v.id)}">Edit questions</a><button type="button" data-delete-test="${esc(v.id)}" ${m.tests.length===1?'disabled':''}>Remove test</button></div></details></div>`).join('')+'<a class="rj-add-test" href="CAP-T04-Setup.dc.html?additionalTest=1">＋ &nbsp; Add another test</a>';
- host.firstElementChild.innerHTML=`<div class="rj-panel-heading"><h2>Test details</h2><a class="btn ghost btn-ghost btn-lg" href="${esc(t.page)}" data-preview-test><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Preview test</a></div><label class="tf-field">Test name<input class="input" id="tf-assessment-name" maxlength="100" value="${esc(t.title)}" required><small data-name-count>${t.title.length}/100</small></label><label class="tf-field">Description <span class="rj-muted">(optional)</span><textarea class="textarea" id="tf-description" maxlength="500" rows="3">${esc(d.description||'')}</textarea></label><div class="rj-four-fields"><label class="tf-field">Grade / Year<span class="select-wrap"><select class="select" data-grade>${['4','5','6','8'].map(g=>`<option value="${g}" ${g===t.grade?'selected':''}>Year ${g}</option>`).join('')}</select></span></label><label class="tf-field">Subject<span class="select-wrap"><select class="select" data-subject>${['Mathematics','English'].map(v=>`<option ${t.subject===v?'selected':''}>${v}</option>`).join('')}</select></span></label><label class="tf-field">Duration<span class="select-wrap"><select class="select" data-duration><option>None</option>${[5,8,10,15,20,30,45,60].map(n=>`<option ${d.duration===n+' minutes'?'selected':''}>${n} minutes</option>`).join('')}</select></span></label><label class="tf-field">Total points<input class="input" readonly aria-label="Total points" value="${marks}"></label><label class="tf-field rj-standard-field">Standards<span class="select-wrap"><select class="select" data-standard-select aria-label="Standards">${standardOptions}</select></span></label></div><details class="rj-resources"><summary>${icon()}<span><b>Add additional resources (optional)</b><small>Attach files, links or reference material for students.</small></span><span>›</span></summary><label class="tf-field">Resource link<input class="input" type="url" data-resource placeholder="https://…" value="${esc(d.resource||'')}"></label><label class="tf-field">Additional notes<textarea class="textarea" id="tf-notes" rows="2">${esc(d.notes||'')}</textarea></label></details>`;
- instructions.value=d.instructions||'';instructions.remove();
- host.lastElementChild.innerHTML=`<section class="rj-settings"><h2>Assessment settings</h2>${[['attempts','Attempts',['One attempt only','2 attempts','3 attempts']],['results','Show results to students',['After submission','After all sessions close','Do not show']],['questionOrder','Question order',['As created','Shuffle']],['optionOrder','Answer option order',['As created','Shuffle']],['calculator','Calculator',['Not allowed','Allowed']],['notes','Notes',['Not allowed','Allowed']]].map(([key,label,vals])=>`<label class="rj-setting"><span>${label}</span><span class="select-wrap"><select class="select" data-setting="${key}">${vals.map(v=>`<option ${settings[key]===v?'selected':''}>${v}</option>`).join('')}</select></span></label>`).join('')}<div class="rj-time-control"></div></section><section class="rj-tag-panel"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h8l10 10-8 8L3 11Z"/><circle cx="7" cy="7" r="1"/></svg>Tags <small>(optional)</small></h2><div class="rj-tag-input"><input class="input" data-tag aria-label="Search or create tags" placeholder="Search or create tags…"><button type="button" data-add-tag>＋ Add</button></div>${chips(d.tags||[],'tag')}</section><div class="rj-review-confirm"></div>`;
- const timeLabel=document.createElement('label');timeLabel.className='rj-setting';timeLabel.innerHTML='<span>Time limit</span><span class="select-wrap"></span>';time.classList.add('select');timeLabel.lastElementChild.append(time);host.querySelector('.rj-time-control').append(timeLabel);time.value=m.settings?.limit||'None';host.querySelector('.rj-review-confirm').append(reviewed.closest('label'));
- const persist=()=>{t.title=host.querySelector('#tf-assessment-name').value.trim()||t.title;if(m.tests.length===1)m.title=t.title;d.description=host.querySelector('#tf-description').value;d.instructions=instructions.value;d.notes=host.querySelector('#tf-notes').value;d.resource=host.querySelector('[data-resource]').value;d.duration=host.querySelector('[data-duration]').value;d.standards=JSON.parse(host.querySelector('[data-standard-select]').value);t.grade=host.querySelector('[data-grade]').value;t.subject=host.querySelector('[data-subject]').value;m.details={...m.details,description:d.description,instructions:d.instructions,notes:d.notes};m.settings={...m.settings,limit:time.value};host.querySelectorAll('[data-setting]').forEach(el=>m.settings[el.dataset.setting]=el.value);save(m);const delivery=JSON.parse(localStorage.getItem('cogniaDeliverySessions')||'null');if(delivery){delivery.time=time.value;delivery.attempts=m.settings.attempts==='2 attempts'?'2':m.settings.attempts==='3 attempts'?'3':'1';localStorage.setItem('cogniaDeliverySessions',JSON.stringify(delivery))}page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));};
- host.onchange=persist;host.querySelector('#tf-assessment-name').oninput=e=>{host.querySelector('[data-name-count]').textContent=e.target.value.length+'/100'};
- for(const key of ['tag']){const prop=key==='tag'?'tags':'standards';host.querySelector('[data-add-'+key+']').onclick=()=>{const input=host.querySelector('[data-'+key+']'),value=input.value.trim();if(!value)return;persist();d[prop]=[...new Set([...(d[prop]||(key==='standard'?[t.standard].filter(Boolean):[])),value])];save(m);draw()};host.querySelectorAll('[data-remove-'+key+']').forEach(b=>b.onclick=()=>{persist();d[prop]=(d[prop]||(key==='standard'?[t.standard].filter(Boolean):[])).filter((_,i)=>i!==Number(b.getAttribute('data-remove-'+key)));save(m);draw()})}
- tabs.querySelectorAll('[data-select-test]').forEach(b=>b.onclick=()=>{persist();select(b.dataset.selectTest)});tabs.querySelectorAll('[data-delete-test]').forEach(b=>b.onclick=()=>{persist();m.tests=m.tests.filter(v=>v.id!==b.dataset.deleteTest);select(m.tests[0].id)});tabs.querySelectorAll('[data-open-test]').forEach(a=>a.onclick=()=>{persist();m.active=a.dataset.openTest;save(m)});host.querySelector('[data-preview-test]').onclick=e=>{e.preventDefault();persist();const dialog=document.createElement('dialog');dialog.className='rj-preview-dialog';dialog.innerHTML='<button type="button" aria-label="Close test preview">×</button><h2>'+esc(t.title)+'</h2>'+(t.questions||[]).map((q,i)=>'<article><h3>'+(i+1)+'. '+esc(q.stem)+'</h3>'+(q.options||[]).map((v,k)=>'<p>'+String.fromCharCode(65+k)+'. '+esc(v)+'</p>').join('')+'</article>').join('');document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.remove();dialog.oncancel=()=>dialog.remove();dialog.showModal()};
- let draggedTest;tabs.querySelectorAll('[data-test]').forEach(el=>{el.ondragstart=e=>{persist();draggedTest=el.dataset.test;e.dataTransfer.setData('text/plain',draggedTest)};el.ondragover=e=>e.preventDefault();el.ondrop=e=>{e.preventDefault();const from=m.tests.findIndex(x=>x.id===draggedTest),to=m.tests.findIndex(x=>x.id===el.dataset.test);if(from<0||to<0)return;m.tests.splice(to,0,m.tests.splice(from,1)[0]);save(m);draw()}});
- host.rjPersist=persist;
- const tools=node('<div class="rj-test-actions" role="group" aria-label="Test actions"></div>'),preview=host.querySelector('[data-preview-test]'),addTest=tabs.querySelector('.rj-add-test');
- if(preview){preview.lastChild.textContent='Student preview';preview.title='Preview the test content students will see';tools.append(preview)}
- const bank=node('<button type="button" class="btn ghost rj-bank-reuse btn-ghost btn-lg" data-bank title="Save this assessment for reuse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 5-10 5L2 8zM2 12l10 5 10-5M2 16l10 5 10-5"/></svg>Bank for reuse</button>');tools.append(bank);
- if(addTest){addTest.textContent='Add test';addTest.title='Add another test to this assessment';addTest.insertAdjacentHTML('afterbegin','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>');tools.append(addTest)}tabs.append(tools);
+/* Step 2, Assessment details (10 Nov 2026, Figma 1488:12324): test pills, a test form on the left and the
+   assessment settings on the right. Built from the plugin's input, select, textarea, tab, check and btn classes. */
+window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
+ page.classList.add('rj-details');
+ const hero=page.querySelector('.tf-hero'),detailsTop=page.querySelector('.tf-top');
+ if(detailsTop){const progress=detailsTop.querySelector('.tf-steps');if(progress)hero.append(progress);detailsTop.remove();}
+ hero.querySelector(':scope>div>p')?.remove();
+ const m=model();let t=active(m);if(!t)return;
+ const original=page.querySelector('.reviewgrid aside section'),instructions=original.querySelector('#instructions'),time=original.querySelector('#timeLimit'),reviewed=original.querySelector('#reviewed');
+ const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+ const minus=svg('<path d="M5 12h14"/>'),plus=svg('<path d="M5 12h14"/><path d="M12 5v14"/>');
+ instructions.remove();
 
+ /* Header actions sit left of Save as draft (teacher-flow-upgrade.js appends that button to the hero). */
+ const tools=node('<div class="ad-hero-actions" role="group" aria-label="Assessment actions"><button type="button" class="btn btn-ghost btn-lg" data-preview-test title="Preview the test content students will see">Student preview</button><button type="button" class="btn ghost btn-ghost btn-lg rj-bank-reuse" data-bank title="Save this assessment for reuse">Bank for reuse</button></div>');
+ hero.append(tools);
+
+ const host=node('<section class="ad-layout"><div class="ad-main"></div><div class="ad-settings"></div></section>');
+ page.querySelector('.reviewgrid').before(host);
+ const main=host.firstElementChild,side=host.lastElementChild;
+ let selected=t.id;
+ const select=id=>{selected=id;m.active=id;save(m);draw()};
+
+ const choices=(key,label,options,current,kind='chips')=>`<div class="ad-setting" role="group" aria-labelledby="ad-${key}-label"><p class="label" id="ad-${key}-label">${label}</p><div class="ad-${kind}">${options.map(([value,text])=>`<button type="button" class="ad-choice" data-choice="${key}" data-value="${esc(value)}" aria-pressed="${value===current}">${esc(text)}</button>`).join('')}</div></div>`;
+ const field=(id,label,control,hint='')=>`<div class="field">${hint?`<div class="ad-label-row"><label class="label" for="${id}">${label}</label><span class="field-hint">${hint}</span></div>`:`<label class="label" for="${id}">${label}</label>`}${control}</div>`;
+ const dropdown=(id,attr,options)=>`<span class="select-wrap"><select class="select" id="${id}" ${attr}>${options}</select></span>`;
+
+ function draw(){
+  t=m.tests.find(x=>x.id===selected)||m.tests[0];
+  t.details=t.details||{description:m.details?.description||'',instructions:m.details?.instructions||instructions.value};
+  const d=t.details,settings=m.settings=m.settings||{};
+  const marks=(t.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks||1;
+  const showResources=d.showResources??Boolean(d.resource||d.notes);
+  const selectedStandards=d.standards||[t.standard].filter(Boolean),availableStandards=[...new Set([...selectedStandards,t.standard,...(String(t.grade)==="5"&&t.subject==="Mathematics"?["5.NF.A.1","5.NF.A.2","5.NF.B.3","5.NF.B.4"]:[]),...(t.questions||[]).map(q=>q.standard),...(window.cogniaAssessmentForms||[]).filter(f=>String(f.grade)===String(t.grade)&&f.subject===t.subject).map(f=>f.standard)].filter(Boolean))];
+  const standardChoices=[[],...availableStandards.map(value=>[value])];if(selectedStandards.length>1)standardChoices.push(selectedStandards);
+  const standardOptions=standardChoices.map(values=>'<option value="'+esc(JSON.stringify(values))+'" '+(JSON.stringify(values)===JSON.stringify(selectedStandards)?'selected':'')+'>'+esc(values.length?values.join(', '):'No standard')+'</option>').join('');
+
+  main.innerHTML=`<nav class="ad-tests" aria-label="Tests in this assessment"><div class="tabs-list" role="group">${m.tests.map(v=>`<button type="button" class="tab" data-select-test="${esc(v.id)}" aria-pressed="${v.id===t.id}">${esc(v.title)}</button>`).join('')}</div><button type="button" class="tab ad-add-test" aria-haspopup="dialog">${plus}Add another test</button></nav>`
+  +field('tf-assessment-name','Test name',`<input class="input" id="tf-assessment-name" maxlength="100" value="${esc(t.title)}" required>`)
+  +field('tf-description','Description',`<textarea class="textarea" id="tf-description" maxlength="500" rows="3" placeholder="Type here">${esc(d.description||'')}</textarea>`,'Optional')
+  +`<div class="ad-row ad-row-2">`
+   +field('ad-grade','Grade / Year',dropdown('ad-grade','data-grade',['4','5','6','8'].map(g=>`<option value="${g}" ${g===String(t.grade)?'selected':''}>Year ${g}</option>`).join('')))
+   +field('ad-subject','Subject',dropdown('ad-subject','data-subject',['Mathematics','English'].map(v=>`<option ${t.subject===v?'selected':''}>${v}</option>`).join('')))
+  +`</div><div class="ad-row ad-row-3">`
+   +field('ad-duration','Duration',dropdown('ad-duration','data-duration','<option>None</option>'+[5,8,10,15,20,30,45,60].map(n=>`<option ${d.duration===n+' minutes'?'selected':''}>${n} minutes</option>`).join('')))
+   +field('ad-standards','Standards',dropdown('ad-standards','data-standard-select',standardOptions))
+   +field('ad-points','Total points',`<div class="ad-stepper"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-points-step="-1" aria-label="Decrease total points">${minus}</button><input class="input" id="ad-points" type="number" inputmode="numeric" min="1" max="999" value="${points}" data-points><button type="button" class="btn btn-ghost btn-icon btn-sm" data-points-step="1" aria-label="Increase total points">${plus}</button></div>`)
+  +`</div><label class="check ad-toggle"><input type="checkbox" class="checkbox" data-resources-toggle ${showResources?'checked':''} aria-controls="ad-resources"><span class="label">Add resources (optional)</span></label>`
+  +`<div class="ad-resources" id="ad-resources" ${showResources?'':'hidden'}>`
+   +field('ad-resource','Resource link',`<input class="input" id="ad-resource" type="url" data-resource placeholder="https://…" value="${esc(d.resource||'')}">`)
+   +field('tf-notes','Additional notes',`<textarea class="textarea" id="tf-notes" rows="3" placeholder="Type here">${esc(d.notes||'')}</textarea>`)
+  +`</div>`;
+
+  const results=settings.results||'After submission';
+  side.innerHTML=choices('attempts','Attempts',[['One attempt only','1'],['2 attempts','2'],['3 attempts','3']],settings.attempts||'One attempt only','round')
+  +`<fieldset class="ad-setting"><legend class="label">Show results to students</legend><div class="ad-radios">${['After submission','After all sessions close','Do not show'].map(v=>`<label class="check"><input type="radio" class="radio" name="ad-results" value="${v}" ${v===results?'checked':''}>${v}</label>`).join('')}</div></fieldset>`
+  +`<div class="ad-row ad-row-even">${choices('questionOrder','Item order',[['As created','As created'],['Shuffle','Shuffle']],settings.questionOrder||'As created','group')}${choices('optionOrder','Answer option order',[['As created','As created'],['Shuffle','Shuffle']],settings.optionOrder||'As created','group')}</div>`
+  +`<div class="ad-row ad-row-even">${choices('calculator','Calculator allowed?',[['Allowed','Yes'],['Not allowed','No']],settings.calculator||'Not allowed','group')}${choices('notes','Notes allowed?',[['Allowed','Yes'],['Not allowed','No']],settings.notes||'Not allowed','group')}</div>`
+  +choices('limit','Time limit',[5,10,15,20].map(n=>[n+' minutes',n+' min']),settings.limit||'5 minutes')
+  +'<div class="ad-confirm"></div>';
+  const confirm=reviewed.closest('label');confirm.classList.add('check');reviewed.classList.add('checkbox');confirm.querySelector('span')?.classList.add('label');side.querySelector('.ad-confirm').append(confirm);
+  time.value=settings.limit||'5 minutes';
+
+  const q=s=>host.querySelector(s);
+  const persist=()=>{
+   t.title=q('#tf-assessment-name').value.trim()||t.title;if(m.tests.length===1)m.title=t.title;
+   d.description=q('#tf-description').value;d.instructions=instructions.value;d.notes=q('#tf-notes').value;d.resource=q('[data-resource]').value;d.duration=q('[data-duration]').value;d.standards=JSON.parse(q('[data-standard-select]').value);d.points=Math.max(1,Number(q('[data-points]').value)||marks||1);d.showResources=q('[data-resources-toggle]').checked;
+   t.grade=q('[data-grade]').value;t.subject=q('[data-subject]').value;
+   m.details={...m.details,description:d.description,instructions:d.instructions,notes:d.notes};
+   host.querySelectorAll('[data-choice][aria-pressed="true"]').forEach(b=>{m.settings[b.dataset.choice]=b.dataset.value});
+   if(!host.querySelector('[data-choice="limit"][aria-pressed="true"]'))m.settings.limit='None';
+   time.value=m.settings.limit;m.settings.results=q('[name="ad-results"]:checked')?.value||'After submission';
+   save(m);
+   const delivery=JSON.parse(localStorage.getItem('cogniaDeliverySessions')||'null');if(delivery){delivery.time=time.value;delivery.attempts=m.settings.attempts==='2 attempts'?'2':m.settings.attempts==='3 attempts'?'3':'1';localStorage.setItem('cogniaDeliverySessions',JSON.stringify(delivery))}
+   page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));
+  };
+  host.onchange=persist;host.rjPersist=persist;
+  /* Add another test opens the setup dialog for a look only: Continue is switched off, Close and Cancel work. */
+  q('.ad-add-test').onclick=e=>{const trigger=e.currentTarget,api=window.capAssessmentSetup;if(!api)return;persist();
+   const initial={title:'New classroom assessment',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||''};
+   const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,onSubmit(){},onClose(){setup.remove();(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
+   const dialog=[...document.querySelectorAll('.cap-setup-modal')].pop();
+   if(dialog){const next=dialog.querySelector('[data-submit-setup]');if(next){next.disabled=true;next.title='Adding another test is not available yet'}
+    dialog.addEventListener('submit',ev=>{ev.preventDefault();ev.stopPropagation()},true)}
+   setup.open(initial)};
+  main.querySelectorAll('[data-select-test]').forEach(b=>b.onclick=()=>{persist();select(b.dataset.selectTest)});
+  q('[data-resources-toggle]').addEventListener('change',e=>{q('#ad-resources').hidden=!e.target.checked});
+  main.querySelectorAll('[data-points-step]').forEach(b=>b.onclick=()=>{const input=q('[data-points]');input.value=Math.min(999,Math.max(1,(Number(input.value)||1)+Number(b.dataset.pointsStep)));persist()});
+  /* Choice pills: one pressed per group. Time limit can be switched off by pressing the selected pill again. */
+  side.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')==='true';if(on&&b.dataset.choice!=='limit')return;side.querySelectorAll(`[data-choice="${b.dataset.choice}"]`).forEach(x=>x.setAttribute('aria-pressed',String(x===b&&!on)));persist()});
  }
+
+ /* Bank for reuse: the button itself becomes a green "Assessment banked" with a check. No status line under it. */
+ const bankButton=tools.querySelector('[data-bank]'),checkIcon=svg('<path d="M20 6 9 17l-5-5"/>');
+ const paintBanked=()=>{bankButton.disabled=false;bankButton.dataset.banked='1';bankButton.classList.add('ad-banked');bankButton.title='Click to remove it from your banked assessments';bankButton.innerHTML=checkIcon+'Assessment banked';document.getElementById('ef-bank-status')?.remove()};
+ const paintUnbanked=()=>{bankButton.disabled=false;delete bankButton.dataset.banked;bankButton.classList.remove('ad-banked');bankButton.title='Save this assessment for reuse';bankButton.textContent='Bank for reuse';document.getElementById('ef-bank-status')?.remove()};
+ const bankedId=()=>'assessment-'+m.tests.map(x=>x.id).join('-')+'-banked';
+ try{if(JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]').some(e=>e.id===bankedId()))paintBanked()}catch{}
+ bankButton.addEventListener('click',e=>{if(bankButton.dataset.banked){e.stopPropagation();try{const archive=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]');localStorage.setItem('cogniaAssessmentArchiveV1',JSON.stringify(archive.filter(x=>x.id!==bankedId())));const work=JSON.parse(localStorage.getItem('cogniaAssessmentWork')||'{}');delete work.banked;localStorage.setItem('cogniaAssessmentWork',JSON.stringify(work))}catch{}paintUnbanked();return}host.rjPersist?.();setTimeout(()=>{if(!e.defaultPrevented)paintBanked()})});
+ tools.querySelector('[data-preview-test]').onclick=()=>{host.rjPersist?.();const dialog=document.createElement('dialog');dialog.className='rj-preview-dialog';dialog.innerHTML='<button type="button" aria-label="Close test preview">×</button><h2>'+esc(t.title)+'</h2>'+(t.questions||[]).map((q,i)=>'<article><h3>'+(i+1)+'. '+esc(q.stem)+'</h3>'+(q.options||[]).map((v,k)=>'<p>'+String.fromCharCode(65+k)+'. '+esc(v)+'</p>').join('')+'</article>').join('');document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.remove();dialog.oncancel=()=>dialog.remove();dialog.showModal()};
  draw();page.addEventListener('click',e=>{if(e.target.closest('a'))host.rjPersist?.()},true);
 };
 window.capReferenceAssign=page=>{

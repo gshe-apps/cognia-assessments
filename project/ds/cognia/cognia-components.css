@@ -445,35 +445,42 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 .switch[aria-checked="true"]::after { transform: translateX(12px); }
 
 /* ------------------------------------------------------------
-   Tabs (components.md, Tabs)
+   Tabs and segmented pickers (components.md, Tabs)
    <div class="tabs-list" role="tablist"> <button class="tab" role="tab" aria-selected="true">
-   A toggle group (role="group", buttons with aria-pressed) uses the same classes.
-   On the page the list is white (bg-card); inside a card it is grey.
+   A segmented picker or toggle group (role="group", buttons with
+   aria-pressed) uses the same classes and the same look.
+   Separate pills with no container: the selected pill is solid primary,
+   the others are outlined. Same look on the page and inside a card.
    ------------------------------------------------------------ */
 .tabs-list {
-  display: inline-flex; align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1);
-  border-radius: var(--radius);
-  background-color: var(--card);
-}
-.card .tabs-list { background-color: var(--secondary); }
-.tab {
-  min-height: 32px;
-  padding: 0 var(--space-3);
-  border: 0;
-  border-radius: var(--radius);
+  display: inline-flex; align-items: center; flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0;
   background: transparent;
-  color: var(--muted-foreground);
-  font-size: var(--text-body-small);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color var(--duration), color var(--duration);
 }
-.tab:hover { color: var(--foreground); background-color: var(--hover-overlay); }
-/* A toggle group (aria-pressed) uses the same look as tabs */
-.tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--secondary); color: var(--foreground); }
-.card .tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--card); box-shadow: var(--shadow-sm); }
+.tab {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+  min-height: 32px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--opacity-primary-30);
+  border-radius: var(--rounded-full);
+  background: transparent;
+  color: var(--foreground);
+  font-size: var(--text-body-base);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration), border-color var(--duration), color var(--duration);
+}
+.tab svg { width: 16px; height: 16px; flex: none; }
+.tab:hover { background-color: var(--hover-overlay); }
+.tab:is([aria-selected="true"], [aria-pressed="true"]) {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.tab:is([aria-selected="true"], [aria-pressed="true"]):hover { border-color: var(--primary-hover); background-color: var(--primary-hover); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)

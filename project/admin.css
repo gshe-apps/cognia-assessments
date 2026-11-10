@@ -2990,7 +2990,7 @@ a.backlink:not(.backicon) svg{width:var(--space-4);height:var(--space-4);color:c
 @media (prefers-reduced-motion: reduce) { .fset .selcard, .wincard { transition: none; } }
 
 /* ---- from ds/cognia/prototype-entry.css ---- */
-.cap-entry { --epi-blue: #133B66; --epi-red: #89162C; --epi-blue-hover: color-mix(in srgb, #133B66 85%, var(--card)); }
+.cap-entry { --epi-blue: #001844; --epi-red: #CE181E; --epi-blue-hover: color-mix(in srgb, #001844 85%, var(--card)); }
 .cap-entry .epi-brand { position: absolute; top: var(--space-6); left: var(--horizontal-padding); display: flex; align-items: center; z-index: 10; }
 .cap-entry .epi-logo { display: block; height: 40px; width: auto; }
 .cap-entry .entry-main { min-height: 100vh; box-sizing: border-box; }

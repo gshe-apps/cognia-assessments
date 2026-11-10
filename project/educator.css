@@ -4621,82 +4621,76 @@ html body.item-method-reference .cap-root .btn.solid {
 
 /* ---- from ds/cognia/results-dashboard.css ---- */
 .rr-main { background:var(--background); }
-.rr-page { max-width:1440px; margin:auto; padding:var(--space-8); display:flex; flex-direction:column; gap:var(--space-6); }
+.rr-page { display:flex; flex-direction:column; gap:var(--space-6); padding-block:var(--space-8) var(--space-4); font-family:var(--font-sans); color:var(--foreground); }
 .rr-page :is(h1, h2, p) { margin:0; }
-.rr-page h1 { font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
-.rr-page h2 { font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans); }
-.rr-page p,.rr-page span,.rr-page a,.rr-page button,.rr-page label,.rr-page input,.rr-page td,.rr-page th { font-size:var(--text-body-small); }
-.rr-page p { color:var(--muted-foreground); line-height:var(--lh-base); }
-.rr-page strong { font-weight:var(--weight-semibold); }
-.rr-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--space-6); }
-.rr-heading p { margin-top:var(--space-2); font-size:var(--text-body-base); }
-.rr-context { display:flex; flex-direction:column; gap:var(--space-1); text-align:right; color:var(--muted-foreground); }
-.rr-context strong { color:var(--foreground); font-size:var(--text-body-base); }
-.rr-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--space-4); }
-.rr-stat { display:flex; align-items:center; gap:var(--space-4); background:var(--card); border:0; border-radius:var(--radius-xl,12px); padding:var(--space-4) var(--space-6); }
-.rr-stat h2 { font-size:var(--text-body-small); color:var(--muted-foreground); }
-.rr-stat strong { display:block; font-size:var(--text-heading); line-height:var(--lh-snug); margin:var(--space-1) 0; }
-.rr-icon { display:inline-grid; place-items:center; width:40px; height:40px; flex-shrink:0; border-radius:var(--radius); background:var(--accent-100); color:var(--muted-foreground); }
-.rr-icon svg { width:24px; height:24px; stroke:var(--accent-300); }
-.rr-visuals { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:var(--space-4); }
-.rr-panel { min-width:0; background:var(--card); border:0; border-radius:var(--radius-xl,12px); padding:var(--space-6); }
-.rr-panel>p { margin-top:var(--space-2); }
-.rr-distribution { width:100%; height:192px; overflow:visible; margin-top:var(--space-2); }
-.rr-distribution text { fill:var(--muted-foreground); font:var(--weight-regular) var(--text-body-small) var(--font-sans); }
+.rr-page p { font-size:var(--text-body-base); line-height:var(--lh-base); color:var(--muted-foreground); }
+.rr-page h2 { font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); color:var(--foreground); }
+
+/* Heading: assessment on the left, live summary on the right */
+.rr-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-6); }
+.rr-title { display:flex; flex-direction:column; gap:var(--space-2); }
+.rr-title h1 { display:flex; align-items:center; gap:var(--space-2); font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
+.rr-title h1 svg { width:24px; height:24px; flex:none; }
+.rr-summary { display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-2); text-align:right; }
+
+/* Two columns: session and charts, then the student table */
+.rr-layout { display:grid; grid-template-columns:368px minmax(0, 1fr); gap:var(--space-8); align-items:start; }
+.rr-side { display:flex; flex-direction:column; gap:var(--space-6); min-width:0; }
+.rr-block { display:flex; flex-direction:column; gap:var(--space-3); }
+
+/* Live session card */
+.rr-live { display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-4); border-radius:var(--radius-xl); background:var(--card); }
+.rr-live-row { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); min-height:38px; }
+.rr-live-row strong { font-size:var(--text-body-base); font-weight:var(--weight-semibold); color:var(--foreground); }
+.rr-live .rr-live-where { font-size:var(--text-body-small); }
+.rr-live-actions { display:flex; align-items:center; gap:var(--space-2); flex-wrap:wrap; }
+.rr-live .rr-live-confirm { flex-basis:100%; font-size:var(--text-body-small); color:var(--foreground); }
+
+/* Score distribution */
+.rr-distribution { display:block; width:100%; height:auto; overflow:visible; }
+.rr-distribution text { fill:var(--foreground); font:var(--weight-regular) var(--text-body-small) var(--font-sans); }
 .rr-grid { fill:none; stroke:var(--border); stroke-width:1; }
-.rr-bar { fill:var(--accent-200); }
-.rr-bar-4,.rr-bar-5 { fill:var(--accent-300); }
-.rr-performance { display:flex; flex-direction:column; gap:var(--space-4); margin-top:var(--space-6); }
-.rr-performance-row { display:grid; grid-template-columns:24px 1fr 40px; align-items:center; gap:var(--space-3); }
-.rr-performance-row strong { font-size:var(--text-body-small); text-align:right; }
-.rr-track { height:12px; border-radius:var(--rounded-full); background:var(--secondary); overflow:hidden; }
-.rr-track span { display:block; height:100%; border-radius:inherit; background:var(--success); }
-.rr-performance-row:nth-child(3) .rr-track span,.rr-performance-row:nth-child(5) .rr-track span { background:var(--warning); }
-.rr-insights { background:var(--card); }
-.rr-insights h2 { display:flex; align-items:center; gap:var(--space-3); }
-.rr-insights h2 .rr-icon { width:32px; height:32px; background:transparent; }
-.rr-insight { display:flex; gap:var(--space-3); margin-top:var(--space-4); }
-.rr-insight strong { font-size:var(--text-body-small); }
-.rr-insight p { margin-top:var(--space-1); }
-.rr-insight a { display:inline-block; margin-top:var(--space-2); color:var(--foreground); text-underline-offset:var(--space-1); }
+.rr-baseline { fill:none; stroke:var(--opacity-primary-30); stroke-width:1; }
+.rr-bar { fill:var(--chart-1); }
+
+/* Performance by item */
+.rr-performance { display:flex; flex-direction:column; gap:var(--space-3); }
+.rr-performance-row { display:grid; grid-template-columns:36px minmax(0, 1fr) 40px; align-items:center; gap:var(--space-2); font-size:var(--text-body-small); }
+.rr-performance-row :is(span, strong) { font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--foreground); }
+.rr-performance-row strong { text-align:right; }
+.rr-track { height:8px; border-radius:var(--rounded-full); background:var(--opacity-primary-20); overflow:hidden; }
+.rr-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
+
+/* Key insights */
+.rr-insights { gap:var(--space-4); }
+.rr-insight { display:flex; align-items:flex-start; gap:var(--space-3); }
+.rr-insight strong { display:block; font-size:var(--text-body-small); font-weight:var(--weight-semibold); }
+.rr-insight p { margin-top:var(--space-1); font-size:var(--text-body-small); }
+.rr-icon { display:inline-grid; place-items:center; width:32px; height:32px; flex:none; border-radius:var(--radius); }
+.rr-icon svg { width:20px; height:20px; }
 .rr-success { background:var(--success-light); }.rr-success svg { stroke:var(--success); }
 .rr-warning { background:var(--warning-light); }.rr-warning svg { stroke:var(--warning); }
-.rr-review-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--space-4); }
-.rr-filters { display:flex; flex-wrap:wrap;}
-.rr-filters button { font-family:var(--font-sans); cursor:pointer;}
-.rr-review-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:var(--space-6); margin:var(--space-4) 0; }
-.rr-review-toolbar .search { width:280px; max-width:100%; }
-.rr-review-toolbar nav { display:flex; flex-wrap:wrap; gap:var(--space-4); padding-bottom:var(--space-3); }
-.rr-review-toolbar a { color:var(--foreground); text-underline-offset:var(--space-1); }
-.rr-student { display:flex; align-items:center; gap:var(--space-3); }
-.rr-avatar { display:grid; place-items:center; width:32px; height:32px; border-radius:var(--radius); background:var(--secondary); color:var(--muted-foreground); }
-.rr-avatar svg { width:24px; height:24px; }
-.rr-review-panel .rr-table-note { margin-top:var(--space-4); }
-.rr-page :is(button:not(.btn), input:not(.search-input), a:not(.btn)):focus-visible { outline:2px solid var(--ring); outline-offset:var(--space-1); }
-@media(max-width:1100px) { .rr-visuals { grid-template-columns:1fr 1fr; } .rr-insights { grid-column:1/-1; } .rr-insights .rr-insight { display:inline-flex; width:48%; vertical-align:top; } .rr-stats { grid-template-columns:1fr 1fr; } }
-@media(max-width:650px) { .rr-page { padding:var(--space-4); } .rr-heading,.rr-review-heading,.rr-review-toolbar { flex-direction:column; align-items:flex-start; } .rr-context { text-align:left; } .rr-stats,.rr-visuals { grid-template-columns:1fr; } .rr-insights .rr-insight { display:flex; width:auto; } .rr-review-toolbar label { width:100%; } }
+.rr-links { display:flex; flex-wrap:wrap; gap:var(--space-2) var(--space-4); }
+.rr-links a { font-size:var(--text-body-small); color:var(--foreground); text-underline-offset:var(--space-1); }
 
-/* ---- from ds/cognia/live-results.css ---- */
-.rr-live { display:flex; align-items:center; justify-content:space-between; gap:var(--space-6); flex-wrap:wrap; }
-.rr-live-main { display:flex; align-items:flex-start; gap:var(--space-8); flex-wrap:wrap; min-width:0; }
-.rr-live-main > div { display:flex; flex-direction:column; gap:var(--space-2); min-width:0; }
-.rr-live h2 { font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--muted-foreground); }
-.rr-live-code strong { font-size:var(--text-heading); line-height:var(--lh-snug); letter-spacing:0; }
-.rr-live-join p { display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; color:var(--foreground); }
-.rr-live-url { overflow-wrap:anywhere; color:var(--foreground); }
-.rr-live-progress strong { font-size:var(--text-body-base); color:var(--foreground); }
-.rr-live-actions { display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap; }
-.rr-live-confirm { color:var(--foreground); }
-
-/* Live performance colours follow the data, not row position */
-.rr-live-on .rr-performance-row .rr-track span { background:var(--success); }
-.rr-live-on .rr-performance-row.rr-low .rr-track span { background:var(--warning); }
+/* Student table */
+.rr-review-panel { display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
+.rr-review-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); flex-wrap:wrap; }
+.rr-review-toolbar .search { width:288px; max-width:100%; }
+.rr-student { display:flex; align-items:center; gap:var(--space-2); }
+.rr-student a { color:var(--foreground); font-weight:var(--weight-semibold); text-decoration:none; }
+.rr-student a:hover { text-decoration:underline; text-underline-offset:var(--space-1); }
+.rr-avatar { display:grid; place-items:center; width:36px; height:36px; flex:none; border-radius:var(--rounded-full); background:var(--secondary); color:var(--foreground); font-size:var(--text-body-small); }
+.rr-review-panel .rr-empty, .rr-review-panel .rr-table-note { font-size:var(--text-body-small); }
+.rr-review-toolbar .rr-table-note { color:var(--muted-foreground); }
+.rr-page :is(button:not(.btn), a:not(.btn)):focus-visible { outline:2px solid var(--ring); outline-offset:var(--space-1); }
 
 /* A just-arrived submission */
-.rr-review-panel tbody tr td { transition:all 200ms; }
+.rr-review-panel tbody tr td { transition:background-color var(--duration); }
 .rr-review-panel tbody tr.rr-new td { background:var(--success-light); }
 
-@media(max-width:650px) { .rr-live-main { gap:var(--space-4); } }
+@media(max-width:1100px) { .rr-layout { grid-template-columns:1fr; } }
+@media(max-width:650px) { .rr-heading { flex-direction:column; } .rr-summary { align-items:flex-start; text-align:left; } }
 
 /* ---- from ds/cognia/assessment-library.css ---- */
 .cap-root .main:has(.al-library) { padding: 0; }
@@ -4877,7 +4871,7 @@ html body.item-method-reference .cap-root .btn.solid {
    One component for every step of the create flow (Create, Review, Details, Assign, Confirm).
    footer() in teacher-flow-upgrade.js builds it from .card.card-themed; only the title, the
    summary line and the actions change per step. Layout only: colour, radius and type come
-   from the plugin classes. 1200px wide and 48px from the bottom of the viewport. */
+   from the plugin classes. 900px wide (10 Nov, was 1200px) and 48px from the bottom of the viewport. */
 :where(.tf-page) {
   padding-bottom: calc(var(--tf-bar-height, var(--space-24)) + var(--space-12) + var(--space-6));
 }
@@ -4886,7 +4880,7 @@ html body.item-method-reference .cap-root .btn.solid {
   inset: auto auto var(--space-12) 50%;
   z-index: 10;
   box-sizing: border-box;
-  width: min(1200px, calc(100% - var(--space-8)));
+  width: min(900px, calc(100% - var(--space-8)));
   transform: translateX(-50%);
   flex-direction: row;
   flex-wrap: nowrap;
@@ -5091,3 +5085,59 @@ html body .cap-root .rj-details .textarea { min-height: 96px; }
 
 /* The details form spreads .tf-field spans with display:contents; the plugin select wrapper needs its own box for the chevron. */
 html body .cap-root .rj-details .tf-field > .select-wrap { display: block; }
+
+/* 10 Nov, step 2 Assessment details (Figma 1488:12324): layout only. Test pills, a 3:2 grid with the test form
+   on the left and the assessment settings on the right. Components come from the plugin. */
+.cap-root .tf-page.rj-details .tf-hero{display:flex;align-items:center;justify-content:flex-start;gap:var(--space-2)}
+.rj-details .tf-hero h1{font-weight:600}
+.rj-details .tf-hero>.ad-hero-actions{display:flex;align-items:center;gap:var(--space-2);margin-left:auto}
+.cap-root .rj-details .tf-hero>.ad-hero-actions~.tf-hero-draft{margin-left:0;align-self:center}
+.rj-details .ad-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:var(--space-8);align-items:start}
+.rj-details .ad-main{display:flex;flex-direction:column;gap:var(--space-3);min-width:0}
+.rj-details .ad-tests{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+.rj-details .ad-tests .tabs-list{gap:var(--space-2)}
+.rj-details .ad-layout .field{margin:0}
+.rj-details .ad-layout .field .label{margin:0}
+.rj-details .ad-label-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)}
+.rj-details .ad-row{display:grid;gap:var(--space-3)}
+.rj-details .ad-row-2{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+.rj-details .ad-row-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rj-details .ad-row-even{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6)}
+.rj-details .ad-toggle{align-self:flex-start;padding:var(--space-1) var(--space-2)}
+.rj-details .ad-resources{display:flex;flex-direction:column;gap:var(--space-3)}
+.rj-details .ad-resources[hidden]{display:none}
+.rj-details .ad-stepper{position:relative}
+.rj-details .ad-stepper .input{text-align:center;-moz-appearance:textfield}
+.rj-details .ad-stepper .input::-webkit-inner-spin-button,.rj-details .ad-stepper .input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.rj-details .ad-stepper .btn{position:absolute;top:50%;transform:translateY(-50%)}
+.rj-details .ad-stepper [data-points-step="-1"]{left:var(--space-2)}
+.rj-details .ad-stepper [data-points-step="1"]{right:var(--space-2)}
+.rj-details .ad-settings{display:flex;flex-direction:column;gap:var(--space-6);padding:var(--space-12) var(--space-3) var(--space-3);min-width:0}
+.rj-details .ad-setting{display:flex;flex-direction:column;gap:var(--space-2);min-width:0;margin:0;padding:0;border:0}
+.rj-details .ad-setting>legend{padding:0;margin-bottom:var(--space-2)}
+.rj-details .ad-radios{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-4);min-height:32px}
+.rj-details .ad-confirm{padding:0 var(--space-2)}
+.rj-details .ad-confirm .check{align-items:flex-start}
+@media(max-width:1023px){.rj-details .ad-layout{grid-template-columns:minmax(0,1fr)}.rj-details .ad-settings{padding:0}}
+@media(max-width:639px){.rj-details .tf-hero{flex-wrap:wrap}.rj-details .tf-hero>.ad-hero-actions{margin-left:0}.rj-details :is(.ad-row-2,.ad-row-3,.ad-row-even){grid-template-columns:minmax(0,1fr)}}
+/* 10 Nov, step 2 settings as designed: button groups (Item order, Answer option order, Calculator, Notes) and
+   chips (Attempts, Time limit). Selected is accent-100 and semibold, unselected is secondary. */
+.rj-details .ad-group{display:inline-flex;align-self:flex-start}
+.rj-details :is(.ad-chips,.ad-round){display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.rj-details .ad-choice{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:var(--space-2) var(--space-4);border:0;border-radius:var(--rounded-full);background-color:var(--secondary);color:var(--secondary-foreground);font:400 var(--text-body-base)/1.4 var(--font-sans);white-space:nowrap;cursor:pointer;transition:background-color var(--duration)}
+.rj-details .ad-group .ad-choice{min-height:40px;border-radius:0}
+.rj-details .ad-group .ad-choice:first-child{border-radius:var(--rounded-full) 0 0 var(--rounded-full)}
+.rj-details .ad-group .ad-choice:last-child{border-radius:0 var(--rounded-full) var(--rounded-full) 0}
+.rj-details .ad-chips .ad-choice{padding-inline:var(--space-3)}
+.rj-details .ad-round .ad-choice{width:38px;height:38px;min-height:38px;padding:0}
+.rj-details .ad-choice:hover{background-image:linear-gradient(var(--hover-overlay),var(--hover-overlay))}
+.rj-details .ad-choice[aria-pressed="true"]{background-color:var(--accent-100);font-weight:600}
+/* Checkboxes on this screen: 16px square, 4px corners, no ring after a mouse click (keyboard focus still shows). */
+.rj-details .ad-layout .checkbox{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-grid;place-items:center;width:16px;height:16px;min-width:16px;min-height:16px;margin:0;padding:0;border:1px solid var(--primary);border-radius:calc(var(--radius) / 2);background:var(--card);box-shadow:none}
+.rj-details .ad-layout .checkbox:checked{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat}
+.rj-details .ad-layout .checkbox:focus:not(:focus-visible){outline:none;box-shadow:none}
+.rj-details .ad-confirm .check{align-items:center}
+/* Bank for reuse once clicked: a soft green button with a check. Text stays foreground (plugin: status colours only on badges and data values). Click again to undo. */
+.cap-root .rj-details .ad-hero-actions .ad-banked{background-color:var(--success-light);border-color:transparent;color:var(--foreground)}
+.cap-root .rj-details .ad-hero-actions .ad-banked:hover{background-color:color-mix(in srgb, var(--success-light) 85%, var(--success))}
+@media(prefers-reduced-motion:reduce){.rj-details .ad-choice{transition:none}}

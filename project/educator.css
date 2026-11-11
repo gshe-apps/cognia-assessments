@@ -2388,21 +2388,21 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview .od-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .od-overview .od-hero h1 { font: var(--weight-bold) var(--text-subtitle)/1.3 var(--font-sans); }
 .od-overview .od-hero p { margin-top: var(--space-1); font-size: var(--text-body-base); }
-.od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-4); }
+.od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-8); }
 .od-overview .od-calendar { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
 .od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .od-week-toolbar { justify-content: space-between; margin-bottom: var(--space-4); }
 .od-week-toolbar .btn-outline { border-color: var(--border); background: var(--card); }
 .od-week-toolbar .btn-outline:hover { background: var(--secondary); }
 .od-week-toolbar .btn img, .od-week-assessment img, .od-priority-heading img { display: block; flex: none; }
-.od-week-view.tabs-list { padding: var(--space-1); border: 1px solid var(--border); border-radius: var(--radius); }
-.od-week-view .tab { border-radius: var(--radius); }
-.od-week-view .tab[aria-pressed="true"] { background: var(--accent-100); color: var(--foreground); }
+.od-week-view.tabs-list { padding: var(--space-1); border: 0; border-radius: var(--radius); }
+.od-week-view .tab { border: 0; border-radius: var(--radius); background: var(--secondary); color: var(--secondary-foreground); }
+.od-week-view .tab[aria-pressed="true"] { background: var(--primary); color: var(--primary-foreground); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }
 .od-week-grid[data-view="week"] { grid-template-columns: repeat(5,minmax(150px,1fr)); column-gap: 10px; min-height: max(100%, 510px); }
-.od-week-day.card { min-width: 0; gap: var(--space-4); padding: var(--space-3); border: 1px solid var(--border); }
-.od-week-day[aria-current="date"] { border-color: var(--accent-300); background: color-mix(in srgb, var(--accent-100) 45%, var(--card)); }
+.od-week-day.card { min-width: 0; gap: var(--space-4); padding: var(--space-3); border: 0; }
+.od-week-day[aria-current="date"] { background: color-mix(in srgb, var(--accent-100) 45%, var(--card)); }
 .od-week-day header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
 .od-week-day header h3 { font-size: var(--text-body-base); font-weight: var(--weight-bold); }
 .od-week-day header h3 span { font-size: var(--text-body-small); font-weight: var(--weight-regular); white-space: nowrap; }
@@ -2441,9 +2441,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-week-empty { padding: var(--space-6); }
 .od-overview .od-folder-grid { display: grid; gap: var(--space-3); min-width: 0; }
 .od-priorities-intro h2 { font-size: var(--text-subheading); font-weight: var(--weight-bold); }
-.od-priority-tile.card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border); color: var(--foreground); text-decoration: none; }
-.od-priority-tile:hover { border-color: var(--ring); }
-.od-priority-tile.od-priority-review { background: var(--destructive-light); border-color: color-mix(in srgb, var(--destructive) 45%, var(--border)); }
+.od-priority-tile.card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 0; color: var(--foreground); text-decoration: none; }
+.od-priority-tile:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.od-priority-tile.od-priority-review { background: var(--destructive-light); }
 .od-priority-heading { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: start; gap: var(--space-3); }
 .od-priority-heading strong { display: block; font-size: var(--text-body-base); font-weight: var(--weight-bold); }
 .od-priority-heading small, .od-priority-stats small { display: block; font-size: inherit; }

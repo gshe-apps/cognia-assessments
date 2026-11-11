@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded',()=>{
- document.querySelectorAll('.hubnav a[href="CAP-T21-AssessmentLibrary.dc.html"]').forEach(a=>a.remove());
  if(!location.pathname.endsWith('CAP-T03-Assessments.dc.html')||new URLSearchParams(location.search).get('view')==='banked')return;
  const host=document.querySelector('.manage-banked');if(!host)return;
  document.getElementById('client-library-entry')?.remove();host.className='assessment-library-panel';

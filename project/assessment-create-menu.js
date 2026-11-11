@@ -33,6 +33,43 @@
     setup.open(initial);
   };
 
+  /* Use assessment library: pick a ready-made Cognia assessment in a modal (Figma 1504:5530).
+     Same fixed size and theme background as the setup modal; choosing one goes to step 3 (Assign). */
+  window.capOpenLibraryPicker = (trigger) => {
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const forms = (window.cogniaAssessmentForms || []).slice(0, 4);
+    const host = trigger.closest('.theme-assessments') || document.body;
+    const fileIcon = '<span class="icon-accent"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>';
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<dialog class="dialog cap-setup-modal cap-library-modal" aria-labelledby="cap-library-title">
+      <div class="cap-setup-heading">
+        <h2 class="dialog-title" id="cap-library-title" tabindex="-1" autofocus>Select a Cognia assessment</h2>
+        <button class="btn btn-ghost btn-icon btn-sm" type="button" data-close-library aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
+      </div>
+      <ul class="cap-library-list">${forms.map((f) => {
+        const qs = f.questions || [];
+        const points = qs.reduce((n, q) => n + Number(q.marks || 0), 0);
+        return `<li><button type="button" class="cap-library-item" data-library-form="${esc(f.id)}">
+          ${fileIcon}
+          <span class="cap-library-copy"><span class="text-body-small text-muted-foreground">${esc(f.standard)}</span><strong>${esc(f.title)}</strong><span class="text-body-small text-muted-foreground">Grade ${esc(f.grade)} ${esc(f.subject)}</span></span>
+          <span class="cap-library-meta"><span class="badge badge-secondary">${qs.length} ${qs.length === 1 ? 'item' : 'items'}</span><span class="text-body-small">${points} ${points === 1 ? 'point' : 'points'}</span></span>
+        </button></li>`;
+      }).join('')}</ul>
+    </dialog>`;
+    const modal = wrap.firstElementChild;
+    host.append(modal);
+    const close = () => { modal.close(); };
+    modal.addEventListener('close', () => { modal.remove(); (trigger.isConnected ? trigger : document.getElementById(trigger.id))?.focus(); });
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-close-library]')) return close();
+      const item = event.target.closest('[data-library-form]');
+      if (!item) return;
+      if (window.capStartLibraryForm) window.capStartLibraryForm(item.dataset.libraryForm);
+      else location.href = 'CAP-T21-AssessmentLibrary.dc.html';
+    });
+    modal.showModal();
+  };
+
   window.capMountAssessmentCreateMenu = (root) => {
     const host = root.querySelector('[data-assessment-create-menu]');
     if (!host || host.firstElementChild) return;
@@ -44,20 +81,19 @@
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </button>
         <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>
-          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html" data-create-from-scratch>
-            ${svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5M14 2l6 6v3m-6-9v6h6m-3 7v6m-3-3h6"/>')}
-            Create from scratch
-          </a>
-          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html">
-            ${svg('<path d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/>')}
-            Use assessment library
-          </a>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html" data-create-from-scratch>Create from scratch</a>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html" data-use-library>Use assessment library</a>
         </div>
       </div>`;
     host.querySelector('[data-create-from-scratch]').addEventListener('click',event=>{
       if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       event.preventDefault();
       window.capOpenNewAssessment(host.querySelector('#create-assessment-trigger'));
+    });
+    host.querySelector('[data-use-library]').addEventListener('click',event=>{
+      if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      event.preventDefault();
+      window.capOpenLibraryPicker(host.querySelector('#create-assessment-trigger'));
     });
   };
 })();

@@ -45,47 +45,75 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* Step 1 drafts were already set up, so the item builder opens without the setup dialog. */
   if(!stepTwo&&window.capAssessmentSetup){const t=entry.model.tests.find(t=>t.id===entry.model.active)||entry.model.tests[0];if(t)sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(t))}
   restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null);}
- window.capRestoreWork=restore;window.capOpenSaved=openSaved;
+ window.capRestoreWork=restore;window.capOpenSaved=openSaved;window.capStartLibraryForm=id=>startForm(id);
  function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;const usage=read('cogniaLibraryUsageV1',{});usage[id]=Date.now();put('cogniaLibraryUsageV1',usage);preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});location.href='CAP-T08-AudienceDelivery.dc.html';}
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form · Grade ${f.grade} · ${escape(f.subject)} · ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions"><button class="btn solid btn-lg" data-assign-form="${f.id}">Use complete assessment →</button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
+ /* Library (11 Nov): Item Bank layout, assessments on the left and a preview on the right.
+    Uses the Item Bank's .ib classes; search, filter and sort are ghost icon buttons. State lives here so re-renders keep it. */
+ const libState={selected:null,term:'',grade:'',subject:'',format:'',sort:'recent',search:false,filters:false};
  function renderLibrary(){
-  const root=document.getElementById('assessment-library');if(!root)return;root.classList.add('al-library');
-  const svg=path=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
-  const arrow=svg('<path d="M5 12h14m-6-6 6 6-6 6"/>'),chevron=svg('<path d="m6 9 6 6 6-6"/>');
-  const eye=svg('<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>');
-  const icons={calculator:svg('<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M8 10h.01M12 10h.01M16 10h.01M12 14h.01M8 14h.01M8 18h.01M12 18h.01"/>'),book:svg('<path d="M12 7v14M3 18a1 1 0 0 0 1 1h5a3 3 0 0 1 3 3 3 3 0 0 1 3-3h5a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-5a3 3 0 0 0-3 3 3 3 0 0 0-3-3H4a1 1 0 0 0-1 1z"/>'),clipboard:svg('<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4"/>')};
-  icons.shapes=svg('<path d="M8.3 10a.7.7 0 0 0 .6 1h10.2a.7.7 0 0 0 .6-1L14.6 1.8a.7.7 0 0 0-1.2 0Z"/><rect width="8" height="8" x="14" y="14" rx="1"/><circle cx="6" cy="18" r="4"/>');
+  const root=document.getElementById('assessment-library');if(!root)return;
+  root.className='ib al-ib';
+  const svg=path=>'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+path+'</svg>';
+  const arrow=svg('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'),check=svg('<path d="M20 6 9 17l-5-5"/>');
   const formatNames={'Text entry':'Short answer','Extended text':'Extended response'};
   const formatsOf=form=>{const types=[...new Set((form.questions||[]).map(q=>formatNames[q.type]||q.displayType||q.type).filter(Boolean))];return [...new Set([...(form.format?[form.format]:[]),...types,...(types.length>1?['Mixed formats']:[])])];};
-  const grades=[...new Set(['K',...Array.from({length:12},(_,i)=>String(i+1)),...forms.map(f=>String(f.grade))])].sort((a,b)=>(a==='K'?-1:Number(a))-(b==='K'?-1:Number(b)));
-  const subjects=[...new Set(['English','Mathematics','Science','Social studies',...forms.map(f=>f.subject)])].sort();
-  const formats=[...new Set(['Multiple choice','Short answer','Extended response','Mixed formats',...forms.flatMap(formatsOf)])];
+  const grades=[...new Set(forms.map(f=>String(f.grade)))].sort((a,b)=>Number(a)-Number(b));
+  const subjects=[...new Set(forms.map(f=>f.subject))].sort();
+  const formats=[...new Set(forms.flatMap(formatsOf))];
   const options=(values,label=v=>v)=>values.map(v=>'<option value="'+escape(v)+'">'+escape(label(v))+'</option>').join('');
-  root.innerHTML='<header class="al-heading"><div class="al-heading-content"><a class="btn btn-ghost btn-icon btn-sm al-back" href="CAP-T03-Assessments.dc.html" aria-label="Back to assessments">'+svg('<path d="m12 19-7-7 7-7M5 12h14"/>')+'</a><div><h1 class="text-heading font-semibold">Assessment library</h1><p>Discover ready-to-teach Cognia assessments and assign them to your class.</p></div></div></header>'
-   +'<form class="al-filters" role="search"><div class="search al-search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" id="form-search" type="search" aria-label="Search by title or standard" placeholder="Search by title or standard" autocomplete="off"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">'+svg('<path d="M18 6 6 18M6 6l12 12"/>')+'</button><span class="tooltip" role="tooltip">Clear search</span></span></div>'
-   +'<label class="al-sort"><span>Sort by:</span><select id="form-sort" class="select" aria-label="Sort assessments"><option value="recent">Recently used</option><option value="title">Title A–Z</option><option value="grade">Grade level</option></select>'+chevron+'</label>'
-   +'<div class="al-filter-control"><button type="button" class="btn btn-outline btn-lg al-action" data-toggle-library-filters aria-expanded="false" aria-controls="al-filter-panel">'+svg('<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>')+'Filter<span data-filter-count hidden></span></button><div class="al-filter-panel" id="al-filter-panel" hidden><h2>Filter assessments</h2><label class="field"><span class="label">Grade</span><span class="al-filter-select"><select id="form-grade" class="select"><option value="">All grades</option>'+options(grades,g=>g==='K'?'Kindergarten':'Grade '+g)+'</select>'+chevron+'</span></label><label class="field"><span class="label">Subject</span><span class="al-filter-select"><select id="form-subject" class="select"><option value="">All subjects</option>'+options(subjects)+'</select>'+chevron+'</span></label><label class="field"><span class="label">Format</span><span class="al-filter-select"><select id="form-format" class="select"><option value="">All formats</option>'+options(formats)+'</select>'+chevron+'</span></label><button type="button" class="btn btn-ghost btn-sm" data-reset-library-filters>Clear filters</button></div></div></form>'
-   +'<section class="al-list" aria-label="Assessments"><h2 class="al-count" id="form-count" role="status"></h2><div id="form-results"></div></section>';
-  const filter=root.querySelector('form'),results=root.querySelector('#form-results'),panel=root.querySelector('#al-filter-panel'),toggle=root.querySelector('[data-toggle-library-filters]');
-  function draw(){
-   const term=filter.querySelector('#form-search').value.trim().toLowerCase(),grade=filter.querySelector('#form-grade').value,subject=filter.querySelector('#form-subject').value,format=filter.querySelector('#form-format').value,sort=filter.querySelector('#form-sort').value;
-   const usage=read('cogniaLibraryUsageV1',{});
-   const matches=forms.filter(f=>(!term||(f.title+' '+f.standard).toLowerCase().includes(term))&&(!grade||String(f.grade)===grade)&&(!subject||f.subject===subject)&&(!format||formatsOf(f).includes(format)));
-   if(sort==='title')matches.sort((a,b)=>a.title.localeCompare(b.title));else if(sort==='grade')matches.sort((a,b)=>Number(a.grade)-Number(b.grade)||a.title.localeCompare(b.title));else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
-   root.querySelector('#form-count').textContent=matches.length+' '+(matches.length===1?'assessment':'assessments');
-   const count=[grade,subject,format].filter(Boolean).length,badge=root.querySelector('[data-filter-count]');badge.hidden=!count;badge.textContent=count?'('+count+')':'';
-   results.innerHTML=matches.length?matches.map(form=>{
-    const n=form.questions.length,points=form.questions.reduce((total,q)=>total+Number(q.marks||0),0);
-    return '<article class="al-row" data-library-row="'+escape(form.id)+'" tabindex="0"><span class="al-file icon-accent">'+(form.subject==='English'?icons.clipboard:form.id==='fractions'?icons.calculator:/shapes/i.test(form.title)?icons.shapes:icons.book)+'</span><div class="al-copy"><h2>'+escape(form.title)+'</h2><p>Grade '+escape(form.grade)+' · '+escape(form.subject)+'</p></div><div class="al-badges"><span class="badge badge-secondary">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+n+' '+(n===1?'item':'items')+'</span><span class="badge badge-secondary">'+points+' '+(points===1?'point':'points')+'</span></div><div class="al-actions"><span class="tooltip-wrap"><button type="button" class="btn btn-outline btn-icon btn-lg al-preview" data-preview-form="'+escape(form.id)+'" aria-label="Preview '+escape(form.title)+'">'+eye+'</button><span class="tooltip" role="tooltip">Preview assessment</span></span><button type="button" class="btn btn-lg al-primary" data-start-form="'+escape(form.id)+'">Use assessment'+arrow+'</button></div></article>';
-   }).join(''):'<div class="al-empty"><h2>No assessments match</h2><p>Try a different search or clear your filters.</p><button type="button" class="al-action al-outline" data-clear-library>Clear filters</button></div>';
+  const sorts=[['recent','Recently used'],['title','Title A–Z'],['grade','Grade level']];
+  const tool=(attrs,label,icon)=>'<button type="button" class="ib-icon-btn btn btn-ghost btn-icon" '+attrs+' aria-label="'+label+'">'+icon+'<span class="ib-tip" aria-hidden="true">'+label+'</span></button>';
+  const select=(id,label,all,values,text)=>'<div class="ib-field"><label class="ib-sr" for="'+id+'">'+label+'</label><span class="select-wrap"><select class="select" id="'+id+'"><option value="">'+all+'</option>'+options(values,text)+'</select></span></div>';
+  root.innerHTML='<section class="ib-list" aria-labelledby="al-title"><h1 id="al-title" class="ib-sr">Cognia assessment library</h1>'
+   +'<div class="ib-toolbar"><p class="ib-count" id="form-count" role="status"></p><div class="ib-tools">'
+   +tool('data-al-search aria-pressed="false"','Search assessments',svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'))
+   +tool('data-al-filter aria-pressed="false"','Filter assessments',svg('<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'))
+   +'<div class="dropdown dropdown-end">'+tool('id="al-sort-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="al-sort-menu"','Sort assessments',svg('<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>'))
+   +'<div class="menu" role="menu" id="al-sort-menu" aria-labelledby="al-sort-trigger" hidden>'+sorts.map(([v,l])=>'<button type="button" class="menu-item" role="menuitem" tabindex="-1" data-al-sort="'+v+'">'+l+'<span class="al-sort-check" data-al-sort-check="'+v+'">'+check+'</span></button>').join('')+'</div></div>'
+   +'</div></div>'
+   +'<div class="ib-controls"><div class="ib-slot ib-slot-search" hidden><div class="ib-slot-in"><div class="search ib-search" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input class="search-input" id="form-search" type="search" aria-label="Search by title or standard" placeholder="Search by title or standard" autocomplete="off"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">'+svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')+'</button><span class="tooltip" role="tooltip">Clear search</span></span></div></div></div>'
+   +'<div class="ib-slot ib-slot-filter" hidden><div class="ib-slot-in"><div class="ib-filters">'+select('form-grade','Grade','All grades',grades,g=>'Grade '+g)+select('form-subject','Subject','All subjects',subjects)+select('form-format','Format','All formats',formats)+'</div></div></div></div>'
+   +'<ul class="ib-items" id="form-results" aria-label="Assessments"></ul></section>'
+   +'<section class="ib-detail" id="al-detail" aria-live="polite" aria-labelledby="al-d-title"></section>';
+  const $=s=>root.querySelector(s),search=$('#form-search'),controls=$('.ib-controls');
+  search.value=libState.term;$('#form-grade').value=libState.grade;$('#form-subject').value=libState.subject;$('#form-format').value=libState.format;
+  function panels(){
+   $('.ib-slot-search').hidden=!(libState.search||libState.term);$('.ib-slot-filter').hidden=!libState.filters;
+   controls.classList.toggle('has-any',!$('.ib-slot-search').hidden||libState.filters);
+   $('[data-al-search]').setAttribute('aria-pressed',String(!$('.ib-slot-search').hidden));
+   $('[data-al-filter]').setAttribute('aria-pressed',String(libState.filters));
+   root.querySelectorAll('[data-al-sort-check]').forEach(c=>c.hidden=c.dataset.alSortCheck!==libState.sort);
   }
-  filter.addEventListener('submit',e=>e.preventDefault());filter.querySelector('#form-search').addEventListener('input',draw);filter.addEventListener('change',e=>{if(e.target.matches('select'))draw();});
-  toggle.addEventListener('click',()=>{panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));});
-  root.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.focus();}});
+  function detail(form){
+   const panel=$('#al-detail');if(!form){panel.innerHTML='';return;}
+   const qs=form.questions||[],points=qs.reduce((n,q)=>n+Number(q.marks||0),0);
+   panel.innerHTML='<div class="ib-d-head"><div class="ib-d-title"><h2 id="al-d-title">'+escape(form.title)+'</h2><div class="ib-d-badges"><span class="badge badge-secondary">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+qs.length+' '+(qs.length===1?'item':'items')+'</span><span class="badge badge-secondary">'+points+' '+(points===1?'point':'points')+'</span></div></div>'
+    +'<div class="ib-d-actions"><button type="button" class="btn btn-lg" data-start-form="'+escape(form.id)+'">Use assessment'+arrow+'</button></div></div>'
+    +qs.map((q,i)=>'<div class="ib-card"><div class="ib-card-hd"><div><p class="ib-strong">Item '+(i+1)+'</p><p class="ib-muted">'+escape(formatNames[q.type]||q.displayType||q.type||'Item')+'</p></div><p class="ib-muted">'+Number(q.marks||0)+' '+(Number(q.marks)===1?'point':'points')+'</p></div><p class="ib-stem">'+escape(q.stem)+'</p>'
+     +(q.options?.length?'<ul class="ib-opts" aria-label="Answer options">'+q.options.map((o,k)=>'<li class="ib-opt'+(k===q.correct?' is-correct':'')+'"><span class="ib-letter" aria-hidden="true">'+String.fromCharCode(65+k)+'</span><span class="ib-opt-text">'+escape(o)+'</span>'+(k===q.correct?'<span class="ib-correct">'+check+'<span class="ib-sr">Correct answer</span></span>':'')+'</li>').join('')+'</ul>':'')+'</div>').join('');
+  }
+  function draw(){
+   const term=libState.term.trim().toLowerCase(),usage=read('cogniaLibraryUsageV1',{});
+   const matches=forms.filter(f=>(!term||(f.title+' '+f.standard).toLowerCase().includes(term))&&(!libState.grade||String(f.grade)===libState.grade)&&(!libState.subject||f.subject===libState.subject)&&(!libState.format||formatsOf(f).includes(libState.format)));
+   if(libState.sort==='title')matches.sort((a,b)=>a.title.localeCompare(b.title));else if(libState.sort==='grade')matches.sort((a,b)=>Number(a.grade)-Number(b.grade)||a.title.localeCompare(b.title));else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
+   if(!matches.some(f=>f.id===libState.selected))libState.selected=matches[0]?.id||null;
+   $('#form-count').textContent=matches.length+' '+(matches.length===1?'assessment':'assessments');
+   $('#form-results').innerHTML=matches.length?matches.map(f=>{const n=(f.questions||[]).length;return '<li class="ib-row"><button type="button" class="ib-item" data-al-select="'+escape(f.id)+'" aria-current="'+(f.id===libState.selected)+'"><span class="ib-item-top"><span class="ib-item-grade">Grade '+escape(f.grade)+' '+escape(f.subject)+'</span><span class="ib-badge badge badge-secondary">'+n+' '+(n===1?'item':'items')+'</span></span><span class="ib-item-stem">'+escape(f.title)+'</span></button></li>';}).join(''):'<li class="al-empty"><p class="ib-strong">No assessments match</p><p class="ib-muted">Try a different search or clear your filters.</p><button type="button" class="btn btn-ghost btn-sm" data-clear-library>Clear filters</button></li>';
+   detail(forms.find(f=>f.id===libState.selected));panels();
+  }
+  $('[data-al-search]').onmousedown=e=>e.preventDefault();
+  $('[data-al-search]').onclick=()=>{libState.search=$('.ib-slot-search').hidden;panels();if(libState.search)search.focus();};
+  search.addEventListener('blur',()=>{if(!search.value){libState.search=false;panels();}});
+  search.addEventListener('keydown',e=>{if(e.key==='Escape'&&!search.value){libState.search=false;panels();$('[data-al-search]').focus();}});
+  search.addEventListener('input',()=>{libState.term=search.value;draw();});
+  $('[data-al-filter]').onclick=()=>{libState.filters=!libState.filters;panels();if(libState.filters)$('#form-grade').focus();};
+  root.querySelectorAll('.ib-filters select').forEach(s=>s.addEventListener('change',()=>{libState[s.id.slice(5)]=s.value;draw();}));
   root.addEventListener('click',e=>{
-   if(e.target.closest('[data-reset-library-filters],[data-clear-library]')){for(const id of ['form-grade','form-subject','form-format'])filter.querySelector('#'+id).value='';if(e.target.closest('[data-clear-library]'))filter.querySelector('#form-search').value='';draw();return;}
+   const pick=e.target.closest('[data-al-select]');if(pick){libState.selected=pick.dataset.alSelect;root.querySelectorAll('[data-al-select]').forEach(b=>b.setAttribute('aria-current',String(b===pick)));detail(forms.find(f=>f.id===libState.selected));return;}
+   const sort=e.target.closest('[data-al-sort]');if(sort){libState.sort=sort.dataset.alSort;draw();return;}
+   if(e.target.closest('[data-clear-library]')){Object.assign(libState,{term:'',grade:'',subject:'',format:''});renderLibrary();}
   });
-  document.addEventListener('click',e=>{if(!panel.hidden&&!e.target.closest('.al-filter-control')){panel.hidden=true;toggle.setAttribute('aria-expanded','false');}});
   draw();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;
@@ -136,7 +164,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(m?.origin==='library'&&/CAP-T0[89]-|CAP-T10-/.test(page)){document.querySelectorAll('.stepper a[href="CAP-T06-Review.dc.html"],a[href="CAP-T06-Review.dc.html"]').forEach(el=>{el.href='CAP-T21-AssessmentLibrary.dc.html';if(el.closest('.actionbar'))el.textContent='← Back to Assessment Library';});document.querySelectorAll('.stepper a').forEach(el=>{if(/Content review/.test(el.textContent))el.textContent='Choose assessment';});}
   document.querySelectorAll('.appquick a,.appquick button').forEach(el=>{if(/create.*interim/i.test(el.textContent))el.remove();});
   document.querySelectorAll('a[href="CAP-T20-Interim.dc.html"]').forEach(el=>{if(/create/i.test(el.textContent))el.textContent='Administer interim';});
-  if((isQuestions||isReview)&&m?.origin==='library'){
+  /* Library assessments skip the item builder, but step 2 (Assessment details) works as for any assessment so Back from Assign lands there. */
+  if((isQuestions||(isReview&&new URLSearchParams(location.search).get('stage')!=='details'))&&m?.origin==='library'){
    const content=document.querySelector('main>.page');if(content)content.innerHTML='<div class="head"><div><h1>'+escape(m.title)+'</h1><p>This ready-to-use form is assigned as provided. Customisation is not enabled.</p></div></div><a class="btn solid btn-lg" href="CAP-T08-AudienceDelivery.dc.html">Continue to assign →</a> <a class="btn ghost btn-ghost btn-lg" href="CAP-T21-AssessmentLibrary.dc.html">Back to Assessment Library</a>';
   }
   if(page==='CAP-T09-ConfirmAssignment.dc.html'){const title=document.querySelector('.reviewgrid>section h2');if(title&&m)title.textContent=m.title;}

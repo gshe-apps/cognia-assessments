@@ -843,9 +843,6 @@ html:active-view-transition body{animation:none;}
 
 }
 
-/* Assessment Library is reached from Assessments, not the top nav. Scripts remove the tab, but a screen re-render
-   puts it back for a frame, which made Item Bank jump. Hiding it here stops that flash on every teacher screen. */
-.cap-root .hubnav a[href="CAP-T21-AssessmentLibrary.dc.html"] { display:none; }
 
 /* ---- from prototype-roles.css ---- */
 @layer cap-legacy {
@@ -4238,9 +4235,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-grid .checkbox { accent-color: #0037ff; }
 .allocation-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .allocation-sessions .allocation-heading { margin-bottom: var(--space-3); }
-.allocation-mode { gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius); background: var(--secondary); }
-.allocation-mode .tab { min-height: var(--space-8); padding-inline: var(--space-3); border: 0; border-radius: var(--radius); background: transparent; color: var(--foreground); }
-.allocation-mode .tab[aria-pressed="true"] { background: var(--card); color: var(--card-foreground); }
+/* Classes / Students use the plugin's pill tabs (tabs-list + tab) unstyled: selected is the solid primary pill. */
 .allocation-picker { position: relative; min-width: 0; }
 .allocation-search-row.search { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; min-height: var(--space-12); padding: var(--space-1) var(--space-3); border: 1px solid var(--allocation-line); border-radius: var(--rounded-full); background: var(--card); box-shadow: var(--shadow-sm); }
 .allocation-search-row .icon { position: static; }
@@ -4476,6 +4471,33 @@ html body.item-method-reference .cap-root .btn.solid {
 .cap-setup-fields { display: grid; align-content: start; gap: var(--space-4); flex: 1; min-height: 0; overflow: auto; padding: var(--space-1); }
 .cap-setup-modal .field { min-width: 0; margin: 0; }
 .cap-setup-modal [hidden] { display: none; }
+/* Use assessment library picker (Figma 1504:5530): setup modal size, theme background, white list */
+.cap-library-list { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 0; list-style: none; align-self: stretch; }
+.cap-library-list > li { margin: 0; }
+.cap-library-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.cap-library-list > li:first-child .cap-library-item { border-start-start-radius: var(--radius-xl); border-start-end-radius: var(--radius-xl); }
+.cap-library-list > li:last-child .cap-library-item { border-end-start-radius: var(--radius-xl); border-end-end-radius: var(--radius-xl); }
+.cap-library-list > li + li .cap-library-item { box-shadow: inset 0 1px 0 var(--border); }
+.cap-library-item:hover { background-color: var(--secondary); }
+.cap-library-item:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.cap-library-item .icon-accent { padding: 0; background-color: transparent; }
+.cap-library-item .icon-accent .icon { width: 24px; height: 24px; }
+.cap-library-copy { display: flex; flex-direction: column; min-width: 0; }
+.cap-library-copy strong { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.cap-library-meta { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-1); }
 .cap-setup-columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-6); }
 .cap-setup-link {
   padding: 0;
@@ -4540,7 +4562,7 @@ html body.item-method-reference .cap-root .btn.solid {
   align-items: center;
   gap: var(--space-4);
   margin: 0;
-  padding: var(--space-6);
+  padding: var(--space-4);
   box-shadow: var(--shadow-lg);
 }
 :where(.tf-page) .tf-bottom-copy { display: grid; gap: var(--space-1); flex: 1; min-width: 0; }
@@ -4771,7 +4793,16 @@ html body .cap-root .rj-details .tf-field > .select-wrap { display: block; }
 .rj-details .ad-radios{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2) var(--space-4);min-height:32px}
 .rj-details .ad-confirm{padding:0 var(--space-2)}
 .rj-details .ad-confirm .check{align-items:flex-start}
-@media(max-width:1023px){.rj-details .ad-layout{grid-template-columns:minmax(0,1fr)}.rj-details .ad-settings{padding:0}}
+/* 11 Nov: one centred column, max 900px (same width as the floating bar); settings sit below the form fields. */
+html body .cap-root .workspace > main.main > .tf-page.rj-details{max-width:650px;padding-bottom:calc(var(--tf-bar-height, var(--space-24)) + var(--space-12) + var(--space-6))}
+/* Add another test: borderless, the tab pill without its outline. */
+.rj-details .ad-tests .ad-add-test{border-color:transparent}
+/* 650px column: the title has its own row and the actions sit together on the row below, so banking doesn't shift the layout. */
+.cap-root .tf-page.rj-details .tf-hero{flex-wrap:wrap;row-gap:var(--space-3)}
+.cap-root .tf-page.rj-details .tf-hero>div:first-child{flex:1 0 100%}
+.cap-root .rj-details .tf-hero>.ad-hero-actions{margin-left:0}
+.rj-details .ad-layout{grid-template-columns:minmax(0,1fr)}
+.rj-details .ad-settings{padding:0}
 @media(max-width:639px){.rj-details .tf-hero{flex-wrap:wrap}.rj-details .tf-hero>.ad-hero-actions{margin-left:0}.rj-details :is(.ad-row-2,.ad-row-3,.ad-row-even){grid-template-columns:minmax(0,1fr)}}
 /* 10 Nov, step 2 settings as designed: button groups (Item order, Answer option order, Calculator, Notes) and
    chips (Attempts, Time limit). Selected is accent-100 and semibold, unselected is secondary. */
@@ -4791,6 +4822,24 @@ html body .cap-root .rj-details .tf-field > .select-wrap { display: block; }
 .rj-details .ad-layout .checkbox:focus:not(:focus-visible){outline:none;box-shadow:none}
 .rj-details .ad-confirm .check{align-items:center}
 /* Bank for reuse once clicked: a soft green button with a check. Text stays foreground (plugin: status colours only on badges and data values). Click again to undo. */
-.cap-root .rj-details .ad-hero-actions .ad-banked{background-color:var(--success-light);border-color:transparent;color:var(--foreground)}
+/* 11 Nov: text and check icon green too, darkened 20% so 16px text passes AA (5.7:1) on success-light. */
+.cap-root .rj-details .ad-hero-actions .ad-banked{background-color:var(--success-light);border-color:transparent;color:color-mix(in srgb, var(--success) 80%, black)}
 .cap-root .rj-details .ad-hero-actions .ad-banked:hover{background-color:color-mix(in srgb, var(--success-light) 85%, var(--success))}
 @media(prefers-reduced-motion:reduce){.rj-details .ad-choice{transition:none}}
+
+/* 11 Nov (Sam), re-applied on Bernhard's library and Assign redesign. */
+/* Step 3 checkboxes match step 2: primary, 16px square, 4px corners, white check. */
+.allocation-page input[type=checkbox]{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-grid;place-items:center;width:16px;height:16px;min-width:16px;min-height:16px;margin:0;padding:0;border:1px solid var(--primary);border-radius:calc(var(--radius) / 2);background:var(--card);box-shadow:none;flex-shrink:0;cursor:pointer}
+.allocation-page input[type=checkbox]:checked{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat}
+.allocation-page input[type=checkbox]:indeterminate{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E") center/12px no-repeat}
+.allocation-page input[type=checkbox]:focus:not(:focus-visible){outline:none;box-shadow:none}
+/* Library (11 Nov): Item Bank layout (.ib classes), tools on the right, preview on the right. */
+.al-ib .ib-toolbar { position: relative; z-index: 30; justify-content: space-between; }
+.al-ib .ib-toolbar > .ib-count { align-self: center; }
+.al-ib .ib-slot[hidden] { display: none; }
+.al-ib .ib-filters .select-wrap, .al-ib .ib-filters .select { width: 100%; }
+.al-ib .ib-tools .dropdown { position: relative; }
+.al-ib .menu-item { justify-content: space-between; gap: var(--space-4); }
+.al-ib .al-sort-check { display: inline-flex; }
+.al-ib .al-sort-check[hidden] { display: none; }
+.al-ib .al-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding: var(--space-4) var(--space-3); }

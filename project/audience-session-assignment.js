@@ -28,14 +28,14 @@ window.capReferenceAssign = page => {
  let remembered = {};
  try { remembered = JSON.parse(localStorage.getItem('cogniaLearnerSupports')) || {}; } catch {}
  let mode='classes', search='', picker=false, classSessions={}, lastReviewScope;
- const expanded = new Set(data.classIds.slice(0,1)), supportExpanded = new Set(), collapsedSessions = new Set(), settingsExpanded = new Set();
+ const expanded = new Set(data.classIds.slice(0,1)), collapsedSessions = new Set(), settingsExpanded = new Set();
  const supportsFor = id => data.studentAccommodations[id] || [];
  const roster = id => students.filter(s=>s.classId===id);
  const checked = id => data.recipients.includes(id);
  const selected = id => roster(id).filter(s=>checked(s.id));
  const needsReview = () => students.some(s=>checked(s.id)&&(s.support||supportsFor(s.id).length));
  const icon = name => {
-  const paths = {down:'<path d="m6 9 6 6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',person:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>',edit:'<path d="M13 21h8"/><path d="m15 5 4 4"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>'};
+  const paths = {trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5m4-5v5"/>',down:'<path d="m6 9 6 6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',person:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>',edit:'<path d="M13 21h8"/><path d="m15 5 4 4"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>'};
   return '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
  };
  const iconButton = (attrs,label,name) => '<span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm" '+attrs+' aria-label="'+esc(label)+'">'+icon(name)+'</button><span class="tooltip" role="tooltip">'+esc(label)+'</span></span>';
@@ -53,10 +53,10 @@ window.capReferenceAssign = page => {
  host.className = 'allocation-grid';
  form.prepend(host);
  host.innerHTML = `<section class="allocation-panel"><div class="card-content allocation-recipient-content">
-  <div class="allocation-heading"><div class="tabs-list allocation-mode" role="group" aria-label="Select recipients"><button class="tab" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="tab" type="button" aria-pressed="false" data-mode="students">Students</button></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div>
-  <div class="allocation-picker"><div class="allocation-search-row search" role="search"><div data-class-pills></div><div class="allocation-search-field"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Search classes or students" placeholder="Add classes or search..."></div>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
-  <div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
- </div></section><section class="allocation-panel allocation-sessions"><div class="card-content"><div class="allocation-heading"><h2 class="text-body-base font-semibold">Set up sessions</h2><button type="button" class="btn btn-outline btn-sm" data-add-session>${icon('plus')}Add another session</button></div><div data-sessions></div><p class="alert alert-destructive" data-allocation-error role="alert" tabindex="-1" hidden></p><p class="allocation-live sr-only" role="status" aria-live="polite"></p></div></section>`;
+  <div class="allocation-heading"><div class="tabs-list allocation-mode" role="group" aria-label="Select recipients"><button class="tab" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="tab" type="button" aria-pressed="false" data-mode="students">Students</button></div></div>
+  <div class="allocation-picker"><div class="allocation-search-row search" role="search"><div class="allocation-search-field"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Search classes or students" placeholder="Add or search classes"></div>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
+  <div class="allocation-heading allocation-selection"><div data-class-pills></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
+ </div></section><section class="allocation-panel allocation-sessions"><div class="card-content"><div class="allocation-heading"><h2 class="sr-only">Set up sessions</h2><button type="button" class="btn allocation-add-session" data-add-session>${icon('plus')}Add another session</button></div><div data-sessions></div><p class="alert alert-destructive" data-allocation-error role="alert" tabindex="-1" hidden></p><p class="allocation-live sr-only" role="status" aria-live="polite"></p></div></section>`;
  const reviewCheckbox = host.querySelector('[name=accommodations]'), reviewError = host.querySelector('#allocation-review-error');
  reviewCheckbox.checked = Boolean(data.accommodations);
  function save() {
@@ -72,19 +72,56 @@ window.capReferenceAssign = page => {
  function announce(message) { host.querySelector('.allocation-live').textContent=message; }
  function sessionOptions(value) { return '<option value="">Select session</option>'+data.sessions.map(s=>`<option value="${esc(s.id)}" ${s.id===value?'selected':''}>${esc(s.name)}</option>`).join(''); }
  function sessionSelect(attrs,value,disabled=false) { return `<span class="allocation-select"><select class="select" ${attrs} ${disabled?'disabled':''}>${sessionOptions(value)}</select>${icon('down')}</span>`; }
- function supportEditor(student) {
-  const options=[...new Set([...supportOptions,...supportsFor(student.id)])];
-  return `<div class="card allocation-inline-support" id="supports-${student.classId}-${student.id.split(':')[1]}" ${supportExpanded.has(student.id)?'':'hidden'}><div class="card-content"><div class="allocation-heading"><p class="text-body-small">Select the supports this student needs.</p><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" data-remember="${student.id}" ${Object.hasOwn(remembered,student.id)?'checked':''}>Save support</label></div><div class="tabs-list allocation-support-choices" role="group" aria-label="Learner supports for ${esc(student.name)}">${options.map(option=>`<button class="tab" type="button" data-support="${esc(option)}" data-student="${student.id}" aria-pressed="${supportsFor(student.id).includes(option)}">${esc(option)}</button>`).join('')}</div></div></div>`;
+ const supportDialog = document.createElement('dialog');
+ supportDialog.className = 'dialog allocation-support-dialog';
+ supportDialog.setAttribute('aria-labelledby','allocation-support-title');
+ supportDialog.innerHTML = `
+  <form>
+   <div class="dialog-header"><h2 class="dialog-title" id="allocation-support-title">Review supports</h2>
+   <p class="dialog-description" data-support-student></p></div>
+   <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><div data-support-options></div></fieldset>
+   <label class="allocation-check"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
+   <div class="allocation-session-actions">
+    <button class="btn btn-outline btn-sm" type="button" data-cancel-support>Cancel</button>
+    <button class="btn btn-sm" type="submit">Save supports</button>
+   </div>
+  </form>`;
+ page.append(supportDialog);
+ let supportStudent;
+ function openSupports(student) {
+  supportStudent=student;
+  supportDialog.querySelector('[data-support-student]').textContent=student.name;
+  const selectedSupports=supportsFor(student.id);
+  supportDialog.querySelector('[data-support-options]').innerHTML=[...new Set([...supportOptions,...selectedSupports])].map(option=>
+   `<label class="allocation-check"><input class="checkbox" name="support" type="checkbox" value="${esc(option)}" ${selectedSupports.includes(option)?'checked':''}>${esc(option)}</label>`
+  ).join('');
+  supportDialog.querySelector('[name=remember]').checked=Object.hasOwn(remembered,student.id);
+  supportDialog.showModal();
  }
+ supportDialog.querySelector('[data-cancel-support]').onclick=()=>supportDialog.close();
+ supportDialog.addEventListener('close',()=>host.querySelector(`[data-expand-support="${supportStudent.id}"]`)?.focus());
+ supportDialog.querySelector('form').addEventListener('submit',event=>{
+  event.preventDefault();
+  const values=new FormData(event.currentTarget);
+  const id=supportStudent.id;
+  data.studentAccommodations[id]=values.getAll('support');
+  if(values.has('remember')) remembered[id]=[...supportsFor(id)];
+  else delete remembered[id];
+  localStorage.setItem('cogniaLearnerSupports',JSON.stringify(remembered));
+  update();
+  supportDialog.close();
+  announce('Learner supports saved for '+supportStudent.name+'.');
+ });
  function studentRow(student) {
   const session=data.sessions.find(s=>s.recipients.includes(student.id));
-  const n=supportsFor(student.id).length, open=supportExpanded.has(student.id);
-  return `<div class="allocation-student-wrap"><div class="allocation-student"><label class="allocation-check text-body-small font-semibold"><input class="checkbox" type="checkbox" name="recipient" value="${student.id}" ${checked(student.id)?'checked':''}>${esc(student.name)}</label>${n||student.support?`<span class="badge ${n===1?'badge-info':'badge-warning'}">${icon('person')}${n?n+' support'+(n===1?'':'s'):'Review supports'}</span>`:''}<div class="allocation-student-actions">${sessionSelect(`data-assign="${student.id}" aria-label="Session for ${esc(student.name)}"`,session?.id,!checked(student.id))}${iconButton(`data-expand-support="${student.id}" aria-expanded="${open}" aria-controls="supports-${student.classId}-${student.id.split(':')[1]}"`,(open?'Close':'Edit')+' supports for '+student.name,'edit')}</div></div>${supportEditor(student)}</div>`;
+  const n=supportsFor(student.id).length;
+  return `<div class="allocation-student-wrap"><div class="allocation-student"><label class="allocation-check text-body-small font-semibold"><input class="checkbox" type="checkbox" name="recipient" value="${student.id}" ${checked(student.id)?'checked':''}>${esc(student.name)}</label>${n||student.support?`<button type="button" class="btn btn-ghost btn-xs allocation-support-trigger badge badge-warning" data-expand-support="${student.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(student.name)}">${n?n+' support'+(n===1?'':'s'):'Review supports'}${icon('edit')}</button>`:''}<div class="allocation-student-actions">${sessionSelect(`data-assign="${student.id}" aria-label="Session for ${esc(student.name)}"`,session?.id,!checked(student.id))}</div></div></div>`;
  }
  function drawRoster() {
   host.querySelector('[data-class-pills]').innerHTML = data.classIds.map(id=>`<button type="button" class="btn btn-ghost btn-sm allocation-class-chip" data-remove-class="${id}" aria-label="Remove ${classes.find(c=>c.id===id).name}">${classes.find(c=>c.id===id).name}${icon('x')}</button>`).join('');
   host.querySelector('[data-toggle-classes]').setAttribute('aria-expanded',String(picker));
   const pickerLabel=mode==='students'?'Select students':'Select classes';
+  host.querySelector('input[type=search]').placeholder=mode==='students'?'Add or search students':'Add or search classes';
   host.querySelector('[data-toggle-classes]').setAttribute('aria-label',pickerLabel);
   host.querySelector('[data-toggle-classes]').nextElementSibling.textContent=pickerLabel;
   const options=host.querySelector('#allocation-options');options.hidden=!picker;
@@ -98,7 +135,7 @@ window.capReferenceAssign = page => {
    const common=data.sessions.find(s=>count&&selected(c.id).every(v=>s.recipients.includes(v.id)));
    const value=data.sessions.some(s=>s.id===classSessions[c.id])?classSessions[c.id]:common?.id||data.sessions[0]?.id;
    classSessions[c.id]=value;
-   return `<section class="allocation-class" data-selected="${count>0}" data-expanded="${open}"><div class="card ${open?'card-themed':''} allocation-class-head">${iconButton(`data-expand="${c.id}" aria-expanded="${open}"`,(open?'Collapse':'Expand')+' '+c.name,open?'down':'right')}<div class="allocation-check allocation-class-select"><input class="checkbox" type="checkbox" data-all="${c.id}" ${count===roster(c.id).length?'checked':''} aria-label="Select all students in ${c.name}"><strong class="text-body-base font-semibold">${c.name}</strong><span class="text-body-small">(${roster(c.id).length} students)</span></div><div class="allocation-class-actions">${sessionSelect(`data-pending-class="${c.id}" aria-label="Session for ${c.name}"`,value)}<button type="button" class="btn btn-ghost btn-sm" data-apply-class="${c.id}">Apply to all</button></div></div>${open?shown.map(studentRow).join(''):''}</section>`;
+   return `<section class="allocation-class" data-selected="${count>0}" data-expanded="${open}"><div class="card allocation-class-head">${iconButton(`data-expand="${c.id}" aria-expanded="${open}"`,(open?'Collapse':'Expand')+' '+c.name,open?'down':'right')}<div class="allocation-check allocation-class-select"><input class="checkbox" type="checkbox" data-all="${c.id}" ${count===roster(c.id).length?'checked':''} aria-label="Select all students in ${c.name}"><strong class="text-body-base font-semibold">${c.name}</strong><span class="text-body-small">${roster(c.id).length} students</span></div><div class="allocation-class-actions">${sessionSelect(`data-pending-class="${c.id}" aria-label="Session for ${c.name}"`,value)}<button type="button" class="btn btn-ghost btn-sm" data-apply-class="${c.id}">Apply to all</button></div></div>${open?shown.map(studentRow).join(''):''}</section>`;
   }).join('');
   if (!visible.length) host.querySelector('[data-rosters]').innerHTML='<p class="text-body-small allocation-empty">'+(data.classIds.length?'No students match your search.':'Select one or more classes to view students.')+'</p>';
   host.querySelectorAll('[data-all]').forEach(el=>{const n=selected(el.dataset.all).length;el.indeterminate=n>0&&n<roster(el.dataset.all).length;});
@@ -107,9 +144,9 @@ window.capReferenceAssign = page => {
   return session.recipients.length?session.recipients.slice(0,3).map(id=>`<span class="badge badge-theme-light">${esc(students.find(s=>s.id===id)?.name||id)}</span>`).join('')+(session.recipients.length>3?`<span class="badge badge-theme-light" title="${esc(session.recipients.slice(3).map(id=>students.find(s=>s.id===id)?.name||id).join(', '))}">+${session.recipients.length-3}</span>`:''):'<span class="text-muted-foreground">No students assigned</span>';
  }
  function drawSessions() {
-  host.querySelector('[data-sessions]').innerHTML=data.sessions.map((s,i)=>`<section class="allocation-session" data-session-card="${esc(s.id)}"><div class="card card-themed allocation-session-head"><h3 class="text-body-base font-semibold">${esc(s.name)}</h3><span class="text-body-small" data-count>${s.recipients.length} student${s.recipients.length===1?'':'s'}</span>${iconButton(`data-collapse-session="${esc(s.id)}" aria-expanded="${!collapsedSessions.has(s.id)}" aria-controls="body-${esc(s.id)}"`,(collapsedSessions.has(s.id)?'Expand':'Collapse')+' '+s.name,collapsedSessions.has(s.id)?'right':'down')}</div><div id="body-${esc(s.id)}" ${collapsedSessions.has(s.id)?'hidden':''}>
+  host.querySelector('[data-sessions]').innerHTML=data.sessions.map((s,i)=>`<section class="allocation-session" data-session-card="${esc(s.id)}"><div class="card allocation-session-head"><h3 class="text-body-base font-semibold">${esc(s.name)}</h3><span class="text-body-small" data-count ${collapsedSessions.has(s.id)?'':'hidden'}>${s.recipients.length} student${s.recipients.length===1?'':'s'}</span>${iconButton(`data-delete="${esc(s.id)}" ${data.sessions.length===1?'disabled':''}`,'Remove '+s.name,'trash')}${iconButton(`data-collapse-session="${esc(s.id)}" aria-expanded="${!collapsedSessions.has(s.id)}" aria-controls="body-${esc(s.id)}"`,(collapsedSessions.has(s.id)?'Expand':'Collapse')+' '+s.name,collapsedSessions.has(s.id)?'right':'down')}</div><div id="body-${esc(s.id)}" ${collapsedSessions.has(s.id)?'hidden':''}>
    <div class="allocation-fields"><label class="field"><span class="label">Session name *</span><input class="input" required maxlength="80" data-field="name" value="${esc(s.name)}"></label><label class="field"><span class="label">Date *</span><input class="input" type="date" required data-field="date" value="${esc(s.opens.slice(0,10))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">Start time *</span><input class="input" type="time" required data-field="start" value="${esc(s.opens.slice(11,16))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">End time *</span><input class="input" type="time" required data-field="end" value="${esc(s.due.slice(11,16))}" ${s.noLimit?'disabled':''}></label></div>
-   <hr class="separator"><div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><hr class="separator"><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger">${icon('right')}<span>Access settings and instructions</span></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label><div class="allocation-session-actions"><button type="button" class="btn btn-ghost btn-sm" data-duplicate="${esc(s.id)}">Duplicate session</button><button type="button" class="btn btn-ghost is-destructive btn-sm" data-delete="${esc(s.id)}" ${data.sessions.length===1?'disabled':''}>Remove session</button></div></div></details></div></section>`).join('');
+   <div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger">${icon('right')}<span>Access settings and instructions</span></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label><div class="allocation-session-actions"><button type="button" class="btn btn-ghost btn-sm" data-duplicate="${esc(s.id)}">Duplicate session</button></div></div></details></div></section>`).join('');
  }
  function counts() {
   host.querySelectorAll('[data-session-card]').forEach(el=>{const s=data.sessions.find(s=>s.id===el.dataset.sessionCard);el.querySelector('[data-count]').textContent=s.recipients.length+' student'+(s.recipients.length===1?'':'s');el.querySelector('[data-assigned]').innerHTML=assignedPills(s);});
@@ -130,6 +167,14 @@ window.capReferenceAssign = page => {
   data.sessions.push({...source,id,name:duplicate?source.name+' copy':'Session '+(data.sessions.length+1),customRecipients:true,recipients:[]});
   save();drawRoster();drawSessions();counts();host.querySelector(`[data-session-card="${id}"] input`).focus();
  }
+ const searchInput=host.querySelector('.allocation-search-field input');
+ function openPicker() {
+  if(picker)return;
+  picker=true;
+  drawRoster();
+ }
+ searchInput.addEventListener('focus',openPicker);
+ searchInput.addEventListener('click',openPicker);
  host.addEventListener('click',event=>{
   const sessionHeader=event.target.closest('.allocation-session-head');
   if(sessionHeader&&!event.target.closest('button, input, select, label, .tooltip-wrap')){
@@ -145,8 +190,7 @@ window.capReferenceAssign = page => {
   if(b.hasAttribute('data-toggle-classes')){picker=!picker;drawRoster();}
   if(b.dataset.mode){mode=b.dataset.mode;host.querySelectorAll('[data-mode]').forEach(t=>t.setAttribute('aria-pressed',String(t===b)));picker=false;drawRoster();}
   if(b.dataset.expand){const wasOpen=expanded.has(b.dataset.expand);expanded.clear();if(!wasOpen)expanded.add(b.dataset.expand);drawRoster();host.querySelector(`[data-expand="${b.dataset.expand}"]`)?.focus();}
-  if(b.dataset.expandSupport){const id=b.dataset.expandSupport;supportExpanded.has(id)?supportExpanded.delete(id):supportExpanded.add(id);drawRoster();host.querySelector(`[data-expand-support="${id}"]`)?.focus();}
-  if(b.dataset.support){const id=b.dataset.student,option=b.dataset.support;data.studentAccommodations[id]=supportsFor(id).includes(option)?supportsFor(id).filter(v=>v!==option):[...supportsFor(id),option];if(Object.hasOwn(remembered,id)){remembered[id]=[...supportsFor(id)];localStorage.setItem('cogniaLearnerSupports',JSON.stringify(remembered));}update();host.querySelectorAll('[data-support]').forEach(el=>{if(el.dataset.student===id&&el.dataset.support===option)el.focus();});}
+  if(b.dataset.expandSupport)openSupports(students.find(student=>student.id===b.dataset.expandSupport));
   if(b.dataset.applyClass){const ids=selected(b.dataset.applyClass).map(s=>s.id),sessionId=classSessions[b.dataset.applyClass];if(!ids.length)announce('Select students in this class first.');else if(!sessionId)announce('Choose a session first.');else{assign(ids,sessionId);announce('Session applied to '+ids.length+' selected students.');}}
   if(b.dataset.removeClass)classSelect(b.dataset.removeClass,false);
   if(b.hasAttribute('data-clear-selection')){selectStudents([...data.recipients],false);update();}
@@ -164,14 +208,13 @@ window.capReferenceAssign = page => {
   if(el.dataset.pendingClass)classSessions[el.dataset.pendingClass]=el.value;
   if(el.dataset.assign)assign([el.dataset.assign],el.value);
   if(el.name==='accommodations'){data.accommodations=el.checked;save();}
-  if(el.dataset.remember){if(el.checked)remembered[el.dataset.remember]=[...supportsFor(el.dataset.remember)];else delete remembered[el.dataset.remember];localStorage.setItem('cogniaLearnerSupports',JSON.stringify(remembered));announce(el.checked?'Learner supports saved for future assignments.':'Learner supports kept for this assignment only.');}
   if(el.id==='attempts'||el.id==='deliveryTime'){data.attempts=host.querySelector('#attempts').value;data.time=host.querySelector('#deliveryTime').value;save();}
   if(el.hasAttribute('data-anytime')){data.sessions.find(s=>s.id===el.closest('[data-session-card]').dataset.sessionCard).noLimit=el.checked;save();drawSessions();}
  });
  host.addEventListener('toggle',event=>{if(event.target.matches('.allocation-settings')){const id=event.target.closest('[data-session-card]').dataset.sessionCard;event.target.open?settingsExpanded.add(id):settingsExpanded.delete(id);}},true);
  host.addEventListener('input',event=>{
   const el=event.target;
-  if(el.type==='search'){search=el.value;picker=!!search;drawRoster();return;}
+  if(el===searchInput){search=el.value;picker=true;drawRoster();return;}
   const box=el.closest('[data-session-card]');if(!box)return;
   const session=data.sessions.find(s=>s.id===box.dataset.sessionCard);
   if(el.dataset.field==='name')session.name=el.value;

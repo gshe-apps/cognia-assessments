@@ -4225,19 +4225,30 @@ html body.item-method-reference .cap-root .btn.solid {
 /* Student and session setup. Compact Figma variants requested for this screen. */
 .allocation-hero { min-height: 0; padding: 0; margin: 0 0 var(--space-4); }
 .cap-root .tf-page.allocation-page { padding-top: 0; }
-.allocation-grid { --allocation-ink: #11143f; --allocation-line: #e3e5ed; --allocation-header: #d3d7ef; --allocation-chip: #e9e9e9; --allocation-assigned: #d7e3ff; --allocation-support: #ededef; --allocation-warm: #fff6df; --allocation-brown: #ab4e00; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; color: var(--allocation-ink); }
+.allocation-grid { --allocation-ink: #11143f; --allocation-line: #e3e5ed; --allocation-header: #d3d7ef; --allocation-chip: #e9e9e9; --allocation-assigned: #d7e3ff; --allocation-support: #ededef; --allocation-warm: #fff6df; --allocation-brown: #ab4e00; display: grid; grid-template-columns: minmax(0, 1.36fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; color: var(--allocation-ink); }
 .allocation-panel, .allocation-panel > .card-content { min-width: 0; }
 .allocation-recipient-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
 .allocation-panel { padding: 0; border: 0; background: transparent; box-shadow: none; color: var(--allocation-ink); }
 .allocation-panel > .card-content { padding: 0; }
-.allocation-sessions { padding-left: var(--space-4); border-left: 1px solid #edf0f5; }
+
 .allocation-grid { --allocation-header: #e5e8ff; }
 .allocation-grid .checkbox { accent-color: #0037ff; }
 .allocation-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-.allocation-sessions .allocation-heading { margin-bottom: var(--space-3); }
+.allocation-grid .allocation-heading { min-height: var(--space-10); }
+.allocation-sessions .allocation-heading { justify-content: flex-end; }
+.allocation-add-session.btn {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--secondary-foreground);
+  box-shadow: var(--shadow-xs);
+  font-size: var(--text-body-base);
+  line-height: 1.4;
+}
+.allocation-add-session.btn:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.allocation-selection { margin-top: calc(-1 * var(--space-2)); }
 /* Classes / Students use the plugin's pill tabs (tabs-list + tab) unstyled: selected is the solid primary pill. */
 .allocation-picker { position: relative; min-width: 0; }
-.allocation-search-row.search { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; min-height: var(--space-12); padding: var(--space-1) var(--space-3); border: 1px solid var(--allocation-line); border-radius: var(--rounded-full); background: var(--card); box-shadow: var(--shadow-sm); }
+.allocation-search-row.search { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-3); min-height: var(--space-10); padding-inline: var(--space-3); border: 1px solid var(--border); border-radius: var(--rounded-full); background: var(--background); }
 .allocation-search-row .icon { position: static; }
 [data-class-pills] { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .allocation-class-chip.btn { min-width: 0; min-height: var(--space-8); height: var(--space-8); padding-inline: var(--space-3); gap: var(--space-3); border-radius: var(--rounded-full); background: var(--allocation-chip); color: var(--allocation-ink); font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
@@ -4245,7 +4256,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-search-field .search-icon { left: var(--space-1); top: 50%; transform: translateY(-50%); }
 .allocation-search-field .search-input { height: var(--space-8); min-height: var(--space-8); padding-left: var(--space-8); padding-right: 0; }
 .allocation-search-field .search-input::placeholder { color: #60729f; }
-.allocation-grid [data-clear-selection] { color: #0051ec; }
+
 .allocation-search-row .icon, .allocation-search-field .search-icon { color: var(--allocation-ink); }
 .allocation-search-row > .tooltip-wrap { margin-left: auto; }
 .allocation-options { position: absolute; top: 100%; inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }
@@ -4254,43 +4265,40 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-check { display: flex; align-items: center; gap: var(--space-2); }
 .allocation-class { margin-top: var(--space-4); border: 1px solid var(--allocation-line); border-radius: var(--radius-xl); overflow: clip; background: var(--card); }
 .allocation-class[data-expanded="false"] { border-color: var(--allocation-line); }
+.allocation-class[data-expanded="true"] { padding-block-end: var(--space-2); }
 .allocation-class-head.card { border-radius: 0; }
-.allocation-class-head.card-themed, .allocation-session-head.card-themed { background: var(--allocation-header); color: var(--allocation-ink); }
+.allocation-class-head.card, .allocation-session-head.card { background: transparent; box-shadow: none; }
 .allocation-class:first-child { margin-top: 0; }
 .allocation-class-head { flex-direction: row; align-items: center; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-2); cursor: pointer; }
 .allocation-class-select { flex-wrap: wrap; gap: var(--space-2); }
 .allocation-class-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.allocation-class-actions .allocation-select { width: 112px; }
+.allocation-class-actions .allocation-select, .allocation-student-actions .allocation-select { width: 136px; }
 .allocation-select { position: relative; display: inline-flex; min-width: 0; }
 .allocation-select > .icon { position: absolute; inset-inline-end: var(--space-3); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--allocation-ink); }
 .allocation-class-actions .select, .allocation-student-actions .select { appearance: none; box-sizing: border-box; width: 100%; min-height: var(--space-8); height: var(--space-8); padding: var(--space-1) var(--space-8) var(--space-1) var(--space-2); border: 1px solid var(--allocation-line); background: var(--card); color: var(--allocation-ink); font-size: var(--text-body-small); }
 .allocation-class-actions [data-apply-class] { background: var(--card); color: var(--foreground); border: 1px solid var(--allocation-line); }
-.allocation-student { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-2); min-height: var(--space-12); padding: var(--space-2) var(--space-4); flex-wrap: wrap; border-bottom: 1px solid var(--allocation-line); }
+.allocation-student { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-2); min-height: var(--space-10); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-12); flex-wrap: wrap; }
 .allocation-student-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.allocation-student-actions .allocation-select { width: 128px; }
-.allocation-student-actions [data-expand-support] { background: #f1f1f6; color: var(--foreground); }
-.allocation-inline-support { margin: 0 var(--space-3); min-width: 0; padding-block: var(--space-4); background: var(--allocation-support); }
-.allocation-inline-support > .card-content { padding-inline: var(--space-3); }
-.allocation-inline-support > .card-content { min-width: 0; }
-.allocation-inline-support .allocation-heading { margin-bottom: var(--space-3); gap: var(--space-2); }
-.allocation-support-choices { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: var(--space-2); }
-.allocation-support-choices .tab { flex: none; min-height: var(--space-8); padding: var(--space-1) var(--space-3); border: 1px solid transparent; border-radius: var(--radius); background: var(--background); color: var(--foreground); font-size: var(--text-body-small); font-weight: var(--weight-regular); }
-.allocation-support-choices .tab[aria-pressed="true"] { border-color: var(--allocation-brown); background: var(--allocation-warm); color: var(--allocation-brown); font-weight: var(--weight-semibold); }
-.allocation-grid .badge-warning { background: var(--allocation-warm); color: var(--allocation-brown); }
-.allocation-grid .badge-info { background: #e9f2ff; color: #1269b6; }
+.allocation-support-trigger.badge-warning { background: var(--allocation-warm); color: var(--allocation-brown); }
+.allocation-support-trigger .icon { color: inherit; stroke: currentColor; }
+.allocation-support-dialog { max-height: calc(100dvh - var(--space-8)); overflow: auto; }
+.allocation-support-dialog form { display: grid; gap: var(--space-4); }
+.allocation-support-options { margin: 0; padding: 0; border: 0; min-width: 0; }
+.allocation-support-options > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr)); gap: var(--space-3); }
 .allocation-grid [data-assigned] .badge { background: var(--allocation-assigned); color: var(--allocation-ink); }
 .allocation-session { margin-top: var(--space-3); min-width: 0; border: 1px solid var(--allocation-line); border-radius: var(--radius-xl); overflow: clip; background: var(--card); box-shadow: var(--shadow-sm); padding: var(--space-2); }
 .allocation-session-head.card { border-radius: var(--radius); }
-.allocation-session > div > .separator { display: none; }
 .allocation-session-head { display: flex; flex-direction: row; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); cursor: pointer; }
-.allocation-session-head [data-count] { margin-left: auto; white-space: nowrap; }
+.allocation-session-head h3 { flex: 1; margin: 0; }
+.allocation-session-head [data-count] { white-space: nowrap; }
 .allocation-fields { display: grid; grid-template-columns: 1.05fr 1.4fr 1fr 1fr; gap: var(--space-2); padding: var(--space-3) var(--space-2); }
 .allocation-fields .field { min-width: 0; margin: 0; }
 .allocation-fields .input, .allocation-fields .select { box-sizing: border-box; width: 100%; min-width: 0; min-height: var(--space-10); height: var(--space-10); padding: var(--space-2); border: 1px solid var(--allocation-line); background: var(--card); color: var(--allocation-ink); font-size: var(--text-body-small); }
 .allocation-session-foot, [data-assigned] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .allocation-session-foot { padding: var(--space-3) var(--space-2); }
-.allocation-settings { padding-inline: var(--space-3); margin-top: var(--space-1); border: 1px solid var(--allocation-line); border-radius: var(--radius); }
+.accordion-item.allocation-settings { padding-inline: var(--space-3); border-bottom: 0; }
 .allocation-settings > .accordion-trigger { padding-block: var(--space-3); font-size: var(--text-body-small); }
+.allocation-settings > .accordion-trigger::after { display: none; }
 .allocation-settings > .accordion-trigger > span { flex: 1; }
 .allocation-settings[open] > .accordion-trigger > .icon { transform: rotate(90deg); }
 .allocation-settings-content { display: grid; gap: var(--space-3); padding-bottom: var(--space-3); }
@@ -4299,8 +4307,8 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-session-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-2); }
 .allocation-empty { padding-block: var(--space-6); }
 .allocation-page [hidden] { display: none; }
-@media (max-width: 1279px) and (min-width: 1101px) { .allocation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 1100px) { .allocation-grid { grid-template-columns: minmax(0, 1fr); } .allocation-sessions { padding: 0; border-left: 0; } }
+@media (max-width: 1050px) { .allocation-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 740px) { .allocation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 639px) {
  .allocation-fields, .allocation-policy-fields { grid-template-columns: minmax(0, 1fr); }
  .allocation-class-actions { width: 100%; margin-left: 0; }

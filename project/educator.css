@@ -4324,7 +4324,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .rr-summary { display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-2); text-align:right; }
 
 /* Two columns: session and charts, then the student table */
-.rr-layout { display:grid; grid-template-columns:368px minmax(0, 1fr); gap:var(--space-8); align-items:start; }
+.rr-layout { display:grid; grid-template-columns:minmax(0, 1fr) 368px; gap:var(--space-8); align-items:start; }
 .rr-side { display:flex; flex-direction:column; gap:var(--space-6); min-width:0; }
 .rr-block { display:flex; flex-direction:column; gap:var(--space-3); }
 
@@ -4770,6 +4770,8 @@ html body .cap-root .rj-details .tf-field > .select-wrap { display: block; }
 .rj-details .ad-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:var(--space-8);align-items:start}
 .rj-details .ad-main{display:flex;flex-direction:column;gap:var(--space-3);min-width:0}
 .rj-details .ad-tests{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+/* Step 2: the test tabs belong to the page heading (proximity), so they sit close under it with clear space before the form. */
+.rj-details .ad-main>.ad-tests{margin-top:calc((var(--space-4) + var(--space-1)) * -1);margin-bottom:var(--space-8)}
 .rj-details .ad-tests .tabs-list{gap:var(--space-2)}
 .rj-details .ad-layout .field{margin:0}
 .rj-details .ad-layout .field .label{margin:0}
@@ -4856,7 +4858,7 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details{max-width:650px
 .al-ib .al-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); }
 .al-ib .al-page { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: var(--rounded-full); background-color: var(--secondary); color: var(--secondary-foreground); font: 400 var(--text-body-base)/1 var(--font-sans); cursor: pointer; transition: background-color var(--duration); }
 .al-ib .al-page:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
-.al-ib .al-page[aria-pressed="true"] { background-color: var(--accent-100); font-weight: 600; }
+.al-ib .al-page[aria-pressed="true"] { background-color: var(--accent-400); color: var(--primary-foreground); font-weight: 600; }
 /* Standard and points read as plain text beside the items badge. */
 .al-ib .ib-d-badges { align-items: center; }
 .al-ib .al-meta { font-size: var(--text-body-small); color: var(--muted-foreground); }
@@ -4882,3 +4884,6 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details { max-width: 13
 /* 11 Nov, Select a Cognia assessment modal: on row hover or focus the items badge darkens (as on the Library list's
    selected row) so it doesn't blend into the --secondary hover. */
 .cap-library-item:is(:hover, :focus-visible) .cap-library-meta .badge-secondary { background-color: var(--opacity-neutral-20); }
+
+/* Create assessment: chevron points up while the menu is open. */
+#create-assessment-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}

@@ -33,7 +33,7 @@
 
   function panelHtml() {
     const where = sample ? 'Showing sample results' : ({
-      live: 'Live across devices',
+      live: '',
       connecting: 'Connecting',
       offline: 'Can’t reach Firebase on this network. Showing this browser only.',
       local: 'This browser only (add Firebase to go live)'
@@ -44,7 +44,7 @@
     return '<section class="rr-live" aria-label="Live session" data-live-slot data-live-panel>'
       + '<div class="rr-live-row"><p>Students join at</p><button type="button" class="btn btn-outline" data-live="copy" title="' + esc(live.joinUrl()) + '">' + (copied ? 'Copied' : 'Copy link') + '</button></div>'
       + '<div class="rr-live-row"><p>Session code</p><strong>' + esc(live.SESSION_CODE) + '</strong></div>'
-      + '<p class="rr-live-where">' + esc(where) + '</p>'
+      + (where ? '<p class="rr-live-where">' + esc(where) + '</p>' : '')
       + '<div class="rr-live-actions">' + actions + '</div></section>';
   }
 

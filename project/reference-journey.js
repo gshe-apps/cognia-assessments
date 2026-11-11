@@ -91,7 +91,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
 
   const q=s=>host.querySelector(s);
   const persist=()=>{
-   t.title=q('#tf-assessment-name').value.trim()||t.title;if(m.tests.length===1)m.title=t.title;
+   t.title=q('#tf-assessment-name').value.trim()||t.title;
    d.description=q('#tf-description').value;d.instructions=instructions.value;d.notes=q('#tf-notes').value;d.resource=q('[data-resource]').value;d.duration=q('[data-duration]').value;d.standards=JSON.parse(q('[data-standard-select]').value);d.points=Math.max(1,Number(q('[data-points]').value)||marks||1);d.showResources=q('[data-resources-toggle]').checked;
    t.grade=q('[data-grade]').value;t.subject=q('[data-subject]').value;
    m.details={...m.details,description:d.description,instructions:d.instructions,notes:d.notes};
@@ -103,13 +103,21 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
    page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));
   };
   host.onchange=persist;host.rjPersist=persist;
-  /* Add another test opens the setup dialog for a look only: Continue is switched off, Close and Cancel work. */
+  /* Add another test: the setup dialog names the new test (default "New test"); Continue adds it to this
+     assessment and opens step 1/4 so its items can be added. */
   q('.ad-add-test').onclick=e=>{const trigger=e.currentTarget,api=window.capAssessmentSetup;if(!api)return;persist();
-   const initial={title:'New classroom assessment',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||''};
-   const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,onSubmit(){},onClose(){setup.remove();(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
+   const initial={title:'New test',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||''};
+   let added=false;
+   const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,
+    onSubmit(details){
+     added=true;const id='test-'+Date.now(),itemsPage=api.itemPage(details);
+     const test={id,...details,page:itemsPage,state:{chosen:[],written:{},edits:{}},questions:[]};
+     m.tests.push(test);m.active=id;save(m);
+     sessionStorage.setItem('capCreateConfirmed:'+id,api.signature(details));
+     location.href=itemsPage},
+    onClose(){setup.remove();if(!added)(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
    const dialog=[...document.querySelectorAll('.cap-setup-modal')].pop();
-   if(dialog){const next=dialog.querySelector('[data-submit-setup]');if(next){next.disabled=true;next.title='Adding another test is not available yet'}
-    dialog.addEventListener('submit',ev=>{ev.preventDefault();ev.stopPropagation()},true)}
+   if(dialog){dialog.querySelector('#cap-setup-title').textContent='Add a test';dialog.querySelector('label[for="uc-title"]').textContent='Test name';dialog.querySelector('#cap-title-error').textContent='Enter a test name.';dialog.querySelector('#uc-pathway')?.closest('.field')?.setAttribute('hidden','')}
    setup.open(initial)};
   main.querySelectorAll('[data-select-test]').forEach(b=>b.onclick=()=>{persist();select(b.dataset.selectTest)});
   q('[data-resources-toggle]').addEventListener('change',e=>{q('#ad-resources').hidden=!e.target.checked});

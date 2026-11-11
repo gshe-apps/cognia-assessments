@@ -23,10 +23,11 @@
         submitted=true;
         const id='test-'+Date.now();
         const page=itemPage(details);
-        const test={id,...details,page,state:{chosen:[],written:{},edits:{}},questions:[]};
-        const model={title:test.title,active:id,tests:[test]};
+        /* The setup title names the assessment; its first test starts as "New test" (renamed on step 2). */
+        const test={id,...details,title:'New test',page,state:{chosen:[],written:{},edits:{}},questions:[]};
+        const model={title:details.title,active:id,tests:[test]};
         localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));
-        sessionStorage.setItem('capCreateConfirmed:'+id,signature(test));
+        sessionStorage.setItem('capCreateConfirmed:'+id,signature(details));
         location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':page;
       }
     });

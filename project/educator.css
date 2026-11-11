@@ -2374,102 +2374,122 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 @media(max-width:639px) { .ov-page { padding-top:var(--space-2); } .ov-hero { flex-direction:column; gap:var(--space-4); } .ov-hero-actions { align-items:flex-start; gap:var(--space-3); } .ov-panel { padding:var(--space-4); } .ov-section-heading { flex-wrap:wrap; gap:var(--space-2); } .ov-priority-grid { gap:var(--space-3); } .ov-priority .ov-button { width:auto; } }
 @media(prefers-reduced-motion:reduce) { .ov-button { transition:none; } }
 
-/* Overview: assessment week and compact priorities, Cognia tokens and controls. */
-:where(:root:has(.od-overview)) .od-dashboard { max-width: 1600px; margin: 0 auto; padding: var(--space-6) var(--horizontal-padding) var(--space-8); display: grid; gap: var(--space-8); color: var(--foreground); font: var(--weight-regular) var(--text-body-small)/1.5 var(--font-sans); }
-:where(:root:has(.od-overview)) .od-dashboard :is(h1,h2,h3,p,dl,dd) { margin: 0; }
-:where(:root:has(.od-overview)) .od-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-:where(:root:has(.od-overview)) .od-hero h1 { font: var(--weight-semibold) var(--text-heading)/1.3 var(--font-sans); }
-:where(:root:has(.od-overview)) .od-hero p { margin-top: var(--space-2); color: var(--muted-foreground); font-size: var(--text-body-base); }
-:where(:root:has(.od-overview)) .od-overview-layout { display: grid; grid-template-columns: minmax(0,2.1fr) minmax(0,1fr); align-items: start; gap: var(--space-6); }
-:where(:root:has(.od-overview)) .od-calendar.card { min-width: 0; padding: 0; gap: 0; }
-:where(:root:has(.od-overview)) .od-calendar-heading.card { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
-:where(:root:has(.od-overview)) .od-calendar-intro { display: flex; align-items: center; gap: var(--space-3); }
-:where(:root:has(.od-overview)) .od-calendar-intro > .icon { width: var(--space-6); height: var(--space-6); }
-:where(:root:has(.od-overview)) .od-calendar-intro h2 { font: var(--weight-semibold) var(--text-body-base)/1.5 var(--font-sans); }
-:where(:root:has(.od-overview)) .od-calendar-intro p { margin-top: var(--space-1); font-size: var(--text-body-small); }
-:where(:root:has(.od-overview)) .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-:where(:root:has(.od-overview)) [data-month-title] { font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-calendar-body { min-width: 0; padding: var(--space-4) var(--space-4) 0; }
-:where(:root:has(.od-overview)) .od-calendar-week,:where(:root:has(.od-overview)) .od-days { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); }
-:where(:root:has(.od-overview)) .od-calendar-week { text-align: center; padding-block: var(--space-2); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-month-panel[data-view="week"] .od-calendar-week { display: none; }
-:where(:root:has(.od-overview)) .od-days { overflow: hidden; border-radius: var(--radius-xl); }
-:where(:root:has(.od-overview)) .od-days > button { display: flex; flex-direction: column; align-items: stretch; min-width: 0; min-height: var(--space-24); padding: 0 0 var(--space-2); border: 0; border-top: var(--space-1) solid transparent; border-right: 1px solid var(--border); background: var(--background); color: var(--foreground); font: inherit; text-align: left; cursor: pointer; }
-:where(:root:has(.od-overview)) .od-days > button:nth-child(7n) { border-right: 0; }
-:where(:root:has(.od-overview)) .od-month-panel[data-view="week"] .od-days > button { min-height: 288px; }
-:where(:root:has(.od-overview)) .od-days > button[aria-pressed="true"] { border-top-color: var(--accent-300); background: color-mix(in srgb,var(--accent-100) 45%,var(--card)); }
-:where(:root:has(.od-overview)) .od-days > button:focus-visible { outline: 3px solid var(--ring); outline-offset: -3px; }
-:where(:root:has(.od-overview)) .od-day-heading { display: grid; justify-items: center; gap: var(--space-1); min-height: var(--space-16); padding: var(--space-2); background: var(--secondary); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-days > button[aria-pressed="true"] .od-day-heading { background: var(--accent-100); }
-:where(:root:has(.od-overview)) .od-day-number { display: grid; place-items: center; width: var(--space-6); min-height: var(--space-6); font-size: var(--text-body-base); }
-:where(:root:has(.od-overview)) .od-days > button[aria-pressed="true"] .od-day-number { border-radius: var(--radius); background: var(--primary); color: var(--primary-foreground); }
-:where(:root:has(.od-overview)) .od-month-panel[data-view="month"] .od-day-name { display: none; }
-:where(:root:has(.od-overview)) .od-month-panel[data-view="month"] .od-day-heading { min-height: 0; }
-:where(:root:has(.od-overview)) .od-today-label { align-self: center; padding: var(--space-1) var(--space-3); margin-top: var(--space-2); border-radius: var(--rounded-full); background: var(--accent-100); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-calendar-event { display: grid; gap: 0; min-width: 0; margin: var(--space-2) var(--space-2) 0; padding: var(--space-2); border-radius: var(--radius); background: var(--event-fill); color: var(--foreground); font-size: var(--text-body-small); line-height: 1.4; }
-:where(:root:has(.od-overview)) .od-calendar .is-review { --event-fill: var(--destructive-light); --event-ink: var(--destructive); }
-:where(:root:has(.od-overview)) .od-calendar .is-completed { --event-fill: var(--success-light); --event-ink: var(--success); }
-:where(:root:has(.od-overview)) .od-calendar .is-scheduled { --event-fill: var(--accent-100); --event-ink: var(--accent-300); }
-:where(:root:has(.od-overview)) .od-event-label { display: flex; align-items: center; gap: var(--space-1); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-event-label::before,:where(:root:has(.od-overview)) .od-calendar-key li::before { content: ''; display: inline-block; flex: none; width: var(--space-2); height: var(--space-2); border-radius: var(--rounded-full); background: var(--event-ink); }
-:where(:root:has(.od-overview)) .od-event-detail { margin-left: var(--space-3); }
-:where(:root:has(.od-overview)) .od-calendar-footer { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); flex-wrap: wrap; padding: var(--space-4); }
-:where(:root:has(.od-overview)) .od-calendar-key { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-4); margin: 0; padding: 0; color: var(--muted-foreground); }
-:where(:root:has(.od-overview)) .od-calendar-key li { display: flex; align-items: center; gap: var(--space-1); }
-:where(:root:has(.od-overview)) .od-selected-details { margin-inline: var(--space-4); }
-:where(:root:has(.od-overview)) .od-selected-details > summary { font-size: var(--text-body-small); }
-:where(:root:has(.od-overview)) .od-day-title { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
-:where(:root:has(.od-overview)) .od-day-title svg { width: var(--space-6); height: var(--space-6); }
-:where(:root:has(.od-overview)) .od-day-title h3 { font-size: var(--text-body-base); }
-:where(:root:has(.od-overview)) .od-timeline { display: grid; gap: var(--space-3); padding-bottom: var(--space-4); }
-:where(:root:has(.od-overview)) .od-agenda-card { display: block; padding: var(--space-4); border-radius: var(--radius-xl); background: var(--background); color: var(--foreground); text-decoration: none; }
-:where(:root:has(.od-overview)) .od-agenda-top,:where(:root:has(.od-overview)) .od-agenda-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
-:where(:root:has(.od-overview)) .od-agenda-content { margin-top: var(--space-2); }
-:where(:root:has(.od-overview)) .od-agenda-content h3 { font-size: var(--text-body-base); }
-:where(:root:has(.od-overview)) .od-folder-grid { display: grid; gap: var(--space-4); min-width: 0; }
-:where(:root:has(.od-overview)) .od-folder.card { min-width: 0; padding: 0; gap: 0; }
-:where(:root:has(.od-overview)) .od-folder-tab { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-folder-tab svg { width: var(--space-6); height: var(--space-6); flex: none; color: var(--muted-foreground); }
-:where(:root:has(.od-overview)) .od-folder-tab > span { margin-left: auto; }
-:where(:root:has(.od-overview)) .od-review .od-folder-tab { background: var(--destructive-light); border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
-:where(:root:has(.od-overview)) .od-review.card { background: var(--destructive-light); }
-:where(:root:has(.od-overview)) .od-dashboard [hidden] { display: none; }
-:where(:root:has(.od-overview)) .od-folder-face.card { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-4); }
-:where(:root:has(.od-overview)) .od-folder-face .od-card-heading { min-width: 0; }
-:where(:root:has(.od-overview)) .od-folder-face .od-card-heading h3 { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
-:where(:root:has(.od-overview)) .od-folder-face p { color: var(--muted-foreground); }
-:where(:root:has(.od-overview)) .od-folder-face > .btn { flex: none; }
-:where(:root:has(.od-overview)) .od-priority-details { padding-inline: var(--space-4); background: var(--card); }
-:where(:root:has(.od-overview)) .od-priority-details > summary { padding-block: var(--space-2); font-size: var(--text-body-small); }
-:where(:root:has(.od-overview)) .od-priority-details .accordion-content { display: grid; gap: var(--space-3); }
-:where(:root:has(.od-overview)) .od-score-summary { display: flex; align-items: center; gap: var(--space-4); }
-:where(:root:has(.od-overview)) .od-score-ring { position: relative; width: var(--space-24); height: var(--space-24); flex: none; display: grid; place-items: center; }
-:where(:root:has(.od-overview)) .od-score-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-:where(:root:has(.od-overview)) .od-score-ring > div { display: grid; justify-items: center; }
-:where(:root:has(.od-overview)) .od-score-scored { --score-ink: var(--success); }
-:where(:root:has(.od-overview)) .od-score-pending { --score-ink: var(--warning); }
-:where(:root:has(.od-overview)) .od-score-missing { --score-ink: var(--destructive); }
-:where(:root:has(.od-overview)) .od-score-ring circle { stroke: var(--score-ink); }
-:where(:root:has(.od-overview)) .od-counts { display: grid; gap: var(--space-2); }
-:where(:root:has(.od-overview)) .od-counts > div { display: flex; gap: var(--space-2); }
-:where(:root:has(.od-overview)) .od-draft-pager { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
-:where(:root:has(.od-overview)) .od-draft-progress > div { display: flex; justify-content: space-between; gap: var(--space-2); }
-:where(:root:has(.od-overview)) .od-draft-progress progress { display: block; width: 100%; }
-:where(:root:has(.od-overview)) .od-draft-stages { display: flex; justify-content: space-between; list-style: none; margin: var(--space-2) 0 0; padding: 0; }
-:where(:root:has(.od-overview)) .od-draft-stages li { display: flex; align-items: center; gap: var(--space-1); }
-:where(:root:has(.od-overview)) .od-draft-stages svg { width: var(--space-4); height: var(--space-4); }
-:where(:root:has(.od-overview)) .od-completion { display: flex; align-items: center; gap: var(--space-4); }
-:where(:root:has(.od-overview)) .od-completion-graphic { width: var(--space-24); height: var(--space-24); flex: none; }
-:where(:root:has(.od-overview)) .od-gauge-track { stroke: var(--accent-100); }
-:where(:root:has(.od-overview)) .od-gauge-fill { stroke: var(--accent-300); }
-:where(:root:has(.od-overview)) .od-result-classes { display: flex; gap: var(--space-2); flex-wrap: wrap; list-style: none; padding: 0; margin-top: var(--space-2); }
-:where(:root:has(.od-overview)) .od-create-dialog { width: min(560px,calc(100% - var(--space-8))); }
-:where(:root:has(.od-overview)) .od-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
-:where(:root:has(.od-overview)) .od-create-options { display: grid; gap: var(--space-3); margin-block: var(--space-6); }
-:where(:root:has(.od-overview)) .od-create-options a { display: flex; flex-direction: column; gap: var(--space-1); color: var(--foreground); }
-@media(max-width:1199px) { :where(:root:has(.od-overview)) .od-overview-layout { grid-template-columns: minmax(0,1.8fr) minmax(0,1fr); gap: var(--space-4); } :where(:root:has(.od-overview)) .od-folder-face.card { flex-wrap: wrap; } }
-@media(max-width:1023px) { :where(:root:has(.od-overview)) .od-overview-layout { grid-template-columns: minmax(0,1fr); } :where(:root:has(.od-overview)) .od-folder-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } :where(:root:has(.od-overview)) .od-folder-face.card { flex-wrap: wrap; } }
-@media(max-width:767px) { :where(:root:has(.od-overview)) .od-dashboard { padding-inline: 0; } :where(:root:has(.od-overview)) .od-folder-grid { grid-template-columns: minmax(0,1fr); } :where(:root:has(.od-overview)) .od-calendar-body { overflow-x: auto; } :where(:root:has(.od-overview)) .od-calendar-body[data-view="week"] .od-days { min-width: calc(var(--space-16) * 12); } :where(:root:has(.od-overview)) .od-calendar-heading.card { padding: var(--space-4); } :where(:root:has(.od-overview)) .od-calendar-intro h2 { font-size: var(--text-body-base); } }
+/* Overview calendar and priorities. */
+.od-dashboard.od-overview {
+  max-width: 1600px;
+  margin-inline: auto;
+  padding: var(--space-6) var(--horizontal-padding) var(--space-8);
+  display: grid;
+  gap: var(--space-8);
+  color: var(--foreground);
+  font: var(--weight-regular) var(--text-body-small)/1.5 var(--font-sans);
+}
+.od-overview :is(.od-hero h1, .od-hero p, .od-week-day h3, .od-week-day p, .od-priorities-intro h2, .od-priorities-intro p, .od-priority-stats, .od-priority-stats dd) { margin: 0; }
+.od-overview .od-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+.od-overview .od-hero h1 { font: var(--weight-bold) var(--text-subtitle)/1.3 var(--font-sans); }
+.od-overview .od-hero p { margin-top: var(--space-1); font-size: var(--text-body-base); }
+.od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-4); }
+.od-overview .od-calendar { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.od-week-toolbar { justify-content: space-between; margin-bottom: var(--space-4); }
+.od-week-toolbar .btn-outline { border-color: var(--border); background: var(--card); }
+.od-week-toolbar .btn-outline:hover { background: var(--secondary); }
+.od-week-toolbar .btn img, .od-week-assessment img, .od-priority-heading img { display: block; flex: none; }
+.od-week-view.tabs-list { padding: var(--space-1); border: 1px solid var(--border); border-radius: var(--radius); }
+.od-week-view .tab { border-radius: var(--radius); }
+.od-week-view .tab[aria-pressed="true"] { background: var(--accent-100); color: var(--foreground); }
+.od-week-viewport { overflow-x: auto; }
+.od-week-grid { display: grid; }
+.od-week-grid[data-view="week"] { grid-template-columns: repeat(5,minmax(150px,1fr)); column-gap: 10px; min-height: max(100%, 510px); }
+.od-week-day.card { min-width: 0; gap: var(--space-4); padding: var(--space-3); border: 1px solid var(--border); }
+.od-week-day[aria-current="date"] { border-color: var(--accent-300); background: color-mix(in srgb, var(--accent-100) 45%, var(--card)); }
+.od-week-day header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.od-week-day header h3 { font-size: var(--text-body-base); font-weight: var(--weight-bold); }
+.od-week-day header h3 span { font-size: var(--text-body-small); font-weight: var(--weight-regular); white-space: nowrap; }
+.od-week-day header p { flex-basis: 100%; }
+.od-week-events { display: grid; gap: var(--space-3); }
+.od-week-assessment.card { display: grid; gap: var(--space-1); padding: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--foreground); text-decoration: none; }
+.od-week-assessment:hover { background: var(--secondary); }
+.od-week-assessment > strong { font-size: calc(var(--text-body-small) - 1px); }
+.od-week-assessment-top { display: flex; align-items: center; gap: var(--space-1); }
+.od-week-assessment-top { justify-content: space-between; }
+.od-week-grid[data-view="list"] { gap: var(--space-2); }
+.od-week-grid[data-view="list"] .od-week-day {
+  display: grid;
+  grid-template-columns: minmax(0, 112px) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+}
+.od-week-grid[data-view="list"] .od-week-events {
+  grid-template-columns: repeat(auto-fit,minmax(min(100%, 220px),1fr));
+  gap: var(--space-2);
+}
+.od-week-grid[data-view="list"] .od-week-assessment {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 var(--space-2);
+  padding: var(--space-1) var(--space-2);
+}
+.od-week-grid[data-view="list"] .od-week-assessment > strong { grid-area: 1 / 1; }
+.od-week-grid[data-view="list"] .od-week-assessment-top { grid-area: 1 / 2; }
+.od-week-grid[data-view="list"] .od-week-assessment > span:nth-child(2) { grid-area: 2 / 1; }
+.od-week-grid[data-view="list"] .od-week-assessment > span:last-child { grid-area: 2 / 2; text-align: end; }
+@media (max-width: 600px) {
+  .od-week-grid[data-view="list"] .od-week-day { grid-template-columns: minmax(0, 1fr); }
+}
+.od-week-empty { padding: var(--space-6); }
+.od-overview .od-folder-grid { display: grid; gap: var(--space-3); min-width: 0; }
+.od-priorities-intro h2 { font-size: var(--text-subheading); font-weight: var(--weight-bold); }
+.od-priority-tile.card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border); color: var(--foreground); text-decoration: none; }
+.od-priority-tile:hover { border-color: var(--ring); }
+.od-priority-tile.od-priority-review { background: var(--destructive-light); border-color: color-mix(in srgb, var(--destructive) 45%, var(--border)); }
+.od-priority-heading { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: start; gap: var(--space-3); }
+.od-priority-heading strong { display: block; font-size: var(--text-body-base); font-weight: var(--weight-bold); }
+.od-priority-heading small, .od-priority-stats small { display: block; font-size: inherit; }
+.od-priority-symbol { display: grid; place-items: center; width: var(--space-12); height: var(--space-12); border-radius: var(--radius); background: var(--accent-100); }
+.od-priority-review .od-priority-symbol { background: var(--destructive); }
+.od-priority-stats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-3); }
+.od-priority-stats > * { display: flex; flex-direction: column; }
+.od-priority-stats > :last-child { border-inline-start: 1px solid var(--border); padding-inline-start: var(--space-4); }
+.od-priority-stats dd, .od-priority-stats strong, .od-priority-stats [data-draft-count] { order: -1; font-size: var(--text-subheading); font-weight: var(--weight-bold); }
+.od-priority-meter { display: flex; align-items: center; gap: var(--space-3); white-space: nowrap; }
+.od-priority-meter progress {
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  height: var(--space-3);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--rounded-full);
+  background: var(--accent-100);
+  --od-meter-fill: var(--accent-400);
+}
+.od-priority-meter progress::-webkit-progress-bar { background: transparent; }
+.od-priority-meter progress::-webkit-progress-value { background: var(--od-meter-fill); border-radius: var(--rounded-full); }
+.od-priority-meter progress::-moz-progress-bar { background: var(--od-meter-fill); border-radius: var(--rounded-full); }
+.od-priority-review progress { --od-meter-fill: var(--destructive); background: color-mix(in srgb,var(--destructive) 14%,var(--card)); }
+.od-overview-draft summary { cursor: pointer; list-style: none; }
+.od-overview-draft summary::-webkit-details-marker { display: none; }
+.od-overview-draft[open] summary .od-priority-heading > img { transform: rotate(90deg); }
+.od-overview-draft .od-draft-content { padding: var(--space-3); }
+.od-overview-draft .od-folder-face { padding: var(--space-3); gap: var(--space-3); color: var(--foreground); text-decoration: none; }
+.od-overview-draft .od-entry { display: flex; align-items: center; gap: var(--space-2); }
+.od-overview-draft .od-entry > svg { width: var(--space-6); height: var(--space-6); }
+.od-overview-draft .od-draft-pager { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-2); }
+.od-overview-draft .od-draft-progress > div { display: flex; justify-content: space-between; }
+.od-overview-draft progress { width: 100%; }
+.od-overview-draft .od-draft-stages { display: flex; flex-wrap: wrap; justify-content: space-between; list-style: none; margin: 0; padding: 0; }
+.od-overview-draft .od-draft-stages li { display: flex; align-items: center; gap: var(--space-1); }
+.od-overview-draft .od-draft-stages svg { width: var(--space-4); height: var(--space-4); }
+@media (max-width: 1100px) {
+  .od-overview-layout { grid-template-columns: minmax(0,1fr); }
+  .od-week-grid[data-view="week"] { min-height: 360px; }
+}
+@media (max-width: 767px) {
+  .od-dashboard.od-overview { padding-inline: 0; }
+  .od-overview .od-hero h1 { font-size: var(--text-heading); }
+}
 
 /* ---- from ds/cognia/educator-assessments.css ---- */
 .ar-page { gap:var(--space-4); }

@@ -38,7 +38,8 @@
   const readyKey='capCreateConfirmed:'+t.id;
   const useClientSample=sessionStorage.getItem('capSetupUseClientSample')==='true';
   sessionStorage.removeItem('capSetupUseClientSample');
-  let settings=useClientSample?{...t,title:'New classroom assessment',standard:'5.NF.A.2'}:t;
+  const addedTest=m.tests.indexOf(t)>0;
+  let settings=useClientSample?{...t,title:'New classroom assessment',standard:'5.NF.A.2'}:addedTest?t:{...t,title:m.title||t.title};
   let ready=sessionStorage.getItem(readyKey)===signature(settings);
   const setup=create({
    host:page.closest('.theme-assessments'),
@@ -48,8 +49,10 @@
     hero.querySelector('[data-uc-details]').focus();
    },
    onSubmit(next){
-   const model=window.capUpdateAssessmentScope(next);
-   settings=model.tests.find(test=>test.id===model.active)||model.tests[0];
+   const {title:nextTitle,...scope}=next;
+   const model=window.capUpdateAssessmentScope(addedTest?next:scope,addedTest?'':nextTitle);
+   const updated=model.tests.find(test=>test.id===model.active)||model.tests[0];
+   settings=addedTest?updated:{...updated,title:model.title};
    sessionStorage.setItem(readyKey,signature(next));
    ready=true;syncGate();
    inst.refreshQuestionBoard?.();

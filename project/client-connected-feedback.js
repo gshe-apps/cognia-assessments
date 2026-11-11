@@ -88,10 +88,25 @@ document.addEventListener('DOMContentLoaded',()=>{
   function detail(form){
    const panel=$('#al-detail');if(!form){panel.innerHTML='';return;}
    const qs=form.questions||[],points=qs.reduce((n,q)=>n+Number(q.marks||0),0);
-   panel.innerHTML='<div class="ib-d-head"><div class="ib-d-title"><h2 id="al-d-title">'+escape(form.title)+'</h2><div class="ib-d-badges"><span class="badge badge-secondary">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+qs.length+' '+(qs.length===1?'item':'items')+'</span><span class="badge badge-secondary">'+points+' '+(points===1?'point':'points')+'</span></div></div>'
+   panel.innerHTML='<div class="ib-d-head"><div class="ib-d-title"><h2 id="al-d-title">'+escape(form.title)+'</h2><div class="ib-d-badges"><span class="al-meta">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+qs.length+' '+(qs.length===1?'item':'items')+'</span><span class="al-meta">'+points+' '+(points===1?'point':'points')+'</span></div></div>'
     +'<div class="ib-d-actions"><button type="button" class="btn btn-lg" data-start-form="'+escape(form.id)+'">Use assessment'+arrow+'</button></div></div>'
-    +qs.map((q,i)=>'<div class="ib-card"><div class="ib-card-hd"><div><p class="ib-strong">Item '+(i+1)+'</p><p class="ib-muted">'+escape(formatNames[q.type]||q.displayType||q.type||'Item')+'</p></div><p class="ib-muted">'+Number(q.marks||0)+' '+(Number(q.marks)===1?'point':'points')+'</p></div><p class="ib-stem">'+escape(q.stem)+'</p>'
-     +(q.options?.length?'<ul class="ib-opts" aria-label="Answer options">'+q.options.map((o,k)=>'<li class="ib-opt'+(k===q.correct?' is-correct':'')+'"><span class="ib-letter" aria-hidden="true">'+String.fromCharCode(65+k)+'</span><span class="ib-opt-text">'+escape(o)+'</span>'+(k===q.correct?'<span class="ib-correct">'+check+'<span class="ib-sr">Correct answer</span></span>':'')+'</li>').join('')+'</ul>':'')+'</div>').join('');
+    +'<div class="al-carousel" data-al-carousel tabindex="-1"><div class="al-viewport"><div class="al-track">'
+    +qs.map((q,i)=>'<div class="ib-card al-slide" role="group" aria-roledescription="item" aria-label="Item '+(i+1)+' of '+qs.length+'"'+(i?' aria-hidden="true" inert':'')+'><div class="ib-card-hd"><div><p class="ib-strong">Item '+(i+1)+'</p><p class="ib-muted">'+escape(formatNames[q.type]||q.displayType||q.type||'Item')+'</p></div><p class="ib-muted">'+Number(q.marks||0)+' '+(Number(q.marks)===1?'point':'points')+'</p></div><p class="ib-stem">'+escape(q.stem)+'</p>'
+     +(q.options?.length?'<ul class="ib-opts" aria-label="Answer options">'+q.options.map((o,k)=>'<li class="ib-opt'+(k===q.correct?' is-correct':'')+'"><span class="ib-letter" aria-hidden="true">'+String.fromCharCode(65+k)+'</span><span class="ib-opt-text">'+escape(o)+'</span>'+(k===q.correct?'<span class="ib-correct">'+check+'<span class="ib-sr">Correct answer</span></span>':'')+'</li>').join('')+'</ul>':'')+'</div>').join('')
+    +'</div></div>'
+    +(qs.length>1?'<nav class="al-pager" aria-label="Items">'+qs.map((q,i)=>'<button type="button" class="al-page" data-al-go="'+i+'" aria-label="Item '+(i+1)+'" aria-pressed="'+(i===0)+'">'+(i+1)+'</button>').join('')+'</nav>':'')
+    +'</div>';
+   slide(0,false);
+  }
+  /* 11 Nov: the preview shows one item at a time; the numbered buttons (or Left/Right keys) fade to that item. */
+  function slide(to,animate=true){
+   const box=$('[data-al-carousel]');if(!box)return;const slides=[...box.querySelectorAll('.al-slide')];if(!slides.length)return;
+   const i=Math.max(0,Math.min(slides.length-1,to));box.dataset.index=i;
+   const view=box.querySelector('.al-viewport');
+   box.classList.toggle('is-still',!animate);
+   slides.forEach((s,k)=>{const off=k!==i;s.classList.toggle('is-active',!off);s.toggleAttribute('inert',off);s.setAttribute('aria-hidden',String(off));});
+   view.style.height=slides[i].offsetHeight+'px';
+   box.querySelectorAll('[data-al-go]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.alGo)===i)));
   }
   function draw(){
    const term=libState.term.trim().toLowerCase(),usage=read('cogniaLibraryUsageV1',{});
@@ -111,9 +126,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   root.querySelectorAll('.ib-filters select').forEach(s=>s.addEventListener('change',()=>{libState[s.id.slice(5)]=s.value;draw();}));
   root.addEventListener('click',e=>{
    const pick=e.target.closest('[data-al-select]');if(pick){libState.selected=pick.dataset.alSelect;root.querySelectorAll('[data-al-select]').forEach(b=>b.setAttribute('aria-current',String(b===pick)));detail(forms.find(f=>f.id===libState.selected));return;}
+   const go=e.target.closest('[data-al-go]');if(go){slide(Number(go.dataset.alGo));return;}
    const sort=e.target.closest('[data-al-sort]');if(sort){libState.sort=sort.dataset.alSort;draw();return;}
    if(e.target.closest('[data-clear-library]')){Object.assign(libState,{term:'',grade:'',subject:'',format:''});renderLibrary();}
   });
+  root.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const box=e.target.closest('[data-al-carousel]');if(!box||e.target.closest('input,select,textarea'))return;e.preventDefault();slide(Number(box.dataset.index||0)+(e.key==='ArrowRight'?1:-1));});
+  if(!window.capAlResize){window.capAlResize=true;window.addEventListener('resize',()=>{const box=document.querySelector('#assessment-library [data-al-carousel]');if(!box)return;const s=box.querySelectorAll('.al-slide')[Number(box.dataset.index||0)];if(s)box.querySelector('.al-viewport').style.height=s.offsetHeight+'px';});}
   draw();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;

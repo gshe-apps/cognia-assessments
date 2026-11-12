@@ -2,11 +2,7 @@
 
 ## Hover states
 
-- **On white surfaces** (`--card`, `--popover`, `--sidebar`): use `hover:bg-accent`
-- **On off-white surfaces** (`--background`, `--muted`): use `hover:bg-secondary`
-- **Ghost buttons**: always use `hover:bg-secondary` regardless of surface — they appear on both and secondary is visible on both
-
-`--accent` and `--background` resolve to the same colour, so `hover:bg-accent` on an off-white surface is invisible. Always check the actual rendered background before choosing.
+Apply `--hover-overlay` (`rgba(0, 0, 0, 0.10)`) over the resting background of interactive controls in every theme and mode. Preserve the opacity of text, icons, and the component itself. Use `--primary-hover` for solid primary fills, where the token composites the same overlay over `--primary`. Keep focus, selection, and disabled states distinct.
 
 ---
 
@@ -171,8 +167,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - Never show a hover state on a disabled button.
 - Icons can appear on the left, right, or both sides of the label.
 - Primary (solid) CTAs must always be active — never disable them preemptively. Show inline validation errors on click for missing required fields instead of disabling the button.
-- Solid (default) buttons hover to `--primary-hover`, which is `color-mix(in srgb, var(--primary) 78%, var(--card))`: the fill lightens slightly and the label stays `--primary-foreground` (white in light mode). Use `hover:bg-[var(--primary-hover)]`; never darken, change the label colour, add a border or a shadow. The same hover applies to anything drawn as a solid primary fill, such as the profile (avatar) button in the header.
-- Ghost buttons use `hover:bg-secondary` for a visible hover state. This is set globally in `button.tsx` — do not add it to individual ghost buttons.
+- Solid buttons and the profile button use `--primary-hover`. Outline, ghost, and destructive buttons use the same 10% black overlay over their own resting surfaces.
 - Outline buttons use `border-primary` for their border — never `border-border` or any other border token.
 - Buttons never have a shadow, in any variant or state (resting, hover, active, focus) and including FABs. Use `shadow-none`. Hover feedback comes from the background change only. The focus ring (`--ring`) is a focus state, not a shadow, and stays.
 
@@ -234,14 +229,14 @@ Cards group related content and actions into a single container.
 |---|---|---|
 | Default | `rounded-xl` | Standard content grouping |
 | Ghost | `bg-transparent py-0 rounded-none` + `px-0` on CardHeader and CardContent | Always used for graph cards, subtle grouping |
-| Themed | `rounded-xl` + `style={{ backgroundColor: 'var(--accent-100)' }}` | Product-accented surfaces, highlighted or selected sections |
+| Themed | `rounded-xl` + `style={{ backgroundColor: 'var(--accent-100)' }}` | Explicitly requested product-accented surfaces |
 
 **Rules**
 - Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Tables share it (see Table). Every other component keeps 8px (`rounded-lg`).
-- Cards never have a border, in any variant or state, including selected and highlighted. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. To mark a card as selected or highlighted, use the themed variant.
+- Cards never have a border, in any variant or state, including selected and highlighted. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. Keep the default card surface for selection or emphasis unless the user explicitly requests the themed treatment.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
-- Clickable cards must apply `shadow-none hover:shadow-md transition-all duration-200 cursor-pointer`. The resting state is no shadow; hover lifts it to `shadow-md`. Do not add a background colour change on hover.
+- Clickable cards use the 10% black overlay on hover and retain their default shadow treatment.
 - If the entire card is clickable, wrap it in a link — do not attach onClick to the card div.
 - Cards containing a graph must always use the ghost variant. No exceptions.
 - The themed variant re-skins automatically when the product theme class changes.
@@ -271,7 +266,7 @@ Cards group related content and actions into a single container.
 
 // Clickable
 <Link href="/report/1">
-  <Card className="rounded-xl shadow-none hover:shadow-md transition-all duration-200 cursor-pointer">
+  <Card className="rounded-xl shadow-none hover:bg-[linear-gradient(var(--hover-overlay),var(--hover-overlay))] transition-all duration-200 cursor-pointer">
     <CardContent>Content here</CardContent>
   </Card>
 </Link>
@@ -460,6 +455,7 @@ Checkboxes let users select one or more options.
 **Rules**
 - Use checkboxes for multi-select. Use a switch for a single on/off toggle.
 - Always pair a checkbox with a visible label to its right.
+- In grouped selection lists, align the group checkbox and its row checkboxes on the same vertical line unless the reference explicitly specifies an offset. Use a shared checkbox column or spacing based on the actual width of preceding controls, gaps, and row padding. Verify alignment in the rendered layout, including when groups expand and rows wrap.
 
 ```tsx
 <div className="flex items-center gap-2">
@@ -579,8 +575,8 @@ Tables display structured data for comparison and reference. Always use the shad
 - The table has a 12px corner radius (`rounded-xl` on the table container, `var(--radius-xl)` in plain CSS), the same as a card. The corners clip the white header row and the last row, including its hover colour, so never round individual cells or rows.
 - No container background. Do not put a table inside a white card; it sits straight on the page (or the card's surface) with its own white header row.
 - Right-align numbers (counts, percentages, scores, dates written as numbers) and the last column. Left-align other text.
-- Only rows that open something get a hover state (`hover:bg-secondary cursor-pointer`). A clickable row holds a link or button to the same place in its first cell, so it works with a keyboard. Rows that only show data have no hover.
-- In a list and detail layout, the open row keeps the hover colour (`bg-secondary`, `aria-selected="true"`).
+- Only rows that open something get a hover state (`hover:bg-[image:linear-gradient(var(--hover-overlay),var(--hover-overlay))] cursor-pointer`). A clickable row holds a link or button to the same place in its first cell, so it works with a keyboard. Rows that only show data have no hover.
+- In a list and detail layout, the open row uses `bg-secondary` and `aria-selected="true"`.
 - Sortable columns use a plain header button with the Lucide `ChevronsUpDown` icon, which becomes `ChevronUp` or `ChevronDown` for the sorted column. The sorted header turns `text-foreground`.
 - Paginate tables with more than 25 rows.
 - Show an empty state when there is no data, never an empty table.
@@ -607,7 +603,7 @@ TableCell:   "h-16 px-4 align-middle last:text-right"
     </TableRow>
   </TableHeader>
   <TableBody>
-    <TableRow className="cursor-pointer hover:bg-secondary">   {/* only when the row opens something */}
+    <TableRow className="cursor-pointer hover:bg-[image:linear-gradient(var(--hover-overlay),var(--hover-overlay))]">   {/* only when the row opens something */}
       <TableCell><Link href="/people/alice">Alice Johnson</Link></TableCell>
       <TableCell><Badge variant="success">Completed</Badge></TableCell>
       <TableCell className="text-right tabular-nums">$320.00</TableCell>
@@ -827,7 +823,7 @@ The header is full width, 52px tall, with `px-8` (32px) side padding and three a
 **Rules**
 - The header has no background colour, no bottom border and no shadow. It sits directly on the page background.
 - The selected nav item has a 2px bottom border in `--brand-coral` (the red underline) and `aria-current="page"`. Do not add a background or change the text colour for the selected item.
-- Hover on a nav item uses `--hover-overlay` with `rounded-lg`, not a coloured background.
+- Hover on a nav item uses `--hover-overlay` with `rounded-lg`.
 - Keep the order exactly as above: logo, product name, nav items, grid icon, profile. Do not add other controls to the header.
 - On mobile the nav items move to a second row below the logo and icons, and scroll sideways if they do not fit.
 

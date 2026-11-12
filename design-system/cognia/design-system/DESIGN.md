@@ -25,6 +25,9 @@ Read all of these in full before writing any code:
 
 ## Global rules
 
+- Use the default visual variant of each component. Use a themed or product-accented variant only when the user explicitly asks for it for that component or surface.
+- Use 10% opacity black (`#000000`) over the resting surface for all hover feedback in every theme and mode. Use `--hover-overlay` and keep the foreground at its resting opacity.
+
 - Always use design system tokens, components, and patterns over hardcoded values. Never hardcode colors, spacing, typography, or UI elements if a system equivalent exists.
 - If anything in the design system is unclear or a token/component does not obviously apply to the implementation at hand, stop and ask in the terminal before proceeding. Do not interpret or approximate — ask.
 

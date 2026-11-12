@@ -3020,3 +3020,64 @@ html body.cap-entry .epi-dialog h2:focus { outline: none; }
 /* Search input widths in the admin table toolbars (layout only, components.md Search input) */
 .search.v2srch { width:280px; max-width:100%; flex:none; }
 .v2bar .search.v2srch-bar { width:240px; }
+
+/* Assign assessment dialog (12 Nov): sits on the theme background (--background). Lists (interims, schools,
+   classes) are one white list with the 12px card radius on the outer corners and a light grey line between
+   items, no gaps, matching the educator "Select a Cognia assessment" dialog. Locked (not purchased) interims
+   read as disabled: half opacity, not-allowed cursor, no hover.
+   Plugin follow-up: add a "dialog on theme background" variant to components.css so this can move there. */
+.ildlg.dialog { background-color: var(--background); }
+.ildlg :is(.ilpick, .ilschl) { display: flex; flex-direction: column; gap: 0; background: transparent; border-radius: var(--radius-xl); }
+.ildlg :is(.ilpk, .ilsch), .ildlg :is(.ilpk, .ilsch):last-child { border: 0; border-radius: 0; background: var(--card); }
+.ildlg :is(.ilpk, .ilsch):first-child { border-start-start-radius: var(--radius-xl); border-start-end-radius: var(--radius-xl); }
+.ildlg :is(.ilpk, .ilsch):last-child { border-end-start-radius: var(--radius-xl); border-end-end-radius: var(--radius-xl); }
+.ildlg :is(.ilpk, .ilsch) + :is(.ilpk, .ilsch) { border-top: 1px solid var(--border); }
+.ildlg .ilpk:not([aria-disabled="true"]):hover, .ildlg .ilsch:hover { background: var(--secondary); }
+.ildlg .ilpk[data-locked="true"], .ildlg .ilpk[data-locked="true"]:hover { background: var(--card); cursor: not-allowed; }
+.ildlg .ilpk[data-locked="true"] > :not(.locktip) { opacity: 0.5; }
+.ildlg .ilchosen { background: var(--card); border-radius: var(--radius-xl); }
+
+/* Interim Library, District and School administrator (12 Nov): follows the educator Library.
+   Selected interim is neutral grey, grades use the shared tab pills, and the preview shows one sample
+   item at a time in an accent card with a numbered pager below. Pager matches the educator Library
+   pager (pagination still waits for a plugin spec). */
+.ilib .ilhdrow { display: flex; align-items: center; gap: var(--space-1); margin-bottom: var(--space-3); }
+.ilib .ilhdrow .ilhdline { margin: 0; }
+.ilib .ilinfo .btn { color: var(--muted-foreground); }
+.ilib .ilinfo .btn svg { width: 16px; height: 16px; }
+/* Left list matches the educator Item bank list: no container, a line between items, grey hover and selected. */
+.ilib .illist { gap: var(--space-3); background: transparent; }
+.ilib .illist .ilitem, .ilib .illist .ilitem:is(:first-of-type, :last-of-type), .ilib .illist .ilitem.illocked:not([aria-pressed="true"]) { padding: var(--space-3); border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
+.ilib .illist .ilitem[aria-pressed="true"] { background: var(--secondary); border-bottom-color: transparent; border-radius: var(--radius); }
+.ilib .illist .ilitem:not([aria-pressed="true"]):hover { background: var(--opacity-neutral-20); border-bottom-color: transparent; border-radius: var(--radius); }
+.ilib .illist .ilitem:is(:has(+ .ilitem[aria-pressed="true"]), :has(+ .ilitem:hover)) { border-bottom-color: transparent; }
+.ilib .ilgrades { gap: var(--space-2); }
+.ilib .ilcarousel { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.ilib .ilcard { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); border-radius: var(--radius-xl); background: var(--accent-100); }
+.ilib .ilcardhd { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+.ilib .ilcardhd p { margin: 0; }
+.ilib .ilcardt { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.ilib .ilcard .ilpass { background: var(--card); border-radius: var(--radius); }
+.ilib .ilcard .ilstem { font-weight: var(--weight-regular); }
+.ilib .ilcard .ilopts { padding: 0; }
+.ilib .ilcard .ilopts li { min-height: 0; padding: var(--space-3); border: 0; border-radius: var(--radius); background: var(--card); }
+.ilib .ilcard .illet { flex: 0 0 28px; height: 28px; border: 0; background: var(--secondary); font-weight: var(--weight-regular); }
+.ilib .ilcard .iloptx { flex: 1; min-width: 0; }
+.ilib .ilcard .ilopts li.is-correct { background: var(--success-light); }
+.ilib .ilcard .ilopts li.is-correct .illet { background: var(--success); color: var(--primary-foreground); }
+.ilib .ilcard .ilok { display: inline-flex; }
+.ilib .ilcard .ilok [stroke="currentColor"] { stroke: var(--success); }
+.ilib .ilcard .ilok svg { width: 16px; height: 16px; }
+.ilib .ilpager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); }
+.ilib .ilpg { display: inline-flex; align-items: center; justify-content: center; width: var(--space-10); height: var(--space-10); padding: 0; border: 0; border-radius: var(--rounded-full); background-color: var(--secondary); color: var(--secondary-foreground); font: var(--weight-regular) var(--text-body-base) var(--font-sans); cursor: pointer; }
+.ilib .ilpg:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.ilib .ilpg:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.ilib .ilpg[aria-pressed="true"] { background-color: var(--accent-400); color: var(--primary-foreground); font-weight: var(--weight-semibold); }
+
+/* 12 Nov: separators, info icons and info tooltips (all flows).
+   Separators: support.js renders each " · " as a lighter grey "|".
+   Info icons (Lucide info) use the info blue; the tooltip an info icon opens is white. */
+.sep-bar { color: var(--muted-foreground); opacity: 0.8; }
+svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { stroke: var(--info); }
+.tooltip-wrap:has(svg > path[d="M12 16v-4"], svg > line[x1="12"][y1="16"][y2="12"]) > .tooltip,
+.info .infotip { background-color: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-md); }

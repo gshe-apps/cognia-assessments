@@ -109,3 +109,58 @@ document.addEventListener('DOMContentLoaded', () => {
   root.setAttribute('data-rendered', '');
   window.cogniaPreview = instance;
 });
+
+// 12 Nov: every " · " separator in the flows reads as a lighter grey "|" (the .sep-bar style lives in each
+// flow stylesheet). Text stays as authored in templates and scripts; this swaps it in the rendered page,
+// including text that scripts render later. SVG text, form controls and editable areas are left alone.
+(() => {
+  const SKIP = 'script,style,textarea,select,option,input,svg,[contenteditable],title,.sep-bar';
+  // 12 Nov: the educator flow says "learner", not "student". Screens that load educator.css swap the word
+  // (case kept) in rendered text and in placeholder, aria-label, title and data-tip. The role switcher and
+  // the hub window keep "Student", since they name the student persona and match the admin flow.
+  let LEARNERS = false;   // set once the page's stylesheets are known (support.js loads before them)
+  const KEEP = 'script,style,textarea,[contenteditable],.rolemodal,.rolelist,.appdlg,.appmodal';
+  const WORD = /\b([Ss])tudent(s?)\b/g;
+  const learner = (t) => t.replace(WORD, (m, s1, pl) => (s1 === 'S' ? 'L' : 'l') + 'earner' + pl);
+  const ATTRS = ['placeholder', 'aria-label', 'title', 'data-tip'];
+  const fixAttrs = (el) => {
+    if (!LEARNERS || el.nodeType !== 1 || el.closest(KEEP)) return;
+    ATTRS.forEach((a) => { const v = el.getAttribute(a); if (v && WORD.test(v)) { WORD.lastIndex = 0; el.setAttribute(a, learner(v)); } WORD.lastIndex = 0; });
+  };
+  const make = () => { const s = document.createElement('span'); s.className = 'sep-bar'; s.setAttribute('aria-hidden', 'true'); s.textContent = '|'; return s; };
+  const fix = (node) => {
+    if (LEARNERS && node.nodeValue && /[Ss]tudent/.test(node.nodeValue) && node.parentElement && !node.parentElement.closest(KEEP)) {
+      const next = learner(node.nodeValue);
+      if (next !== node.nodeValue) node.nodeValue = next;
+    }
+    const text = node.nodeValue;
+    if (!text || !text.includes('·')) return;
+    const parent = node.parentElement;
+    if (!parent || parent.closest(SKIP)) return;
+    const parts = text.split('·');
+    const frag = document.createDocumentFragment();
+    parts.forEach((part, i) => {
+      if (i) frag.append(make());
+      if (part) frag.append(document.createTextNode(part));
+    });
+    node.replaceWith(frag);
+  };
+  const scan = (root) => {
+    if (root.nodeType === 3) { fix(root); return; }
+    if (root.nodeType !== 1) return;
+    if (LEARNERS) { fixAttrs(root); root.querySelectorAll('[placeholder],[aria-label],[title],[data-tip]').forEach(fixAttrs); }
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.nodeValue.includes('·') || (LEARNERS && /[Ss]tudent/.test(n.nodeValue))) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+    const found = []; while (walk.nextNode()) found.push(walk.currentNode);
+    found.forEach(fix);
+  };
+  const start = () => {
+    LEARNERS = !!document.querySelector('link[href*="educator.css"]');
+    scan(document.body);
+    new MutationObserver((list) => list.forEach((m) => {
+      if (m.type === 'characterData') fix(m.target);
+      else if (m.type === 'attributes') fixAttrs(m.target);
+      else m.addedNodes.forEach(scan);
+    })).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: LEARNERS, attributeFilter: LEARNERS ? ATTRS : undefined });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();

@@ -325,3 +325,8 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .confetti-a2 { background: var(--accent-200); }
 .confetti-a3 { background: var(--accent-300); }
 .confetti-a4 { background: var(--accent-400); }
+
+/* 12 Nov: separators (student flow has no info icons).
+   Separators: support.js renders each " · " as a lighter grey "|".
+   Info icons (Lucide info) use the info blue; the tooltip an info icon opens is white. */
+.sep-bar { color: var(--muted-foreground); opacity: 0.8; }

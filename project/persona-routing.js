@@ -27,7 +27,29 @@
  // Older screens list roles without data-persona: read the role from its title, and send every role to the start of its current flow.
  const BY_TITLE = { 'district administrator': 'district', 'system administrator': 'district', 'school administrator': 'school', 'educator': 'educator', 'teacher': 'educator', 'student': 'student' };
  const START = { district: 'District-Home.dc.html', school: 'District-Home.dc.html', educator: 'District-Home.dc.html', student: 'STU2-SignIn.dc.html' };
+ const testPage = 'CAP-T08-AudienceDelivery.dc.html';
+ const testHref = `${testPage}?view=test`;
+ const isTest = file === testPage && new URLSearchParams(location.search).get('view') === 'test';
+ function updateTestNavigation() {
+   for (const nav of document.querySelectorAll('.shell-nav[aria-label="Classroom Assessment"]')) {
+     if (nav.querySelector('[data-test-nav]')) continue;
+     const link = document.createElement('a');
+     link.dataset.testNav = '';
+     link.href = testHref;
+     link.textContent = 'Test';
+     if (isTest) {
+       for (const previous of nav.querySelectorAll('[aria-current="page"]')) {
+         previous.removeAttribute('aria-current');
+         previous.classList.remove('on');
+       }
+       link.classList.add('on');
+       link.setAttribute('aria-current', 'page');
+     }
+     nav.append(link);
+   }
+ }
  function update() {
+   updateTestNavigation();
    const now = active();
    // Remember an admin persona found from the page, so Home opens as the same administrator.
    if (!fixed && (now === 'district' || now === 'school' || now === 'educator') && stored() !== now) save(now);

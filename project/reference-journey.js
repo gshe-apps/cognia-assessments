@@ -133,7 +133,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  const bankedId=()=>'assessment-'+m.tests.map(x=>x.id).join('-')+'-banked';
  try{if(JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]').some(e=>e.id===bankedId()))paintBanked()}catch{}
  bankButton.addEventListener('click',e=>{if(bankButton.dataset.banked){e.stopPropagation();try{const archive=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]');localStorage.setItem('cogniaAssessmentArchiveV1',JSON.stringify(archive.filter(x=>x.id!==bankedId())));const work=JSON.parse(localStorage.getItem('cogniaAssessmentWork')||'{}');delete work.banked;localStorage.setItem('cogniaAssessmentWork',JSON.stringify(work))}catch{}paintUnbanked();return}host.rjPersist?.();setTimeout(()=>{if(!e.defaultPrevented)paintBanked()})});
- tools.querySelector('[data-preview-test]').onclick=()=>{host.rjPersist?.();const dialog=document.createElement('dialog');dialog.className='rj-preview-dialog';dialog.innerHTML='<button type="button" aria-label="Close test preview">×</button><h2>'+esc(t.title)+'</h2>'+(t.questions||[]).map((q,i)=>'<article><h3>'+(i+1)+'. '+esc(q.stem)+'</h3>'+(q.options||[]).map((v,k)=>'<p>'+String.fromCharCode(65+k)+'. '+esc(v)+'</p>').join('')+'</article>').join('');document.body.append(dialog);dialog.querySelector('button').onclick=()=>dialog.remove();dialog.oncancel=()=>dialog.remove();dialog.showModal()};
+ tools.querySelector('[data-preview-test]').onclick=()=>{host.rjPersist?.();window.capLearnerPreview(t)};
  draw();page.addEventListener('click',e=>{if(e.target.closest('a'))host.rjPersist?.()},true);
 };
 window.capReferenceAssign=page=>{
@@ -169,3 +169,52 @@ window.capReferenceSession=(box,session,index,save)=>{
 
 
 window.capReferenceFinish=page=>{if(location.search.includes('stage=details')){const bar=page.querySelector('.actionbar'),next=bar?.querySelector('.solid');if(next&&!page.querySelector('[data-bank]')){const bank=document.createElement('button');bank.type='button';bank.className='btn ghost btn-ghost btn-lg';bank.dataset.bank='';bank.textContent='Bank assessment';next.before(bank);}}const approvals=page.querySelector('#client-item-review');if(location.search.includes('stage=details')){approvals?.remove();page.querySelector('.rj-approval-disclosure')?.remove();return;}if(approvals){const disclosure=document.createElement('details');disclosure.className='rj-approval-disclosure';const ready=approvals.textContent.includes('All items are ready');disclosure.innerHTML='<summary>Item review <span>'+ (ready?'All items ready':'Review required')+'</span></summary>';disclosure.open=!ready;approvals.before(disclosure);disclosure.append(approvals)}};
+/* Learner preview (12 Nov): step 2's "Learner preview" plays the test the way a learner sees it in the
+   student flow: progress segments, one question card at a time, A to D options with a tick, round
+   previous and next arrows, and a finish card. Answers live only in this dialog and are never saved. */
+window.capLearnerPreview=(t)=>{
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+ const icon={x:svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),prev:svg('<path d="m15 18-6-6 6-6"/>'),next:svg('<path d="m9 18 6-6-6-6"/>'),tick:svg('<path d="M20 6 9 17l-5-5"/>'),flag:svg('<path d="M20 6 9 17l-5-5"/>'),again:svg('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>')};
+ const qs=(t.questions||[]).filter(q=>q&&q.stem),n=qs.length,answers=qs.map(()=>null);
+ const isChoice=q=>(q.options||[]).length>0;
+ const isLong=q=>/extended/i.test(q.displayType||q.type||'');
+ let at=0,dir=1;
+ const dialog=document.createElement('dialog');
+ dialog.className='lp-dialog theme-assessments';
+ dialog.setAttribute('aria-label','Learner preview: '+(t.title||'Test'));
+ const answered=()=>answers.filter(a=>a!==null&&a!=='').length;
+ const card=(q,i)=>{
+  const opts=q.options||[],big=opts.length&&opts.every(o=>String(o).length<=8);
+  const passage=q.passage?'<div class="lp-passage">'+(q.passTitle?'<span class="lp-passage-title">'+esc(q.passTitle)+'</span>':'')+'<p>'+esc(q.passage)+'</p></div>':'';
+  const body=isChoice(q)
+   ?'<div class="lp-opts" role="radiogroup" aria-label="Answer options">'+opts.map((o,k)=>'<button type="button" class="lp-opt'+(answers[i]===k?' on':'')+'" role="radio" aria-checked="'+(answers[i]===k)+'" data-opt="'+k+'"><span class="lp-letter">'+String.fromCharCode(65+k)+'</span><span class="'+(big?'lp-big':'lp-opt-text')+'">'+esc(o)+'</span><span class="lp-tick">'+icon.tick+'</span></button>').join('')+'</div>'
+   :isLong(q)
+    ?'<div class="lp-panel field"><label class="label" for="lp-answer">Your answer</label><textarea class="textarea" id="lp-answer" rows="6" placeholder="Type your answer">'+esc(answers[i]||'')+'</textarea></div>'
+    :'<div class="lp-panel field"><label class="label" for="lp-answer">Your answer</label><input class="input" id="lp-answer" type="text" autocomplete="off" placeholder="Type your answer" value="'+esc(answers[i]||'')+'"></div>';
+  return '<article class="lp-card lp-in-'+(dir>0?'next':'prev')+'" aria-roledescription="question" aria-label="Question '+(i+1)+' of '+n+'"><div class="lp-body"><p class="lp-num">Question '+(i+1)+'/'+n+'</p><div class="lp-head">'+passage+'<h2 class="lp-stem">'+esc(q.stem)+'</h2></div><div class="lp-ans">'+body+'</div></div></article>';
+ };
+ const endCard=()=>{const a=answered(),all=a===n;return '<article class="lp-card lp-end lp-in-next" aria-label="End of test"><div class="lp-body lp-end-body"><span class="lp-finish">'+icon.flag+'</span><div class="lp-end-copy"><h2 class="lp-stem">'+a+' of '+n+' answered</h2><p>'+(all?'Learners would submit their answers here.':'Learners are asked to go back to the questions they missed before they submit.')+' Nothing is saved in this preview.</p></div><div class="lp-end-actions"><button type="button" class="btn btn-lg" data-restart>'+icon.again+'Start again</button><button type="button" class="btn btn-ghost btn-lg" data-close>Close preview</button></div></div></article>'};
+ const draw=()=>{
+  const end=at===n,q=qs[at];
+  const ready=!end&&answers[at]!==null&&answers[at]!=='';
+  dialog.innerHTML='<div class="lp-top"><div class="lp-segs" aria-hidden="true">'+qs.map((_,i)=>'<span class="lp-seg'+(i===at?' now':answers[i]!==null&&answers[i]!==''?' done':'')+'"></span>').join('')+'</div><span class="lp-count" role="status">'+answered()+'/'+n+'</span><button type="button" class="btn btn-ghost btn-icon btn-sm" data-close aria-label="Close learner preview">'+icon.x+'</button></div>'
+   +'<div class="lp-stage"><span class="lp-behind lp-behind-2" aria-hidden="true"></span><span class="lp-behind lp-behind-1" aria-hidden="true"></span>'+(n?(end?endCard():card(q,at)):'<article class="lp-card"><div class="lp-body lp-end-body"><h2 class="lp-stem">No questions yet</h2><p>Add items in step 1 to preview them here.</p></div></article>')
+   +'<button type="button" class="lp-arrow prev'+(at===0?' hide':'')+'" data-go="-1" aria-label="Previous question">'+icon.prev+'</button>'
+   +'<button type="button" class="lp-arrow next'+(end||!n?' hide':'')+(ready?' ready':'')+'" data-go="1" aria-label="'+(at===n-1?'Finish':'Next question')+'">'+icon.next+'</button></div>';
+  const field=dialog.querySelector('#lp-answer');
+  if(field)field.addEventListener('input',()=>{answers[at]=field.value;const r=field.value.trim()!=='';dialog.querySelector('.lp-arrow.next')?.classList.toggle('ready',r);dialog.querySelector('.lp-count').textContent=answered()+'/'+n});
+ };
+ const go=d=>{const next=Math.max(0,Math.min(n,at+d));if(next===at)return;dir=d;at=next;draw();dialog.querySelector('.lp-arrow:not(.hide)')?.focus({preventScroll:true})};
+ const close=()=>{dialog.close();dialog.remove()};
+ dialog.addEventListener('click',e=>{
+  const opt=e.target.closest('[data-opt]');
+  if(opt){answers[at]=+opt.dataset.opt;dialog.querySelectorAll('.lp-opt').forEach(b=>{const on=b===opt;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});dialog.querySelector('.lp-arrow.next')?.classList.add('ready');dialog.querySelector('.lp-count').textContent=answered()+'/'+n;return}
+  const step=e.target.closest('[data-go]');if(step){go(+step.dataset.go);return}
+  if(e.target.closest('[data-restart]')){answers.fill(null);dir=-1;at=0;draw();return}
+  if(e.target.closest('[data-close]'))close();
+ });
+ dialog.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1)});
+ dialog.addEventListener('cancel',e=>{e.preventDefault();close()});
+ draw();document.body.append(dialog);dialog.showModal();
+};

@@ -67,7 +67,7 @@ window.cogniaAssessmentForms=[
         "id": "g5a5",
         "tier": "plus",
         "type": "Extended text",
-        "stem": "A student says 1/2 + 1/3 = 2/5. Explain the error and show the correct sum.",
+        "stem": "A learner says 1/2 + 1/3 = 2/5. Explain the error and show the correct sum.",
         "options": [],
         "correct": null,
         "marks": 2

@@ -103,7 +103,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
    if(type==='Order')q={stem:'Order these fractions from smallest to largest: 3/4, 1/4, 2/4, 5/8. Write your ordered list.',options:[],correct:null,orderItems:['3/4','1/4','2/4','5/8'],explanation:'1/4, 2/4, 5/8, 3/4.'};
    if(type==='Match')q={stem:'Match each fraction to an equivalent fraction: 1/2, 1/3, 3/4. Choices: 6/8, 2/4, 2/6. Write each pair.',options:[],correct:null,matchPairs:[['1/2','6/8'],['1/3','2/4'],['3/4','2/6']],explanation:'1/2 = 2/4; 1/3 = 2/6; 3/4 = 6/8.'};
    if(type==='Fill in the blank')q={stem:'Complete the equivalent fraction: 1/2 = __/8.',options:[],correct:null,explanation:'4/8.'};
-   if(type==='Extended response')q={stem:'A student says 1/2 + 1/3 = 2/5. Explain the error and show the correct sum.',options:[],correct:null,marks:2,explanation:'Use a common denominator: 3/6 + 2/6 = 5/6. Adding the denominators is incorrect.'};
+   if(type==='Extended response')q={stem:'A learner says 1/2 + 1/3 = 2/5. Explain the error and show the correct sum.',options:[],correct:null,marks:2,explanation:'Use a common denominator: 3/6 + 2/6 = 5/6. Adding the denominators is incorrect.'};
    if(difficulty==='Mostly easier'&&type==='Multiple choice')q={stem:`Which fraction is equivalent to ${index%2?'2/4':'1/2'}?`,options:index%2?['1/2','1/3','1/4','2/3']:['2/4','1/4','3/4','1/3'],correct:0};
    if(difficulty==='Mostly challenging'&&type==='Multiple choice')q={stem:index%2?'Find the difference: 2 1/2 − 1 3/4.':'Find the sum: 2/3 + 5/8.',options:index%2?['1/4','3/4','1 1/4','1 3/4']:['7/11','31/24','7/24','13/24'],correct:1};
   }

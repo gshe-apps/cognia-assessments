@@ -3698,7 +3698,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .cie-media :is(label, button):hover{background:var(--secondary)}
 .cie-media svg{width:16px;height:16px}
 .cie-options-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)}
-.cie-options-heading h3{font-size:var(--text-body-base);font-weight:var(--weight-semibold)}
+.cie-options-heading h3{font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
 .cie-options-heading>span{color:var(--muted-foreground)}
 .cie-options-card{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border-radius:var(--radius-xl);background:var(--accent-100)}
 .cie-option-list{display:flex;flex-direction:column;gap:var(--space-2)}
@@ -3717,14 +3717,16 @@ html body.item-method-reference .cap-root .btn.solid {
 .cie-add{align-self:flex-start}
 .cie-add svg{width:16px;height:16px}
 .cie-written{color:var(--muted-foreground)}
-.cie-fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
+.cie-fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6) var(--space-4)}
+/* 12 Nov: item type spans the column; points and difficulty share the row below. Fields rely on the column gap for spacing. */
+.cie-fields>.field:first-child{grid-column:1/-1}
+.cap-item-editor .field{margin-bottom:0}
 .cie-optional{font-weight:var(--weight-regular);color:var(--muted-foreground)}
 .cie-attachments img{display:block;max-width:100%;max-height:160px}
 .cie-attachments audio{width:100%}
 .cie-error{padding:0 var(--space-8) var(--space-4);color:color-mix(in srgb, var(--destructive) 80%, var(--foreground))}
 .cie-error:empty{display:none}
 .cie-footer{position:sticky;bottom:0;display:flex;align-items:flex-end;gap:var(--space-6);padding:var(--space-4) var(--space-8) var(--space-6);background:var(--background)}
-.cie-points{width:160px}
 .cie-stepper{display:flex;align-items:center;gap:var(--space-1);padding-inline:var(--space-1);border-radius:var(--radius);background-color:var(--primary-foreground)}
 .cie-stepper:focus-within{outline:2px solid var(--ring);outline-offset:2px}
 .cie-stepper .input{min-width:0;padding-inline:0;text-align:center;background-color:transparent;outline:none;-moz-appearance:textfield}
@@ -4421,7 +4423,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .rr-warning { background:var(--warning-light); }.rr-warning svg { stroke:var(--warning); }
 
 /* Student table */
-.rr-review-panel { display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
+.rr-review-panel { display:flex; flex-direction:column; gap:var(--space-1); min-width:0; }
 .rr-review-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); flex-wrap:wrap; }
 .rr-student { display:flex; align-items:center; gap:var(--space-2); }
 .rr-avatar { display:grid; place-items:center; width:36px; height:36px; flex:none; border-radius:var(--rounded-full); background:var(--secondary); color:var(--foreground); font-size:var(--text-body-small); }
@@ -4436,7 +4438,7 @@ html body.item-method-reference .cap-root .btn.solid {
 /* Results (12 Nov, Figma "results" 1547:16618): kicker above the title, icon search and filter,
    sortable headers, a static table (rows open nothing) and a stack of cards on the right where one
    card is open at a time. */
-.rr-review-toolbar { flex-wrap:nowrap; min-height:var(--space-12); }
+.rr-review-toolbar { flex-wrap:nowrap; }
 .rr-tools { display:flex; align-items:center; gap:var(--space-2); }
 .rr-tools .rr-search { width:240px; }
 .rr-tools .rr-search[hidden] { display:none; }
@@ -5075,3 +5077,65 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details { max-width: 13
 svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { stroke: var(--info); }
 .tooltip-wrap:has(svg > path[d="M12 16v-4"], svg > line[x1="12"][y1="16"][y2="12"]) > .tooltip,
 .info .infotip { background-color: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-md); }
+
+/* Learner preview (12 Nov): step 2 plays the test like the student flow (STU2 test deck). Mirrors
+   stu2.css .seg / .qcard / .opt / .deck-arrow with tokens, because educator screens cannot load stu2.css.
+   Answer options, the card deck and the round arrows are still waiting for a plugin spec. */
+.lp-dialog { position:fixed; inset:0; width:100%; max-width:none; height:100%; max-height:none; margin:0; padding:var(--space-6) var(--space-4) 0; border:0; background:transparent; color:var(--foreground); overflow:hidden; }
+.lp-dialog[open] { display:flex; flex-direction:column; align-items:center; }
+.lp-dialog::backdrop { background:color-mix(in srgb, var(--secondary) 88%, transparent); backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2); }
+.lp-top { display:flex; align-items:center; gap:var(--space-3); width:100%; max-width:640px; }
+.lp-segs { display:flex; gap:var(--space-1); flex:1; }
+.lp-seg { flex:1; height:8px; border-radius:var(--rounded-full); background:color-mix(in srgb, var(--card) 70%, var(--secondary)); transition:background-color 200ms; }
+.lp-seg.done { background:var(--accent-300); }
+.lp-seg.now { background:var(--accent-200); }
+.lp-count { font-size:var(--text-body-small); font-weight:var(--weight-semibold); }
+.lp-stage { position:relative; width:100%; max-width:640px; flex:1; min-height:0; margin-top:var(--space-6); margin-bottom:var(--space-6); }
+.lp-card { position:absolute; inset:0 0 var(--space-8) 0; z-index:2; display:flex; flex-direction:column; border-radius:12px; background:var(--card); color:var(--card-foreground); box-shadow:var(--shadow-lg); overflow:hidden; }
+.lp-behind { position:absolute; bottom:calc(var(--space-4) + var(--space-1)); height:var(--space-8); border-radius:12px; background:var(--card); box-shadow:var(--shadow-md); }
+.lp-behind-1 { left:var(--space-4); right:var(--space-4); bottom:calc(var(--space-4) + var(--space-1)); z-index:1; }
+.lp-behind-2 { left:var(--space-8); right:var(--space-8); bottom:var(--space-2); z-index:0; }
+.lp-body { flex:1; min-height:0; display:flex; flex-direction:column; gap:var(--space-4); padding:var(--space-6) var(--space-4) 0; }
+.lp-num { margin:0; font-size:var(--text-body-small); font-weight:var(--weight-semibold); color:var(--muted-foreground); }
+.lp-head { display:flex; flex-direction:column; gap:var(--space-4); }
+.lp-passage { display:flex; flex-direction:column; gap:var(--space-2); padding:var(--space-3); border-radius:var(--radius); background:var(--secondary); }
+.lp-passage p { margin:0; }
+.lp-passage-title { font-weight:var(--weight-semibold); }
+.lp-stem { margin:0; font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.lp-ans { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:var(--space-3); margin:0 calc(var(--space-1) * -1); padding:var(--space-1) var(--space-1) var(--space-6); }
+.lp-ans .field { margin-bottom:0; }
+.lp-panel { padding:var(--space-4); border-radius:var(--radius); background:var(--background); }
+.lp-opts { display:flex; flex-direction:column; gap:var(--space-3); }
+.lp-opt { display:flex; align-items:center; gap:var(--space-3); width:100%; min-height:56px; padding:var(--space-3) var(--space-4); border:1px solid var(--opacity-neutral-20, var(--border)); border-radius:var(--radius); background:var(--card); color:var(--foreground); font:inherit; text-align:left; cursor:pointer; transition:all 200ms ease-out; }
+.lp-opt:hover { box-shadow:var(--shadow-md); }
+.lp-opt:focus-visible, .lp-arrow:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.lp-letter { flex:none; display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--rounded-full); background:var(--secondary); font-size:var(--text-body-small); font-weight:var(--weight-semibold); transition:all 200ms ease-out; }
+.lp-big { font-size:var(--text-heading); font-weight:var(--weight-semibold); }
+.lp-tick { flex:none; display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; margin-left:auto; border:2px solid var(--muted-foreground); border-radius:var(--rounded-full); transition:all 200ms ease-out; }
+.lp-tick svg { width:16px; height:16px; opacity:0; }
+.lp-opt.on { padding:calc(var(--space-3) - 1px) calc(var(--space-4) - 1px); border:2px solid var(--accent-400); background:var(--accent-400); color:var(--primary-foreground); }
+.lp-opt.on .lp-letter { background:var(--card); color:var(--accent-400); }
+.lp-opt.on .lp-tick { border-color:var(--card); background:var(--card); }
+.lp-opt.on .lp-tick svg { opacity:1; color:var(--accent-400); }
+.lp-arrow { position:absolute; top:50%; z-index:3; display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; padding:0; border:1px solid color-mix(in srgb, var(--card) 60%, transparent); border-radius:var(--rounded-full); background:color-mix(in srgb, var(--card) 72%, transparent); color:var(--foreground); box-shadow:var(--shadow-lg); cursor:pointer; transform:translateY(-50%); transition:all 200ms; }
+.lp-arrow svg { width:24px; height:24px; }
+.lp-arrow:hover { background:var(--card); box-shadow:var(--shadow-md); }
+.lp-arrow.prev { left:-80px; }
+.lp-arrow.next { right:-80px; }
+.lp-arrow.hide { visibility:hidden; }
+.lp-arrow.next.ready { border-color:var(--accent-300); background:var(--accent-300); color:var(--primary-foreground); }
+.lp-arrow.next.ready:hover { background:color-mix(in srgb, var(--accent-300) 88%, var(--foreground)); }
+.lp-end { background:transparent; box-shadow:none; }
+.lp-end-body { align-items:center; justify-content:center; gap:var(--space-6); padding-bottom:var(--space-6); text-align:center; }
+.lp-end-copy { display:flex; flex-direction:column; gap:var(--space-2); max-width:420px; }
+.lp-end-copy p, .lp-end-body > p { margin:0; color:var(--muted-foreground); }
+.lp-end-actions { display:flex; flex-direction:column; align-items:center; gap:var(--space-2); }
+.lp-finish { display:inline-flex; align-items:center; justify-content:center; width:80px; height:80px; border-radius:var(--rounded-full); background:var(--accent-100); }
+.lp-finish svg { width:40px; height:40px; color:var(--accent-400); }
+.lp-stage:has(.lp-end) .lp-behind { display:none; }
+.lp-in-next { animation:lp-in-next 200ms ease-out; }
+.lp-in-prev { animation:lp-in-prev 200ms ease-out; }
+@keyframes lp-in-next { from { opacity:0; transform:translateX(var(--space-6)); } }
+@keyframes lp-in-prev { from { opacity:0; transform:translateX(calc(var(--space-6) * -1)); } }
+@media (max-width:820px) { .lp-arrow { top:auto; bottom:var(--space-10); transform:none; } .lp-arrow.prev { left:var(--space-3); } .lp-arrow.next { right:var(--space-3); } }
+@media (prefers-reduced-motion:reduce) { .lp-in-next, .lp-in-prev { animation:none; } .lp-opt, .lp-letter, .lp-tick, .lp-arrow, .lp-seg { transition:none; } }

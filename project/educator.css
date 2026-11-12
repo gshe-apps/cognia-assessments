@@ -4283,96 +4283,91 @@ html body.item-method-reference .cap-root .btn.solid {
 /* Student and session setup. Compact Figma variants requested for this screen. */
 .allocation-hero { min-height: 0; padding: 0; margin: 0 0 var(--space-4); }
 .cap-root .tf-page.allocation-page { padding-top: 0; }
-.allocation-grid { --allocation-ink: #11143f; --allocation-line: #e3e5ed; --allocation-header: #d3d7ef; --allocation-chip: #e9e9e9; --allocation-assigned: #d7e3ff; --allocation-support: #ededef; --allocation-warm: #fff6df; --allocation-brown: #ab4e00; display: grid; grid-template-columns: minmax(0, 1.36fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; color: var(--allocation-ink); }
+.allocation-grid { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
 .allocation-panel, .allocation-panel > .card-content { min-width: 0; }
 .allocation-recipient-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
-.allocation-panel { padding: 0; border: 0; background: transparent; box-shadow: none; color: var(--allocation-ink); }
+.allocation-panel { padding: 0; border: 0; background: transparent; box-shadow: none; }
 .allocation-panel > .card-content { padding: 0; }
 
-.allocation-grid { --allocation-header: #e5e8ff; }
-.allocation-grid .checkbox { accent-color: #0037ff; }
 .allocation-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .allocation-grid .allocation-heading { min-height: var(--space-10); }
-.allocation-sessions .allocation-heading { justify-content: flex-end; }
-.allocation-add-session.btn {
-  background-color: var(--secondary);
-  border-color: var(--secondary);
-  color: var(--secondary-foreground);
-  box-shadow: var(--shadow-xs);
-  font-size: var(--text-body-base);
-  line-height: 1.4;
-}
-.allocation-add-session.btn:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
-.allocation-selection { margin-top: calc(-1 * var(--space-2)); }
-/* Classes / Students use the plugin's pill tabs (tabs-list + tab) unstyled: selected is the solid primary pill. */
+.allocation-sessions .allocation-heading { justify-content: flex-end; margin-bottom: var(--space-3); }
+.allocation-page .allocation-mode { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .allocation-picker { position: relative; min-width: 0; }
-.allocation-search-row.search { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-3); min-height: var(--space-10); padding-inline: var(--space-3); border: 1px solid var(--border); border-radius: var(--rounded-full); background: var(--background); }
-.allocation-search-row .icon { position: static; }
-[data-class-pills] { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.allocation-class-chip.btn { min-width: 0; min-height: var(--space-8); height: var(--space-8); padding-inline: var(--space-3); gap: var(--space-3); border-radius: var(--rounded-full); background: var(--allocation-chip); color: var(--allocation-ink); font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
-.allocation-search-field { position: relative; display: flex; align-items: center; flex: 1; min-width: 120px; }
-.allocation-search-field .search-icon { left: var(--space-1); top: 50%; transform: translateY(-50%); }
-.allocation-search-field .search-input { height: var(--space-8); min-height: var(--space-8); padding-left: var(--space-8); padding-right: 0; }
-.allocation-search-field .search-input::placeholder { color: #60729f; }
+.allocation-filters, [data-class-pills] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.allocation-filters > [data-class-pills]:empty { display: none; }
+.allocation-filters > [data-clear-selection] { margin-inline-start: auto; }
+.allocation-search-field .search-icon { top: 50%; transform: translateY(-50%); }
+.allocation-search-field .search-clear { right: var(--space-12); }
+.allocation-search-field > .tooltip-wrap:last-child { flex: none; margin-inline-end: var(--space-2); }
+.allocation-search-field [data-toggle-classes] .icon { position: static; }
 
-.allocation-search-row .icon, .allocation-search-field .search-icon { color: var(--allocation-ink); }
-.allocation-search-row > .tooltip-wrap { margin-left: auto; }
-.allocation-options { position: absolute; top: 100%; inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }
+.allocation-options { position: absolute; top: calc(100% + var(--space-1)); inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }
 .allocation-grid .tooltip { left: auto; right: 0; transform: none; }
 .allocation-class-head > .tooltip-wrap .tooltip { left: 0; right: auto; }
 .allocation-check { display: flex; align-items: center; gap: var(--space-2); }
-.allocation-class { margin-top: var(--space-4); border: 1px solid var(--allocation-line); border-radius: var(--radius-xl); overflow: clip; background: var(--card); }
-.allocation-class[data-expanded="false"] { border-color: var(--allocation-line); }
-.allocation-class[data-expanded="true"] { padding-block-end: var(--space-2); }
-.allocation-class-head.card { border-radius: 0; }
-.allocation-class-head.card, .allocation-session-head.card { background: transparent; box-shadow: none; }
+.allocation-class { margin-top: var(--space-4); overflow: clip; }
+.allocation-class-head.card { border-radius: inherit; }
 .allocation-class:first-child { margin-top: 0; }
 .allocation-class-head { flex-direction: row; align-items: center; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-2); cursor: pointer; }
 .allocation-class-select { flex-wrap: wrap; gap: var(--space-2); }
 .allocation-class-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.allocation-class-actions .allocation-select, .allocation-student-actions .allocation-select { width: 136px; }
-.allocation-select { position: relative; display: inline-flex; min-width: 0; }
-.allocation-select > .icon { position: absolute; inset-inline-end: var(--space-3); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--allocation-ink); }
-.allocation-class-actions .select, .allocation-student-actions .select { appearance: none; box-sizing: border-box; width: 100%; min-height: var(--space-8); height: var(--space-8); padding: var(--space-1) var(--space-8) var(--space-1) var(--space-2); border: 1px solid var(--allocation-line); background: var(--card); color: var(--allocation-ink); font-size: var(--text-body-small); }
-.allocation-class-actions [data-apply-class] { background: var(--card); color: var(--foreground); border: 1px solid var(--allocation-line); }
+.allocation-select { position: relative; display: inline-grid; min-width: 0; max-width: 100%; }
+.allocation-select > .icon { position: absolute; inset-inline-end: var(--space-1); top: 50%; transform: translateY(-50%); pointer-events: none; }
+.allocation-select-label, .allocation-student-actions .select { box-sizing: border-box; min-height: var(--space-8); padding: 0 var(--space-6) 0 var(--space-1); font-size: var(--text-body-small); }
+.allocation-select-label { visibility: hidden; white-space: nowrap; overflow: hidden; }
+.allocation-student-actions .select { position: absolute; inset: 0; width: 100%; height: 100%; text-overflow: ellipsis; }
 .allocation-student { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-2); min-height: var(--space-10); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-12); flex-wrap: wrap; }
-.allocation-student-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.allocation-support-trigger.badge-warning { background: var(--allocation-warm); color: var(--allocation-brown); }
-.allocation-support-trigger .icon { color: inherit; stroke: currentColor; }
-.allocation-support-dialog { max-height: calc(100dvh - var(--space-8)); overflow: auto; }
-.allocation-support-dialog form { display: grid; gap: var(--space-4); }
+.allocation-student-actions { display: flex; align-items: center; gap: var(--space-2); min-width: 0; max-width: 100%; margin-left: auto; }
+.allocation-page .allocation-student-actions .select { background-color: transparent; }
+.allocation-page [data-expand-support] .icon { color: inherit; }
 .allocation-support-options { margin: 0; padding: 0; border: 0; min-width: 0; }
-.allocation-support-options > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr)); gap: var(--space-3); }
-.allocation-grid [data-assigned] .badge { background: var(--allocation-assigned); color: var(--allocation-ink); }
-.allocation-session { margin-top: var(--space-3); min-width: 0; border: 1px solid var(--allocation-line); border-radius: var(--radius-xl); overflow: clip; background: var(--card); box-shadow: var(--shadow-sm); padding: var(--space-2); }
+.allocation-session { min-width: 0; overflow: clip; padding: var(--space-2); }
 .allocation-session-head.card { border-radius: var(--radius); }
 .allocation-session-head { display: flex; flex-direction: row; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); cursor: pointer; }
 .allocation-session-head h3 { flex: 1; margin: 0; }
-.allocation-session-head [data-count] { white-space: nowrap; }
 .allocation-fields { display: grid; grid-template-columns: 1.05fr 1.4fr 1fr 1fr; gap: var(--space-2); padding: var(--space-3) var(--space-2); }
 .allocation-fields .field { min-width: 0; margin: 0; }
-.allocation-fields .input, .allocation-fields .select { box-sizing: border-box; width: 100%; min-width: 0; min-height: var(--space-10); height: var(--space-10); padding: var(--space-2); border: 1px solid var(--allocation-line); background: var(--card); color: var(--allocation-ink); font-size: var(--text-body-small); }
 .allocation-session-foot, [data-assigned] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .allocation-session-foot { padding: var(--space-3) var(--space-2); }
-.accordion-item.allocation-settings { padding-inline: var(--space-3); border-bottom: 0; }
+.accordion-item.allocation-settings { padding-inline: var(--space-3); }
 .allocation-settings > .accordion-trigger { padding-block: var(--space-3); font-size: var(--text-body-small); }
-.allocation-settings > .accordion-trigger::after { display: none; }
 .allocation-settings > .accordion-trigger > span { flex: 1; }
-.allocation-settings[open] > .accordion-trigger > .icon { transform: rotate(90deg); }
 .allocation-settings-content { display: grid; gap: var(--space-3); padding-bottom: var(--space-3); }
 .allocation-settings-content > .field { margin: 0; }
 .allocation-policy-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; }
 .allocation-session-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-2); }
 .allocation-empty { padding-block: var(--space-6); }
 .allocation-page [hidden] { display: none; }
-@media (max-width: 1050px) { .allocation-grid { grid-template-columns: minmax(0, 1fr); } }
+.allocation-page .allocation-class { --class-row-inset: var(--space-2); --class-expander-width: var(--space-8); --class-row-gap: var(--space-2); gap: 0; padding: 0; overflow: visible; }
+.allocation-page .allocation-class[data-expanded="true"] { padding-block-end: var(--space-3); }
+.allocation-page .allocation-class-head { padding-inline: var(--class-row-inset); column-gap: var(--class-row-gap); }
+.allocation-page .allocation-class-head > .tooltip-wrap { flex: 0 0 var(--class-expander-width); }
+.allocation-page .allocation-session { gap: 0; overflow: visible; }
+.allocation-page .allocation-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-6); }
+.allocation-page .allocation-recipient-content { gap: var(--space-4); }
+.allocation-page [data-rosters].card { gap: 0; padding-block: 0; }
+.allocation-page .allocation-class .allocation-student { padding-inline-start: calc(var(--class-row-inset) + var(--class-expander-width) + var(--class-row-gap)); }
+.allocation-page .allocation-session + .allocation-session { margin-block-start: var(--space-3); }
+.allocation-page .allocation-fields .input { box-sizing: border-box; width: 100%; min-width: 0; }
+.allocation-page .allocation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.allocation-fields > .field:has([data-field="name"], [data-field="date"]) { grid-column: 1 / -1; }
+.allocation-page .tf-bottom { position: static; margin: var(--space-6) auto 0; transform: none; }
+.allocation-page .allocation-class-actions { width: auto; margin-inline-start: auto; }
+.allocation-page :is(.allocation-class-actions, .allocation-session-head) .menu { width: max-content; max-width: min(80vw, 24rem); }
+.allocation-page .allocation-settings { border-block-end: 0; }
+.allocation-page .allocation-settings > .accordion-trigger { background: transparent; }
+.allocation-page :is(.allocation-select .select, .allocation-fields .input):not(:disabled):hover,
+.allocation-page :is(.allocation-class-head, .allocation-session-head):hover:not(:has(:is(button, input, select, label):hover)) {
+  background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay));
+}
+@media (max-width: 1050px) { .allocation-grid, .allocation-page .allocation-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 740px) { .allocation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 639px) {
- .allocation-fields, .allocation-policy-fields { grid-template-columns: minmax(0, 1fr); }
+ .allocation-fields, .allocation-policy-fields, .allocation-page .allocation-fields { grid-template-columns: minmax(0, 1fr); }
  .allocation-class-actions { width: 100%; margin-left: 0; }
  .allocation-class-actions .allocation-select { flex: 1; min-width: 0; }
- .allocation-student-actions { width: 100%; margin-left: 0; }
- .allocation-student-actions .allocation-select { flex: 1; }
+ .allocation-student-actions { width: 100%; margin-left: 0; justify-content: flex-end; }
 }
 
 /* ---- from ds/cognia/results-dashboard.css ---- */
@@ -4605,6 +4600,16 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .cap-setup-title-row { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .cap-setup-buttons { justify-content: flex-end; gap: var(--space-2); flex: none; margin-top: auto; }
 .cap-setup-fields { display: grid; align-content: start; gap: var(--space-4); flex: 1; min-height: 0; overflow: auto; padding: var(--space-1); }
+.cap-setup-modal.allocation-support-dialog {
+  box-sizing: border-box;
+  width: min(512px, calc(100% - var(--space-8)));
+  height: fit-content;
+  max-height: calc(100dvh - var(--space-8));
+}
+.allocation-support-dialog :is(.cap-setup-view, .cap-setup-fields) { flex-basis: auto; }
+.allocation-support-dialog .cap-setup-fields { margin-inline: calc(-1 * var(--space-1)); }
+.allocation-support-dialog :is(.dialog-description, .cap-setup-optional) { margin: 0; }
+.allocation-support-dialog .cap-setup-optional { padding-inline: 0; }
 .cap-setup-modal .field { min-width: 0; margin: 0; }
 .cap-setup-modal [hidden] { display: none; }
 /* Use assessment library picker (Figma 1504:5530): setup modal size, theme background, white list */
@@ -4649,10 +4654,10 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .cap-setup-optional { width: fit-content; margin-block: var(--space-2); padding-inline: var(--space-2); }
 .cap-setup-optional-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-6); }
 /* Optional settings checkbox: 4px corners, no focus ring on click (keyboard focus still shows a ring) */
-.cap-setup-modal .cap-setup-optional .checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; padding: 0; border: 1px solid var(--primary); border-radius: 4px; background-color: var(--primary-foreground); }
-.cap-setup-modal .cap-setup-optional .checkbox:checked { background: var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
-.cap-setup-modal .cap-setup-optional .checkbox:focus { outline: none; box-shadow: none; border-color: var(--primary); }
-.cap-setup-modal .cap-setup-optional .checkbox:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.cap-setup-modal :is(.cap-setup-optional, .allocation-support-options) .checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; padding: 0; border: 1px solid var(--primary); border-radius: 4px; background-color: var(--primary-foreground); }
+.cap-setup-modal :is(.cap-setup-optional, .allocation-support-options) .checkbox:checked { background: var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+.cap-setup-modal :is(.cap-setup-optional, .allocation-support-options) .checkbox:focus { outline: none; box-shadow: none; border-color: var(--primary); }
+.cap-setup-modal :is(.cap-setup-optional, .allocation-support-options) .checkbox:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .cap-setup-stepper { display: flex; align-items: center; gap: var(--space-1); padding-inline: var(--space-1); border-radius: var(--radius); }
 .cap-setup-stepper:focus-within { outline: 2px solid var(--ring); outline-offset: 2px; }
 .cap-setup-modal .cap-setup-stepper .input { text-align: center; min-width: 0; padding-inline: 0; background-color: transparent; outline: none; -moz-appearance: textfield; }
@@ -4967,10 +4972,6 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details{max-width:650px
 
 /* 11 Nov (Sam), re-applied on Bernhard's library and Assign redesign. */
 /* Step 3 checkboxes match step 2: primary, 16px square, 4px corners, white check. */
-.allocation-page input[type=checkbox]{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-grid;place-items:center;width:16px;height:16px;min-width:16px;min-height:16px;margin:0;padding:0;border:1px solid var(--primary);border-radius:calc(var(--radius) / 2);background:var(--card);box-shadow:none;flex-shrink:0;cursor:pointer}
-.allocation-page input[type=checkbox]:checked{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat}
-.allocation-page input[type=checkbox]:indeterminate{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E") center/12px no-repeat}
-.allocation-page input[type=checkbox]:focus:not(:focus-visible){outline:none;box-shadow:none}
 /* Library (11 Nov): Item Bank layout (.ib classes), tools on the right, preview on the right. */
 .al-ib .ib-toolbar { position: relative; z-index: 30; justify-content: space-between; }
 .al-ib .ib-toolbar > .ib-count { align-self: center; }

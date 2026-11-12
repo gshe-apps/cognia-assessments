@@ -1,3 +1,4 @@
+
 /* ============================================================
    DEFAULT LIGHT THEME
    Unlayered so it always overrides any layered :root {} block
@@ -71,8 +72,8 @@
 
   /* Utility overlays */
   --backdrop-overlay: rgba(0, 0, 0, 0.6);
-  --hover-overlay: rgba(0, 0, 0, 0.05);
-  --primary-hover: color-mix(in srgb, var(--primary) 78%, var(--card)); /* solid button and solid icon button hover */
+  --hover-overlay: rgba(0, 0, 0, 0.10);
+  --primary-hover: color-mix(in srgb, var(--primary) 90%, black); /* solid button and solid icon button hover */
   --input-background: var(--background);
 
   /* Opacity scales */
@@ -161,8 +162,8 @@
 
   /* Utility overlays */
   --backdrop-overlay: rgba(0, 0, 0, 0.6);
-  --hover-overlay: rgba(0, 0, 0, 0.05);
-  --primary-hover: color-mix(in srgb, var(--primary) 78%, var(--card)); /* solid button and solid icon button hover */
+  --hover-overlay: rgba(0, 0, 0, 0.10);
+  --primary-hover: color-mix(in srgb, var(--primary) 90%, black); /* solid button and solid icon button hover */
   --input-background: rgba(0, 0, 0, 0.3);
 
   /* Opacity scales */

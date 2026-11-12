@@ -144,7 +144,7 @@
 }
 .shell-nav a:hover { background-color: var(--hover-overlay); }
 .shell-nav a[aria-current="page"] { border-bottom-color: var(--brand-coral); border-radius: 0; }
-.shell-nav a[aria-current="page"]:hover { background-color: transparent; }
+
 .shell-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
 .shell-profile {
   width: 36px; height: 36px;
@@ -169,7 +169,7 @@
 .shell-copyright { font-size: var(--text-body-small); font-weight: 600; color: var(--muted-foreground); }
 .shell-footer nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
 .shell-footer nav a { font-size: var(--text-body-small); color: var(--muted-foreground); text-decoration: none; }
-.shell-footer nav a:hover { text-decoration: underline; }
+.shell-footer nav a:hover { background-color: var(--hover-overlay); text-decoration: underline; }
 .shell-language {
   display: inline-flex; align-items: center; gap: var(--space-2);
   padding: var(--space-2) var(--space-1) var(--space-1);
@@ -216,7 +216,7 @@
   cursor: pointer;
   transition: background-color var(--duration), color var(--duration);
 }
-.btn:hover { background-color: var(--primary-hover); }
+.btn:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 .btn svg { width: 16px; height: 16px; flex: none; }
 
 .btn-lg { height: 48px; min-height: 48px; font-size: var(--text-body-base); }
@@ -229,13 +229,10 @@
 .btn-pill { border-radius: var(--rounded-full); }
 
 .btn-outline { background-color: transparent; color: var(--foreground); border-color: var(--primary); }
-.btn-outline:hover { background-color: var(--secondary); }
 
 .btn-ghost { background-color: transparent; color: var(--foreground); }
-.btn-ghost:hover { background-color: var(--secondary); }
 
 .btn-destructive { background-color: var(--destructive); color: var(--primary-foreground); }
-.btn-destructive:hover { background-color: color-mix(in srgb, var(--destructive) 78%, var(--card)); }
 .btn-outline.is-destructive,
 .btn-ghost.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 
@@ -279,8 +276,8 @@
 .card-themed .card-description { color: var(--foreground); }
 
 a.card-link { display: block; color: inherit; text-decoration: none; border-radius: var(--radius-xl); }
-a.card-link > .card { height: 100%; transition: box-shadow var(--duration); cursor: pointer; }
-a.card-link:hover > .card { box-shadow: var(--shadow-md); }
+a.card-link > .card { height: 100%; transition: background-color var(--duration); cursor: pointer; }
+a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 
 /* ------------------------------------------------------------
    Badge (components.md, Badge). Read-only labels.
@@ -445,42 +442,35 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 .switch[aria-checked="true"]::after { transform: translateX(12px); }
 
 /* ------------------------------------------------------------
-   Tabs and segmented pickers (components.md, Tabs)
+   Tabs (components.md, Tabs)
    <div class="tabs-list" role="tablist"> <button class="tab" role="tab" aria-selected="true">
-   A segmented picker or toggle group (role="group", buttons with
-   aria-pressed) uses the same classes and the same look.
-   Separate pills with no container: the selected pill is solid primary,
-   the others are outlined. Same look on the page and inside a card.
+   A toggle group (role="group", buttons with aria-pressed) uses the same classes.
+   On the page the list is white (bg-card); inside a card it is grey.
    ------------------------------------------------------------ */
 .tabs-list {
-  display: inline-flex; align-items: center; flex-wrap: wrap;
-  gap: var(--space-3);
-  padding: 0;
-  background: transparent;
+  display: inline-flex; align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius);
+  background-color: var(--card);
 }
+.card .tabs-list { background-color: var(--secondary); }
 .tab {
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: var(--space-2);
   min-height: 32px;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--opacity-primary-30);
-  border-radius: var(--rounded-full);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius);
   background: transparent;
-  color: var(--foreground);
-  font-size: var(--text-body-base);
+  color: var(--muted-foreground);
+  font-size: var(--text-body-small);
   font-weight: 600;
-  white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--duration), border-color var(--duration), color var(--duration);
+  transition: background-color var(--duration), color var(--duration);
 }
-.tab svg { width: 16px; height: 16px; flex: none; }
-.tab:hover { background-color: var(--hover-overlay); }
-.tab:is([aria-selected="true"], [aria-pressed="true"]) {
-  border-color: var(--primary);
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-}
-.tab:is([aria-selected="true"], [aria-pressed="true"]):hover { border-color: var(--primary-hover); background-color: var(--primary-hover); }
+.tab:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+/* A toggle group (aria-pressed) uses the same look as tabs */
+.tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--secondary); color: var(--foreground); }
+.card .tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--card); box-shadow: var(--shadow-sm); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)
@@ -606,7 +596,7 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
 /* Clickable rows. The row must hold a link or button to the same place
    (components.js makes a click anywhere on the row use it). */
 .table .row-link { cursor: pointer; transition: background-color var(--duration); }
-.table .row-link:hover { background-color: var(--secondary); }
+.table .row-link:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 /* The open row in a list and detail layout */
 .table .row-link[aria-selected="true"] { background-color: var(--secondary); }
 
@@ -705,7 +695,8 @@ a.card-link:hover > .card { box-shadow: var(--shadow-md); }
   cursor: pointer;
 }
 .menu-item svg { width: 16px; height: 16px; flex: none; color: var(--muted-foreground); }
-.menu-item:hover, .menu-item:focus-visible { background-color: var(--secondary); }
+.menu-item:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.menu-item:focus-visible { background-color: var(--secondary); }
 .menu-item:focus-visible { outline-offset: -3px; }
 .menu-item.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 .menu-item.is-destructive svg { color: inherit; }

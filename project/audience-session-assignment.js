@@ -28,7 +28,8 @@ window.capReferenceAssign = page => {
  let remembered = {};
  try { remembered = JSON.parse(localStorage.getItem('cogniaLearnerSupports')) || {}; } catch {}
  let mode='classes', search='', picker=false, lastReviewScope;
- const expanded = new Set(data.classIds.slice(0,1)), collapsedSessions = new Set(), settingsExpanded = new Set();
+ const expanded = new Set(data.classIds.slice(0,1)), settingsExpanded = new Set();
+ let openSessionId = data.sessions[0].id;
  const supportsFor = id => data.studentAccommodations[id] || [];
  const roster = id => students.filter(s=>s.classId===id);
  const checked = id => data.recipients.includes(id);
@@ -38,7 +39,8 @@ window.capReferenceAssign = page => {
   const paths = {trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5m4-5v5"/>',down:'<path d="m6 9 6 6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',person:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>',edit:'<path d="M13 21h8"/><path d="m15 5 4 4"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>'};
   return '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
  };
- const iconButton = (attrs,label,name) => '<span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm" '+attrs+' aria-label="'+esc(label)+'">'+icon(name)+'</button><span class="tooltip" role="tooltip">'+esc(label)+'</span></span>';
+ const iconControl = (attrs,label,name) => '<button type="button" class="btn btn-ghost btn-icon btn-sm" '+attrs+' aria-label="'+esc(label)+'">'+icon(name)+'</button>';
+ const iconButton = (attrs,label,name) => '<span class="tooltip-wrap">'+iconControl(attrs,label,name)+'<span class="tooltip" role="tooltip">'+esc(label)+'</span></span>';
  page.classList.add('allocation-page');
  const hero = page.querySelector('.tf-hero');
  hero.classList.add('allocation-hero');
@@ -54,8 +56,8 @@ window.capReferenceAssign = page => {
  form.prepend(host);
  host.innerHTML = `<section class="allocation-panel"><div class="card-content allocation-recipient-content">
   <div class="allocation-heading"><div class="allocation-mode" role="group" aria-label="Select recipients"><button class="btn btn-sm btn-pill" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="btn btn-sm btn-pill btn-outline" type="button" aria-pressed="false" data-mode="students">Students</button></div></div>
-  <div class="allocation-picker"><div class="allocation-search-row"><div class="search allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">${icon('x')}</button><span class="tooltip" role="tooltip">Clear search</span></span></div>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div data-class-pills></div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
-  <div class="allocation-heading allocation-roster-summary"><p class="text-body-small text-muted-foreground" data-recipient-summary></p><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
+  <div class="allocation-picker"><div class="search allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">${icon('x')}</button><span class="tooltip" role="tooltip">Clear search</span></span>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
+  <div class="allocation-filters"><div data-class-pills></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
  </div></section><section class="allocation-panel allocation-sessions" aria-label="Sessions"><div class="card-content"><div class="allocation-heading"><button type="button" class="btn btn-ghost" data-add-session>${icon('plus')}Add another session</button></div><div data-sessions></div><p class="alert alert-destructive" data-allocation-error role="alert" tabindex="-1" hidden></p><p class="allocation-live sr-only" role="status" aria-live="polite"></p></div></section>`;
  const reviewCheckbox = host.querySelector('[name=accommodations]'), reviewError = host.querySelector('#allocation-review-error');
  reviewCheckbox.checked = Boolean(data.accommodations);
@@ -71,7 +73,10 @@ window.capReferenceAssign = page => {
  }
  function announce(message) { host.querySelector('.allocation-live').textContent=message; }
  function sessionOptions(value) { return '<option value="">Select session</option>'+data.sessions.map(s=>`<option value="${esc(s.id)}" ${s.id===value?'selected':''}>${esc(s.name)}</option>`).join(''); }
- function sessionSelect(attrs,value,disabled=false) { return `<span class="allocation-select"><select class="select" ${attrs} ${disabled?'disabled':''}>${sessionOptions(value)}</select>${icon('down')}</span>`; }
+ function sessionSelect(attrs, session, disabled) {
+  const label = esc(session?.name || 'Select session');
+  return `<span class="allocation-select"><span class="allocation-select-label" aria-hidden="true">${label}</span><select class="select" ${attrs} ${disabled?'disabled':''}>${sessionOptions(session?.id)}</select>${icon('down')}</span>`;
+ }
  const supportDialog = document.createElement('dialog');
  supportDialog.className = 'dialog cap-setup-modal allocation-support-dialog';
  supportDialog.setAttribute('aria-labelledby','allocation-support-title');
@@ -122,8 +127,8 @@ window.capReferenceAssign = page => {
  });
  function studentRow(student) {
   const session=data.sessions.find(s=>s.recipients.includes(student.id));
-   const support = supportsFor(student.id).length || student.support ? `<button type="button" class="btn btn-ghost btn-sm btn-pill badge-warning" data-expand-support="${student.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(student.name)}">${icon('edit')}Review supports</button>` : '';
-  return `<div class="allocation-student-wrap"><div class="allocation-student"><label class="allocation-check text-body-small font-semibold"><input class="checkbox" type="checkbox" name="recipient" value="${student.id}" ${checked(student.id)?'checked':''}>${esc(student.name)}</label>${support}<div class="allocation-student-actions">${sessionSelect(`data-assign="${student.id}" aria-label="Session for ${esc(student.name)}"`,session?.id,!checked(student.id))}</div></div></div>`;
+   const support = supportsFor(student.id).length || student.support ? `<button type="button" class="btn btn-ghost btn-sm btn-pill badge-warning" data-expand-support="${student.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(student.name)}">Review supports${icon('edit')}</button>` : '';
+  return `<div class="allocation-student-wrap"><div class="allocation-student"><label class="allocation-check text-body-small font-semibold"><input class="checkbox" type="checkbox" name="recipient" value="${student.id}" ${checked(student.id)?'checked':''}>${esc(student.name)}</label>${support}<div class="allocation-student-actions">${sessionSelect(`data-assign="${student.id}" aria-label="Session for ${esc(student.name)}"`,session,!checked(student.id))}</div></div></div>`;
  }
  function classSessionMenu(group) {
   const id = `allocation-actions-${group.id}`;
@@ -168,7 +173,7 @@ window.capReferenceAssign = page => {
   return actionsMenu(`allocation-session-actions-${id}`, `Actions for ${session.name}`, items);
  }
  function drawSessions() {
-  host.querySelector('[data-sessions]').innerHTML=data.sessions.map((s,i)=>`<section class="allocation-session card" data-session-card="${esc(s.id)}"><div class="card allocation-session-head"><h3 class="text-body-base font-semibold">${esc(s.name)}</h3>${sessionActions(s)}${iconButton(`data-collapse-session="${esc(s.id)}" aria-expanded="${!collapsedSessions.has(s.id)}" aria-controls="body-${esc(s.id)}"`,(collapsedSessions.has(s.id)?'Expand':'Collapse')+' '+s.name,collapsedSessions.has(s.id)?'right':'down')}</div><div id="body-${esc(s.id)}" ${collapsedSessions.has(s.id)?'hidden':''}>
+  host.querySelector('[data-sessions]').innerHTML=data.sessions.map((s,i)=>`<section class="allocation-session card" data-session-card="${esc(s.id)}"><div class="card allocation-session-head"><h3 class="text-body-base font-semibold">${esc(s.name)}</h3>${sessionActions(s)}${iconControl(`data-collapse-session="${esc(s.id)}" aria-expanded="${openSessionId === s.id}" aria-controls="body-${esc(s.id)}"`,(openSessionId !== s.id?'Expand':'Collapse')+' '+s.name,openSessionId !== s.id?'right':'down')}</div><div id="body-${esc(s.id)}" ${openSessionId !== s.id?'hidden':''}>
    <div class="allocation-fields"><label class="field"><span class="label">Session name *</span><input class="input" required maxlength="80" data-field="name" value="${esc(s.name)}"></label><label class="field"><span class="label">Date *</span><input class="input" type="date" required data-field="date" value="${esc(s.opens.slice(0,10))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">Start time *</span><input class="input" type="time" required data-field="start" value="${esc(s.opens.slice(11,16))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">End time *</span><input class="input" type="time" required data-field="end" value="${esc(s.due.slice(11,16))}" ${s.noLimit?'disabled':''}></label></div>
    <div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger"><span>Access settings and instructions</span></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label></div></details></div></section>`).join('');
  }
@@ -176,8 +181,6 @@ window.capReferenceAssign = page => {
   host.querySelectorAll('[data-session-card]').forEach(el=>{const s=data.sessions.find(s=>s.id===el.dataset.sessionCard);el.querySelector('[data-assigned]').innerHTML=assignedPills(s);});
   const selectedCount = data.recipients.length;
   const assignedCount = data.recipients.filter(id => data.sessions.some(s => s.recipients.includes(id))).length;
-  const summary = `${selectedCount} learners selected · ${assignedCount} assigned`;
-  host.querySelector('[data-recipient-summary]').textContent = summary;
   announce(selectedCount + ' students selected; ' + assignedCount + ' assigned to sessions.');
  }
  function update() { save();drawRoster();counts(); }
@@ -193,6 +196,7 @@ window.capReferenceAssign = page => {
  function addSession(source,duplicate=false) {
   const id='session-'+Date.now();
   data.sessions.push({...source,id,name:duplicate?source.name+' copy':'Session '+(data.sessions.length+1),customRecipients:true,recipients:[]});
+  openSessionId = id;
   save();drawRoster();drawSessions();counts();host.querySelector(`[data-session-card="${id}"] input`).focus();
  }
  const searchInput=host.querySelector('.allocation-search-field input');
@@ -245,8 +249,8 @@ window.capReferenceAssign = page => {
   if(b.dataset.addStudent){const s=students.find(v=>v.id===b.dataset.addStudent);data.classIds=[...new Set([...data.classIds,s.classId])];selectStudents([s.id],true);expanded.clear();expanded.add(s.classId);search='';host.querySelector('input[type=search]').value='';picker=false;update();}
   if(b.hasAttribute('data-add-session'))addSession({opens:data.sessions.at(-1).opens,due:data.sessions.at(-1).due});
   if(b.dataset.duplicate)addSession(data.sessions.find(s=>s.id===b.dataset.duplicate),true);
-  if(b.dataset.collapseSession){const id=b.dataset.collapseSession;collapsedSessions.has(id)?collapsedSessions.delete(id):collapsedSessions.add(id);drawSessions();host.querySelector(`[data-collapse-session="${id}"]`)?.focus();}
-  if(b.dataset.delete&&data.sessions.length>1){const s=data.sessions.find(v=>v.id===b.dataset.delete);data.sessions=data.sessions.filter(v=>v!==s);save();drawRoster();drawSessions();counts();host.querySelector('[data-add-session]').focus();announce(s.name+' removed. Its students need reassignment.');}
+  if(b.dataset.collapseSession){const id=b.dataset.collapseSession;openSessionId = openSessionId === id ? null : id;drawSessions();host.querySelector(`[data-collapse-session="${id}"]`)?.focus();}
+  if(b.dataset.delete&&data.sessions.length>1){const s=data.sessions.find(v=>v.id===b.dataset.delete);data.sessions=data.sessions.filter(v=>v!==s);if(openSessionId===s.id)openSessionId=data.sessions[0].id;settingsExpanded.delete(s.id);save();drawRoster();drawSessions();counts();host.querySelector('[data-add-session]').focus();announce(s.name+' removed. Its students need reassignment.');}
  });
  host.addEventListener('change',event=>{
   const el=event.target;
@@ -281,7 +285,15 @@ window.capReferenceAssign = page => {
   const error=host.querySelector('[data-allocation-error]');error.textContent=message;error.hidden=!message;
   if(message){event.preventDefault();error.focus();}
   else if(needsReview()&&!reviewCheckbox.checked){event.preventDefault();reviewError.textContent='Check accommodations and recipient access before continuing.';reviewCheckbox.setAttribute('aria-invalid','true');reviewCheckbox.focus();}
-  else {collapsedSessions.clear();drawSessions();if(!form.reportValidity())event.preventDefault();else save();}
+  else {
+   const invalidSession = form.querySelector('[data-session-card] :invalid')?.closest('[data-session-card]');
+   if (invalidSession && invalidSession.dataset.sessionCard !== openSessionId) {
+    openSessionId = invalidSession.dataset.sessionCard;
+    drawSessions();
+   }
+   if (!form.reportValidity()) event.preventDefault();
+   else save();
+  }
  });
  save();drawRoster();drawSessions();counts();
 };

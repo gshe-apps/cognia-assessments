@@ -4292,30 +4292,33 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-sessions .allocation-heading { justify-content: flex-end; margin-bottom: var(--space-3); }
 .allocation-page .allocation-mode { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .allocation-picker { position: relative; min-width: 0; }
-.allocation-search-row { box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); min-height: var(--space-10); padding-inline: var(--space-3); }
-.allocation-search-row .icon { position: static; }
-[data-class-pills] { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.allocation-search-field { position: relative; display: flex; align-items: center; flex: 1; min-width: 120px; }
+.allocation-filters, [data-class-pills] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.allocation-filters > [data-class-pills]:empty { display: none; }
+.allocation-filters > [data-clear-selection] { margin-inline-start: auto; }
+.allocation-search-field .search-icon { top: 50%; transform: translateY(-50%); }
+.allocation-search-field .search-clear { right: var(--space-12); }
+.allocation-search-field > .tooltip-wrap:last-child { flex: none; margin-inline-end: var(--space-2); }
+.allocation-search-field [data-toggle-classes] .icon { position: static; }
 
-.allocation-search-row > .tooltip-wrap { margin-left: auto; }
-.allocation-options { position: absolute; top: 100%; inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }
+.allocation-options { position: absolute; top: calc(100% + var(--space-1)); inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }
 .allocation-grid .tooltip { left: auto; right: 0; transform: none; }
 .allocation-class-head > .tooltip-wrap .tooltip { left: 0; right: auto; }
 .allocation-check { display: flex; align-items: center; gap: var(--space-2); }
 .allocation-class { margin-top: var(--space-4); overflow: clip; }
-.allocation-class[data-expanded="true"] { padding-block-end: var(--space-2); }
-.allocation-class-head.card { border-radius: 0; }
+.allocation-class-head.card { border-radius: inherit; }
 .allocation-class:first-child { margin-top: 0; }
 .allocation-class-head { flex-direction: row; align-items: center; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-2); cursor: pointer; }
 .allocation-class-select { flex-wrap: wrap; gap: var(--space-2); }
 .allocation-class-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
-.allocation-class-actions .allocation-select, .allocation-student-actions .allocation-select { width: 136px; }
-.allocation-select { position: relative; display: inline-flex; min-width: 0; }
-.allocation-select > .icon { position: absolute; inset-inline-end: var(--space-3); top: 50%; transform: translateY(-50%); pointer-events: none; }
-.allocation-class-actions .select, .allocation-student-actions .select { appearance: none; box-sizing: border-box; width: 100%; min-height: var(--space-8); height: var(--space-8); padding: var(--space-1) var(--space-8) var(--space-1) var(--space-2); }
+.allocation-select { position: relative; display: inline-grid; min-width: 0; max-width: 100%; }
+.allocation-select > .icon { position: absolute; inset-inline-end: var(--space-1); top: 50%; transform: translateY(-50%); pointer-events: none; }
+.allocation-select-label, .allocation-student-actions .select { box-sizing: border-box; min-height: var(--space-8); padding: 0 var(--space-6) 0 var(--space-1); font-size: var(--text-body-small); }
+.allocation-select-label { visibility: hidden; white-space: nowrap; overflow: hidden; }
+.allocation-student-actions .select { position: absolute; inset: 0; width: 100%; height: 100%; text-overflow: ellipsis; }
 .allocation-student { box-sizing: border-box; display: flex; align-items: center; gap: var(--space-2); min-height: var(--space-10); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-12); flex-wrap: wrap; }
-.allocation-student-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.allocation-student-actions { display: flex; align-items: center; gap: var(--space-2); min-width: 0; max-width: 100%; margin-left: auto; }
 .allocation-page .allocation-student-actions .select { background-color: transparent; }
+.allocation-page [data-expand-support] .icon { color: inherit; }
 .allocation-support-options { margin: 0; padding: 0; border: 0; min-width: 0; }
 .allocation-session { min-width: 0; overflow: clip; padding: var(--space-2); }
 .allocation-session-head.card { border-radius: var(--radius); }
@@ -4335,29 +4338,24 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-empty { padding-block: var(--space-6); }
 .allocation-page [hidden] { display: none; }
 .allocation-page .allocation-class { --class-row-inset: var(--space-2); --class-expander-width: var(--space-8); --class-row-gap: var(--space-2); gap: 0; padding: 0; overflow: visible; }
+.allocation-page .allocation-class[data-expanded="true"] { padding-block-end: var(--space-3); }
 .allocation-page .allocation-class-head { padding-inline: var(--class-row-inset); column-gap: var(--class-row-gap); }
 .allocation-page .allocation-class-head > .tooltip-wrap { flex: 0 0 var(--class-expander-width); }
 .allocation-page .allocation-session { gap: 0; overflow: visible; }
 .allocation-page .allocation-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-6); }
 .allocation-page .allocation-recipient-content { gap: var(--space-4); }
-.allocation-page .allocation-heading p { margin: 0; }
-.allocation-page .allocation-roster-summary { min-height: 0; }
 .allocation-page [data-rosters].card { gap: 0; padding-block: 0; }
 .allocation-page .allocation-class .allocation-student { padding-inline-start: calc(var(--class-row-inset) + var(--class-expander-width) + var(--class-row-gap)); }
-.allocation-page .allocation-student-wrap + .allocation-student-wrap { border-block-start: 1px solid var(--border); }
 .allocation-page .allocation-session + .allocation-session { margin-block-start: var(--space-3); }
 .allocation-page .allocation-fields .input { box-sizing: border-box; width: 100%; min-width: 0; }
 .allocation-page .allocation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 .allocation-fields > .field:has([data-field="name"], [data-field="date"]) { grid-column: 1 / -1; }
 .allocation-page .tf-bottom { position: static; margin: var(--space-6) auto 0; transform: none; }
-.allocation-page .allocation-search-row { padding-inline: 0; }
-.allocation-page .allocation-search-field { width: auto; }
-.allocation-page .allocation-picker > [data-class-pills]:not(:empty) { margin-block-start: var(--space-2); }
-.allocation-page .allocation-options { top: auto; bottom: calc(100% + var(--space-1)); max-height: var(--space-24); }
 .allocation-page .allocation-class-actions { width: auto; margin-inline-start: auto; }
 .allocation-page :is(.allocation-class-actions, .allocation-session-head) .menu { width: max-content; max-width: min(80vw, 24rem); }
 .allocation-page .allocation-settings { border-block-end: 0; }
-.allocation-page :is(.accordion-trigger, .allocation-select .select, .allocation-fields .input):not(:disabled):hover,
+.allocation-page .allocation-settings > .accordion-trigger { background: transparent; }
+.allocation-page :is(.allocation-select .select, .allocation-fields .input):not(:disabled):hover,
 .allocation-page :is(.allocation-class-head, .allocation-session-head):hover:not(:has(:is(button, input, select, label):hover)) {
   background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay));
 }
@@ -4367,8 +4365,7 @@ html body.item-method-reference .cap-root .btn.solid {
  .allocation-fields, .allocation-policy-fields, .allocation-page .allocation-fields { grid-template-columns: minmax(0, 1fr); }
  .allocation-class-actions { width: 100%; margin-left: 0; }
  .allocation-class-actions .allocation-select { flex: 1; min-width: 0; }
- .allocation-student-actions { width: 100%; margin-left: 0; }
- .allocation-student-actions .allocation-select { flex: 1; }
+ .allocation-student-actions { width: 100%; margin-left: 0; justify-content: flex-end; }
 }
 
 /* ---- from ds/cognia/results-dashboard.css ---- */

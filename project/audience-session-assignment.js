@@ -55,9 +55,9 @@ window.capReferenceAssign = page => {
  host.className = 'allocation-grid';
  form.prepend(host);
  host.innerHTML = `<section class="allocation-panel"><div class="card-content allocation-recipient-content">
-  <div class="allocation-heading"><div class="allocation-mode" role="group" aria-label="Select recipients"><button class="btn btn-sm btn-pill" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="btn btn-sm btn-pill btn-outline" type="button" aria-pressed="false" data-mode="students">Students</button></div></div>
-  <div class="allocation-picker"><div class="search allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">${icon('x')}</button><span class="tooltip" role="tooltip">Clear search</span></span>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
-  <div class="allocation-filters"><div data-class-pills></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
+  <div class="allocation-heading"><div class="allocation-mode tabs-list" role="group" aria-label="Select recipients"><button class="tab" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="tab" type="button" aria-pressed="false" data-mode="students">Students</button></div></div>
+  <div class="allocation-picker"><div class="search search-md allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span class="tooltip" role="tooltip">Clear search</span></span>${iconButton('data-toggle-classes aria-expanded="false" aria-controls="allocation-options"','Select classes','down')}</div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
+  <div class="allocation-filters"><div class="chip-list" role="list" aria-label="Selected classes" data-class-pills></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations" aria-describedby="allocation-review-error">I’ve checked accommodations and recipient access.</label><p class="text-body-small text-destructive" id="allocation-review-error" role="alert"></p>
  </div></section><section class="allocation-panel allocation-sessions" aria-label="Sessions"><div class="card-content"><div class="allocation-heading"><button type="button" class="btn btn-ghost" data-add-session>${icon('plus')}Add another session</button></div><div data-sessions></div><p class="alert alert-destructive" data-allocation-error role="alert" tabindex="-1" hidden></p><p class="allocation-live sr-only" role="status" aria-live="polite"></p></div></section>`;
  const reviewCheckbox = host.querySelector('[name=accommodations]'), reviewError = host.querySelector('#allocation-review-error');
  reviewCheckbox.checked = Boolean(data.accommodations);
@@ -83,19 +83,19 @@ window.capReferenceAssign = page => {
  supportDialog.setAttribute('aria-describedby','allocation-support-description');
  supportDialog.innerHTML = `
   <form class="cap-setup-view">
-   <div class="cap-setup-heading">
+   <div class="cap-setup-heading dialog-header">
     <h2 class="dialog-title" id="allocation-support-title" tabindex="-1" autofocus>Review supports</h2>
-    <button class="btn btn-ghost btn-icon btn-sm" type="button" data-cancel-support aria-label="Close review supports">${icon('x')}</button>
+    <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel-support aria-label="Close review supports">${icon('x')}</button>
    </div>
    <div class="cap-setup-fields">
     <p class="dialog-description" id="allocation-support-description" data-support-student></p>
     <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><div class="cap-setup-columns" data-support-options></div></fieldset>
     <label class="check text-body-small font-semibold cap-setup-optional"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
    </div>
-   <div class="cap-setup-buttons">
-    <button class="btn btn-ghost btn-lg" type="button" data-cancel-support>Cancel</button>
-    <button class="btn btn-lg" type="submit">Save supports</button>
-   </div>
+   <div class="cap-setup-buttons dialog-footer">
+     <button class="btn btn-ghost btn-lg" type="button" data-cancel-support>Cancel</button>
+     <button class="btn btn-lg" type="submit">Save supports</button>
+    </div>
   </form>`;
  page.append(supportDialog);
  let supportStudent;
@@ -141,7 +141,7 @@ window.capReferenceAssign = page => {
  }
  function drawRoster() {
   host.querySelector('[data-rosters]').classList.toggle('card', mode === 'students');
-  host.querySelector('[data-class-pills]').innerHTML = data.classIds.map(id=>`<button type="button" class="btn btn-outline btn-sm btn-pill" data-remove-class="${id}" aria-label="Remove ${classes.find(c=>c.id===id).name}">${classes.find(c=>c.id===id).name}${icon('x')}</button>`).join('');
+  host.querySelector('[data-class-pills]').innerHTML = data.classIds.map(id=>`<span class="chip" role="listitem">${classes.find(c=>c.id===id).name}<button type="button" class="chip-remove" data-remove-class="${id}" aria-label="Remove ${classes.find(c=>c.id===id).name}">${icon('x')}</button></span>`).join('');
   host.querySelector('[data-toggle-classes]').setAttribute('aria-expanded',String(picker));
   const pickerLabel=mode==='students'?'Select students':'Select classes';
   const input = host.querySelector('input[type=search]');
@@ -225,7 +225,6 @@ window.capReferenceAssign = page => {
    for (const toggle of host.querySelectorAll('[data-mode]')) {
     const active = toggle === b;
     toggle.setAttribute('aria-pressed', String(active));
-    toggle.classList.toggle('btn-outline', !active);
    }
    picker = false;
    drawRoster();

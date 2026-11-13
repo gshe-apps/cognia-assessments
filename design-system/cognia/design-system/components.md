@@ -116,18 +116,28 @@ HTML prototypes have no React, so they use `assets/components.css`: one class pe
 | `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` | `.card-header`, `.card-title`, `.card-description`, `.card-content`, `.card-footer` |
 | `<Badge variant="...">` | `.badge` + `.badge-secondary`, `-outline`, `-success`, `-warning`, `-destructive`, `-info`, `-theme-solid`, `-theme-light` |
 | `<Input>`, `<Textarea>`, `<Select>` | `.input`, `.textarea`, `.select` inside `.select-wrap` |
-| Search input | `.search[role=search]` > `.search-icon`, `input.search-input[type=search]`, `.tooltip-wrap.search-clear`; clear button and Escape from `assets/components.js` |
+| Search input | `.search.search-lg[role=search]` (`.search-md`, `.search-sm`) > `svg.search-icon` + `input.input.search-input[type=search]` + `.tooltip-wrap.search-clear`; clear button and Escape from `assets/components.js` |
+| Filter chip | `.chip-list[role=list]` > `.chip[role=listitem]` > label + `button.chip-remove` |
 | `<Label>`, field, error | `.label`, `.field`, `.field-error`; forms use `.form` and `.form-grid` |
 | `<Checkbox>`, `<RadioGroupItem>`, `<Switch>` | `.checkbox`, `.radio` inside `label.check`; `button.switch[role=switch]` |
-| `<TabsList>`, `<TabsTrigger>` | `.tabs-list`, `.tab[role=tab][aria-selected]` |
+| `<TabsList>`, `<TabsTrigger>`, `<ToggleGroup>` | `.tabs-list`, `.tab[role=tab][aria-selected]`; toggle groups and segmented pickers `.tabs-list[role=group]` > `.tab[aria-pressed]` |
 | `<Table>` | `.table-wrap > table.table` (or `div.table[role=table]` in templates); numeric cells `.num`, clickable rows `.row-link`, sortable headers `.table-sort` |
 | `<Alert variant="...">` | `.alert` + `.alert-info`, `-success`, `-warning`, `-destructive` |
-| `<Dialog>`, `<Sheet>` | `dialog.dialog`, `dialog.dialog.sheet` |
+| `<Dialog>`, `<AlertDialog>`, `<Sheet>`, `<Drawer>` | `dialog.dialog` > `.dialog-header` (`.dialog-title`, `button.dialog-close`, `.dialog-description`), `.dialog-body`, `.dialog-footer`; `dialog.dialog[role=alertdialog]`, `dialog.dialog.sheet`, `dialog.dialog.drawer` > `.drawer-handle` |
 | `<DropdownMenu>` | `.dropdown` (`.dropdown-end` to align right) > trigger + `.menu`, `.menu-item`, `.menu-separator`; behaviour from `assets/components.js` |
 | `<Tooltip>` | `.tooltip-wrap` > `.tooltip[role=tooltip]` |
 | `<Avatar>` | `.avatar`, `.avatar-sm`, `.avatar-lg` |
 | `<Progress>`, `<Skeleton>`, `<Separator>`, `<Accordion>` | `.progress`, `.skeleton`, `.separator`, `details.accordion-item` |
 | Navigation shell, Footer | `body.shell`, `.shell-header`, `.shell-main`, `.shell-footer` |
+| `<RadioGroup>`, `<ToggleGroup>`, `<Toggle>`, `<NativeSelect>` | `.radio-group` (`.radio-group-row`) of `label.check` > `input.radio`; `.tabs-list[role=group]` > `.tab[aria-pressed]`; `button.toggle[aria-pressed]` (`.toggle-outline`); `.select-wrap > select.select` |
+| `<Field>`, `<Empty>`, `<Spinner>`, `<Kbd>` | `.field` > `.label`, control, `.field-hint`, `.field-error`; `.empty-state` > `.empty-media`, `.empty-title`, `p`; `svg.spinner`; `kbd.kbd`, `.kbd-group` |
+| `<AspectRatio>`, `<ScrollArea>`, `<Separator>` | `.aspect-ratio` (`--ratio`), `.scroll-area`, `.separator` |
+| `<Breadcrumb>`, `<Pagination>` | `nav.breadcrumb > ol.breadcrumb-list` > `.breadcrumb-item`, `.breadcrumb-link`, `.breadcrumb-page`, `.breadcrumb-separator`; `nav.pagination > ul` > `.pagination-link`, `.pagination-prev`, `.pagination-next`, `.pagination-ellipsis` |
+| `<ButtonGroup>`, `<InputGroup>`, `<InputOTP>` | `.button-group[role=group]` > `.btn`; `.input-group` > `.input-group-addon` + `input.input`; `.input-otp` > `input.input-otp-slot`, `.input-otp-separator` |
+| `<Popover>`, `<HoverCard>` | `.popover-wrap` > `button[aria-haspopup=dialog]` + `.popover[hidden]` (`.popover-end`); `.hover-card-wrap` > `.hover-card` |
+| `<Command>`, `<Combobox>`, `<DatePicker>`, `<Calendar>` | `.command` > `.command-search` (`input.command-input`), `.command-list`, `.command-group`, `.command-group-heading`, `.command-item`, `.command-empty`; `.popover-wrap.combobox` > `.combobox-trigger` (`.combobox-value`) + `.popover` > `.command`; `.date-picker-trigger` + `.popover` > `.calendar`; `.calendar` > `.calendar-header`, `.calendar-caption`, `.calendar-grid`, `.calendar-weekday`, `button.calendar-day` |
+| `<ContextMenu>`, `<Menubar>`, `<NavigationMenu>` | `[data-context-menu].context-menu` > `.menu`; `.menubar[role=menubar]` > `.dropdown` > `.menubar-trigger` + `.menu`; `nav.navigation-menu` > `.navigation-menu-link`, `.menu.navigation-menu-panel` |
+| `<Carousel>`, `<Chart>`, `<Collapsible>`, `<Resizable>`, `<Slider>`, `<Sidebar>`, `<Item>` | `.carousel` > `.carousel-viewport` > `.carousel-item`, `.carousel-prev`, `.carousel-next`; `.chart`, `.chart-legend`, `.chart-swatch`, `.chart-tooltip`; `details.collapsible > summary.collapsible-trigger`; `.resizable` > `.resizable-panel`, `.resizable-handle`; `input.slider[type=range]`; `.sidebar-layout` > `aside.sidebar` > `.sidebar-group`, `.sidebar-group-label`, `.sidebar-link`; `.item` > `.item-media`, `.item-content` (`.item-title`, `.item-description`), `.item-actions`, `.item-group` |
 
 **Rules**
 - Never add CSS for these components in a project, and never edit the project's copy of `components.css`. The check fails if the copy differs from the plugin.
@@ -368,49 +378,52 @@ Inputs collect single-line text from the user.
 
 ### Search input
 
-Search inputs filter or find content on the current screen, for example the rows of a table or the items in a list. A search input is an input field, so every Input rule applies unless this section says otherwise.
+Search inputs filter or find content on the current screen, for example the rows of a table or the items in a list, and the large "Ask a question" search on Home pages. A search input is a normal shadcn `Input` with the changes below, so every Input rule applies unless this section says otherwise.
 
-**Anatomy**
+**The Cognia changes to a normal Input**
 
-1. Container: pill shaped, holds the icon, the field and the clear button.
-2. Search icon: Lucide `Search`, 16px, on the left, decorative.
-3. Field: `type="search"`, with placeholder text that names what is being searched.
-4. Clear button: Lucide `X`, shown only when the field has a value.
-5. Results count (optional): sits outside the container, for example "11 items".
+1. Fully round corners: `rounded-full`.
+2. No border (`border-0`) and no shadow (`shadow-none`).
+3. White fill, `bg-[var(--primary-foreground)]`. On a white surface (card, popover, dropdown menu) the fill turns `bg-secondary` so the field stays visible.
+4. The Lucide `Search` icon (16px, `--muted-foreground`, decorative) on the left.
+5. A clear button on the right: a round ghost icon button (`variant="ghost" size="icon"`, small) with the Lucide `X`, shown only when the field has a value, with the tooltip "Clear search".
+7. The search icon, the clear button and any AI button are centred vertically on the field (`top-1/2 -translate-y-1/2`), at every size.
+6. Three sizes:
+
+| Size | Height | Text | Use for |
+|---|---|---|---|
+| `lg` (default) | 48px (`h-12`) | Body Base 16px | Standalone search and the large "Ask a question" AI search |
+| `md` | 40px (`h-10`) | Body Small 14px | Toolbars beside tabs, filters and buttons |
+| `sm` | 32px (`h-8`) | Body Small 14px | Compact panels, next to 32px tabs and chips |
 
 **Rules**
 
-- Corner radius is fully round: `rounded-full` (9999px, token `--rounded-full`). Search is the only input field that is pill shaped. Every other field keeps `rounded-lg`.
-- Minimum height 48px (`h-12`).
-- No border, on any surface:
-  - Directly on the theme background (`--background`): white fill, `bg-[var(--primary-foreground)]`, no border.
-  - On a white surface (`--card`, `--popover`, dialog): `bg-secondary`, no border.
-- Focus: one 3px `--ring` outline on the pill container, following the pill shape. The inner `<input>` never draws its own ring, so there is never a double outline or a square ring inside a round field.
-- The clear button is a ghost icon button (`btn-ghost btn-icon btn-sm`), fully round, with the tooltip "Clear search". When it is focused, it shows its own focus ring and the container does not.
-- `Esc` clears the field. Clearing returns focus to the field. In plain HTML, `assets/components.js` does this.
+- Focus is the standard 3px `--ring` focus ring on the input itself, following its round shape.
+- The clear button and `Esc` clear the field and return focus to it (`assets/components.js` does this in plain HTML). When the clear button is focused it shows its own focus ring.
 - Placeholder names the scope in sentence case: "Search assessments", "Search wording or standard". Do not use a generic "Search items...", and do not end with an ellipsis.
 - Labelling:
-  - Search in a toolbar above the content it filters: the visible label may be left out. The field must have an `aria-label` that matches the placeholder, and the container uses `role="search"`.
+  - Search in a toolbar above the content it filters: the visible label may be left out. The input must have an `aria-label` that matches the placeholder, and its wrapper uses `role="search"`.
   - A standalone search (the main task of the page, or a search field inside a form): use a visible label, as with any other input.
+- AI search ("Ask a question"): no separate submit button. A round ghost icon button with the Lucide `Sparkles` icon in `--ai-accent` sits inside the field on the right (`type="submit"`, `aria-label="Ask Cognia AI"`, tooltip "Ask Cognia AI"); Enter also submits. The clear button sits to its left. Plain HTML: add `.search-ai` to the wrapper and `span.tooltip-wrap.search-action` after the clear button.
 - Results: filter as the user types, after a 300ms pause (debounce, not an animation). Announce the updated count with `aria-live="polite"`.
 - No results: show the empty state in place of the content, naming the term, with a way out: "No assessments match "biology"" plus a "Clear search" button.
 - Keep the search term in the URL (`?q=`) so it survives Back and can be shared.
-- A filter button beside the search is a separate ghost icon button with a tooltip. It never sits inside the pill.
+- A filter button beside the search is a separate ghost icon button with a tooltip. It never sits inside the input. Applied filters show as Filter chips.
 
 ```tsx
-<div role="search" className="relative flex items-center w-full h-12 rounded-full border-0 bg-[var(--primary-foreground)] transition-all duration-200 has-[input:focus-visible]:outline has-[input:focus-visible]:outline-[3px] has-[input:focus-visible]:outline-[var(--ring)]">
-  <Search className="absolute left-4 size-4 text-muted-foreground pointer-events-none" aria-hidden="true" />
+<div role="search" className="relative w-full">
+  <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" aria-hidden="true" />
   <Input
     type="search"
     aria-label="Search assessments"
     placeholder="Search assessments"
-    className="h-12 border-0 bg-transparent rounded-full pl-10 pr-12 shadow-none focus-visible:ring-0 focus-visible:outline-none"
+    className="h-12 rounded-full border-0 shadow-none bg-[var(--primary-foreground)] pl-10 pr-12"   // md: h-10 text-body-small, sm: h-8 pl-8 text-body-small; on a card: bg-secondary
   />
   {value && (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="ghost" size="icon" className="absolute right-2 size-8 rounded-full" aria-label="Clear search" onClick={clear}>
-          <X className="size-4 text-muted-foreground" />
+        <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 size-8 rounded-full" aria-label="Clear search" onClick={clear}>
+          <X className="size-4" />
         </Button>
       </TooltipTrigger>
       <TooltipContent>Clear search</TooltipContent>
@@ -419,7 +432,35 @@ Search inputs filter or find content on the current screen, for example the rows
 </div>
 ```
 
-On a card or dialog, swap `bg-[var(--primary-foreground)]` for `bg-secondary`.
+**Plain HTML**: `div.search.search-lg[role=search]` (or `.search-md`, `.search-sm`) > `svg.search-icon` + `input.input.search-input[type=search]` + `span.tooltip-wrap.search-clear` > `button.btn.btn-ghost.btn-icon.btn-sm` + `span.tooltip`.
+
+---
+
+### Filter chip
+
+Filter chips show the filters applied to a list, table or chart, and let the user remove each one. Always use this component for applied filters; never build chips from badges, buttons or tabs.
+
+**Cognia overlay**
+- White pill (`rounded-full bg-[var(--primary-foreground)]`), 32px high, no border, no shadow. On a white surface (card, popover, menu, dialog) the fill turns `bg-secondary`.
+- Label in Body Small (14px) regular, `--foreground`, then a remove button: Lucide `X` (14px) in a 24px round ghost button with `aria-label="Remove [label]"`.
+- 8px between chips; chips wrap onto new lines.
+
+**Rules**
+- One chip per applied value, labelled with the value itself ("Grade 5", "A. Baldwin Middle"), sentence case.
+- Removing a chip removes that filter immediately and returns focus to the next chip, or to the filter button when none are left.
+- When two or more chips show, add a ghost "Clear all" button after them.
+- Chips are for applied filters only. To pick options use Tabs / Toggle Group, Checkbox or Select.
+
+```tsx
+<div role="list" aria-label="Applied filters" className="flex flex-wrap gap-2">
+  <span role="listitem" className="inline-flex h-8 items-center gap-1 rounded-full bg-[var(--primary-foreground)] pl-3 pr-1 text-body-small">
+    Grade 5
+    <Button variant="ghost" size="icon" className="size-6 rounded-full" aria-label="Remove Grade 5"><X className="size-3.5" /></Button>
+  </span>
+</div>
+```
+
+**Plain HTML**: `div.chip-list[role=list]` > `span.chip[role=listitem]` > label + `button.chip-remove`.
 
 ---
 
@@ -486,48 +527,115 @@ A switch toggles a single setting on or off immediately.
 
 ### Dialog
 
-Dialogs interrupt the user to focus on a critical task or confirmation.
+Dialogs (modals) interrupt the user to focus on a critical task or confirmation. Every modal looks the same, including Alert Dialog, Sheet and Drawer, which follow these rules too.
+
+**Cognia overlay**
+
+- Background: the theme background, `bg-background` (`--background`), never white or a card colour. Fields inside a dialog use the white input fill, the same as on the page.
+- Corners: 12px (`rounded-xl`, `var(--radius-xl)` in plain CSS). Sheets and drawers keep square edges where they touch the screen.
+- Backdrop: `#000012` at 30% opacity, from the `--backdrop-overlay` token (`bg-[var(--backdrop-overlay)]` on `DialogOverlay`).
+- Header: the title is 24px Heading (`text-heading font-semibold`). On the same line, far right, is the close button: a ghost icon button (`variant="ghost" size="icon"`) with the Lucide `X` icon in `--primary` (`text-primary`). The description, if any, sits under the title.
+- Footer: always bottom right of the modal (`justify-end`). With two buttons, the second action is a ghost button and the main action is a solid button at the far right. On mobile both stack full width, main action on top (`flex-col-reverse md:flex-row`).
+- A destructive confirmation uses the solid destructive button as its main action, with the ghost Cancel to its left.
 
 **Rules**
-- Every dialog must have a title, a description, and a clear way to dismiss it.
+- Every dialog must have a title, a description or body, and a clear way to dismiss it (the X, the ghost button and `Esc`).
+- A click on the backdrop closes a dialog. An Alert Dialog only closes through its buttons.
 - Destructive dialogs must always have a cancel option.
 - Do not open a dialog from inside another dialog.
 - If the content needs scrolling, use a sheet instead.
 
 ```tsx
+// components/ui/dialog.tsx, Cognia overrides on the shadcn defaults
+DialogOverlay: "fixed inset-0 z-50 bg-[var(--backdrop-overlay)]"
+DialogContent: "rounded-xl border-0 bg-background p-6 gap-6 shadow-lg"   // showCloseButton={false}, the close button lives in the header
+DialogHeader:  "grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 text-left"
+DialogTitle:   "text-heading font-semibold"
+DialogFooter:  "flex flex-col-reverse gap-2 md:flex-row md:justify-end"
+
 <Dialog>
   <DialogTrigger asChild>
     <Button variant="destructive">Delete record</Button>
   </DialogTrigger>
-  <DialogContent>
+  <DialogContent showCloseButton={false}>
     <DialogHeader>
       <DialogTitle>Delete this record?</DialogTitle>
-      <DialogDescription>This action cannot be undone.</DialogDescription>
+      <DialogClose asChild>
+        <Button variant="ghost" size="icon" aria-label="Close"><X className="text-primary" /></Button>
+      </DialogClose>
+      <DialogDescription className="col-span-2">This action cannot be undone.</DialogDescription>
     </DialogHeader>
     <DialogFooter>
-      <Button variant="outline">Cancel</Button>
-      <Button variant="destructive">Delete record</Button>
+      <DialogClose asChild><Button variant="ghost" size="lg">Cancel</Button></DialogClose>
+      <Button variant="destructive" size="lg">Delete record</Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
+```
+
+**Plain HTML** (`assets/components.css` and `assets/components.js`):
+
+```html
+<dialog class="dialog" aria-labelledby="delete-title">
+  <div class="dialog-header">
+    <h2 class="dialog-title" id="delete-title">Delete this record?</h2>
+    <button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg><!-- Lucide x --></svg></button>
+    <p class="dialog-description">This action cannot be undone.</p>
+  </div>
+  <div class="dialog-body"><!-- content --></div>
+  <div class="dialog-footer">
+    <button class="btn btn-ghost btn-lg" type="button">Cancel</button>
+    <button class="btn btn-destructive btn-lg" type="button">Delete record</button>
+  </div>
+</dialog>
+```
+
+Open with `dialog.showModal()`. `.dialog-close` and a click on the backdrop close it.
+
+---
+
+### Alert Dialog
+
+A dialog that asks the user to confirm an important or irreversible action. Same look as Dialog.
+
+**Rules**
+- Use it only for confirmations the user must answer. Everything else is a Dialog.
+- The backdrop does not close it; only its buttons and `Esc` do.
+- Plain HTML: `dialog.dialog[role=alertdialog]`.
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild><Button variant="outline">Unpublish</Button></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Unpublish this assessment?</AlertDialogTitle>
+      <AlertDialogDescription>Learners will no longer see it.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel asChild><Button variant="ghost">Cancel</Button></AlertDialogCancel>
+      <AlertDialogAction>Unpublish</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
 ```
 
 ---
 
 ### Sheet
 
-Sheets slide in from the edge of the screen for secondary tasks or filters.
+Sheets slide in from the edge of the screen for secondary tasks or filters. They follow the Dialog overlay (theme background, header with the X, footer bottom right, backdrop).
 
 **Rules**
 - Use `side="right"` for detail panels and filters. Use `side="bottom"` on mobile.
 - Do not use a sheet for simple confirmations — use a dialog.
+- Plain HTML: `dialog.dialog.sheet`.
 
 ```tsx
 <Sheet>
   <SheetTrigger asChild>
     <Button variant="outline">Open filters</Button>
   </SheetTrigger>
-  <SheetContent>
+  <SheetContent className="bg-background">
     <SheetHeader>
       <SheetTitle>Filters</SheetTitle>
       <SheetDescription>Narrow down your results.</SheetDescription>
@@ -540,15 +648,27 @@ Sheets slide in from the edge of the screen for secondary tasks or filters.
 
 ### Tabs
 
-Tabs organise content into parallel sections.
+Tabs organise content into parallel sections. Toggle Groups and segmented pickers (Week / Month, eleot / erel / TOT) use exactly the same look.
+
+**Cognia overlay**
+- Separate, fully round pills (`rounded-full`), 32px high (`h-8`), `px-4`, 8px apart (`gap-2`). No container background, no shared track.
+- Selected: solid primary, `bg-primary text-primary-foreground border-primary`.
+- Unselected: transparent with a 1px border of `#000012` at 30% (`border-[color-mix(in_srgb,var(--primary)_30%,transparent)]`), `text-foreground`.
+- Label in Body Small Strong (14px semibold). Hover is the 10% overlay; the selected pill uses `--primary-hover`.
+- 8px between pills (`gap-2`), and 8px between tab sets that sit next to each other in a row.
 
 **Rules**
-- Keep tab labels to one or two words maximum, sentence case.
+- Keep tab labels to one or two words maximum, sentence case (product names such as eleot keep their own case).
 - Never use more than 6 tabs in one set.
 - Do not use tabs for sequential workflows.
-- When the `TabsList` sits on a `--background` surface, apply `bg-card` to the `TabsList` so the container reads as white rather than the default muted gray.
+- Tabs switch content (`role="tablist"`, `aria-selected`). A segmented picker or toggle group changes a setting or a view (`role="group"`, `aria-pressed`).
 
 ```tsx
+// components/ui/tabs.tsx, Cognia overrides on the shadcn defaults
+TabsList:    "inline-flex h-auto gap-2 bg-transparent p-0"
+TabsTrigger: "h-8 rounded-full border border-[color-mix(in_srgb,var(--primary)_30%,transparent)] px-4 text-body-small font-semibold text-foreground shadow-none data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-none"
+// ToggleGroupItem: the same classes, with data-[state=on] in place of data-[state=active]
+
 <Tabs defaultValue="overview">
   <TabsList>
     <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -560,6 +680,20 @@ Tabs organise content into parallel sections.
   <TabsContent value="history">History content</TabsContent>
 </Tabs>
 ```
+
+**Plain HTML**: `.tabs-list[role=tablist]` > `button.tab[role=tab][aria-selected]`; a toggle group or segmented picker is `.tabs-list[role=group]` > `button.tab[aria-pressed]`.
+
+**Secondary selection (settings pickers)**
+- Pickers that set an option inside a form, such as Attempts or Time limit, use a softer pill so the form does not read as a row of solid black buttons: no outline on any pill (`border-transparent`), and the selected pill is `bg-secondary text-secondary-foreground`. Size, spacing and labels are unchanged.
+- Navigation tabs and view switchers keep the solid primary selected pill.
+- Two-option and three-option choices in a form (Yes / No, As created / Shuffle) use a Button Group instead (see Button Group).
+
+```tsx
+// ToggleGroupItem in a settings form
+"... border-transparent data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground"
+```
+
+**Plain HTML**: `.tabs-list.tabs-list-secondary[role=group]` > `button.tab[aria-pressed]`.
 
 ---
 
@@ -687,16 +821,24 @@ Plain HTML (load a copy of `assets/components.js`, which adds opening, keyboard,
 
 Tooltips reveal additional context on hover or focus.
 
+**Cognia overlay**
+- White (`bg-popover text-popover-foreground`), 8px corners (`rounded-lg`), medium shadow (`shadow-md`), no border.
+- Maximum width 200px (`max-w-[200px]`); longer text wraps.
+- Text is Body Small (14px) regular.
+
 **Rules**
 - Always pair icon-only buttons with a tooltip.
 - Keep tooltip text to one short sentence.
-- Never put interactive content inside a tooltip.
+- Never put interactive content inside a tooltip. Use a Popover for that.
 - Tooltips must appear on keyboard focus, not just hover.
 
 ```tsx
+// components/ui/tooltip.tsx, Cognia overrides on the shadcn defaults
+TooltipContent: "max-w-[200px] rounded-lg bg-popover px-3 py-2 text-body-small text-popover-foreground shadow-md text-balance"   // no arrow
+
 <Tooltip>
   <TooltipTrigger asChild>
-    <Button variant="ghost" size="sm"><SettingsIcon /></Button>
+    <Button variant="ghost" size="icon" aria-label="Settings"><SettingsIcon /></Button>
   </TooltipTrigger>
   <TooltipContent>Settings</TooltipContent>
 </Tooltip>
@@ -919,3 +1061,174 @@ Sonner is the shadcn-recommended replacement for the deprecated Toast component.
 - Success and info auto-dismiss at 5 s but remain manually dismissable.
 - Never auto-dismiss a toast that contains an interactive element — use `duration: Infinity`.
 - One toast per user action. Messages are sentence case, one sentence, no trailing period.
+
+
+---
+
+## shadcn components without a Cognia overlay yet
+
+These are the rest of the shadcn library. They are available now with shadcn's default look, built only from Cognia tokens (and in plain HTML from `assets/components.css`). The general rules still apply: tokens only, Lucide icons only, the 10% hover overlay, the 3px focus ring, sentence case, and the type and spacing scales. When one needs Cognia-specific rules, the designer adds them here.
+
+Add any of them in code with `npx shadcn@latest add [name]`.
+
+### Aspect Ratio
+
+Keeps media at a fixed ratio. `<AspectRatio ratio={16 / 9}>`. Plain HTML: `.aspect-ratio` with `style="--ratio: 16 / 9"`.
+
+### Breadcrumb
+
+Shows where a page sits in the hierarchy and links back up it.
+- Use on pages two or more levels deep. The last item is the current page, not a link (`aria-current="page"`).
+- Separator: Lucide `ChevronRight`.
+
+```tsx
+<Breadcrumb><BreadcrumbList>
+  <BreadcrumbItem><BreadcrumbLink href="/assessments">Assessments</BreadcrumbLink></BreadcrumbItem>
+  <BreadcrumbSeparator />
+  <BreadcrumbItem><BreadcrumbPage>Results</BreadcrumbPage></BreadcrumbItem>
+</BreadcrumbList></Breadcrumb>
+```
+
+### Button Group
+
+Joins related buttons into one control, for example a split button or "Previous / Next". All buttons in a group share one variant. `<ButtonGroup>`.
+
+**Single-choice picker**
+- Use a Button Group of ghost buttons (no outline) for a short either/or setting in a form (Yes / No, As created / Shuffle), up to three options. Labels are one or two words.
+- The selected button is `bg-secondary text-secondary-foreground`; the others stay transparent. Never solid primary.
+- `role="group"` with an `aria-label` naming the setting, and `aria-pressed` on each button. Use `size="sm"` (32px) so it lines up with pill pickers in the same form.
+
+```tsx
+<ButtonGroup aria-label="Calculator allowed">
+  <Button variant="ghost" size="sm" aria-pressed={on} className="aria-pressed:bg-secondary">Yes</Button>
+  <Button variant="ghost" size="sm" aria-pressed={!on} className="aria-pressed:bg-secondary">No</Button>
+</ButtonGroup>
+```
+
+**Plain HTML**: `.button-group[role=group]` > `button.btn.btn-ghost.btn-sm[aria-pressed]`.
+
+### Calendar
+
+A month grid for picking a date or range. `<Calendar mode="single" selected={date} onSelect={setDate} />`. Today is marked with a grey fill, the selected day is solid primary.
+
+### Carousel
+
+Shows one item at a time with previous and next arrows (outline icon buttons, round). Do not autoplay. `<Carousel><CarouselContent><CarouselItem>..</CarouselItem></CarouselContent><CarouselPrevious /><CarouselNext /></Carousel>`.
+
+### Chart
+
+shadcn charts (Recharts). Always inside a ghost card (see Card). Series use `--chart-1` to `--chart-5` in order. Every chart has a legend or direct labels, and a tooltip on hover and focus (accessibility.md: never colour alone).
+
+### Collapsible
+
+Shows and hides one block of content under a trigger. For several stacked sections use Accordion. `<Collapsible><CollapsibleTrigger>..</CollapsibleTrigger><CollapsibleContent>..</CollapsibleContent></Collapsible>`.
+
+### Combobox
+
+A select with a search box, for lists longer than 20 items (see Select). Built from Popover + Command; the trigger is an outline button showing the chosen value with Lucide `ChevronsUpDown`, and the chosen item shows a check.
+
+### Command
+
+A searchable list of actions or options, with groups, an empty message and optional keyboard shortcuts (`Kbd`). `<Command><CommandInput placeholder="Search actions" /><CommandList><CommandEmpty>No results found.</CommandEmpty><CommandGroup heading="Suggestions"><CommandItem>..</CommandItem></CommandGroup></CommandList></Command>`.
+
+### Context Menu
+
+A menu on right click. Always offer the same actions somewhere visible too (a row's Dropdown Menu), because right click is hidden. Items follow the Dropdown Menu rules.
+
+### Date Picker
+
+A Popover holding a Calendar, opened from an outline button that shows the chosen date (Lucide `Calendar` icon on the left), or "Pick a date". Plain HTML prototypes may use a native `input.input[type=date]`.
+
+### Drawer
+
+A panel that slides up from the bottom, for mobile. Follows the Dialog overlay; adds a grab handle at the top. `<Drawer>`. Plain HTML: `dialog.dialog.drawer`.
+
+### Empty
+
+The empty state for a list, table or page: optional icon in a grey square, a title, one line of help and an action (see Creating a new page). `<Empty><EmptyHeader><EmptyMedia variant="icon">..</EmptyMedia><EmptyTitle>..</EmptyTitle><EmptyDescription>..</EmptyDescription></EmptyHeader><EmptyContent><Button>..</Button></EmptyContent></Empty>`.
+
+### Field
+
+Groups a label, control, hint and error (see Input and forms.md). `<Field><FieldLabel>..</FieldLabel><Input /><FieldDescription>..</FieldDescription><FieldError>..</FieldError></Field>`.
+
+### Hover Card
+
+A small card shown on hover or focus to preview something, for example a person or a school. Read-only; never the only way to reach information. `<HoverCard><HoverCardTrigger>..</HoverCardTrigger><HoverCardContent>..</HoverCardContent></HoverCard>`.
+
+### Input Group
+
+An input with icons, text or buttons inside it, for example a prefix like "https://" or a copy button. Same fill and no-border rules as Input. `<InputGroup><InputGroupAddon>..</InputGroupAddon><InputGroupInput /></InputGroup>`.
+
+### Input OTP
+
+One box per character for one-time codes or session codes. Typing moves to the next box; pasting fills them all. `<InputOTP maxLength={6}><InputOTPGroup><InputOTPSlot index={0} />..</InputOTPGroup></InputOTP>`.
+
+### Item
+
+A list row with media (icon or avatar), title, description and actions. Use for simple lists that are not tables. Variants: default, outline, muted. `<Item><ItemMedia /><ItemContent><ItemTitle /><ItemDescription /></ItemContent><ItemActions /></Item>`.
+
+### Kbd
+
+Shows a keyboard key or shortcut: `<Kbd>Esc</Kbd>`, several keys in `<KbdGroup>`.
+
+### Menubar
+
+A row of menus, as in a desktop app (File, Edit, View). Rarely needed in Cognia products; prefer buttons and a Dropdown Menu.
+
+### Native Select
+
+The browser's own select, styled as an input field. Use where a custom Select is not needed (plain HTML prototypes always use it: `.select-wrap > select.select`).
+
+### Navigation Menu
+
+Links with drop-down panels for marketing-style sites. Product screens use the Navigation shell instead.
+
+### Pagination
+
+Moves between pages of a table or list (Table: paginate above 25 rows). Previous and Next are ghost buttons with Lucide `ChevronLeft` / `ChevronRight`; page numbers are ghost icon buttons; the current page is an outline icon button with `aria-current="page"` (or `aria-pressed="true"` when the pages are buttons); gaps use an ellipsis. Plain HTML: `.pagination-link` on a ghost icon button picks up the outline from either attribute.
+
+```tsx
+<Pagination><PaginationContent>
+  <PaginationItem><PaginationPrevious href="?page=1" /></PaginationItem>
+  <PaginationItem><PaginationLink href="?page=1">1</PaginationLink></PaginationItem>
+  <PaginationItem><PaginationLink href="?page=2" isActive>2</PaginationLink></PaginationItem>
+  <PaginationItem><PaginationEllipsis /></PaginationItem>
+  <PaginationItem><PaginationNext href="?page=3" /></PaginationItem>
+</PaginationContent></Pagination>
+```
+
+### Popover
+
+Floating content opened by a click, which can hold interactive content (unlike a Tooltip): filters, a date picker, a short form, an explanation with a link. White, 8px corners, medium shadow. Closes on `Esc` and a click outside. `<Popover><PopoverTrigger asChild><Button variant="outline">..</Button></PopoverTrigger><PopoverContent>..</PopoverContent></Popover>`.
+
+### Radio Group
+
+Single choice from up to 4 options (5 or more: Select). Each radio has a visible label to its right. `<RadioGroup defaultValue="a"><div className="flex items-center gap-2"><RadioGroupItem value="a" id="a" /><Label htmlFor="a">..</Label></div></RadioGroup>`.
+
+### Resizable
+
+Panels the user can resize by dragging the handle between them, for example list and detail. `<ResizablePanelGroup direction="horizontal"><ResizablePanel /><ResizableHandle /><ResizablePanel /></ResizablePanelGroup>`.
+
+### Scroll Area
+
+A scrolling region with a thin scrollbar, for long lists inside a fixed height. `<ScrollArea className="h-72">..</ScrollArea>`.
+
+### Sidebar
+
+An in-page panel of sections or filters beside the content. Not for app navigation: every screen uses the top Navigation shell, with no side navigation.
+
+### Slider
+
+Picks a value or range on a scale. Always show the current value next to it, and label it. `<Slider defaultValue={[40]} max={100} step={1} />`.
+
+### Spinner
+
+A loading indicator for actions with an unknown duration, usually inside a button (`<Button disabled><Spinner />Saving</Button>`). Page-level loading uses Skeleton. Lucide `LoaderCircle`, rotating. Plain HTML: `svg.spinner`.
+
+### Toggle
+
+A single button that turns something on or off, for example bold or "Show answers". `<Toggle aria-label="..">..</Toggle>`; `variant="outline"` adds a border.
+
+### Toggle Group
+
+A set of Toggles where one (or several) can be on, for example a view switcher or a segmented picker. Same pill look as Tabs (see Tabs). `<ToggleGroup type="single">`. Plain HTML: `.tabs-list[role=group]` with `.tab[aria-pressed]`.

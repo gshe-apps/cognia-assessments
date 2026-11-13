@@ -10,3 +10,5 @@ All transitions use `duration-200`. No other duration is permitted.
 <Card className="shadow-none hover:shadow-md transition-all duration-200 cursor-pointer">
 <Button className="transition-all duration-200">Save changes</Button>
 ```
+
+**Exception: Spinner.** The loading spinner rotates continuously at one turn per second (`animate-spin`). This is the only animation that is not a 200ms state change. In plain CSS it uses `--spin-duration` from `assets/components.css`.

@@ -23,10 +23,10 @@
   const grades=[...new Set([...standards.map(s=>s.grade),initial.grade])].sort((a,b)=>Number(a)-Number(b));
   const artwork=(name)=>`<span class="cap-guide-art" style="--guide-art:url('assets/assessment-guide/${name}.svg')" aria-hidden="true"></span>`;
   const icon=(paths)=>`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
-  const closeButton=()=>`<button class="btn btn-ghost btn-icon btn-sm" type="button" data-close-setup aria-label="Close setup">${artwork('X')}</button>`;
+  const closeButton=()=>`<button class="btn btn-ghost btn-icon dialog-close" type="button" data-close-setup aria-label="Close setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>`;
   const modal=make(`<dialog class="dialog cap-setup-modal" aria-labelledby="cap-setup-title">
    <section class="cap-setup-view" data-setup-view="form">
-    <div class="cap-setup-heading">
+    <div class="cap-setup-heading dialog-header">
      <h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>Set up your assessment</h2>
      ${closeButton()}
     </div>
@@ -64,13 +64,13 @@
       <div class="field"><label class="label" for="cap-description">Description</label><textarea class="textarea" id="cap-description" rows="3" placeholder="Type here"></textarea></div>
      </div>
     </form>
-    <div class="cap-setup-buttons">
+    <div class="cap-setup-buttons dialog-footer">
      <button class="btn btn-ghost btn-lg" type="button" data-close-setup>Cancel</button>
      <button class="btn btn-lg" type="submit" form="uc-assessment-details" data-submit-setup>Continue</button>
     </div>
    </section>
    <section class="cap-setup-view" data-setup-view="standard" hidden>
-    <div class="cap-setup-heading">
+    <div class="cap-setup-heading dialog-header">
      <div class="cap-setup-title-row">
       <button class="btn btn-ghost btn-icon btn-sm" type="button" data-back-setup aria-label="Back to setup">${icon('<path d="m15 18-6-6 6-6"/>')}</button>
       <h2 class="dialog-title" id="cap-standard-title" tabindex="-1"></h2>

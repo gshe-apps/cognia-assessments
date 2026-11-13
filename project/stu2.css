@@ -281,7 +281,6 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 /* Footer actions on the final card, review and hand in dialog */
 .qfoot-end { display: flex; flex-direction: column; gap: 8px; border-top: 0; }
 .rfoot-end { padding: 8px 0; }
-.dlg-actions { display: flex; flex-direction: column; gap: 8px; }
 [data-fill] { width: 100%; }
 
 /* Desktop: buttons hug their label and sit bottom right; the hand in dialog puts its two buttons side by side */
@@ -289,8 +288,6 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
   .qfoot-end { flex-direction: row-reverse; justify-content: flex-start; align-items: center; }
   .rfoot-end { display: flex; justify-content: flex-end; }
   .qfoot-end [data-fill], .rfoot-end [data-fill], .trophy-wrap > [data-fill] { width: auto; }
-  .dlg-actions { flex-direction: row; }
-  .dlg-actions [data-fill] { flex: 1; width: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .mgrid, .deck, .stu2-solid, .stu2-solid + .stu2-layer .rcol { animation: none; } .opt, .mrow, .blank, .chip { transition: none; } }
 

@@ -46,6 +46,8 @@
   --space-24: 96px;
 
   --duration: 200ms;
+  /* Continuous loading indicator only (motion.md, Spinner exception) */
+  --spin-duration: 1s;
 }
 
 /* ------------------------------------------------------------
@@ -312,7 +314,8 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
    Form fields (forms.md, components.md Input, Select, Checkbox, Switch)
    <div class="form"> <div class="field"> label + control + .field-error </div> </div>
    Fields sit on the page by default. Inside a .card they switch to the
-   white-surface fill automatically.
+   white-surface fill automatically. Dialogs use the theme background, so
+   fields in a dialog keep the white fill.
    ------------------------------------------------------------ */
 .form { display: flex; flex-direction: column; gap: var(--space-6); }
 .form-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
@@ -322,7 +325,7 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .field-hint { font-size: var(--text-body-small); color: var(--muted-foreground); }
 .field-error { font-size: var(--text-body-small); color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 
-.input, .textarea, .select {
+.input, .search-input, .textarea, .select {
   width: 100%;
   min-height: 48px;
   padding: var(--space-3);
@@ -335,9 +338,8 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
   transition: outline-color var(--duration);
 }
 .textarea { min-height: 96px; resize: vertical; }
-.input::placeholder, .textarea::placeholder { color: var(--muted-foreground); }
-.card .input, .card .textarea, .card .select,
-.dialog .input, .dialog .textarea, .dialog .select { background-color: var(--secondary); }
+.input::placeholder, .search-input::placeholder, .textarea::placeholder { color: var(--muted-foreground); }
+.card .input, .card .textarea, .card .select { background-color: var(--secondary); }
 .input[aria-invalid="true"], .textarea[aria-invalid="true"], .select[aria-invalid="true"] {
   outline: 3px solid var(--destructive);
 }
@@ -358,61 +360,110 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 
 /* ------------------------------------------------------------
    Search input (components.md, Search input)
-   <div class="search" role="search">
+   A normal shadcn Input with fully round corners, a Lucide search icon on
+   the left and a clear button on the right. White fill, no border, no
+   shadow. On a white surface (card, popover, menu) the fill turns
+   --secondary so it stays visible.
+   Sizes: .search-lg (48px, the default), .search-md (40px), .search-sm (32px).
+   <div class="search search-lg" role="search">
      <svg class="search-icon" aria-hidden="true">...</svg>
-     <input class="search-input" type="search" aria-label="Search assessments" placeholder="Search assessments">
+     <input class="input search-input" type="search" aria-label="Search assessments" placeholder="Search assessments">
      <span class="tooltip-wrap search-clear">
-       <button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">...</button>
+       <button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search">Lucide x</button>
        <span class="tooltip" role="tooltip">Clear search</span>
      </span>
    </div>
    The input must come before the clear button and must have a placeholder:
    the clear button hides itself while the placeholder is showing.
+   The clear button and Escape empty the field (assets/components.js).
    ------------------------------------------------------------ */
-.search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 48px;
-  border: 0;
-  border-radius: var(--rounded-full);
-  background-color: var(--primary-foreground);
-  transition: outline-color var(--duration);
-}
-.card .search, .dialog .search { background-color: var(--secondary); }
-.search:has(.search-input:focus-visible) { outline: 3px solid var(--ring); outline-offset: 0; }
-
+.search { position: relative; display: flex; align-items: center; width: 100%; }
 .search-icon {
   position: absolute;
+  top: 50%;
   left: var(--space-4);
   width: 16px;
   height: 16px;
   color: var(--muted-foreground);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 .search-input {
-  flex: 1;
-  min-width: 0;
   height: 48px;
-  padding: 0 var(--space-4) 0 var(--space-10);
+  padding-left: var(--space-10);
+  border: 0;
+  border-radius: var(--rounded-full);
+  background-color: var(--primary-foreground);
+  box-shadow: none;
+  appearance: none;
+}
+:is(.card, .popover, .menu, .hover-card, .command) .search-input { background-color: var(--secondary); }
+.search-input::-webkit-search-cancel-button { appearance: none; }
+.search-input:not(:placeholder-shown) { padding-right: var(--space-12); }
+.search .search-clear { position: absolute; top: 50%; right: var(--space-2); transform: translateY(-50%); }
+
+/* AI search ("Ask a question"): a Lucide sparkles submit button inside the
+   field on the right, in --ai-accent. The clear button moves to its left.
+   <div class="search search-lg search-ai" role="search"> icon, input, .search-clear,
+     <span class="tooltip-wrap search-action"><button class="btn btn-ghost btn-icon btn-sm" type="submit" aria-label="Ask Cognia AI">Lucide sparkles</button>
+     <span class="tooltip" role="tooltip">Ask Cognia AI</span></span> </div> */
+.search .search-action { position: absolute; top: 50%; right: var(--space-2); transform: translateY(-50%); }
+.search-action .btn { border-radius: var(--rounded-full); }
+.search-action svg { stroke: var(--ai-accent); }
+.search-ai .search-input { padding-right: var(--space-12); }
+.search-ai .search-input:not(:placeholder-shown) { padding-right: var(--space-20); }
+.search-ai .search-clear { right: var(--space-10); }
+.search-clear .btn { border-radius: var(--rounded-full); }
+.search-input:placeholder-shown ~ .search-clear { display: none; }
+
+.search-md .search-input { height: 40px; min-height: 40px; padding-top: 0; padding-bottom: 0; font-size: var(--text-body-small); }
+.search-md .search-input:not(:placeholder-shown) { padding-right: var(--space-10); }
+.search-md .search-clear { right: var(--space-1); }
+.search-sm .search-icon { left: var(--space-3); }
+.search-sm.search-ai .search-clear { right: var(--space-8); }
+.search-sm .search-input { height: 32px; min-height: 32px; padding: 0 var(--space-3) 0 var(--space-8); font-size: var(--text-body-small); }
+.search-sm .search-input:not(:placeholder-shown) { padding-right: var(--space-8); }
+.search-sm .search-clear { right: 0; }
+.search-sm .search-clear .btn { width: 32px; height: 32px; min-height: 32px; }
+
+/* ------------------------------------------------------------
+   Filter chip (components.md, Filter chip): an applied filter the user
+   can remove. White pill, 32px, label then a Lucide x remove button.
+   On a white surface (card, popover, menu) the fill turns --secondary.
+   <div class="chip-list" role="list" aria-label="Applied filters">
+     <span class="chip" role="listitem">Grade 5
+       <button class="chip-remove" type="button" aria-label="Remove Grade 5">Lucide x</button></span>
+   </div>
+   ------------------------------------------------------------ */
+.chip-list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  min-height: 32px;
+  padding: 0 var(--space-1) 0 var(--space-3);
+  border: 0;
+  border-radius: var(--rounded-full);
+  background-color: var(--primary-foreground);
+  color: var(--foreground);
+  font-size: var(--text-body-small);
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+:is(.card, .popover, .menu, .dialog) .chip { background-color: var(--secondary); }
+.chip:not(:has(.chip-remove)) { padding-right: var(--space-3); }
+.chip-remove {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  padding: 0;
   border: 0;
   border-radius: var(--rounded-full);
   background: transparent;
   color: var(--foreground);
-  font: inherit;
-  font-size: var(--text-body-base);
-  box-shadow: none;
-  appearance: none;
+  cursor: pointer;
+  transition: background-color var(--duration);
 }
-.search-input::placeholder { color: var(--muted-foreground); }
-.search-input:focus-visible { outline: none; }
-.search-input::-webkit-search-cancel-button { appearance: none; }
-.search-input:not(:placeholder-shown) { padding-right: var(--space-12); }
-
-.search-clear { position: absolute; right: var(--space-2); }
-.search-clear .btn { border-radius: var(--rounded-full); }
-.search-input:placeholder-shown ~ .search-clear { display: none; }
+.chip-remove svg { width: 14px; height: 14px; }
+.chip-remove:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 
 .check { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-base); cursor: pointer; }
 .checkbox, .radio { width: 16px; height: 16px; margin: 0; accent-color: var(--primary); cursor: pointer; flex: none; }
@@ -442,35 +493,57 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .switch[aria-checked="true"]::after { transform: translateX(12px); }
 
 /* ------------------------------------------------------------
-   Tabs (components.md, Tabs)
+   Tabs, Toggle Group and segmented pickers (components.md, Tabs)
+   One pill style everywhere: separate fully round pills, 32px high.
+   Selected: solid --primary. Unselected: transparent with a border of
+   #000012 at 30% (--primary mixed 30%). Label 14px semibold. 8px between
+   pills, and 8px between tab sets that sit side by side in a row.
    <div class="tabs-list" role="tablist"> <button class="tab" role="tab" aria-selected="true">
-   A toggle group (role="group", buttons with aria-pressed) uses the same classes.
-   On the page the list is white (bg-card); inside a card it is grey.
+   A toggle group or segmented picker (role="group", buttons with
+   aria-pressed) uses the same classes.
    ------------------------------------------------------------ */
 .tabs-list {
-  display: inline-flex; align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1);
-  border-radius: var(--radius);
-  background-color: var(--card);
-}
-.card .tabs-list { background-color: var(--secondary); }
-.tab {
-  min-height: 32px;
-  padding: 0 var(--space-3);
-  border: 0;
-  border-radius: var(--radius);
+  display: inline-flex; flex-wrap: wrap; align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  border-radius: 0;
   background: transparent;
-  color: var(--muted-foreground);
+}
+.tab {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 32px;
+  padding: 0 var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  border-radius: var(--rounded-full);
+  background: transparent;
+  color: var(--foreground);
   font-size: var(--text-body-small);
   font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--duration), color var(--duration);
+  transition: background-color var(--duration), color var(--duration), border-color var(--duration);
 }
+.tab svg { width: 16px; height: 16px; flex: none; }
+.tabs-list + .tabs-list { margin-left: var(--space-2); }
 .tab:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
-/* A toggle group (aria-pressed) uses the same look as tabs */
-.tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--secondary); color: var(--foreground); }
-.card .tab:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--card); box-shadow: var(--shadow-sm); }
+.tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-image: none; background-color: var(--primary-hover); }
+.tab:disabled, .tab[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+/* Secondary selection, for settings pickers inside a form (attempts, time limit):
+   no outline on any pill; the selected pill is --secondary instead of solid --primary.
+   <div class="tabs-list tabs-list-secondary" role="group"> <button class="tab" aria-pressed="true"> */
+.tabs-list-secondary .tab { border-color: transparent; }
+.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
+  border-color: transparent;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-color: var(--secondary); background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)
@@ -628,22 +701,56 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .alert-destructive > svg, .alert-destructive .alert-title { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 
 /* ------------------------------------------------------------
-   Dialog and Sheet (components.md, Dialog and Sheet)
+   Dialog, Alert Dialog and Sheet (components.md, Dialog)
+   Every modal: theme background, 12px corners, 24px title with a ghost
+   close button (primary X) on the same line, actions bottom right with
+   the ghost button first and the solid CTA at the far right.
+   Backdrop: --backdrop-overlay (#000012 at 30%).
    Use the native <dialog> element: dialog.showModal() / dialog.close()
+   <dialog class="dialog" aria-labelledby="t">
+     <div class="dialog-header">
+       <h2 class="dialog-title" id="t">Title</h2>
+       <button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg>Lucide x</svg></button>
+       <p class="dialog-description">Optional description</p>
+     </div>
+     <div class="dialog-body">...</div>
+     <div class="dialog-footer">
+       <button class="btn btn-ghost btn-lg">Cancel</button>
+       <button class="btn btn-lg">Save changes</button>
+     </div>
+   </dialog>
+   Alert dialog: the same markup with role="alertdialog"; a click on the
+   backdrop does not close it.
    ------------------------------------------------------------ */
 .dialog {
   padding: var(--space-6);
   border: 0;
-  border-radius: var(--radius);
-  background-color: var(--popover);
-  color: var(--popover-foreground);
+  border-radius: var(--radius-xl);
+  background-color: var(--background);
+  color: var(--foreground);
   box-shadow: var(--shadow-lg);
 }
-.dialog[open] { display: flex; flex-direction: column; gap: var(--space-4); }
+.dialog[open] { display: flex; flex-direction: column; gap: var(--space-6); }
 .dialog::backdrop { background-color: var(--backdrop-overlay); }
-.dialog-header { display: flex; flex-direction: column; gap: var(--space-2); }
-.dialog-title { font-size: var(--text-heading); line-height: 1.3; font-weight: 600; }
-.dialog-description { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.dialog-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+}
+.dialog-title { grid-column: 1; font-size: var(--text-heading); line-height: 1.3; font-weight: 600; color: var(--foreground); }
+.dialog-close { grid-column: 2; grid-row: 1; justify-self: end; }
+/* The X is drawn in --primary (Lucide icons use stroke="currentColor"). */
+.dialog-close svg { stroke: var(--primary); }
+.dialog-description { grid-column: 1 / -1; font-size: var(--text-body-small); color: var(--muted-foreground); }
+.dialog-body { display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; overflow-y: auto; }
+.dialog-footer { display: flex; flex-direction: column-reverse; gap: var(--space-2); margin-top: auto; }
+.dialog-footer .btn { width: 100%; }
+@media (min-width: 768px) {
+  .dialog-footer { flex-direction: row; justify-content: flex-end; }
+  .dialog-footer .btn { width: auto; }
+}
 
 .sheet {
   margin: 0 0 0 auto;
@@ -704,6 +811,7 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 
 /* ------------------------------------------------------------
    Tooltip (components.md, Tooltip). Shows on hover and keyboard focus.
+   White, 8px corners, medium shadow, wraps at 200px.
    <span class="tooltip-wrap"> trigger <span class="tooltip" role="tooltip">Text</span> </span>
    ------------------------------------------------------------ */
 .tooltip-wrap { position: relative; display: inline-flex; }
@@ -712,12 +820,18 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
   bottom: calc(100% + var(--space-2));
   left: 50%;
   transform: translateX(-50%);
-  padding: var(--space-1) var(--space-3);
+  width: max-content;
+  max-width: 200px;
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius);
-  background-color: var(--primary);
-  color: var(--primary-foreground);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-md);
   font-size: var(--text-body-small);
-  white-space: nowrap;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -834,9 +948,272 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
    ------------------------------------------------------------ */
 .fab { position: fixed; bottom: var(--space-6); right: var(--space-6); }
 
+
+/* ============================================================
+   MORE SHADCN COMPONENTS (components.md, "shadcn components without a
+   Cognia overlay yet"). These follow shadcn's default look, built only
+   from Cognia tokens. They get Cognia-specific rules as the designer
+   documents them.
+   ============================================================ */
+
+/* Field, Radio Group, Native Select, Toggle Group: see Form fields and Tabs above.
+   .radio-group lays radios out in a column, .radio-group-row in a row. */
+.radio-group { display: flex; flex-direction: column; gap: var(--space-3); }
+.radio-group-row { flex-direction: row; flex-wrap: wrap; gap: var(--space-6); }
+
+/* Aspect Ratio: <div class="aspect-ratio" style="--ratio: 16 / 9"> img or video </div> */
+.aspect-ratio { position: relative; width: 100%; aspect-ratio: var(--ratio, 16 / 9); overflow: hidden; border-radius: var(--radius); }
+.aspect-ratio > * { width: 100%; height: 100%; object-fit: cover; }
+
+/* Breadcrumb
+   <nav class="breadcrumb" aria-label="Breadcrumb"><ol class="breadcrumb-list">
+     <li class="breadcrumb-item"><a class="breadcrumb-link" href="..">Home</a></li>
+     <li class="breadcrumb-separator" aria-hidden="true"><svg>Lucide chevron-right</svg></li>
+     <li class="breadcrumb-item"><span class="breadcrumb-page" aria-current="page">Results</span></li>
+   </ol></nav> */
+.breadcrumb-list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: 0; padding: 0; list-style: none; font-size: var(--text-body-small); color: var(--muted-foreground); }
+.breadcrumb-item { display: inline-flex; align-items: center; gap: var(--space-1); }
+.breadcrumb-link { color: var(--muted-foreground); text-decoration: none; border-radius: var(--radius); transition: color var(--duration); }
+.breadcrumb-link:hover { color: var(--foreground); text-decoration: underline; }
+.breadcrumb-page { color: var(--foreground); }
+.breadcrumb-separator { display: inline-flex; }
+.breadcrumb-separator svg { width: 14px; height: 14px; }
+
+/* Button Group: <div class="button-group" role="group"> .btn .btn .btn </div>
+   As a single-choice picker (Yes / No, As created / Shuffle): ghost buttons (no outline)
+   with aria-pressed; the pressed one is --secondary. */
+.button-group { display: inline-flex; align-items: stretch; }
+.button-group > .btn { border-radius: 0; }
+.button-group > .btn:first-child { border-top-left-radius: var(--radius); border-bottom-left-radius: var(--radius); }
+.button-group > .btn:last-child { border-top-right-radius: var(--radius); border-bottom-right-radius: var(--radius); }
+.button-group > .btn-outline + .btn-outline { border-left-width: 0; }
+.button-group > .btn-ghost[aria-pressed="true"] { background-color: var(--secondary); color: var(--secondary-foreground); }
+
+/* Calendar (and Date Picker's panel)
+   <div class="calendar"> <div class="calendar-header"> prev button, .calendar-caption, next button </div>
+     <div class="calendar-grid" role="grid"> 7 x .calendar-weekday, then button.calendar-day
+       (aria-selected="true", .is-today, .is-outside, disabled) </div> </div> */
+.calendar { display: inline-flex; flex-direction: column; gap: var(--space-4); padding: var(--space-3); border-radius: var(--radius); background-color: var(--popover); color: var(--popover-foreground); }
+.calendar-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.calendar-caption { font-size: var(--text-body-small); font-weight: 600; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 36px); gap: var(--space-1); }
+.calendar-weekday { display: flex; align-items: center; justify-content: center; height: 32px; font-size: var(--text-body-small); color: var(--muted-foreground); }
+.calendar-day { width: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--radius); background: transparent; color: var(--foreground); font-size: var(--text-body-small); cursor: pointer; transition: background-color var(--duration), color var(--duration); }
+.calendar-day:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.calendar-day.is-today { background-color: var(--secondary); }
+.calendar-day.is-outside { color: var(--muted-foreground); }
+.calendar-day:is([aria-selected="true"], [aria-pressed="true"]) { background-color: var(--primary); color: var(--primary-foreground); }
+.calendar-day:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Date Picker: a Popover holding a Calendar, triggered by an outline button
+   showing the date. In plain HTML a native <input class="input" type="date"> is fine. */
+.date-picker-trigger { justify-content: flex-start; min-width: 240px; font-weight: 400; }
+
+/* Carousel
+   <div class="carousel" aria-roledescription="carousel">
+     <div class="carousel-viewport"> .carousel-item (x n) </div>
+     <button class="btn btn-outline btn-icon btn-pill carousel-prev" aria-label="Previous slide">..</button>
+     <button class="btn btn-outline btn-icon btn-pill carousel-next" aria-label="Next slide">..</button>
+   </div>  Arrows scroll one item (assets/components.js). */
+.carousel { position: relative; }
+.carousel-viewport { display: flex; gap: var(--space-4); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+.carousel-viewport::-webkit-scrollbar { display: none; }
+.carousel-item { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; }
+.carousel-prev, .carousel-next { position: absolute; top: 50%; transform: translateY(-50%); background-color: var(--card); }
+.carousel-prev { left: var(--space-2); }
+.carousel-next { right: var(--space-2); }
+
+/* Chart: a ghost card holding the chart (components.md, Card).
+   Series colours are --chart-1 to --chart-5, in order.
+   <div class="chart"> svg or canvas </div> <ul class="chart-legend"> <li><span class="chart-swatch" style="--swatch: var(--chart-3)"></span>Label</li> </ul> */
+.chart { position: relative; width: 100%; min-height: 200px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); margin: 0; padding: 0; list-style: none; font-size: var(--text-body-small); color: var(--muted-foreground); }
+.chart-legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.chart-swatch { width: 10px; height: 10px; border-radius: var(--radius); background-color: var(--swatch, var(--chart-3)); flex: none; }
+.chart-tooltip { padding: var(--space-2) var(--space-3); border-radius: var(--radius); background-color: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-md); font-size: var(--text-body-small); }
+
+/* Collapsible: <details class="collapsible"><summary class="collapsible-trigger">..</summary> content </details> */
+.collapsible-trigger { display: inline-flex; align-items: center; gap: var(--space-2); list-style: none; cursor: pointer; font-size: var(--text-body-small); font-weight: 600; }
+.collapsible-trigger::-webkit-details-marker { display: none; }
+.collapsible-trigger svg { width: 16px; height: 16px; color: var(--muted-foreground); flex: none; }
+.collapsible > :not(summary) { margin-top: var(--space-2); }
+
+/* Popover (also the panel of Combobox and Date Picker)
+   <div class="popover-wrap"> <button aria-haspopup="dialog" aria-expanded="false">..</button>
+     <div class="popover" role="dialog" hidden> .. </div> </div>
+   Toggle, Escape and click outside from assets/components.js. .popover-end aligns right. */
+.popover-wrap { position: relative; display: inline-block; }
+.popover-wrap > .popover { position: absolute; top: calc(100% + var(--space-1)); left: 0; z-index: 20; }
+.popover-wrap.popover-end > .popover { left: auto; right: 0; }
+.popover[hidden] { display: none; }
+.popover { width: max-content; max-width: 320px; padding: var(--space-4); border-radius: var(--radius); background-color: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-md); font-size: var(--text-body-small); }
+
+/* Hover Card: like a tooltip but a small card; opens on hover and focus.
+   <span class="hover-card-wrap"> trigger <div class="hover-card" role="tooltip">..</div> </span> */
+.hover-card-wrap { position: relative; display: inline-flex; }
+.hover-card { position: absolute; top: calc(100% + var(--space-2)); left: 0; z-index: 20; width: 256px; padding: var(--space-4); border-radius: var(--radius); background-color: var(--popover); color: var(--popover-foreground); box-shadow: var(--shadow-md); font-size: var(--text-body-small); opacity: 0; visibility: hidden; transition: opacity var(--duration), visibility var(--duration); }
+.hover-card-wrap:hover .hover-card, .hover-card-wrap:focus-within .hover-card { opacity: 1; visibility: visible; }
+
+/* Command: a searchable list of actions or options (also the list inside Combobox)
+   <div class="command"> <div class="command-search"> icon + input.command-input </div>
+     <div class="command-list" role="listbox">
+       <div class="command-group"><div class="command-group-heading">Suggestions</div>
+         <button class="command-item" role="option">..<kbd class="kbd">⌘K</kbd></button></div>
+       <div class="command-empty" hidden>No results found.</div> </div> </div>
+   Typing filters items (assets/components.js). */
+.command { display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius); background-color: var(--popover); color: var(--popover-foreground); }
+.command-search { position: relative; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+.command-search svg { position: absolute; left: var(--space-3); width: 16px; height: 16px; color: var(--muted-foreground); pointer-events: none; }
+.command-input { width: 100%; height: 48px; padding: 0 var(--space-3) 0 var(--space-10); border: 0; background: transparent; color: var(--foreground); font-size: var(--text-body-small); }
+.command-input:focus-visible { outline: none; }
+.command-list { max-height: 300px; overflow-y: auto; padding: var(--space-1); }
+.command-group-heading { padding: var(--space-2); font-size: var(--text-body-small); font-weight: 600; color: var(--muted-foreground); }
+.command-item { display: flex; align-items: center; gap: var(--space-2); width: 100%; padding: var(--space-2); border: 0; border-radius: var(--radius); background: transparent; color: inherit; font-size: var(--text-body-small); text-align: left; cursor: pointer; }
+.command-item svg { width: 16px; height: 16px; color: var(--muted-foreground); }
+.command-item .kbd { margin-left: auto; }
+.command-item:hover, .command-item[aria-selected="true"] { background-color: var(--secondary); }
+.command-item[hidden], .command-group[hidden] { display: none; }
+.command-empty { padding: var(--space-6) 0; text-align: center; font-size: var(--text-body-small); color: var(--muted-foreground); }
+
+/* Combobox: an input or outline button that opens a Popover holding a Command.
+   <div class="popover-wrap combobox"> <button class="btn btn-outline combobox-trigger" aria-haspopup="dialog" aria-expanded="false">Select a school <svg>chevrons-up-down</svg></button>
+     <div class="popover" role="dialog" hidden><div class="command">..</div></div> </div>
+   Choosing an item writes its text into the trigger (assets/components.js). */
+.combobox-trigger { justify-content: space-between; min-width: 240px; font-weight: 400; }
+.combobox > .popover { padding: 0; min-width: 100%; }
+.combobox .command-item[aria-selected="true"]::after { content: ""; margin-left: auto; width: 8px; height: 4px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); }
+
+/* Context Menu: right click (or Shift+F10) on [data-context-menu] opens the .menu
+   inside it at the pointer. <div class="context-menu" data-context-menu> area <div class="menu" role="menu" hidden>..</div></div> */
+.context-menu { position: relative; }
+.context-menu > .menu { position: fixed; z-index: 20; }
+
+/* Drawer: a sheet that comes up from the bottom, with a grab handle.
+   <dialog class="dialog drawer"> <div class="drawer-handle"></div> header, body, footer </dialog> */
+.dialog.drawer { margin: auto 0 0; width: 100%; max-width: none; max-height: 85vh; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+.drawer-handle { align-self: center; width: 100px; height: 8px; border-radius: var(--rounded-full); background-color: var(--secondary); }
+
+/* Input Group: an input with icons, text or buttons inside it.
+   <div class="input-group"> <span class="input-group-addon">https://</span> <input class="input"> <button class="btn btn-ghost btn-sm">..</button> </div> */
+.input-group { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; padding: 0 var(--space-3); border-radius: var(--radius); background-color: var(--primary-foreground); }
+.card .input-group { background-color: var(--secondary); }
+.input-group:focus-within { outline: 3px solid var(--ring); }
+.input-group > .input { min-height: 0; padding: var(--space-3) 0; background: transparent; }
+.input-group > .input:focus-visible { outline: none; }
+.input-group-addon { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-body-small); color: var(--muted-foreground); white-space: nowrap; }
+.input-group-addon svg { width: 16px; height: 16px; }
+
+/* Input OTP: one box per character. Typing moves to the next box (assets/components.js).
+   <div class="input-otp" role="group" aria-label="One-time code"> input.input-otp-slot maxlength="1" (x 6),
+   optional <span class="input-otp-separator" aria-hidden="true"></span> </div> */
+.input-otp { display: inline-flex; align-items: center; gap: var(--space-2); }
+.input-otp-slot { width: 48px; height: 48px; padding: 0; border: 0; border-radius: var(--radius); background-color: var(--primary-foreground); color: var(--foreground); font-size: var(--text-body-base); text-align: center; }
+.card .input-otp-slot { background-color: var(--secondary); }
+.input-otp-separator { width: 8px; height: 2px; background-color: var(--border); }
+
+/* Item: a row with media, title, description and actions, for lists.
+   <div class="item"> <div class="item-media">icon/avatar</div> <div class="item-content"> .item-title .item-description </div> <div class="item-actions">..</div> </div>
+   .item-outline adds a border, .item-muted a grey fill. a.item is a clickable row. */
+.item { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); border-radius: var(--radius); color: inherit; text-decoration: none; }
+.item-outline { border: 1px solid var(--border); }
+.item-muted { background-color: var(--secondary); }
+a.item, button.item { transition: background-color var(--duration); cursor: pointer; }
+a.item:hover, button.item:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.item-media { display: inline-flex; flex: none; }
+.item-media svg { width: 16px; height: 16px; color: var(--muted-foreground); }
+.item-content { display: flex; flex: 1; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.item-title { font-size: var(--text-body-small); font-weight: 600; }
+.item-description { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.item-actions { display: flex; align-items: center; gap: var(--space-2); flex: none; }
+.item-group { display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* Kbd: <kbd class="kbd">Esc</kbd>, several keys in <span class="kbd-group"> */
+.kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; padding: 0 var(--space-1); border-radius: var(--radius); background-color: var(--secondary); color: var(--muted-foreground); font-family: inherit; font-size: var(--text-body-small); font-weight: 400; }
+.kbd-group { display: inline-flex; align-items: center; gap: var(--space-1); }
+
+/* Menubar: a row of dropdown menus (desktop app style).
+   <div class="menubar" role="menubar"> .dropdown > button.menubar-trigger[aria-haspopup="menu"] + .menu </div> */
+.menubar { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-1); border-radius: var(--radius); background-color: var(--card); }
+.menubar-trigger { padding: var(--space-1) var(--space-3); border: 0; border-radius: var(--radius); background: transparent; color: var(--foreground); font-size: var(--text-body-small); font-weight: 600; cursor: pointer; }
+.menubar-trigger:hover, .menubar-trigger[aria-expanded="true"] { background-color: var(--secondary); }
+
+/* Navigation Menu: links with optional panels, for marketing-style sites.
+   Product screens use the Navigation shell instead.
+   <nav class="navigation-menu"><ul> <li><a class="navigation-menu-link">..</a></li>
+     <li class="dropdown"><button class="navigation-menu-link" aria-haspopup="menu">..</button><div class="menu navigation-menu-panel" role="menu" hidden>..</div></li> </ul></nav> */
+.navigation-menu ul { display: flex; align-items: center; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.navigation-menu-link { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-2) var(--space-4); border: 0; border-radius: var(--radius); background: transparent; color: var(--foreground); font-size: var(--text-body-small); font-weight: 600; text-decoration: none; cursor: pointer; }
+.navigation-menu-link:hover, .navigation-menu-link[aria-expanded="true"] { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.navigation-menu-panel { min-width: 320px; padding: var(--space-2); }
+
+/* Pagination
+   <nav class="pagination" aria-label="Pagination"><ul>
+     <li><a class="btn btn-ghost pagination-prev" href="..">..Previous</a></li>
+     <li><a class="btn btn-ghost btn-icon pagination-link" href="..">1</a></li>
+     <li><a class="btn btn-outline btn-icon pagination-link" aria-current="page">2</a></li>
+     <li><span class="pagination-ellipsis" aria-hidden="true">...</span></li>
+     <li><a class="btn btn-ghost pagination-next" href="..">Next..</a></li> </ul></nav> */
+.pagination ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.pagination-link { min-width: 40px; }
+/* The current page: an outline icon button. aria-current="page" on links, aria-pressed="true" on buttons. */
+.pagination-link:is([aria-current="page"], [aria-pressed="true"]) { border-color: var(--primary); background-color: transparent; }
+.pagination:not(:has(ul)) { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); }
+.pagination-ellipsis { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: var(--muted-foreground); }
+
+/* Resizable: panels with a drag handle between them (assets/components.js).
+   <div class="resizable"> <div class="resizable-panel" style="flex-basis: 50%">..</div>
+     <div class="resizable-handle" role="separator" aria-orientation="vertical" tabindex="0"></div>
+     <div class="resizable-panel">..</div> </div>  Add .resizable-vertical to stack. */
+.resizable { display: flex; min-height: 200px; overflow: hidden; border-radius: var(--radius); }
+.resizable-vertical { flex-direction: column; }
+.resizable-panel { flex: 1 1 0; min-width: 0; min-height: 0; overflow: auto; }
+.resizable-handle { flex: none; width: 1px; background-color: var(--border); cursor: col-resize; position: relative; }
+.resizable-handle::after { content: ""; position: absolute; inset: 0 -4px; }
+.resizable-vertical > .resizable-handle { width: auto; height: 1px; cursor: row-resize; }
+.resizable-vertical > .resizable-handle::after { inset: -4px 0; }
+
+/* Scroll Area: <div class="scroll-area" style="max-height: 300px">..</div> */
+.scroll-area { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.scroll-area::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-area::-webkit-scrollbar-thumb { border-radius: var(--rounded-full); background-color: var(--border); }
+
+/* Sidebar: an in-page panel of sections or filters beside the content.
+   Not for app navigation: every screen uses the top Navigation shell.
+   <div class="sidebar-layout"> <aside class="sidebar"> .sidebar-group > .sidebar-group-label + a.sidebar-link </aside> <div>content</div> </div> */
+.sidebar-layout { display: grid; grid-template-columns: 256px minmax(0, 1fr); gap: var(--space-6); }
+.sidebar { display: flex; flex-direction: column; gap: var(--space-4); }
+.sidebar-group { display: flex; flex-direction: column; gap: var(--space-1); }
+.sidebar-group-label { padding: 0 var(--space-3); font-size: var(--text-body-small); font-weight: 600; color: var(--muted-foreground); }
+.sidebar-link { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius); color: var(--foreground); font-size: var(--text-body-small); text-decoration: none; transition: background-color var(--duration); }
+.sidebar-link svg { width: 16px; height: 16px; color: var(--muted-foreground); }
+.sidebar-link:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.sidebar-link[aria-current="page"] { background-color: var(--secondary); font-weight: 600; }
+@media (max-width: 767px) { .sidebar-layout { grid-template-columns: 1fr; } }
+
+/* Slider: <input class="slider" type="range" min="0" max="100" value="40" aria-label=".."> */
+.slider { width: 100%; height: 20px; margin: 0; background: transparent; accent-color: var(--primary); cursor: pointer; }
+
+/* Spinner: <svg class="spinner" role="status" aria-label="Loading">Lucide loader-circle</svg> */
+.spinner { width: 16px; height: 16px; color: currentColor; animation: cognia-spin var(--spin-duration) linear infinite; }
+@keyframes cognia-spin { to { transform: rotate(360deg); } }
+
+/* Toggle: a single on/off button. <button class="toggle" aria-pressed="false">..</button>
+   A Toggle Group is .tabs-list role="group" with .tab buttons (see Tabs). */
+.toggle { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-width: 40px; height: 40px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius); background: transparent; color: var(--foreground); font-size: var(--text-body-small); font-weight: 600; cursor: pointer; transition: background-color var(--duration); }
+.toggle svg { width: 16px; height: 16px; }
+.toggle:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.toggle[aria-pressed="true"] { background-color: var(--secondary); }
+.toggle-outline { border: 1px solid var(--border); }
+
+/* Empty (shadcn Empty): .empty-state above, with optional .empty-media icon and .empty-title */
+.empty-media { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: var(--radius); background-color: var(--secondary); }
+.empty-media svg { width: 24px; height: 24px; color: var(--muted-foreground); }
+.empty-title { font-size: var(--text-body-base); font-weight: 600; color: var(--foreground); }
+
 /* ------------------------------------------------------------
    Reduced motion
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   * { transition: none; }
+  .carousel-viewport { scroll-behavior: auto; }
 }

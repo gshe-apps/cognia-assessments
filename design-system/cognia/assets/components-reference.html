@@ -45,8 +45,10 @@
     <a href="#buttons" aria-current="page">Buttons</a>
     <a href="#cards">Cards</a>
     <a href="#forms">Forms</a>
+    <a href="#chips">Chips</a>
     <a href="#data">Data</a>
     <a href="#overlays">Overlays</a>
+    <a href="#more">More</a>
   </nav>
   <div class="shell-actions">
     <span class="tooltip-wrap">
@@ -190,28 +192,24 @@
 
   <section class="ref-section" id="search">
     <h2 class="text-heading">Search input</h2>
+    <p class="text-body-small text-muted-foreground">A normal input with round corners, a white fill, no border, no shadow, the search icon on the left and a clear button once there is a value. Large (48px) by default, medium (40px) in toolbars, small (32px) in compact panels.</p>
     <div class="ref-grid-2">
-      <div class="form">
-        <p class="text-body-small text-muted-foreground">On the page: white fill, no border.</p>
-        <div class="search" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Search assessments" placeholder="Search assessments"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div>
-      </div>
-      <div class="card"><div class="card-content form">
-        <p class="text-body-small text-muted-foreground">On a card: secondary fill, with a value.</p>
-        <div class="search" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="search-input" type="search" aria-label="Search wording or standard" placeholder="Search wording or standard" value="Learning environment"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div>
-      </div></div>
+      <div class="ref-stack"><div class="search search-lg search-ai" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Ask a question or search" placeholder="Ask a question or search"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span><span class="tooltip-wrap search-action"><button class="btn btn-ghost btn-icon btn-sm" type="submit" aria-label="Ask Cognia AI"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg></button><span class="tooltip" role="tooltip">Ask Cognia AI</span></span></div><div class="search search-md" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Search schools" placeholder="Search schools" value="Baldwin"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div><div class="search search-sm" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Search learners" placeholder="Search learners"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div></div>
+      <div class="card"><div class="card-content ref-stack"><p class="text-body-small text-muted-foreground">On a white card the fill turns grey.</p><div class="search search-md" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Search wording or standard" placeholder="Search wording or standard" value="Learning environment"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div></div></div>
     </div>
   </section>
 
-  <section class="ref-section" id="data">
-    <h2 class="text-heading">Tabs</h2>
-    <div class="ref-row">
-      <div class="tabs-list" role="tablist" aria-label="Results view">
-        <button class="tab" role="tab" aria-selected="true">Overview</button>
-        <button class="tab" role="tab" aria-selected="false">Results</button>
-        <button class="tab" role="tab" aria-selected="false">History</button>
-      </div>
-    </div>
+  <section class="ref-section" id="chips">
+    <h2 class="text-heading">Filter chips</h2>
+    <div class="chip-list" role="list" aria-label="Applied filters"><span class="chip" role="listitem">A-C Central Middle<button class="chip-remove" type="button" aria-label="Remove A-C Central Middle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span><span class="chip" role="listitem">A. Baldwin Middle<button class="chip-remove" type="button" aria-label="Remove A. Baldwin Middle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span><span class="chip" role="listitem">A. L. Mebane Middle<button class="chip-remove" type="button" aria-label="Remove A. L. Mebane Middle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span><button class="btn btn-ghost btn-sm" type="button">Clear all</button></div>
+  </section>
 
+  <section class="ref-section" id="data">
+    <h2 class="text-heading">Tabs and segmented pickers</h2>
+    <div class="ref-row">
+      <div class="tabs-list" role="tablist" aria-label="Report"><button class="tab" role="tab" aria-selected="true">Overview</button><button class="tab" role="tab" aria-selected="false">Results</button><button class="tab" role="tab" aria-selected="false">History</button></div>
+      <div class="tabs-list" role="group" aria-label="Instrument"><button class="tab" aria-pressed="true">eleot</button><button class="tab" aria-pressed="false">erel</button><button class="tab" aria-pressed="false">TOT</button></div>
+    </div>
     <h2 class="text-heading">Table</h2>
     <p class="text-body-base text-muted-foreground">No container background. Rows that open something use <code>.row-link</code> and are the only ones with a hover state.</p>
     <div class="table-wrap">
@@ -265,7 +263,11 @@
     <h2 class="text-heading">Overlays</h2>
     <div class="ref-row">
       <button class="btn btn-destructive btn-lg" data-open="demo-dialog">Delete record</button>
+      <button class="btn btn-lg" data-open="demo-form-dialog">Rename</button>
+      <button class="btn btn-outline btn-lg" data-open="demo-alert-dialog">Unpublish</button>
       <button class="btn btn-outline btn-lg" data-open="demo-sheet">Open filters</button>
+      <button class="btn btn-outline btn-lg" data-open="demo-drawer">Open drawer</button>
+      <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon btn-lg" aria-label="About scoring"><svg><use href="#i-info"/></svg></button><span class="tooltip" role="tooltip">Scores are averaged across every submitted response in this window.</span></span>
       <div class="dropdown">
         <button type="button" class="btn btn-outline btn-lg" id="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu">Actions<svg aria-hidden="true"><use href="#i-down"/></svg></button>
         <div class="menu" role="menu" id="menu" aria-labelledby="menu-btn" hidden>
@@ -282,6 +284,218 @@
     </div>
   </section>
 
+  <section class="ref-section" id="more">
+    <h2 class="text-heading">More shadcn components</h2>
+    <p class="text-body-base text-muted-foreground">shadcn's default look in Cognia tokens. No Cognia-specific rules yet.</p>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Breadcrumb</h3>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a class="breadcrumb-link" href="#more">Assessments</a></li>
+          <li class="breadcrumb-separator" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+          <li class="breadcrumb-item"><a class="breadcrumb-link" href="#more">Grade 6 maths</a></li>
+          <li class="breadcrumb-separator" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+          <li class="breadcrumb-item"><span class="breadcrumb-page" aria-current="page">Results</span></li>
+        </ol></nav>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Pagination</h3>
+        <nav class="pagination" aria-label="Pagination"><ul>
+          <li><a class="btn btn-ghost pagination-prev" href="#more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Previous</a></li>
+          <li><a class="btn btn-ghost btn-icon pagination-link" href="#more">1</a></li>
+          <li><a class="btn btn-outline btn-icon pagination-link" href="#more" aria-current="page">2</a></li>
+          <li><a class="btn btn-ghost btn-icon pagination-link" href="#more">3</a></li>
+          <li><span class="pagination-ellipsis" aria-hidden="true">...</span></li>
+          <li><a class="btn btn-ghost pagination-next" href="#more">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a></li>
+        </ul></nav>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Button group, toggle and toggle group</h3>
+        <div class="ref-row">
+          <div class="button-group" role="group" aria-label="Navigate"><button class="btn btn-outline">Previous</button><button class="btn btn-outline">Next</button></div>
+          <div class="button-group" role="group" aria-label="Item order"><button class="btn btn-ghost btn-sm" aria-pressed="true">As created</button><button class="btn btn-ghost btn-sm" aria-pressed="false">Shuffle</button></div>
+          <div class="tabs-list tabs-list-secondary" role="group" aria-label="Attempts"><button class="tab" aria-pressed="true">1</button><button class="tab" aria-pressed="false">2</button><button class="tab" aria-pressed="false">3</button></div>
+          <button class="toggle" aria-pressed="true" aria-label="Bold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg></button>
+          <button class="toggle toggle-outline" aria-pressed="false">Show answers</button>
+          <div class="tabs-list" role="group" aria-label="View"><button class="tab" aria-pressed="true">Week</button><button class="tab" aria-pressed="false">Month</button></div>
+        </div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Kbd, spinner and slider</h3>
+        <div class="ref-row">
+          <span class="kbd-group"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">K</kbd></span>
+          <button class="btn" disabled><svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="status" aria-label="Loading"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Saving</button>
+          <input class="slider" type="range" min="0" max="100" value="40" aria-label="Benchmark" style="max-width: 200px">
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Radio group</h3>
+        <div class="radio-group" role="radiogroup" aria-label="Delivery">
+          <label class="check"><input class="radio" type="radio" name="rg" checked> Online</label>
+          <label class="check"><input class="radio" type="radio" name="rg"> Paper</label>
+        </div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Input group and input OTP</h3>
+        <div class="input-group"><span class="input-group-addon">https://</span><input class="input" aria-label="Website" placeholder="cognia.org"></div>
+        <div class="input-otp" role="group" aria-label="Session code">
+          <input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 1"><input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 2"><input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 3">
+          <span class="input-otp-separator" aria-hidden="true"></span>
+          <input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 4"><input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 5"><input class="input-otp-slot" maxlength="1" inputmode="numeric" aria-label="Digit 6">
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Popover, combobox, date picker and hover card</h3>
+        <div class="ref-row">
+          <div class="popover-wrap">
+            <button class="btn btn-outline" aria-haspopup="dialog" aria-expanded="false">Open popover</button>
+            <div class="popover" role="dialog" aria-label="Dimensions" hidden><div class="field"><label class="label" for="pw">Width</label><input class="input" id="pw" value="100%"></div></div>
+          </div>
+          <div class="popover-wrap combobox">
+            <button class="btn btn-outline combobox-trigger" aria-haspopup="dialog" aria-expanded="false"><span class="combobox-value">Select a school</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></button>
+            <div class="popover" role="dialog" aria-label="Schools" hidden>
+              <div class="command">
+                <div class="command-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="command-input" placeholder="Search schools" aria-label="Search schools"></div>
+                <div class="command-list" role="listbox">
+                  <button class="command-item" role="option" type="button">Cronulla High School</button>
+                  <button class="command-item" role="option" type="button">Kirrawee Public School</button>
+                  <button class="command-item" role="option" type="button">Sutherland Primary</button>
+                  <div class="command-empty" hidden>No school found.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="popover-wrap">
+            <button class="btn btn-outline date-picker-trigger" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>18 November 2026</button>
+            <div class="popover" role="dialog" aria-label="Choose a date" hidden style="padding: 0">
+              <div class="calendar">
+                <div class="calendar-header"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="calendar-caption">November 2026</span><button class="btn btn-ghost btn-icon btn-sm" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+                <div class="calendar-grid"><span class="calendar-weekday">Su</span><span class="calendar-weekday">Mo</span><span class="calendar-weekday">Tu</span><span class="calendar-weekday">We</span><span class="calendar-weekday">Th</span><span class="calendar-weekday">Fr</span><span class="calendar-weekday">Sa</span><button class="calendar-day is-outside" type="button" tabindex="-1">26</button><button class="calendar-day is-outside" type="button" tabindex="-1">27</button><button class="calendar-day is-outside" type="button" tabindex="-1">28</button><button class="calendar-day is-outside" type="button" tabindex="-1">29</button><button class="calendar-day is-outside" type="button" tabindex="-1">30</button><button class="calendar-day is-outside" type="button" tabindex="-1">31</button><button class="calendar-day" type="button">1</button><button class="calendar-day" type="button">2</button><button class="calendar-day" type="button">3</button><button class="calendar-day" type="button">4</button><button class="calendar-day" type="button">5</button><button class="calendar-day" type="button">6</button><button class="calendar-day" type="button">7</button><button class="calendar-day" type="button">8</button><button class="calendar-day" type="button">9</button><button class="calendar-day" type="button">10</button><button class="calendar-day" type="button">11</button><button class="calendar-day" type="button">12</button><button class="calendar-day is-today" type="button">13</button><button class="calendar-day" type="button">14</button><button class="calendar-day" type="button">15</button><button class="calendar-day" type="button">16</button><button class="calendar-day" type="button">17</button><button class="calendar-day" type="button" aria-selected="true">18</button><button class="calendar-day" type="button">19</button><button class="calendar-day" type="button">20</button><button class="calendar-day" type="button">21</button><button class="calendar-day" type="button">22</button><button class="calendar-day" type="button">23</button><button class="calendar-day" type="button">24</button><button class="calendar-day" type="button">25</button><button class="calendar-day" type="button">26</button><button class="calendar-day" type="button">27</button><button class="calendar-day" type="button">28</button><button class="calendar-day" type="button">29</button><button class="calendar-day" type="button">30</button><button class="calendar-day is-outside" type="button" tabindex="-1">1</button><button class="calendar-day is-outside" type="button" tabindex="-1">2</button><button class="calendar-day is-outside" type="button" tabindex="-1">3</button><button class="calendar-day is-outside" type="button" tabindex="-1">4</button><button class="calendar-day is-outside" type="button" tabindex="-1">5</button><button class="calendar-day is-outside" type="button" tabindex="-1">6</button></div>
+              </div>
+            </div>
+          </div>
+          <span class="hover-card-wrap"><a href="#more" class="underline text-body-small">Cronulla High School</a><span class="hover-card" role="tooltip"><span class="item-title">Cronulla High School</span><br><span class="item-description">Sutherland Shire, 1,120 learners</span></span></span>
+        </div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Command</h3>
+        <div class="command" style="max-width: 360px">
+          <div class="command-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="command-input" placeholder="Type a command or search" aria-label="Command"></div>
+          <div class="command-list" role="listbox">
+            <div class="command-group"><div class="command-group-heading">Suggestions</div>
+              <button class="command-item" role="option" type="button"><svg><use href="#i-plus"/></svg>Create assessment<span class="kbd-group" style="margin-left:auto"><kbd class="kbd">Ctrl</kbd><kbd class="kbd">N</kbd></span></button>
+              <button class="command-item" role="option" type="button"><svg><use href="#i-chart"/></svg>View results</button>
+            </div>
+            <div class="command-group"><div class="command-group-heading">Settings</div>
+              <button class="command-item" role="option" type="button"><svg><use href="#i-settings"/></svg>Preferences</button>
+            </div>
+            <div class="command-empty" hidden>No results found.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Calendar</h3>
+        <div class="calendar">
+          <div class="calendar-header"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span class="calendar-caption">November 2026</span><button class="btn btn-ghost btn-icon btn-sm" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+          <div class="calendar-grid"><span class="calendar-weekday">Su</span><span class="calendar-weekday">Mo</span><span class="calendar-weekday">Tu</span><span class="calendar-weekday">We</span><span class="calendar-weekday">Th</span><span class="calendar-weekday">Fr</span><span class="calendar-weekday">Sa</span><button class="calendar-day is-outside" type="button" tabindex="-1">26</button><button class="calendar-day is-outside" type="button" tabindex="-1">27</button><button class="calendar-day is-outside" type="button" tabindex="-1">28</button><button class="calendar-day is-outside" type="button" tabindex="-1">29</button><button class="calendar-day is-outside" type="button" tabindex="-1">30</button><button class="calendar-day is-outside" type="button" tabindex="-1">31</button><button class="calendar-day" type="button">1</button><button class="calendar-day" type="button">2</button><button class="calendar-day" type="button">3</button><button class="calendar-day" type="button">4</button><button class="calendar-day" type="button">5</button><button class="calendar-day" type="button">6</button><button class="calendar-day" type="button">7</button><button class="calendar-day" type="button">8</button><button class="calendar-day" type="button">9</button><button class="calendar-day" type="button">10</button><button class="calendar-day" type="button">11</button><button class="calendar-day" type="button">12</button><button class="calendar-day is-today" type="button">13</button><button class="calendar-day" type="button">14</button><button class="calendar-day" type="button">15</button><button class="calendar-day" type="button">16</button><button class="calendar-day" type="button">17</button><button class="calendar-day" type="button" aria-selected="true">18</button><button class="calendar-day" type="button">19</button><button class="calendar-day" type="button">20</button><button class="calendar-day" type="button">21</button><button class="calendar-day" type="button">22</button><button class="calendar-day" type="button">23</button><button class="calendar-day" type="button">24</button><button class="calendar-day" type="button">25</button><button class="calendar-day" type="button">26</button><button class="calendar-day" type="button">27</button><button class="calendar-day" type="button">28</button><button class="calendar-day" type="button">29</button><button class="calendar-day" type="button">30</button><button class="calendar-day is-outside" type="button" tabindex="-1">1</button><button class="calendar-day is-outside" type="button" tabindex="-1">2</button><button class="calendar-day is-outside" type="button" tabindex="-1">3</button><button class="calendar-day is-outside" type="button" tabindex="-1">4</button><button class="calendar-day is-outside" type="button" tabindex="-1">5</button><button class="calendar-day is-outside" type="button" tabindex="-1">6</button></div>
+        </div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Item and empty</h3>
+        <div class="item-group">
+          <a class="item item-outline" href="#more"><span class="item-media"><svg><use href="#i-chart"/></svg></span><span class="item-content"><span class="item-title">Grade 6 maths interim</span><span class="item-description">Closes 18 November</span></span><span class="item-actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></a>
+          <div class="item item-muted"><span class="avatar">SS</span><span class="item-content"><span class="item-title">Sam Sun</span><span class="item-description">District administrator</span></span><span class="item-actions"><button class="btn btn-outline btn-sm">Invite</button></span></div>
+        </div>
+        <div class="empty-state"><span class="empty-media"><svg><use href="#i-chart"/></svg></span><p class="empty-title">No results yet</p><p>Results show here once learners submit.</p><button class="btn btn-lg">Assign assessment</button></div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Carousel</h3>
+        <div class="carousel" aria-roledescription="carousel">
+          <div class="carousel-viewport">
+            <div class="carousel-item"><div class="card"><div class="card-content text-heading" style="text-align: center">Slide 1</div></div></div>
+            <div class="carousel-item"><div class="card"><div class="card-content text-heading" style="text-align: center">Slide 2</div></div></div>
+            <div class="carousel-item"><div class="card"><div class="card-content text-heading" style="text-align: center">Slide 3</div></div></div>
+          </div>
+          <button class="btn btn-outline btn-icon btn-pill carousel-prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button class="btn btn-outline btn-icon btn-pill carousel-next" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Chart</h3>
+        <div class="card card-ghost"><div class="card-content">
+          <svg class="chart" viewBox="0 0 300 120" role="img" aria-label="Scores by term: 52, 64, 71">
+            <rect x="30" y="58" width="50" height="62" rx="4" style="fill: var(--chart-1)"/>
+            <rect x="125" y="43" width="50" height="77" rx="4" style="fill: var(--chart-3)"/>
+            <rect x="220" y="35" width="50" height="85" rx="4" style="fill: var(--chart-5)"/>
+          </svg>
+          <ul class="chart-legend"><li><span class="chart-swatch" style="--swatch: var(--chart-1)"></span>Term 1</li><li><span class="chart-swatch" style="--swatch: var(--chart-3)"></span>Term 2</li><li><span class="chart-swatch" style="--swatch: var(--chart-5)"></span>Term 3</li></ul>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Collapsible, aspect ratio and scroll area</h3>
+        <details class="collapsible"><summary class="collapsible-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>Show 3 more standards</summary><p class="text-body-small">MA6.1, MA6.2, MA6.3</p></details>
+        <div class="aspect-ratio" style="--ratio: 16 / 9; max-width: 240px"><div class="skeleton"></div></div>
+        <div class="scroll-area" style="max-height: 96px"><p class="text-body-small">Row 1</p><p class="text-body-small">Row 2</p><p class="text-body-small">Row 3</p><p class="text-body-small">Row 4</p><p class="text-body-small">Row 5</p><p class="text-body-small">Row 6</p></div>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Resizable and context menu</h3>
+        <div class="resizable" style="max-width: 420px">
+          <div class="resizable-panel card" style="flex: 0 0 50%"><div class="card-content text-body-small">List</div></div>
+          <div class="resizable-handle" role="separator" aria-orientation="vertical" aria-label="Resize panels" tabindex="0"></div>
+          <div class="resizable-panel card"><div class="card-content text-body-small">Detail</div></div>
+        </div>
+        <div class="context-menu card" data-context-menu tabindex="0"><div class="card-content text-body-small">Right click here</div>
+          <div class="menu" role="menu" hidden>
+            <button type="button" class="menu-item" role="menuitem" tabindex="-1">Open</button>
+            <button type="button" class="menu-item" role="menuitem" tabindex="-1">Duplicate</button>
+            <div class="menu-separator" role="separator"></div>
+            <button type="button" class="menu-item is-destructive" role="menuitem" tabindex="-1"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-grid-2">
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Menubar and navigation menu</h3>
+        <div class="menubar" role="menubar">
+          <div class="dropdown"><button class="menubar-trigger" aria-haspopup="menu" aria-expanded="false">File</button><div class="menu" role="menu" hidden><button type="button" class="menu-item" role="menuitem" tabindex="-1">New</button><button type="button" class="menu-item" role="menuitem" tabindex="-1">Export</button></div></div>
+          <div class="dropdown"><button class="menubar-trigger" aria-haspopup="menu" aria-expanded="false">View</button><div class="menu" role="menu" hidden><button type="button" class="menu-item" role="menuitem" tabindex="-1">Week</button><button type="button" class="menu-item" role="menuitem" tabindex="-1">Month</button></div></div>
+        </div>
+        <nav class="navigation-menu" aria-label="Site"><ul>
+          <li class="dropdown"><button class="navigation-menu-link" aria-haspopup="menu" aria-expanded="false">Products<svg class="icon" aria-hidden="true"><use href="#i-down"/></svg></button><div class="menu navigation-menu-panel" role="menu" hidden><a class="menu-item" role="menuitem" tabindex="-1" href="#more">Assessments</a><a class="menu-item" role="menuitem" tabindex="-1" href="#more">Learning</a></div></li>
+          <li><a class="navigation-menu-link" href="#more">Docs</a></li>
+        </ul></nav>
+      </div>
+      <div class="ref-stack">
+        <h3 class="text-body-base font-semibold">Sidebar (in-page only)</h3>
+        <div class="sidebar-layout" style="grid-template-columns: 180px 1fr">
+          <aside class="sidebar"><div class="sidebar-group"><span class="sidebar-group-label">Settings</span><a class="sidebar-link" href="#more" aria-current="page">General</a><a class="sidebar-link" href="#more">Notifications</a></div></aside>
+          <div class="card"><div class="card-content text-body-small">Content</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="ref-section">
     <h2 class="text-heading">Not in the system yet</h2>
     <p class="text-body-base text-muted-foreground">The prototype uses these patterns, but <code>components.md</code> does not document them. Until the designer adds a spec, do not build your own.</p>
@@ -289,11 +503,11 @@
       <table class="table">
         <thead><tr><th>Pattern</th><th>Seen in</th><th>Use for now</th></tr></thead>
         <tbody>
-          <tr><td>Toggle buttons, such as Week and Month</td><td>Admin and teacher</td><td>Tabs</td></tr>
+          <tr><td>Toggle buttons, such as Week and Month</td><td>Admin and teacher</td><td>Toggle Group</td></tr>
           <tr><td>Stepper for multi-step flows</td><td>Teacher and student</td><td>Ask the designer</td></tr>
-          <tr><td>Pagination and pagers</td><td>All flows</td><td>Ask the designer</td></tr>
+          <tr><td>Pagination and pagers</td><td>All flows</td><td>Pagination</td></tr>
           <tr><td>Stat or KPI tile</td><td>Admin and teacher</td><td>Card with a heading value</td></tr>
-          <tr><td>Filter chips</td><td>Admin and teacher</td><td>Ask the designer</td></tr>
+          <tr><td>Filter chips</td><td>Admin and teacher</td><td>Toggle (outline)</td></tr>
         </tbody>
       </table>
     </div>
@@ -303,17 +517,34 @@
 </main>
 
 <dialog class="dialog" id="demo-dialog" aria-labelledby="dlg-title" aria-describedby="dlg-desc">
-  <div class="dialog-header"><h2 class="dialog-title" id="dlg-title">Delete this record?</h2><p class="dialog-description" id="dlg-desc">This action cannot be undone.</p></div>
-  <div class="btn-row"><button class="btn btn-outline btn-lg" data-close>Cancel</button><button class="btn btn-destructive btn-lg" data-close>Delete record</button></div>
+  <div class="dialog-header"><h2 class="dialog-title" id="dlg-title">Delete this record?</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description" id="dlg-desc">This action cannot be undone.</p></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-destructive btn-lg" data-close>Delete record</button></div>
+</dialog>
+
+<dialog class="dialog" id="demo-form-dialog" aria-labelledby="fdlg-title">
+  <div class="dialog-header"><h2 class="dialog-title" id="fdlg-title">Rename assessment</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="dialog-body"><div class="field"><label class="label" for="d-name">Assessment title</label><input class="input" id="d-name" value="New classroom assessment"></div></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Save changes</button></div>
+</dialog>
+
+<dialog class="dialog" role="alertdialog" id="demo-alert-dialog" aria-labelledby="adlg-title" aria-describedby="adlg-desc">
+  <div class="dialog-header"><h2 class="dialog-title" id="adlg-title">Unpublish this assessment?</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description" id="adlg-desc">Learners will no longer see it. The backdrop does not close this one.</p></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Unpublish</button></div>
 </dialog>
 
 <dialog class="dialog sheet" id="demo-sheet" aria-labelledby="sheet-title" aria-describedby="sheet-desc">
-  <div class="dialog-header"><h2 class="dialog-title" id="sheet-title">Filters</h2><p class="dialog-description" id="sheet-desc">Narrow down your results.</p></div>
-  <div class="form">
+  <div class="dialog-header"><h2 class="dialog-title" id="sheet-title">Filters</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description" id="sheet-desc">Narrow down your results.</p></div>
+  <div class="dialog-body form">
     <div class="field"><label class="label" for="s-grade">Grade</label><span class="select-wrap"><select class="select" id="s-grade"><option>Select an option</option><option>Grade 6</option><option>Grade 7</option></select></span></div>
     <label class="check"><input class="checkbox" type="checkbox"> Below benchmark only</label>
   </div>
-  <div class="btn-row"><button class="btn btn-outline btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Apply</button></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Apply</button></div>
+</dialog>
+
+<dialog class="dialog drawer" id="demo-drawer" aria-labelledby="drawer-title">
+  <div class="drawer-handle" aria-hidden="true"></div>
+  <div class="dialog-header"><h2 class="dialog-title" id="drawer-title">Move goal</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description">Set your daily activity goal.</p></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Submit</button></div>
 </dialog>
 
 <footer class="shell-footer">
@@ -343,11 +574,13 @@
 
   document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'))));
 
 
   document.querySelectorAll('.tabs-list').forEach(list => list.addEventListener('click', e => {
     const t = e.target.closest('.tab'); if (!t) return;
-    list.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+    const attr = t.hasAttribute('aria-pressed') ? 'aria-pressed' : 'aria-selected';
+    list.querySelectorAll('.tab').forEach(x => x.setAttribute(attr, String(x === t)));
   }));
 </script>
 </body>

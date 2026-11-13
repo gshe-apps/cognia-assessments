@@ -50,9 +50,9 @@ body{margin:0}
 </div>
 </div>
 <sc-if value="{{exitOpen}}" hint-placeholder-val="{{ false }}">
-<div class="scrim mid" onClick="{{closeExit}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="ex-t" aria-describedby="ex-d" onClick="{{stop}}" style="display: flex; flex-direction: column; gap: 24px">
-<div style="display: flex; flex-direction: column; gap: 8px"><h2 class="text-heading" id="ex-t">Take a break?</h2><p class="text-body-base text-muted-foreground" id="ex-d">Your answers are saved. You can pick up right where you left off.</p></div>
-<div style="display: flex; flex-direction: column; gap: 8px"><button type="button" class="btn btn-lg" onClick="{{closeExit}}" style="width: 100%">Keep going</button><button type="button" class="btn btn-outline btn-lg" onClick="{{saveClose}}" style="width: 100%">Save and close</button></div>
+<div class="scrim mid" onClick="{{closeExit}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="ex-t" aria-describedby="ex-d" onClick="{{stop}}">
+<div class="dialog-header"><h2 class="dialog-title" id="ex-t">Take a break?</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" aria-label="Close" onClick="{{closeExit}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><p class="dialog-description" id="ex-d">Your answers are saved. You can pick up right where you left off.</p></div>
+<div class="dialog-footer"><button type="button" class="btn btn-ghost btn-lg" onClick="{{saveClose}}">Save and close</button><button type="button" class="btn btn-lg" onClick="{{closeExit}}">Keep going</button></div>
 </div></div>
 </sc-if>
 </sc-if>
@@ -74,9 +74,9 @@ body{margin:0}
 </div>
 </div>
 <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{ false }}">
-<div class="scrim mid" onClick="{{closeConfirm}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="hi-t" aria-describedby="hi-d" onClick="{{stop}}" style="display: flex; flex-direction: column; gap: 24px">
-<div style="display: flex; flex-direction: column; gap: 8px"><h2 class="text-heading" id="hi-t">{{confirmTitle}}</h2><p class="text-body-base text-muted-foreground" id="hi-d">You won’t be able to change your answers after you hand in.</p></div>
-<div class="dlg-actions"><button type="button" class="btn btn-outline btn-lg" onClick="{{confirmBack}}" data-fill>{{confirmBackText}}</button><button type="button" class="btn btn-lg" onClick="{{handIn}}" data-fill>Hand in</button></div>
+<div class="scrim mid" onClick="{{closeConfirm}}"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="hi-t" aria-describedby="hi-d" onClick="{{stop}}">
+<div class="dialog-header"><h2 class="dialog-title" id="hi-t">{{confirmTitle}}</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" aria-label="Close" onClick="{{closeConfirm}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><p class="dialog-description" id="hi-d">You won’t be able to change your answers after you hand in.</p></div>
+<div class="dialog-footer"><button type="button" class="btn btn-ghost btn-lg" onClick="{{confirmBack}}">{{confirmBackText}}</button><button type="button" class="btn btn-lg" onClick="{{handIn}}">Hand in</button></div>
 </div></div>
 </sc-if>
 <sc-if value="{{trophyOpen}}" hint-placeholder-val="{{ false }}">

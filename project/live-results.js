@@ -227,9 +227,10 @@
       const wrap = document.createElement('div');
       wrap.innerHTML = '<dialog class="dialog rr-reset-dialog" id="rr-reset-dialog" aria-labelledby="rr-reset-title" aria-describedby="rr-reset-desc">'
         + '<div class="dialog-header"><h2 class="dialog-title" id="rr-reset-title">Reset this session?</h2>'
+        + '<button type="button" class="btn btn-ghost btn-icon dialog-close" data-live="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>'
         + '<p class="dialog-description" id="rr-reset-desc">This clears every result in this session. Learners will need to hand in again.</p></div>'
-        + '<div class="rr-reset-actions"><button type="button" class="btn btn-ghost" data-live="cancel">Cancel</button>'
-        + '<button type="button" class="btn btn-destructive" data-live="reset-yes">Clear results</button></div></dialog>';
+        + '<div class="rr-reset-actions dialog-footer"><button type="button" class="btn btn-ghost btn-lg" data-live="cancel">Cancel</button>'
+        + '<button type="button" class="btn btn-destructive btn-lg" data-live="reset-yes">Clear results</button></div></dialog>';
       dlg = wrap.firstElementChild;
       document.body.append(dlg);   // outside the Canvas template, so a redraw never removes it
       dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });   // click on the backdrop

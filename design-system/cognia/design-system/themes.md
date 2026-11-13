@@ -67,8 +67,9 @@ Dark mode is applied by toggling the `dark` class on the `<html>` element. All c
 
 | Variable | Use for |
 |---|---|
-| `--backdrop-overlay` | Modal and drawer backdrops |
+| `--backdrop-overlay` | Backdrop behind every modal, sheet and drawer: `#000012` at 30% opacity |
 | `--hover-overlay` | Hover state overlays |
+| `--ai-accent` | AI marks only: the sparkles icon on AI actions such as "Ask a question". The same in every product theme |
 | `--primary-hover` | Hover fill for solid (primary) buttons and solid avatar buttons |
 | `--input-background` | Input field backgrounds |
 | `--info-light` | Info alert and badge backgrounds |

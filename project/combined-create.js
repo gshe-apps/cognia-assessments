@@ -10,11 +10,7 @@
    host.querySelectorAll('.tf-test-disclosure,.extra-test,.assessment-test-list,.uc-help').forEach(el=>{const error=el.querySelector('#test-flow-error');if(error)host.append(error);el.remove()});
   }
   document.querySelectorAll('.uc-page .question-card h4').forEach(title=>{title.title=title.textContent.trim()});
-  const currentModel=read(),currentTest=currentModel?.tests?.find(t=>t.id===currentModel.active)||currentModel?.tests?.[0],bank=window.cogniaPreview?.bankItems?.()||[];
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{const q=bank.find(q=>q.stem===row.querySelector('h4')?.textContent.trim());if(!q)return;if(!row.querySelector('.bank-row-standard')&&currentTest?.standard){const badge=document.createElement('span');badge.className='bank-row-standard badge badge-secondary';badge.textContent=q.standard||currentTest.standard;row.append(badge)}if(!row.querySelector('.bank-row-difficulty')&&(q.dok||q.difficulty)){const badge=document.createElement('span');const dok=window.capItemQuality?.dokOf(q)||q.dok;badge.className='bank-row-difficulty badge badge-'+({'1':'success','2':'warning','3':'destructive'}[dok]||'secondary');badge.textContent='DOK '+dok;row.append(badge)}});
-  document.querySelectorAll('.uc-page .bank-row-difficulty').forEach(el=>{el.dataset.level=el.textContent.trim().toLowerCase()});
-  
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}row.querySelectorAll(':scope > .bank-row-difficulty,:scope > .bank-row-standard').forEach(b=>tags.append(b));});
+  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}if(!tags.querySelector('.bank-row-difficulty')){const badge=make('<span class="bank-row-difficulty badge badge-secondary"></span>');badge.textContent='DOK '+row.dataset.bankDok;tags.append(badge)}});
   const page=document.querySelector('main>.page'),methods=page?.querySelector('.qc-methods');if(!methods||page.querySelector('.uc-setup-intro'))return;
   observer.disconnect();page.classList.add('uc-page');document.body.classList.add('unified-create-screen');document.body.classList.remove('cap-monochrome');
   const m=read(),t=m?.tests?.find(t=>t.id===m.active)||m?.tests?.[0];if(!t){observe();return;}
@@ -22,7 +18,7 @@
   if(scopePage!==location.pathname.split('/').pop()){
    t.state||={chosen:[],written:{},edits:{}};t.state.written={...t.state.written,...Object.fromEntries((t.questions||[]).map(q=>[q.id,q]))};t.page=scopePage;localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(m));location.replace(scopePage);return;
   }
-  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your assessment';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create assessment</span><h1>Set up your assessment</h1></div>');hero.querySelector('h1').replaceWith(intro);
+  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your test';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create test</span><h1>Set up your test</h1></div>');hero.querySelector('h1').replaceWith(intro);
   page.querySelector('.tf-back')?.remove();
   page.querySelector('.tf-steps a').href=t.page;
   hero.append(page.querySelector('.tf-steps'));page.querySelector('.tf-top')?.remove();
@@ -39,7 +35,7 @@
   const useClientSample=sessionStorage.getItem('capSetupUseClientSample')==='true';
   sessionStorage.removeItem('capSetupUseClientSample');
   const addedTest=m.tests.indexOf(t)>0;
-  let settings=useClientSample?{...t,title:'New classroom assessment',standard:'5.NF.A.2'}:addedTest?t:{...t,title:m.title||t.title};
+  let settings=useClientSample?{...t,title:'New classroom test',standard:'5.NF.A.2'}:addedTest?t:{...t,title:m.title||t.title};
   let ready=sessionStorage.getItem(readyKey)===signature(settings);
   const setup=create({
    host:page.closest('.theme-assessments'),
@@ -67,13 +63,13 @@
   });
   const openSetup=()=>setup.open(settings);
   hero.querySelector('[data-uc-details]').onclick=e=>{e.preventDefault();openSetup()};
-  const notice=make('<p class="uc-gate-notice" role="status">Complete assessment details to add items.</p>');methods.before(notice);
+  const notice=make('<p class="uc-gate-notice" role="status">Complete test details to add items.</p>');methods.before(notice);
   function syncGate(){
    methods.inert=!ready;page.querySelector('.buildergrid').inert=!ready;
    methods.setAttribute('aria-disabled',String(!ready));page.querySelector('.buildergrid').setAttribute('aria-disabled',String(!ready));
    methods.querySelectorAll('button').forEach(button=>button.disabled=!ready);
    notice.hidden=ready;page.classList.toggle('uc-locked',!ready);
-   hero.querySelector('h1').textContent=ready?'Add your items':'Create your assessment';
+   hero.querySelector('h1').textContent=ready?'Add your items':'Create your test';
    hero.querySelectorAll('.tf-steps a').forEach((link,i)=>{
     link.classList.toggle('active',i===(ready?1:0));
     link.classList.toggle('done',ready&&i===0);
@@ -88,8 +84,21 @@
   methods.querySelectorAll('[data-qc-method]').forEach(button=>{
    button.className='tab';
    const manual=button.dataset.qcMethod==='manual';
-   button.replaceChildren(document.createTextNode(manual?'Create manually':'Use item bank'));
+   button.replaceChildren(document.createTextNode(manual?'Create manually':'Use item banks'));
   });
+  const bankTrigger=methods.querySelector('[data-qc-method="bank"]');
+  const bankDropdown=make('<div class="dropdown uc-bank-dropdown"></div>');
+  bankTrigger.before(bankDropdown);
+  bankDropdown.append(bankTrigger);
+  bankTrigger.setAttribute('aria-haspopup','menu');
+  bankTrigger.setAttribute('aria-expanded','false');
+  bankTrigger.setAttribute('aria-controls','builder-item-banks');
+  bankTrigger.insertAdjacentHTML('beforeend',icon('<path d="m6 9 6 6 6-6"/>'));
+  const bankMenu=make(`<div class="menu" id="builder-item-banks" role="menu" aria-label="Item banks" hidden>
+   <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-builder-bank="cognia" aria-current="true"><span>Cognia bank</span>${icon('<path d="m20 6-11 11-5-5"/>')}</button>
+   <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-builder-bank="teacher"><span>Educator-created bank</span>${icon('<path d="m20 6-11 11-5-5"/>')}</button>
+  </div>`);
+  bankDropdown.append(bankMenu);
   /* Reuse the runtime's existing multiple-choice form and validation. The old
      conditional drawer is detached by the legacy page composition. */
   const inst=window.cogniaPreview;
@@ -103,8 +112,8 @@
   const library=page.querySelector('.library');
   const toolbar=make('<div class="uc-bank-toolbar"></div>'),search=library.querySelector('#search'),type=library.querySelector('#typeFilter');
   const searchBox=make('<div class="search search-md uc-search-control" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></div>');const oldSearch=search.closest('.field');const searchClear=search.parentElement.querySelector('.search-clear');search.placeholder='Search items';search.setAttribute('aria-label','Search items');search.classList.add('input','search-input');searchBox.append(search);if(searchClear)searchBox.append(searchClear);toolbar.append(searchBox);oldSearch?.remove();library.querySelectorAll('.search').forEach(el=>{if(!el.querySelector('input'))el.remove()});
-  let difficulty=library.querySelector('#bankDifficulty');if(!difficulty){difficulty=make('<select id="bankDifficulty" aria-label="DOK"><option value="">DOK</option><option>DOK 1</option><option>DOK 2</option><option>DOK 3</option></select>')}
-  difficulty.setAttribute('aria-label','Filter by DOK');toolbar.append(difficulty);type.setAttribute('aria-label','All types');toolbar.append(type);
+  const dok=library.querySelector('#bankDok')||make('<select id="bankDok" aria-label="Filter by DOK"><option value="">DOK</option><option>DOK 1</option><option>DOK 2</option><option>DOK 3</option></select>');
+  toolbar.append(dok);type.setAttribute('aria-label','All types');toolbar.append(type);
   toolbar.querySelectorAll('select').forEach(select=>{
    const control=make('<div class="uc-bank-select-control select-wrap"></div>');
    select.classList.add('select');
@@ -112,6 +121,7 @@
    control.append(select);
   });
   library.querySelector('.approved-bank-heading')?.after(toolbar);if(!toolbar.isConnected)library.prepend(toolbar);
+  library.querySelector('#libraryList').after(make('<p class="text-body-small text-muted-foreground" data-bank-empty hidden>No items match your search or filters.</p>'));
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
   const bankHeading=library.querySelector('.approved-bank-heading')||make('<div class="approved-bank-heading"><h2></h2></div>');
   bankHeading.querySelector('h2').textContent='Find and add items';
@@ -161,7 +171,7 @@
    barSize.observe(actionBar);
   }
   back.onclick=()=>hero.querySelector('[data-uc-details]').click();
-  page.querySelectorAll('.tf-bottom a').forEach(a=>{if(a.getAttribute('href')==='CAP-T04-Setup.dc.html'){a.href='CAP-T03-Assessments.dc.html';a.textContent='Back to assessments'}});
+  page.querySelectorAll('.tf-bottom a').forEach(a=>{if(a.getAttribute('href')==='CAP-T04-Setup.dc.html'){a.href='CAP-T03-Assessments.dc.html';a.textContent='Back to tests'}});
   page.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&/CAP-T0[67]-/.test(a.getAttribute('href')||'')){if(!syncGate()){e.preventDefault();e.stopImmediatePropagation();openSetup()}}},true);
   observe();
  }

@@ -193,7 +193,7 @@
     const showCreate = isSampleWeek && index===sampleWeek.length-1;
     if (view==='list' && !items.length && !showCreate) return '';
     const events = showCreate
-     ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create assessment</span></button>`
+     ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create test</span></button>`
      : items.map(assessmentCard).join('');
     return `<section class="od-week-day card${+date===+today?' card-themed':''}" ${+date===+today?'aria-current="date"':''}>
      <header><h3>${dayName.format(date)} <span>${shortDate.format(date)}</span></h3>

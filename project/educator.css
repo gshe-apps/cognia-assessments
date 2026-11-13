@@ -2402,18 +2402,19 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-week-grid { display: grid; }
 .od-week-grid[data-view="week"] { min-height: 100%; }
 .od-timetable {
+  --od-time-gutter: calc(var(--space-10) + var(--space-2));
   --od-day-width: 160px;
-  --od-columns: var(--space-16) repeat(5, minmax(var(--od-day-width), 1fr));
+  --od-columns: var(--od-time-gutter) repeat(5, minmax(var(--od-day-width), 1fr));
   --od-hour-height: calc(var(--space-12) + var(--space-3));
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
-  width: max(100%, calc(var(--space-16) + 5 * var(--od-day-width)));
+  width: max(100%, calc(var(--od-time-gutter) + 5 * var(--od-day-width)));
 }
 .od-timetable::before {
   content: "";
   position: absolute;
-  inset: 0 0 0 var(--space-16);
+  inset: 0 0 0 var(--od-time-gutter);
   border-radius: var(--radius-xl);
   background-color: var(--card);
 }
@@ -2445,7 +2446,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timetable-hour:not(:first-child)::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto var(--space-16);
+  inset: 0 0 auto var(--od-time-gutter);
   border-top: 1px solid var(--opacity-neutral-10);
 }
 .od-timetable-hour span {
@@ -2462,13 +2463,13 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timetable-divider { position: absolute; inset: 100% auto calc(-1 * var(--space-3)) -1px; border-inline-start: 1px solid var(--opacity-neutral-10); pointer-events: none; }
 .od-timetable-marker {
   position: absolute;
-  inset: var(--od-marker-position) 0 auto var(--space-16);
+  inset: var(--od-marker-position) 0 auto var(--od-time-gutter);
   border-top: 1px solid color-mix(in srgb, var(--brand-coral) 40%, transparent);
   pointer-events: none;
 }
 .od-timetable-marker span {
   position: absolute;
-  right: calc(100% + var(--space-16) - var(--space-10) / 2);
+  right: calc(100% + var(--od-time-gutter) - var(--space-10) / 2);
   transform: translate(50%, -50%);
   padding-inline: var(--space-2);
   border-radius: var(--rounded-full);
@@ -4831,6 +4832,11 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page:not(.uc-locked) .approved-bank-heading { min-height: 0; margin: 0 0 var(--space-3); padding: 0; }
 
 .uc-page:not(.uc-locked) .library > :is(.uc-bank-toolbar, #libraryList) { margin-inline: 0; }
+.uc-bank-dropdown > .tab { display: inline-flex; align-items: center; gap: var(--space-2); }
+.uc-bank-dropdown > .menu { inline-size: max-content; }
+.uc-bank-dropdown .menu-item { justify-content: space-between; gap: var(--space-4); }
+.uc-bank-dropdown svg { inline-size: var(--space-4); block-size: var(--space-4); }
+.uc-bank-dropdown .menu-item:not([aria-current="true"]) svg { visibility: hidden; }
 .uc-page:not(.uc-locked) .uc-bank-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 0 var(--space-2); margin: 0; padding-bottom: var(--space-2); }
 .uc-page:not(.uc-locked) .uc-bank-count { font-size: var(--text-body-small); margin: 0; padding-left: var(--space-3); }
 .uc-page:not(.uc-locked) .uc-extra-filters summary svg { width: var(--space-4); height: var(--space-4); }
@@ -4860,8 +4866,8 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page:not(.uc-locked) .question-card .qbottom .btn { width: auto; padding-inline: var(--space-6); }
 .uc-page:not(.uc-locked) .question-card .qbottom [data-item-state="available"] svg { width: var(--space-4); height: var(--space-4); }
 .uc-page:not(.uc-locked) .question-card .qbottom [data-item-state="added"] { width: auto; min-height: var(--space-6); }
-.uc-page:not(.uc-locked) .question-card .qbottom [data-item-state="available"] { opacity: 0; }
-.uc-page:not(.uc-locked) .question-card:is(:hover, :focus-within) .qbottom [data-item-state="available"] { opacity: 1; }
+.uc-page:not(.uc-locked) .question-card .qbottom :is([data-item-state="available"], [data-item-preview]) { opacity: 0; }
+.uc-page:not(.uc-locked) .question-card:is(:hover, :focus-within) .qbottom :is([data-item-state="available"], [data-item-preview]) { opacity: 1; }
 
 .uc-page:not(.uc-locked) .buildergrid > div > .qc-board { display: flex; flex-direction: column; gap: 0; padding: calc(var(--space-8) + var(--space-3)) 0 0; }
 .uc-page:not(.uc-locked) .qc-board-header { box-sizing: border-box; height: var(--space-8); min-height: 0; margin: 0 0 var(--space-2); padding: 0 0 0 var(--space-3); gap: var(--space-4); }
@@ -4892,8 +4898,24 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page:not(.uc-locked) .qc-empty { flex: 1; justify-content: center; min-height: 0; padding: var(--space-16) var(--space-6); }
 .uc-page:not(.uc-locked) .qc-empty > svg[stroke] { width: var(--space-6); height: var(--space-6); margin: 0; stroke: currentColor; }
 .uc-page:not(.uc-locked) .qc-empty p { margin: 0; font-size: var(--text-body-base); }
+.uc-page:not(.uc-locked) .qc-test-empty { justify-content: flex-start; }
+.uc-page .qc-test-empty .empty-title { margin: 0; font: inherit; font-size: var(--text-subheading); font-weight: 700; color: var(--foreground); }
+.uc-page .qc-test-empty p { max-inline-size: 100%; }
+.qc-empty-add { white-space: nowrap; }
+.qc-empty-add svg { inline-size: var(--space-3); block-size: var(--space-3); vertical-align: baseline; }
+.qc-empty-stack { display: grid; place-items: center; inline-size: calc(var(--space-24) + var(--space-8)); block-size: var(--space-24); }
+.qc-empty-stack > .card { position: relative; grid-area: 1 / 1; display: grid; place-items: center; inline-size: calc(var(--space-16) + var(--space-2)); block-size: calc(var(--space-16) * 297 / 210); box-sizing: border-box; border: 1px solid var(--border); }
+.qc-empty-stack > .card > svg { inline-size: var(--space-8); block-size: var(--space-8); color: var(--muted-foreground); }
+.qc-empty-stack > .card:first-child { transform: translateX(calc(-1 * var(--space-4))) rotate(-12deg); }
+.qc-empty-stack > .card:nth-child(2) { transform: translateX(var(--space-4)) rotate(12deg); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .qc-empty-stack > .card { transition: transform var(--duration); }
+  .qc-empty-stack:hover > .card:first-child { transform: translateX(calc(-1 * var(--space-6))) rotate(-16deg); }
+  .qc-empty-stack:hover > .card:nth-child(2) { transform: translateX(var(--space-6)) rotate(16deg); }
+  .qc-empty-stack:hover > .card:last-child { transform: translateY(calc(-1 * var(--space-1))); }
+}
 @media (hover: none) {
-  .uc-page:not(.uc-locked) .question-card .qbottom [data-item-state="available"],
+  .uc-page:not(.uc-locked) .question-card .qbottom :is([data-item-state="available"], [data-item-preview]),
   .uc-page:not(.uc-locked) .qc-preview-card .uc-card-actions { opacity: 1; }
 }
 @media (max-width: 1023px) {
@@ -5098,6 +5120,21 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details { max-width: 13
    as one white group with 12px corners (the plugin .card radius); the empty state keeps the full-height panel. */
 .uc-page:not(.uc-locked) .qc-preview-list:not(:has(.qc-empty)) { flex: 0 0 auto; align-self: stretch; border-radius: var(--radius-xl); }
 .uc-page:not(.uc-locked) .qc-preview-list:not(:has(.qc-empty)) > .qc-preview-card:last-child { border-bottom-color: transparent; }
+
+@media (min-width: 1024px) {
+  .uc-page:not(.uc-locked) .buildergrid > div > .qc-board {
+    position: sticky;
+    inset-block-start: var(--space-6);
+    flex: none;
+    max-block-size: calc(100dvh - var(--uc-action-bar-height, var(--space-20)) - var(--space-6) * 3);
+  }
+  .uc-page:not(.uc-locked) .qc-board-header { flex-shrink: 0; }
+  .uc-page:not(.uc-locked) .qc-board .qc-preview-list {
+    flex: 0 1 auto;
+    min-block-size: 0;
+    overflow-y: auto;
+  }
+}
 
 /* 11 Nov, Select a Cognia assessment modal: on row hover or focus the items badge darkens (as on the Library list's
    selected row) so it doesn't blend into the --secondary hover. */
@@ -5305,14 +5342,22 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-iq-check-action:is(:hover, :focus-within) { background-image:linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 .uc-iq-title-row { display:flex; align-items:center; gap:var(--space-3); }
 @media (hover:none) { .uc-iq-check .uc-iq-hover-action { opacity:1; } }
-/* Item bank: preview button beside Add, shown with it on hover. */
-.uc-page:not(.uc-locked) .question-card .qbottom [data-item-preview] { width:var(--space-8); padding-inline:0; opacity:0; }
-.uc-page:not(.uc-locked) .question-card:is(:hover, :focus-within) .qbottom [data-item-preview] { opacity:1; }
-.uc-page:not(.uc-locked) .question-card .qbottom [data-item-preview] svg { width:var(--space-4); height:var(--space-4); }
-@media (hover:none) { .uc-page:not(.uc-locked) .question-card .qbottom [data-item-preview] { opacity:1; } }
+/* Item bank: preview button beside Add. */
+.uc-page:not(.uc-locked) .question-card .qbottom [data-item-preview] { width: var(--space-8); padding-inline: 0; }
+.uc-page:not(.uc-locked) .library .question-card[hidden] { display: none; }
 .uc-page:not(.uc-locked) .question-card .qbottom { gap:var(--space-2); align-items:center; }
 /* Item preview dialog */
 .uc-item-preview.dialog { max-width:640px; }
+@media (prefers-reduced-motion: no-preference) {
+  .uc-item-preview[open] { transition: opacity var(--duration), transform var(--duration); }
+  .uc-item-preview[open]::backdrop { transition: opacity var(--duration); }
+  .uc-item-preview[open][data-closing] { opacity: 0; transform: translateY(var(--space-2)); }
+  .uc-item-preview[open][data-closing]::backdrop { opacity: 0; }
+  @starting-style {
+    .uc-item-preview[open] { opacity: 0; transform: translateY(var(--space-2)); }
+    .uc-item-preview[open]::backdrop { opacity: 0; }
+  }
+}
 .uc-item-preview .uc-ip-option { display:flex; align-items:center; min-height:36px; }
 /* 13 Nov: question first, then Standard, DOK, Points and Question type as grey cards in one row. */
 .uc-item-preview .uc-ip-view:not([hidden]) { display:flex; flex-direction:column; gap:var(--space-6); min-height:0; }

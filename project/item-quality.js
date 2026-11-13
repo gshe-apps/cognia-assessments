@@ -190,7 +190,7 @@
    <div class="form-grid">
     <div class="field"><label class="label" for="uc-iq-type">Item type</label><span class="select-wrap"><select class="select" id="uc-iq-type" name="type"><option>Multiple choice</option></select></span></div>
     <div class="field"><label class="label" for="uc-iq-standard">Standard</label><span class="select-wrap"><select class="select" id="uc-iq-standard" name="standard">${stds.map(([c, n]) => `<option value="${esc(c)}">${esc(c === n ? c : c + ' ' + n)}</option>`).join('')}</select></span></div>
-    <div class="field"><label class="label" for="uc-iq-dok">Target DOK</label><span class="select-wrap"><select class="select" id="uc-iq-dok" name="dok">${DOK.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></span></div>
+    <div class="field"><label class="label" for="uc-iq-dok">Depth of Knowledge (DOK)</label><span class="select-wrap"><select class="select" id="uc-iq-dok" name="dok">${DOK.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></span></div>
     <div class="field"><label class="label" for="uc-iq-points">Total points</label><div class="cie-stepper"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-iq-step="-1" aria-label="Fewer points">${icon('minus')}</button><input class="input" id="uc-iq-points" name="points" type="number" min="1" max="10" step="1" inputmode="numeric" value="1"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-iq-step="1" aria-label="More points">${icon('plus')}</button></div></div>
    </div>
    <div class="item item-muted uc-iq-box">
@@ -559,7 +559,7 @@
     assessment. Add item is the only action, and only when the item can still be added. */
  function preview(q, {grade = '5', standard = '', canAdd = false, onAdd, onClose} = {}) {
   const code = q.standard || standard, found = (STANDARDS[String(grade)] || []).find(s => s[0] === code) || Object.values(STANDARDS).flat().find(s => s[0] === code);
-  const dok = DOK.find(d => d[0] === dokOf(q));
+  const dok = dokOf(q);
   const type = q.displayType || ({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[q.type] || q.type || 'Multiple choice');
   const opts = (q.options || []).map((o, i) => `<div class="cie-option${i === q.correct ? ' is-correct' : ''}"><span class="cie-letter" aria-hidden="true">${LETTERS[i] || i + 1}</span><span class="cie-option-input uc-ip-option">${esc(o)}</span>${i === q.correct ? `<span class="cie-correct">${icon('check')}<span class="sr-only">Correct answer</span></span>` : ''}</div>`).join('');
   const card = (label, value) => `<div class="item item-muted uc-ip-card"><span class="item-content"><span class="item-description">${label}</span><span class="item-title">${esc(value)}</span></span></div>`;
@@ -575,7 +575,7 @@
      ${q.explanation ? `<div class="field"><span class="label">Explanation</span><p class="text-body-small">${esc(q.explanation)}</p></div>` : ''}
      <div class="uc-ip-cards">
       ${code ? `<button type="button" class="item item-muted uc-ip-card" data-ip-standard aria-label="Standard ${esc(code)}. View standard details"><span class="item-content"><span class="item-description">Standard</span><span class="item-title">${esc(code)}</span></span><span class="item-actions">${icon('chevronRight')}</span></button>` : ''}
-      ${dok ? card('DOK', dok[1]) : ''}
+      ${card('DOK', 'DOK ' + dok)}
       ${card('Points', q.marks || 1)}
       ${card('Question type', type)}
      </div>
@@ -595,14 +595,36 @@
    dialog.setAttribute('aria-labelledby', name === 'item' ? 'uc-ip-title' : 'uc-ip-standard-title');
    (name === 'item' ? dialog.querySelector('[data-ip-standard]') : dialog.querySelector('#uc-ip-standard-title'))?.focus();
   };
-  const close = () => { dialog.close(); dialog.remove(); onClose?.(); };
+  const close = async () => {
+   if (dialog.hasAttribute('data-closing')) return;
+   dialog.setAttribute('data-closing', '');
+   const transitions = dialog.getAnimations();
+   if (transitions.length) await Promise.allSettled(transitions.map(transition => transition.finished));
+   dialog.close();
+  };
+  dialog.addEventListener('close', () => {
+   dialog.remove();
+   onClose?.();
+  }, {once:true});
   dialog.addEventListener('click', e => {
-   if (e.target === dialog || e.target.closest('[data-ip-close]')) return close();
+   if (e.target === dialog || e.target.closest('[data-ip-close]')) {
+    e.stopPropagation();
+    if (e.target !== dialog) return close();
+    const bounds = dialog.getBoundingClientRect();
+    if (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY < bounds.top || e.clientY > bounds.bottom) close();
+    return;
+   }
+   if (dialog.hasAttribute('data-closing')) return;
    if (e.target.closest('[data-ip-standard]')) return show('standard');
    if (e.target.closest('[data-ip-back]')) return show('item');
    if (e.target.closest('[data-ip-add]')) { onAdd?.(); close(); }
   });
-  dialog.addEventListener('cancel', e => { e.preventDefault(); if (!dialog.querySelector('[data-ip-view="standard"]')?.hidden) show('item'); else close(); });
+  dialog.addEventListener('cancel', e => {
+   e.preventDefault();
+   if (dialog.hasAttribute('data-closing')) return;
+   if (dialog.querySelector('[data-ip-view="standard"]:not([hidden])')) show('item');
+   else close();
+  });
   dialog.showModal();
   dialog.tabIndex = -1; dialog.focus({preventScroll: true});
  }

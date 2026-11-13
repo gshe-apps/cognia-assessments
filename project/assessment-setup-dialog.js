@@ -27,14 +27,14 @@
   const modal=make(`<dialog class="dialog cap-setup-modal" aria-labelledby="cap-setup-title">
    <section class="cap-setup-view" data-setup-view="form">
     <div class="cap-setup-heading dialog-header">
-     <h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>Set up your assessment</h2>
+     <h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>Set up your test</h2>
      ${closeButton()}
     </div>
-    <form class="cap-setup-fields" id="uc-assessment-details" aria-label="Assessment details" novalidate>
+    <form class="cap-setup-fields" id="uc-assessment-details" aria-label="Test details" novalidate>
      <div class="field">
-      <label class="label" for="uc-title">Assessment title</label>
+      <label class="label" for="uc-title">Test title</label>
       <input class="input" id="uc-title" maxlength="90" required aria-describedby="cap-title-error">
-      <p class="field-error" id="cap-title-error" hidden>Enter an assessment title.</p>
+      <p class="field-error" id="cap-title-error" hidden>Enter a test title.</p>
      </div>
      <div class="cap-setup-columns">
       <div class="field"><label class="label" for="uc-subject">Subject</label><span class="select-wrap"><select class="select" id="uc-subject" required></select></span></div>
@@ -42,7 +42,7 @@
      </div>
      <div class="cap-setup-columns">
       <div class="field">
-       <label class="label" for="uc-pathway">Assessment pathway</label>
+       <label class="label" for="uc-pathway">Test pathway</label>
        <span class="select-wrap"><select class="select" id="uc-pathway"><option>${college}</option><option>${libraryPath}</option><option>${statePath}</option></select></span>
       </div>
       <div class="field">

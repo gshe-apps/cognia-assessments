@@ -7,10 +7,42 @@ document.addEventListener('DOMContentLoaded',()=>{
  const ledger=()=>read('cogniaItemLifecycleV1',{}),archive=()=>read('cogniaAssessmentArchiveV1',[]);
  const isQuestions=/CAP-T05-/.test(page),isReview=page==='CAP-T06-Review.dc.html';
  const initialScope=model()?.tests?.find(t=>t.id===model()?.active)||model()?.tests?.[0];
- const questionFilter={term:'',type:'All types',grade:initialScope?.grade||'5',subject:initialScope?.subject||'Mathematics',standard:'',difficulty:''};
- function filterQuestions(){const cards=[...document.querySelectorAll('#libraryList .question-card')];let count=0;cards.forEach(el=>{const type=el.querySelector('.uc-bank-tags .tiny, .row .tiny')?.textContent||'',match=(!questionFilter.term||el.querySelector('h4')?.textContent.toLowerCase().includes(questionFilter.term))&&(questionFilter.type==='All types'||type===({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[questionFilter.type]||questionFilter.type));const scoped=match&&(!document.getElementById('bankGrade')||((!questionFilter.grade||questionFilter.grade===(model()?.tests?.find(t=>t.id===model()?.active)?.grade||'5'))&&(!questionFilter.subject||questionFilter.subject===(model()?.tests?.find(t=>t.id===model()?.active)?.subject||'Mathematics'))&&(!questionFilter.standard||el.querySelector('.bank-row-standard')?.textContent.trim()===questionFilter.standard)&&(!questionFilter.difficulty||el.querySelector('.bank-row-difficulty')?.textContent.trim()===questionFilter.difficulty)));el.hidden=!scoped;if(scoped)count++;});const label=document.querySelector('#libraryList .libcount');if(label)label.textContent=count+' matching questions';}
+ const questionFilter={bank:'cognia',term:'',type:'All types',grade:initialScope?.grade||'5',subject:initialScope?.subject||'Mathematics',standard:'',dok:''};
+ function filterQuestions(){
+  const selectedType={'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[questionFilter.type]||questionFilter.type;
+  const scope=model();
+  const test=scope?.tests?.find(t=>t.id===scope.active);
+  const matchesScope=(!questionFilter.grade||questionFilter.grade===(test?.grade||'5'))
+   &&(!questionFilter.subject||questionFilter.subject===(test?.subject||'Mathematics'));
+  const hasScopeFilters=!!document.getElementById('bankGrade');
+  let count=0;
+  for(const row of document.querySelectorAll('#libraryList .question-card')){
+   const type=row.querySelector('.uc-bank-tags .tiny, .row .tiny')?.textContent||'';
+   const stem=row.querySelector('h4')?.textContent.toLowerCase()||'';
+   const matches=row.dataset.itemBank===questionFilter.bank&&stem.includes(questionFilter.term)
+    &&(selectedType==='All types'||type===selectedType)
+    &&(!hasScopeFilters||matchesScope)
+    &&(!questionFilter.standard||row.dataset.bankStandard===questionFilter.standard)
+    &&(!questionFilter.dok||'DOK '+row.dataset.bankDok===questionFilter.dok);
+   row.hidden=!matches;
+   if(matches)count++;
+  }
+  const label=document.querySelector('.uc-bank-count');
+  if(label)label.textContent=count+(count===1?' item':' items');
+  const empty=document.querySelector('[data-bank-empty]');
+  if(empty)empty.hidden=count>0;
+ }
  document.addEventListener('input',e=>{if(isQuestions&&e.target.id==='search'){questionFilter.term=e.target.value.toLowerCase();filterQuestions();}});
- document.addEventListener('change',e=>{const fields={bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDifficulty:'difficulty'};if(isQuestions&&fields[e.target.id]){questionFilter[fields[e.target.id]]=e.target.value;filterQuestions();}if(isQuestions&&e.target.id==='typeFilter'){questionFilter.type=e.target.value;filterQuestions();}});
+ document.addEventListener('change',e=>{const fields={bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'};if(isQuestions&&fields[e.target.id]){questionFilter[fields[e.target.id]]=e.target.value;filterQuestions();}if(isQuestions&&e.target.id==='typeFilter'){questionFilter.type=e.target.value;filterQuestions();}});
+ if(isQuestions)document.addEventListener('click',e=>{
+  const option=e.target.closest('[data-builder-bank]');
+  if(!option)return;
+  questionFilter.bank=option.dataset.builderBank;
+  const menu=option.closest('[role="menu"]');
+  menu.querySelector('[aria-current]')?.removeAttribute('aria-current');
+  option.setAttribute('aria-current','true');
+  filterQuestions();
+ });
  if(teacher&&!localStorage.getItem('cogniaClientDraftSeedV1')){const entries=archive();for(const f of forms){if(entries.some(e=>e.title===f.title&&e.status==='draft'))continue;const id='sample-'+f.id,questions=(f.items||f.questions).filter(q=>q.tier!=='plus'),test={id,title:f.title,grade:f.grade,subject:f.subject,standard:f.standard,page:f.page,state:{chosen:questions.map(q=>q.id),written:{},edits:{}},questions};entries.push({id:'assessment-'+id,title:f.title,status:'draft',sample:true,updatedAt:new Date().toISOString(),model:{title:f.title,active:id,origin:'builder',tests:[test]}});}put('cogniaAssessmentArchiveV1',entries);localStorage.setItem('cogniaClientDraftSeedV1','1');}
  // Preserve text immediately: exported blur handlers otherwise lose input when another control redraws the canvas.
  document.addEventListener('input',event=>{if(!isQuestions||!instance)return;const el=event.target;if(!el.closest('.drawer'))return;const f={stem:'',opts:['','','',''],correct:null,marks:'1',...instance.state.form};if(el.id==='wq-stem')f.stem=el.value;else if(/^Option [ABCD]$/.test(el.getAttribute('aria-label')||'')){f.opts=[...f.opts];f.opts['ABCD'.indexOf(el.getAttribute('aria-label').slice(-1))]=el.value;}else return;instance.state.form=f;instance.state.fError='';},true);
@@ -174,7 +206,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   if(isQuestions){const hint=document.querySelector('.panelhead p');if(hint)hint.textContent='Start with existing Cognia items. Write or generate questions to fill gaps.';document.querySelectorAll('.selected-q').forEach((el,i)=>{el.querySelector('.client-item-state')?.remove();const t=m?.tests.find(t=>t.id===m.active),q=t?.questions?.[i];if(!q)return;const rec=records[t.id+'/'+q.id],badge=document.createElement('span');badge.className='client-item-state badge badge-'+(rec?.status==='approved'?'success':'secondary');badge.textContent=required(t,q)?`${rec?.status==='approved'?'Approved':'Draft · review required'} · v${rec?.version||1}`:'Cognia item · approved';el.append(badge);});}
   if(isQuestions||isReview)document.querySelector('.assessment-test-list>.test-list-heading>a')?.remove();
-  if(isQuestions){const search=document.getElementById('search'),type=document.getElementById('typeFilter');if(search)search.value=questionFilter.term;if(type)type.value=questionFilter.type;for(const [id,key] of Object.entries({bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDifficulty:'difficulty'})){const field=document.getElementById(id);if(field)field.value=questionFilter[key];}filterQuestions();}
+  if(isQuestions){const search=document.getElementById('search'),type=document.getElementById('typeFilter');if(search)search.value=questionFilter.term;if(type)type.value=questionFilter.type;for(const [id,key] of Object.entries({bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'})){const field=document.getElementById(id);if(field)field.value=questionFilter[key];}filterQuestions();}
   if(m?.active)document.querySelectorAll('.stepper a[href="CAP-T05-Questions.dc.html"],.actionbar a[href="CAP-T05-Questions.dc.html"]').forEach(a=>a.href=m.tests.find(t=>t.id===m.active)?.page||a.href);
   if(page==='CAP-T20-Interim.dc.html'){const content=document.querySelector('main');if(content)content.innerHTML='<div class="page"><div class="head"><div><h1>Interim Assessments</h1><p>Teachers administer assessments made available by their school or district. Interim creation is an administrator task.</p></div></div><p>No purchased interim catalogue has been configured in this local preview.</p><a class="btn ghost btn-ghost btn-lg" href="CAP-T01-Overview.dc.html">Back to classroom assessments →</a></div>';}
   if(isReview)document.getElementById('client-item-review')?.remove();

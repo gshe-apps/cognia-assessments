@@ -1,4 +1,4 @@
-/* Create assessment: the shared dropdown menu from the cognia-design plugin
+/* Create test: the shared dropdown menu from the cognia-design plugin
    (btn, .dropdown, .menu in cognia-components.css). Opening, keyboard, Escape
    and click outside come from ds/cognia/cognia-components.js. */
 (() => {
@@ -8,7 +8,7 @@
   /* options.onClose(submitted) replaces the default focus return, e.g. to reopen a previous modal. */
   window.capOpenNewAssessment = (trigger, options = {}) => {
     const {create,itemPage,libraryPath,signature}=window.capAssessmentSetup;
-    const initial={title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
+    const initial={title:'New classroom test',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
     const host=trigger.closest('.theme-assessments')||document.body;
     let submitted=false;
     const setup=create({
@@ -77,7 +77,7 @@
     modal.setAttribute('aria-labelledby', 'cap-create-choice-title');
     modal.innerHTML = `
       <div class="dialog-header">
-        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create assessment</h2>
+        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create test</h2>
         <form method="dialog" class="dialog-close">
           <button class="btn btn-ghost btn-icon" type="submit" aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
         </form>
@@ -104,7 +104,7 @@
     host.innerHTML = `
       <div class="dropdown dropdown-end">
         <button type="button" class="btn btn-lg" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
-          Create assessment
+          Create test
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </button>
         <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>

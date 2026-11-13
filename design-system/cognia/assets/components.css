@@ -534,6 +534,16 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 }
 .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-image: none; background-color: var(--primary-hover); }
 .tab:disabled, .tab[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+/* Secondary chips, for settings with several short values in a form (Attempts, Time limit):
+   no outline on any pill; the selected pill is --secondary instead of solid --primary.
+   <div class="tabs-list tabs-list-secondary" role="group"> <button class="tab" aria-pressed="true"> */
+.tabs-list-secondary .tab { border-color: transparent; }
+.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
+  border-color: transparent;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-color: var(--secondary); background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)
@@ -991,10 +1001,10 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .button-group > .btn:last-child { border-top-right-radius: var(--radius); border-bottom-right-radius: var(--radius); }
 .button-group > .btn-outline + .btn-outline { border-left-width: 0; }
 /* Segmented picker: one setting in a form (Attempts, Item order, Calculator allowed?).
-   A fully round white track with a light border and dividers; the pressed segment is --secondary.
+   A fully round transparent track with a light border and dividers; the pressed segment is --secondary.
    <div class="button-group button-group-segmented" role="group" aria-label="Item order">
      <button class="btn btn-ghost" aria-pressed="true">As created</button> <button class="btn btn-ghost" aria-pressed="false">Shuffle</button> </div> */
-.button-group-segmented { overflow: hidden; border: 1px solid var(--border); border-radius: var(--rounded-full); background-color: var(--card); }
+.button-group-segmented { overflow: hidden; border: 1px solid var(--border); border-radius: var(--rounded-full); background-color: transparent; }
 .button-group-segmented > .btn { border: 0; border-radius: 0; background-color: transparent; color: var(--foreground); }
 .button-group-segmented > .btn + .btn { border-left: 1px solid var(--border); }
 .button-group-segmented > .btn[aria-pressed="true"] { background-color: var(--secondary); color: var(--secondary-foreground); }

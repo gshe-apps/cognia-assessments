@@ -4924,8 +4924,9 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details{max-width:650px
 @media(max-width:639px){.rj-details .tf-hero{flex-wrap:wrap}.rj-details .tf-hero>.ad-hero-actions{margin-left:0}.rj-details :is(.ad-row-2,.ad-row-3,.ad-row-even){grid-template-columns:minmax(0,1fr)}}
 /* 10 Nov, step 2 settings as designed: button groups (Item order, Answer option order, Calculator, Notes) and
    chips (Attempts, Time limit). Selected is accent-100 and semibold, unselected is secondary. */
-/* 13 Nov: every step 2/4 setting is a segmented picker from the plugin. */
-.rj-details :is(.ad-group,.ad-chips,.ad-round){display:inline-flex;align-self:flex-start}
+/* 13 Nov: step 2/4 either/or settings are segmented pickers; Attempts and Time limit are secondary chips (plugin). */
+.rj-details .ad-group{display:inline-flex;align-self:flex-start}
+.rj-details :is(.ad-chips,.ad-round){display:flex;flex-wrap:wrap;gap:var(--space-2)}
 /* Checkboxes on this screen: 16px square, 4px corners, no ring after a mouse click (keyboard focus still shows). */
 .rj-details .ad-layout .checkbox{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-grid;place-items:center;width:16px;height:16px;min-width:16px;min-height:16px;margin:0;padding:0;border:1px solid var(--primary);border-radius:calc(var(--radius) / 2);background:var(--card);box-shadow:none}
 .rj-details .ad-layout .checkbox:checked{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat}

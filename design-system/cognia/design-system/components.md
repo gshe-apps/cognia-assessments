@@ -707,7 +707,17 @@ TabsTrigger: "h-8 rounded-full border border-[color-mix(in_srgb,var(--primary)_3
 
 **Plain HTML**: `.tabs-list[role=tablist]` > `button.tab[role=tab][aria-selected]`; a toggle group or segmented picker is `.tabs-list[role=group]` > `button.tab[aria-pressed]`.
 
-**Settings pickers**: a picker that sets one option inside a form (Attempts, Time limit, Item order, Calculator allowed?) uses the segmented Button Group, not pills (see Button Group).
+**Secondary chips (settings with several values)**
+- In a form, a setting with several short values (Attempts 1 / 2 / 3, Time limit 5 min / 10 min ...) uses chips: the same pills with no outline (`border-transparent`), and the selected chip is `bg-secondary text-secondary-foreground`.
+- Either/or settings (Yes / No, As created / Shuffle) use the segmented Button Group instead (see Button Group).
+- Navigation tabs and view switchers keep the solid primary selected pill.
+
+```tsx
+// ToggleGroupItem in a settings form
+"... border-transparent data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground"
+```
+
+**Plain HTML**: `.tabs-list.tabs-list-secondary[role=group]` > `button.tab[aria-pressed]`.
 
 ---
 
@@ -1108,13 +1118,13 @@ Shows where a page sits in the hierarchy and links back up it.
 Joins related buttons into one control, for example a split button or "Previous / Next". All buttons in a group share one variant. `<ButtonGroup>`.
 
 **Segmented picker (settings in a form)**
-- Use for any single-choice setting inside a form: Attempts (1 / 2 / 3), Item order (As created / Shuffle), Calculator allowed? (Yes / No), Time limit (5 min / 10 min ...). Up to five options, one or two words each.
-- One fully round white track (`rounded-full bg-card`) with a 1px `--border` outline and 1px `--border` dividers between segments. Segments are ghost buttons at the default 40px height, label 14px semibold.
-- The selected segment is `bg-secondary text-secondary-foreground`. Never solid primary, and never separate pills.
+- Use for an either/or setting inside a form: Item order (As created / Shuffle), Calculator allowed? (Yes / No). Two or three options, one or two words each. Settings with more values (Attempts, Time limit) use secondary chips (see Tabs).
+- One fully round transparent track (`rounded-full bg-transparent`) with a 1px `--border` outline and 1px `--border` dividers between segments. Segments are ghost buttons at the default 40px height, label 14px semibold.
+- The selected segment is `bg-secondary text-secondary-foreground`; unselected segments have no fill. Never solid primary.
 - `role="group"` with an `aria-label` naming the setting, and `aria-pressed` on each button.
 
 ```tsx
-<ButtonGroup aria-label="Item order" className="overflow-hidden rounded-full border border-border bg-card">
+<ButtonGroup aria-label="Item order" className="overflow-hidden rounded-full border border-border bg-transparent">
   <Button variant="ghost" aria-pressed={asCreated} className="rounded-none aria-pressed:bg-secondary">As created</Button>
   <Button variant="ghost" aria-pressed={!asCreated} className="rounded-none border-l border-border aria-pressed:bg-secondary">Shuffle</Button>
 </ButtonGroup>

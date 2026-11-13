@@ -32,11 +32,11 @@
   let view = 'week';
 
   const sampleWeek = [
-   [{type:'Formative', time:'8:30 – 9:15 AM', title:'Algebra: Expressions', classLabel:'Grade 5A', status:'check'}],
-   [{type:'Formative', time:'9:30 – 10:15 AM', title:'Functions: Exit Ticket', classLabel:'Grade 5B', status:'pending'}],
-   [{type:'Summative', time:'8:30 – 9:30 AM', title:'Unit 4 Assessment', classLabel:'Grade 7A', status:'pending'},
-    {type:'Formative', time:'1:00 – 1:45 PM', title:'Graphing Practice', classLabel:'Grade 7B', status:'pending'}],
-   [{type:'Screeners', time:'9:30 – 10:15 AM', title:'Transformations Quiz', classLabel:'Grade 6A', status:'pencil'}],
+   [{type:'Formative', start:510, end:555, title:'Algebra: Expressions', classLabel:'Grade 5A', status:'check'}],
+   [{type:'Formative', start:570, end:615, title:'Functions: Exit Ticket', classLabel:'Grade 5B', status:'pending'}],
+   [{type:'Summative', start:510, end:570, title:'Unit 4 Assessment', classLabel:'Grade 7A', status:'pending'},
+    {type:'Formative', start:780, end:825, title:'Graphing Practice', classLabel:'Grade 7B', status:'pending'}],
+   [{type:'Screeners', start:570, end:615, title:'Transformations Quiz', classLabel:'Grade 6A', status:'pencil'}],
    []
   ];
   const links = {check:'CAP-T13-Results.dc.html', pending:'CAP-T10-Scheduled.dc.html', pencil:'CAP-T05-Questions.dc.html'};
@@ -116,15 +116,64 @@
   const resume = draftContent.querySelector('[data-overview-resume]');
   resume.classList.add('card');
 
+  const firstHour = 8;
+  const endHour = 16;
+  const demoMinute = 10 * 60 + 30;
+  const percentOfDay = minute => (minute - firstHour * 60) / ((endHour - firstHour) * 60) * 100;
+  const clock = new Intl.DateTimeFormat('en-US', {hour:'numeric', minute:'2-digit'});
+  const hourLabel = new Intl.DateTimeFormat('en-US', {hour:'numeric'});
+  const clockDate = minute => new Date(2025, 2, 19, 0, minute);
+
   function assessmentCard(item) {
+   const time = clock.formatRange(clockDate(item.start), clockDate(item.end));
    return `<a class="card-link" href="${links[item.status]}"><div class="od-week-assessment card">
     <span class="od-week-assessment-top"><span class="badge badge-theme-light">${item.type}</span><span class="tooltip-wrap od-week-status" data-status="${item.status}">
      <span role="img" aria-label="${statusLabels[item.status]}">${icon(item.status)}</span>
      <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
     </span></span>
-    <span class="card-description">${item.time}</span><strong class="card-title">${item.title}</strong>
+    <span class="card-description">${time}</span><strong class="card-title">${item.title}</strong>
     <span class="od-week-class card-description">${icon('users')} ${item.classLabel}</span>
    </div></a>`;
+  }
+
+  function timedEvent(item) {
+   const top = percentOfDay(item.start);
+   const height = percentOfDay(item.end) - top;
+   const time = clock.formatRange(clockDate(item.start), clockDate(item.end));
+   return `<a class="od-timed-event" data-status="${item.status}" href="${links[item.status]}"
+     style="--od-event-start: ${top}%; --od-event-duration: ${height}%"
+     aria-label="${item.title}, ${item.type}, ${item.classLabel}, ${time}, ${statusLabels[item.status]}">
+    <span class="od-timed-event-band">
+     <span>${item.type}</span>
+    <span class="tooltip-wrap od-week-status" data-status="${item.status}">${icon(item.status)}
+     <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
+    </span>
+    </span>
+    <span class="od-timed-event-copy"><strong class="card-title">${item.title}</strong><span class="card-description">${item.classLabel}</span></span>
+   </a>`;
+  }
+
+  function weekGrid(isSampleWeek) {
+   const dates = sampleWeek.map((_, index) => addDays(first, index));
+   const hours = Array.from({length:endHour - firstHour}, (_, index) => firstHour + index);
+   return `<div class="od-timetable">
+    <div class="od-timetable-head">
+     <div aria-hidden="true"></div>
+     ${dates.map(date => `<h3 class="od-timetable-date" ${+date===+today?'aria-current="date"':''}>
+      ${dayName.format(date)} ${date.getDate()}
+     </h3>`).join('')}
+    </div>
+    <div class="od-timetable-body" style="--od-marker-position: ${percentOfDay(demoMinute)}%; --od-hour-count: ${hours.length}">
+     <div class="od-timetable-hours" aria-hidden="true">
+      ${hours.map(hour => `<div class="od-timetable-hour"><span>${hourLabel.format(clockDate(hour * 60))}</span></div>`).join('')}
+     </div>
+     ${isSampleWeek?'<div class="od-timetable-marker" aria-hidden="true"><span>10:30</span></div>':''}
+     ${dates.map((date, index) => `<section class="od-timetable-day" style="grid-column: ${index + 2}" aria-label="${dayName.format(date)}, ${fullDate.format(date)}"
+        ${+date===+today?'data-today':''}>
+      ${index>0?'<span class="od-timetable-divider" aria-hidden="true"></span>':''}${isSampleWeek?sampleWeek[index].map(timedEvent).join(''):''}
+     </section>`).join('')}
+    </div>
+   </div>`;
   }
 
   function draw() {
@@ -133,10 +182,15 @@
    calendar.querySelectorAll('[data-calendar-view]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.calendarView===view)));
    const days = calendar.querySelector('[data-overview-days]');
    days.dataset.view = view;
+   const isSampleWeek = +first===+monday(today);
+   if (view==='week') {
+    days.innerHTML = weekGrid(isSampleWeek);
+    return;
+   }
    days.innerHTML = Array.from({length:5},(_,index) => {
     const date = addDays(first,index);
-    const items = +first===+monday(today) ? sampleWeek[index] : [];
-    const showCreate = +first===+monday(today) && index===sampleWeek.length-1;
+    const items = isSampleWeek ? sampleWeek[index] : [];
+    const showCreate = isSampleWeek && index===sampleWeek.length-1;
     if (view==='list' && !items.length && !showCreate) return '';
     const events = showCreate
      ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create assessment</span></button>`

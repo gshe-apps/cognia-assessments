@@ -13,6 +13,7 @@
    right: '<path d="m9 18 6-6-6-6" />',
    pending: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
    inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />',
+   plus: '<path d="M5 12h14" /><path d="M12 5v14" />',
    pencil: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /><path d="m15 5 4 4" />',
    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" />'
   };
@@ -36,10 +37,14 @@
    [{type:'Summative', time:'8:30 – 9:30 AM', title:'Unit 4 Assessment', classLabel:'Grade 7A', status:'pending'},
     {type:'Formative', time:'1:00 – 1:45 PM', title:'Graphing Practice', classLabel:'Grade 7B', status:'pending'}],
    [{type:'Screeners', time:'9:30 – 10:15 AM', title:'Transformations Quiz', classLabel:'Grade 6A', status:'pencil'}],
-   [{type:'Formative', time:'8:30 – 9:15 AM', title:'Real-World Functions', classLabel:'Grade 8A', status:'pending'}]
+   []
   ];
   const links = {check:'CAP-T13-Results.dc.html', pending:'CAP-T10-Scheduled.dc.html', pencil:'CAP-T05-Questions.dc.html'};
-  const statusLabels = {check:'Completed', pending:'Scheduled', pencil:'Draft'};
+  const statusLabels = {
+   check: 'Completed',
+   pending: 'Scheduled',
+   pencil: 'Still in draft'
+  };
   const hero = root.querySelector('.od-hero');
   const title = hero.querySelector('h1');
   title.textContent = 'Good afternoon, Joe';
@@ -76,26 +81,26 @@
   draftPanel.className = 'od-overview-draft';
   draftPanel.dataset.priority = 'draft';
   const stat = (value,label) => '<div><dt>'+label+'</dt><dd>'+value+'</dd></div>';
-  const progress = (value, label) => `<div class="od-priority-meter progress-label">
+  const progress = (value, label, tone) => `<div class="od-priority-meter progress-label" data-tone="${tone}">
    <div class="progress" role="progressbar" aria-label="${label}" aria-valuenow="${value}" style="--value: ${value}%"><div class="progress-indicator"></div></div>
    <span aria-hidden="true">${value}% ${label}</span>
   </div>`;
   const priorityHeading = (symbol, title, copy) => `<span class="od-priority-heading">
-   <span class="icon-accent">${icon(symbol)}</span>
+   <span class="od-priority-icon">${icon(symbol)}</span>
    <span><strong class="card-title">${title}</strong><small class="card-description">${copy}</small></span>
    ${icon('right')}
   </span>`;
   priorities.innerHTML = `
-   <header class="od-priorities-intro"><h2>Today’s priorities</h2><p class="card-description">Focus on key assessment actions for ${dayName.format(today)}, ${shortDate.format(today)}.</p></header>
+   <header class="od-priorities-intro"><h2>Today’s priorities</h2></header>
    <a class="card-link" href="CAP-T14-ScoringQueue.dc.html"><div class="od-priority-tile card">
-    ${priorityHeading('inbox','Needs review','Assessments with responses to review.')}
+    ${priorityHeading('inbox','Needs review','Responses require manual review')}
     <dl class="od-priority-stats">${stat(2,'assessments')}${stat(49,'responses')}</dl>
-    ${progress(68,'reviewed')}
+    ${progress(68,'reviewed','destructive')}
    </div></a>
    <a class="card-link" href="CAP-T13-Results.dc.html"><div class="od-priority-tile card">
     ${priorityHeading('chart','Fractions Check','Grade 5 Mathematics')}
     <dl class="od-priority-stats">${stat(1,'assessment')}${stat(24,'students')}</dl>
-    ${progress(100,'ready')}
+    ${progress(100,'ready','success')}
    </div></a>`;
   draftPanel.innerHTML = `<summary class="od-priority-tile card">
    ${priorityHeading('pencil','Continue drafts','Pick up where you left off.')}
@@ -113,7 +118,10 @@
 
   function assessmentCard(item) {
    return `<a class="card-link" href="${links[item.status]}"><div class="od-week-assessment card">
-    <span class="od-week-assessment-top"><span class="badge badge-theme-light">${item.type}</span><span aria-label="${statusLabels[item.status]}" role="img">${icon(item.status)}</span></span>
+    <span class="od-week-assessment-top"><span class="badge badge-theme-light">${item.type}</span><span class="tooltip-wrap od-week-status" data-status="${item.status}">
+     <span role="img" aria-label="${statusLabels[item.status]}">${icon(item.status)}</span>
+     <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
+    </span></span>
     <span class="card-description">${item.time}</span><strong class="card-title">${item.title}</strong>
     <span class="od-week-class card-description">${icon('users')} ${item.classLabel}</span>
    </div></a>`;
@@ -128,16 +136,25 @@
    days.innerHTML = Array.from({length:5},(_,index) => {
     const date = addDays(first,index);
     const items = +first===+monday(today) ? sampleWeek[index] : [];
-    if (view==='list' && !items.length) return '';
+    const showCreate = +first===+monday(today) && index===sampleWeek.length-1;
+    if (view==='list' && !items.length && !showCreate) return '';
+    const events = showCreate
+     ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create assessment</span></button>`
+     : items.map(assessmentCard).join('');
     return `<section class="od-week-day card${+date===+today?' card-themed':''}" ${+date===+today?'aria-current="date"':''}>
      <header><h3>${dayName.format(date)} <span>${shortDate.format(date)}</span></h3>
       ${+date===+today?'<span class="badge badge-secondary">Today</span>':''}</header>
-     <div class="od-week-events">${items.map(assessmentCard).join('')}</div>
+     <div class="od-week-events">${events}</div>
     </section>`;
    }).join('') || '<p class="od-week-empty">No assessments scheduled this week.</p>';
   }
 
   calendar.addEventListener('click', event => {
+   const create = event.target.closest('[data-week-create]');
+   if (create) {
+    window.capOpenAssessmentChoices(create);
+    return;
+   }
    const step = event.target.closest('[data-week-step]');
    const toggle = event.target.closest('[data-calendar-view]');
    if (step) first = addDays(first, 7*Number(step.dataset.weekStep));

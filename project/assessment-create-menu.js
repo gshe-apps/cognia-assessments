@@ -71,6 +71,32 @@
     modal.showModal();
   };
 
+  window.capOpenAssessmentChoices = (trigger) => {
+    const modal = document.createElement('dialog');
+    modal.className = 'dialog cap-create-choice';
+    modal.setAttribute('aria-labelledby', 'cap-create-choice-title');
+    modal.innerHTML = `
+      <div class="dialog-header">
+        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create assessment</h2>
+        <form method="dialog" class="dialog-close">
+          <button class="btn btn-ghost btn-icon" type="submit" aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
+        </form>
+      </div>
+      <form method="dialog" class="dialog-footer cap-create-choice-actions">
+        <button class="btn" type="submit" value="scratch">Create from scratch</button>
+        <button class="btn btn-ghost" type="submit" value="library">Use assessment library</button>
+      </form>`;
+    const host = trigger.closest('.theme-assessments') || document.body;
+    host.append(modal);
+    modal.addEventListener('close', () => {
+      modal.remove();
+      if (modal.returnValue === 'scratch') window.capOpenNewAssessment(trigger);
+      else if (modal.returnValue === 'library') window.capOpenLibraryPicker(trigger);
+      else trigger.focus();
+    });
+    modal.showModal();
+  };
+
   window.capMountAssessmentCreateMenu = (root) => {
     const host = root.querySelector('[data-assessment-create-menu]');
     if (!host || host.firstElementChild) return;

@@ -49,7 +49,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  let selected=t.id;
  const select=id=>{selected=id;m.active=id;save(m);draw()};
 
- const choices=(key,label,options,current,kind='chips')=>`<div class="ad-setting" role="group" aria-labelledby="ad-${key}-label"><p class="label" id="ad-${key}-label">${label}</p><div class="ad-${kind} ${kind==='group'?'button-group':'tabs-list tabs-list-secondary'}">${options.map(([value,text])=>`<button type="button" class="ad-choice ${kind==='group'?'btn btn-ghost btn-sm':'tab'}" data-choice="${key}" data-value="${esc(value)}" aria-pressed="${value===current}">${esc(text)}</button>`).join('')}</div></div>`;
+ const choices=(key,label,options,current,kind='chips')=>`<div class="ad-setting" role="group" aria-labelledby="ad-${key}-label"><p class="label" id="ad-${key}-label">${label}</p><div class="ad-${kind} button-group button-group-segmented">${options.map(([value,text])=>`<button type="button" class="ad-choice btn btn-ghost" data-choice="${key}" data-value="${esc(value)}" aria-pressed="${value===current}">${esc(text)}</button>`).join('')}</div></div>`;
  const field=(id,label,control,hint='')=>`<div class="field">${hint?`<div class="ad-label-row"><label class="label" for="${id}">${label}</label><span class="field-hint">${hint}</span></div>`:`<label class="label" for="${id}">${label}</label>`}${control}</div>`;
  const dropdown=(id,attr,options)=>`<span class="select-wrap"><select class="select" id="${id}" ${attr}>${options}</select></span>`;
 

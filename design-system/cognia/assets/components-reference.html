@@ -265,6 +265,7 @@
       <button class="btn btn-destructive btn-lg" data-open="demo-dialog">Delete record</button>
       <button class="btn btn-lg" data-open="demo-form-dialog">Rename</button>
       <button class="btn btn-outline btn-lg" data-open="demo-alert-dialog">Unpublish</button>
+      <button class="btn btn-outline btn-lg" data-open="demo-success-dialog">Finish</button>
       <button class="btn btn-outline btn-lg" data-open="demo-sheet">Open filters</button>
       <button class="btn btn-outline btn-lg" data-open="demo-drawer">Open drawer</button>
       <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon btn-lg" aria-label="About scoring"><svg><use href="#i-info"/></svg></button><span class="tooltip" role="tooltip">Scores are averaged across every submitted response in this window.</span></span>
@@ -317,8 +318,7 @@
         <h3 class="text-body-base font-semibold">Button group, toggle and toggle group</h3>
         <div class="ref-row">
           <div class="button-group" role="group" aria-label="Navigate"><button class="btn btn-outline">Previous</button><button class="btn btn-outline">Next</button></div>
-          <div class="button-group" role="group" aria-label="Item order"><button class="btn btn-ghost btn-sm" aria-pressed="true">As created</button><button class="btn btn-ghost btn-sm" aria-pressed="false">Shuffle</button></div>
-          <div class="tabs-list tabs-list-secondary" role="group" aria-label="Attempts"><button class="tab" aria-pressed="true">1</button><button class="tab" aria-pressed="false">2</button><button class="tab" aria-pressed="false">3</button></div>
+          <div class="button-group button-group-segmented" role="group" aria-label="Item order"><button class="btn btn-ghost" aria-pressed="true">As created</button><button class="btn btn-ghost" aria-pressed="false">Shuffle</button></div>
           <button class="toggle" aria-pressed="true" aria-label="Bold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg></button>
           <button class="toggle toggle-outline" aria-pressed="false">Show answers</button>
           <div class="tabs-list" role="group" aria-label="View"><button class="tab" aria-pressed="true">Week</button><button class="tab" aria-pressed="false">Month</button></div>
@@ -525,6 +525,13 @@
   <div class="dialog-header"><h2 class="dialog-title" id="fdlg-title">Rename assessment</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
   <div class="dialog-body"><div class="field"><label class="label" for="d-name">Assessment title</label><input class="input" id="d-name" value="New classroom assessment"></div></div>
   <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Save changes</button></div>
+</dialog>
+
+<dialog class="dialog dialog-success" id="demo-success-dialog" aria-labelledby="sdlg-title" aria-describedby="sdlg-desc">
+  <span class="dialog-success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+  <h2 class="dialog-title" id="sdlg-title">Assessment created</h2>
+  <p class="dialog-description" id="sdlg-desc">New classroom assessment has been created for Grade 5A</p>
+  <div class="dialog-footer"><button class="btn btn-outline btn-lg" data-close>Create another</button><button class="btn btn-lg" data-close>Go to assessments</button></div>
 </dialog>
 
 <dialog class="dialog" role="alertdialog" id="demo-alert-dialog" aria-labelledby="adlg-title" aria-describedby="adlg-desc">

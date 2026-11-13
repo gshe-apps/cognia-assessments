@@ -534,16 +534,6 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 }
 .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-image: none; background-color: var(--primary-hover); }
 .tab:disabled, .tab[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
-/* Secondary selection, for settings pickers inside a form (attempts, time limit):
-   no outline on any pill; the selected pill is --secondary instead of solid --primary.
-   <div class="tabs-list tabs-list-secondary" role="group"> <button class="tab" aria-pressed="true"> */
-.tabs-list-secondary .tab { border-color: transparent; }
-.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
-  border-color: transparent;
-  background-color: var(--secondary);
-  color: var(--secondary-foreground);
-}
-.tabs-list-secondary .tab:is([aria-selected="true"], [aria-pressed="true"], [aria-current="page"], [aria-checked="true"]):hover { background-color: var(--secondary); background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 
 /* ------------------------------------------------------------
    Table (components.md, Table)
@@ -747,9 +737,24 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .dialog-body { display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; overflow-y: auto; }
 .dialog-footer { display: flex; flex-direction: column-reverse; gap: var(--space-2); margin-top: auto; }
 .dialog-footer .btn { width: 100%; }
+
+/* Success dialog: confirms a finished task (Assessment created). Centred on a white card,
+   a green check, a 16px title and description, and two equal-width actions with no close X.
+   <dialog class="dialog dialog-success" aria-labelledby=".." aria-describedby="..">
+     <span class="dialog-success-icon">Lucide check</span>
+     <h2 class="dialog-title">..</h2> <p class="dialog-description">..</p>
+     <div class="dialog-footer"> <a class="btn btn-outline btn-lg">Secondary</a> <a class="btn btn-lg">Main action</a> </div> </dialog> */
+.dialog-success { width: min(512px, calc(100vw - var(--space-8))); padding: var(--space-8) var(--space-6); background-color: var(--card); text-align: center; }
+.dialog-success[open] { align-items: center; gap: var(--space-2); }
+.dialog-success-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-bottom: var(--space-4); border-radius: var(--rounded-full); background-color: var(--success); color: var(--primary-foreground); }
+.dialog-success-icon svg { width: 16px; height: 16px; }
+.dialog-success .dialog-title { font-size: var(--text-body-base); }
+.dialog-success .dialog-description { font-size: var(--text-body-base); color: var(--foreground); }
+.dialog-success .dialog-footer { align-self: stretch; margin-top: var(--space-6); }
 @media (min-width: 768px) {
   .dialog-footer { flex-direction: row; justify-content: flex-end; }
   .dialog-footer .btn { width: auto; }
+  .dialog-success .dialog-footer .btn { flex: 1 1 0; }
 }
 
 .sheet {
@@ -979,15 +984,20 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
 .breadcrumb-separator { display: inline-flex; }
 .breadcrumb-separator svg { width: 14px; height: 14px; }
 
-/* Button Group: <div class="button-group" role="group"> .btn .btn .btn </div>
-   As a single-choice picker (Yes / No, As created / Shuffle): ghost buttons (no outline)
-   with aria-pressed; the pressed one is --secondary. */
+/* Button Group: <div class="button-group" role="group"> .btn .btn .btn </div> */
 .button-group { display: inline-flex; align-items: stretch; }
 .button-group > .btn { border-radius: 0; }
 .button-group > .btn:first-child { border-top-left-radius: var(--radius); border-bottom-left-radius: var(--radius); }
 .button-group > .btn:last-child { border-top-right-radius: var(--radius); border-bottom-right-radius: var(--radius); }
 .button-group > .btn-outline + .btn-outline { border-left-width: 0; }
-.button-group > .btn-ghost[aria-pressed="true"] { background-color: var(--secondary); color: var(--secondary-foreground); }
+/* Segmented picker: one setting in a form (Attempts, Item order, Calculator allowed?).
+   A fully round white track with a light border and dividers; the pressed segment is --secondary.
+   <div class="button-group button-group-segmented" role="group" aria-label="Item order">
+     <button class="btn btn-ghost" aria-pressed="true">As created</button> <button class="btn btn-ghost" aria-pressed="false">Shuffle</button> </div> */
+.button-group-segmented { overflow: hidden; border: 1px solid var(--border); border-radius: var(--rounded-full); background-color: var(--card); }
+.button-group-segmented > .btn { border: 0; border-radius: 0; background-color: transparent; color: var(--foreground); }
+.button-group-segmented > .btn + .btn { border-left: 1px solid var(--border); }
+.button-group-segmented > .btn[aria-pressed="true"] { background-color: var(--secondary); color: var(--secondary-foreground); }
 
 /* Calendar (and Date Picker's panel)
    <div class="calendar"> <div class="calendar-header"> prev button, .calendar-caption, next button </div>

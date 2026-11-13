@@ -592,6 +592,30 @@ DialogFooter:  "flex flex-col-reverse gap-2 md:flex-row md:justify-end"
 
 Open with `dialog.showModal()`. `.dialog-close` and a click on the backdrop close it.
 
+**Success dialog**
+
+A variant that confirms a finished task, such as "Assessment created". It replaces the standard header and footer layout.
+
+- White card (`bg-card`), 12px corners, 32px top and bottom padding, 24px at the sides, max 512px wide. Everything is centred.
+- A 32px solid `--success` circle with a white Lucide `Check` (16px) at the top, 16px above the title.
+- Title in Body Base Strong (16px semibold), description in Body Base (16px, `text-foreground`), 8px apart.
+- No close X. Two equal-width large buttons 24px below: the secondary action as an outline button on the left, the main action as a solid button on the right. On mobile they stack full width, main action on top.
+- `Esc` and the backdrop close it, as with any dialog.
+
+**Plain HTML**:
+
+```html
+<dialog class="dialog dialog-success" aria-labelledby="done-title" aria-describedby="done-desc">
+  <span class="dialog-success-icon"><svg><!-- Lucide check --></svg></span>
+  <h2 class="dialog-title" id="done-title">Assessment created</h2>
+  <p class="dialog-description" id="done-desc">New classroom assessment has been created for Grade 5A</p>
+  <div class="dialog-footer">
+    <button class="btn btn-outline btn-lg" type="button">Create another</button>
+    <a class="btn btn-lg" href="..">Go to assessments</a>
+  </div>
+</dialog>
+```
+
 ---
 
 ### Alert Dialog
@@ -683,17 +707,7 @@ TabsTrigger: "h-8 rounded-full border border-[color-mix(in_srgb,var(--primary)_3
 
 **Plain HTML**: `.tabs-list[role=tablist]` > `button.tab[role=tab][aria-selected]`; a toggle group or segmented picker is `.tabs-list[role=group]` > `button.tab[aria-pressed]`.
 
-**Secondary selection (settings pickers)**
-- Pickers that set an option inside a form, such as Attempts or Time limit, use a softer pill so the form does not read as a row of solid black buttons: no outline on any pill (`border-transparent`), and the selected pill is `bg-secondary text-secondary-foreground`. Size, spacing and labels are unchanged.
-- Navigation tabs and view switchers keep the solid primary selected pill.
-- Two-option and three-option choices in a form (Yes / No, As created / Shuffle) use a Button Group instead (see Button Group).
-
-```tsx
-// ToggleGroupItem in a settings form
-"... border-transparent data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground"
-```
-
-**Plain HTML**: `.tabs-list.tabs-list-secondary[role=group]` > `button.tab[aria-pressed]`.
+**Settings pickers**: a picker that sets one option inside a form (Attempts, Time limit, Item order, Calculator allowed?) uses the segmented Button Group, not pills (see Button Group).
 
 ---
 
@@ -1093,19 +1107,20 @@ Shows where a page sits in the hierarchy and links back up it.
 
 Joins related buttons into one control, for example a split button or "Previous / Next". All buttons in a group share one variant. `<ButtonGroup>`.
 
-**Single-choice picker**
-- Use a Button Group of ghost buttons (no outline) for a short either/or setting in a form (Yes / No, As created / Shuffle), up to three options. Labels are one or two words.
-- The selected button is `bg-secondary text-secondary-foreground`; the others stay transparent. Never solid primary.
-- `role="group"` with an `aria-label` naming the setting, and `aria-pressed` on each button. Use `size="sm"` (32px) so it lines up with pill pickers in the same form.
+**Segmented picker (settings in a form)**
+- Use for any single-choice setting inside a form: Attempts (1 / 2 / 3), Item order (As created / Shuffle), Calculator allowed? (Yes / No), Time limit (5 min / 10 min ...). Up to five options, one or two words each.
+- One fully round white track (`rounded-full bg-card`) with a 1px `--border` outline and 1px `--border` dividers between segments. Segments are ghost buttons at the default 40px height, label 14px semibold.
+- The selected segment is `bg-secondary text-secondary-foreground`. Never solid primary, and never separate pills.
+- `role="group"` with an `aria-label` naming the setting, and `aria-pressed` on each button.
 
 ```tsx
-<ButtonGroup aria-label="Calculator allowed">
-  <Button variant="ghost" size="sm" aria-pressed={on} className="aria-pressed:bg-secondary">Yes</Button>
-  <Button variant="ghost" size="sm" aria-pressed={!on} className="aria-pressed:bg-secondary">No</Button>
+<ButtonGroup aria-label="Item order" className="overflow-hidden rounded-full border border-border bg-card">
+  <Button variant="ghost" aria-pressed={asCreated} className="rounded-none aria-pressed:bg-secondary">As created</Button>
+  <Button variant="ghost" aria-pressed={!asCreated} className="rounded-none border-l border-border aria-pressed:bg-secondary">Shuffle</Button>
 </ButtonGroup>
 ```
 
-**Plain HTML**: `.button-group[role=group]` > `button.btn.btn-ghost.btn-sm[aria-pressed]`.
+**Plain HTML**: `.button-group.button-group-segmented[role=group]` > `button.btn.btn-ghost[aria-pressed]`.
 
 ### Calendar
 

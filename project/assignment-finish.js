@@ -98,14 +98,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   const dialog=document.createElement('dialog');
   /* Figma CAP 1480:11324: compact "Assessment created" alert with two equal actions.
      It fades and lifts in, the check circle pops and the tick draws itself (educator.css). */
-  dialog.className='as-created-dialog dialog';
+  dialog.className='as-created-dialog dialog dialog-success';
   dialog.setAttribute('aria-labelledby','as-created-title');
   dialog.setAttribute('aria-describedby','as-created-description');
   const delivery=read('cogniaDeliverySessions',d);
-  dialog.innerHTML='<div class="dialog-header"><div class="as-created-title-row"><span class="as-created-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M20 6 9 17l-5-5"/></svg></span><h2 class="dialog-title" id="as-created-title">Assessment created</h2></div>'
-   +'<button type="button" class="btn btn-ghost btn-icon dialog-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>'
-   +'<p class="dialog-description" id="as-created-description">'+esc(m.title||t.title||'Your assessment')+' has been created for '+esc(classLabel(delivery))+'</p></div>'
-   +'<div class="as-created-actions dialog-footer"><button type="button" class="btn btn-ghost btn-lg" data-create-another>Create another</button><a class="btn btn-lg" href="CAP-T03-Assessments.dc.html">Go to assessments</a></div>';
+  /* 13 Nov: the plugin's success dialog: centred check, title, description and two equal actions, no close X. */
+  dialog.innerHTML='<span class="dialog-success-icon as-created-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M20 6 9 17l-5-5"/></svg></span>'
+   +'<h2 class="dialog-title" id="as-created-title">Assessment created</h2>'
+   +'<p class="dialog-description" id="as-created-description">'+esc(m.title||t.title||'Your assessment')+' has been created for '+esc(classLabel(delivery))+'</p>'
+   +'<div class="dialog-footer"><button type="button" class="btn btn-outline btn-lg" data-create-another>Create another</button><a class="btn btn-lg" href="CAP-T03-Assessments.dc.html">Go to assessments</a></div>';
   dialog.addEventListener('close',()=>dialog.remove());
   /* Create another: stay on this page and swap the success alert for the setup modal.
      Cancelling setup brings the success alert back. */

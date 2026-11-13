@@ -4844,10 +4844,6 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .cap-root .tf-page .tf-bottom [data-tf-back]:after{content:none;}
 .cap-root .tf-page .tf-bottom [data-tf-back] svg{display:inline-block!important;width:16px;height:16px;}
 /* 10 Nov, Figma CAP 1480:11324: "Assessment created" alert after Create assessment on step 4 */
-.as-created-dialog { width: min(480px, calc(100% - var(--space-8))); }
-.as-created-title-row { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-.as-created-check { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--rounded-full); background: var(--success); color: var(--primary-foreground); }
-.as-created-check svg { width: 16px; height: 16px; }
 .as-created-check path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .as-created-dialog[open] { animation: as-created-in var(--duration); }
 .as-created-dialog[open]::backdrop { animation: as-created-fade var(--duration); }
@@ -4928,9 +4924,8 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details{max-width:650px
 @media(max-width:639px){.rj-details .tf-hero{flex-wrap:wrap}.rj-details .tf-hero>.ad-hero-actions{margin-left:0}.rj-details :is(.ad-row-2,.ad-row-3,.ad-row-even){grid-template-columns:minmax(0,1fr)}}
 /* 10 Nov, step 2 settings as designed: button groups (Item order, Answer option order, Calculator, Notes) and
    chips (Attempts, Time limit). Selected is accent-100 and semibold, unselected is secondary. */
-.rj-details .ad-group{display:inline-flex;align-self:flex-start}
-.rj-details :is(.ad-chips,.ad-round){display:flex;flex-wrap:wrap;gap:var(--space-2)}
-.rj-details .ad-chips .ad-choice{padding-inline:var(--space-3)}
+/* 13 Nov: every step 2/4 setting is a segmented picker from the plugin. */
+.rj-details :is(.ad-group,.ad-chips,.ad-round){display:inline-flex;align-self:flex-start}
 /* Checkboxes on this screen: 16px square, 4px corners, no ring after a mouse click (keyboard focus still shows). */
 .rj-details .ad-layout .checkbox{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-grid;place-items:center;width:16px;height:16px;min-width:16px;min-height:16px;margin:0;padding:0;border:1px solid var(--primary);border-radius:calc(var(--radius) / 2);background:var(--card);box-shadow:none}
 .rj-details .ad-layout .checkbox:checked{background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat}

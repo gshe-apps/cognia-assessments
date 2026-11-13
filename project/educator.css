@@ -4402,8 +4402,10 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-filters, [data-class-pills] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .allocation-filters > [data-class-pills]:empty { display: none; }
 .allocation-filters > [data-clear-selection] { margin-inline-start: auto; }
-.allocation-search-field .search-clear { right: var(--space-12); }
-.allocation-search-field > .tooltip-wrap:last-child { flex: none; margin-inline-end: var(--space-2); }
+.allocation-search-field .search-input { padding-inline-end: var(--space-10); }
+.allocation-search-field .search-input:not(:placeholder-shown) { padding-inline-end: var(--space-20); }
+.allocation-search-field .search-clear { right: var(--space-10); }
+.allocation-search-field > .tooltip-wrap:has([data-toggle-classes]) { position: absolute; inset-inline-end: var(--space-1); }
 .allocation-search-field [data-toggle-classes] .icon { position: static; }
 
 .allocation-options { position: absolute; top: calc(100% + var(--space-1)); inset-inline: 0; z-index: 20; max-height: 320px; overflow-y: auto; }

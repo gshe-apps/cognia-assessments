@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   filterQuestions();
  });
  if(teacher&&!localStorage.getItem('cogniaClientDraftSeedV1')){const entries=archive();for(const f of forms){if(entries.some(e=>e.title===f.title&&e.status==='draft'))continue;const id='sample-'+f.id,questions=(f.items||f.questions).filter(q=>q.tier!=='plus'),test={id,title:f.title,grade:f.grade,subject:f.subject,standard:f.standard,page:f.page,state:{chosen:questions.map(q=>q.id),written:{},edits:{}},questions};entries.push({id:'assessment-'+id,title:f.title,status:'draft',sample:true,updatedAt:new Date().toISOString(),model:{title:f.title,active:id,origin:'builder',tests:[test]}});}put('cogniaAssessmentArchiveV1',entries);localStorage.setItem('cogniaClientDraftSeedV1','1');}
+ window.capUpdateOverviewDraftStack?.();
  // Preserve text immediately: exported blur handlers otherwise lose input when another control redraws the canvas.
  document.addEventListener('input',event=>{if(!isQuestions||!instance)return;const el=event.target;if(!el.closest('.drawer'))return;const f={stem:'',opts:['','','',''],correct:null,marks:'1',...instance.state.form};if(el.id==='wq-stem')f.stem=el.value;else if(/^Option [ABCD]$/.test(el.getAttribute('aria-label')||'')){f.opts=[...f.opts];f.opts['ABCD'.indexOf(el.getAttribute('aria-label').slice(-1))]=el.value;}else return;instance.state.form=f;instance.state.fError='';},true);
  const icon='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h11l5 5v11H4zM14 4v6h6M8 14h8M8 17h5"/></svg>';
@@ -76,7 +77,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(entry.status==='assigned'){preserveCurrent();put('cogniaAssessmentTestsV1',JSON.parse(JSON.stringify(entry.model)));if(entry.delivery)put('cogniaDeliverySessions',entry.delivery);location.href='CAP-T09-ConfirmAssignment.dc.html?view=assigned';return;}
   const stepTwo=entry.status==='banked'||entry.step===2;
   /* Step 1 drafts were already set up, so the item builder opens without the setup dialog. */
-  if(!stepTwo&&window.capAssessmentSetup){const t=entry.model.tests.find(t=>t.id===entry.model.active)||entry.model.tests[0];if(t)sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(t))}
+  if(!stepTwo&&window.capAssessmentSetup){
+   const t=entry.model.tests.find(t=>t.id===entry.model.active)||entry.model.tests[0];
+   if(t){
+    const settings=t===entry.model.tests[0]?{...t,title:entry.model.title||t.title}:t;
+    sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(settings));
+   }
+  }
   restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null);}
  window.capRestoreWork=restore;window.capOpenSaved=openSaved;window.capStartLibraryForm=id=>startForm(id);
  function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;const usage=read('cogniaLibraryUsageV1',{});usage[id]=Date.now();put('cogniaLibraryUsageV1',usage);preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});try{sessionStorage.setItem('capLibraryReturn',/CAP-T0[5-9]-|CAP-T10-/.test(page)?'CAP-T21-AssessmentLibrary.dc.html':page);}catch{}location.href='CAP-T08-AudienceDelivery.dc.html';}

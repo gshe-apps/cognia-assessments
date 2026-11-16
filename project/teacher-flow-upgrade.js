@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  const previous=()=>step===2?itemsPage():step===3?'CAP-T06-Review.dc.html?stage=details':'CAP-T08-AudienceDelivery.dc.html';
  /* Same entry shape as the draft archive used by the Assessments list (client-connected-feedback.js). */
  const draftId=m=>m?.tests?.length?'assessment-'+m.tests.map(t=>t.id).join('-'):null;
- function isSaved(){const id=draftId(readJSON(key,null));if(!id)return false;const entry=readJSON(archiveKey,[]).find(e=>e.id===id&&e.status==='draft');return !!entry&&JSON.stringify(entry.model)===stored(key)}
+ function isSaved(){const id=draftId(readJSON(key,null));if(!id)return false;const entry=readJSON(archiveKey,[]).find(e=>e.id===id&&e.status==='draft');return !!entry&&(entry.step||1)===step&&JSON.stringify(entry.model)===stored(key)}
  function setSaved(on){
   const m=readJSON(key,null),id=draftId(m);if(!id)return;
   const entries=readJSON(archiveKey,[]).filter(e=>!(e.id===id&&e.status==='draft'));

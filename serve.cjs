@@ -2,6 +2,15 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.join(__dirname, 'project');
+const componentAssets = path.join(__dirname, 'design-system', 'cognia', 'assets');
+const componentFiles = new Map([
+  ['/components/', 'components-reference.html'],
+  ['/components/globals.css', 'globals.css'],
+  ['/components/components.css', 'components.css'],
+  ['/components/components.js', 'components.js'],
+  ['/components/logos/logo.svg', 'logos/logo.svg'],
+  ['/components/logos/C.svg', 'logos/C.svg'],
+]);
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.woff2':'font/woff2'};
 http.createServer((req,res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -11,8 +20,16 @@ http.createServer((req,res) => {
     if (logo) return res.end(fs.readFileSync(path.join(root, 'assets/cognia-logo.svg')));
     return res.end(logo ? '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40"><text x="0" y="30" font-family="Arial" font-size="32" fill="white">cognia</text></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="170"><rect width="400" height="170" fill="#eee9f0"/><text x="200" y="85" text-anchor="middle" font-family="Arial" fill="#66596b">Image unavailable in export</text></svg>');
   }
-  const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
-  if (!file.startsWith(root + path.sep)) { res.writeHead(403); return res.end(); }
+  if (pathname === '/components') {
+    res.writeHead(308, {Location: '/components/'});
+    return res.end();
+  }
+  const componentFile = componentFiles.get(pathname);
+  const directory = componentFile ? componentAssets : root;
+  const file = componentFile
+    ? path.join(directory, componentFile)
+    : path.resolve(directory, '.' + (pathname === '/' ? '/index.html' : pathname));
+  if (!file.startsWith(directory + path.sep)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (error, data) => {
     res.writeHead(error ? 404 : 200, {'Content-Type':types[path.extname(file)] || 'application/octet-stream','Cache-Control':'no-store'});
     res.end(error ? 'Not found' : data);

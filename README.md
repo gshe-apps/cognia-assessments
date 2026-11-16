@@ -2,6 +2,9 @@
 
 ## Design-system authority
 
+- [CAP Figma design file](https://www.figma.com/design/F4dHxlPbkkc41wE2qbB0Db/Cognia-Assessments-Platform--CAP-)
+- [Cognia Design System source and component reference](https://github.com/gshe-apps/cognia-design-plugin/tree/main/skills/cognia-design)
+
 Cognia Design 1.2.0 governs visual work. Read `AGENTS.md` (or `CLAUDE.md`) and the full rules in `design-system/cognia/` before styling. Historical visual approvals no longer override the design system; interaction flows remain protected. Legacy CSS is in the `cap-legacy` layer, so normal semantic styles win without `!important` or artificial ID selectors. Run the cognia-design plugin check (`node <plugin>/skills/cognia-design/checks/check-project.cjs`), `node scripts/check-design-system.cjs` and `node verify-homepages.cjs` before delivery. The plugin check needs Playwright: `npm i --no-save playwright && npx playwright install chromium`. GitHub runs all three against the latest plugin on every push, and Pages only deploys `main` when they pass (setup: add the `COGNIA_DESIGN_PLUGIN_TOKEN` secret, see `.github/workflows/design-system-check.yml`). The design-system workflow runs these checks after this local change is published.
 
 Interactive wireframes for the Summer 2027 Assessment Hub. This repo is the source of truth. The screens were first exported from a Claude Design canvas, which was retired on 6 November 2026; make every change here.
@@ -53,6 +56,8 @@ Requires Node.js. No dependency installation is needed.
 ```sh
 node serve.cjs
 ```
+
+Open [the CAP role picker](http://127.0.0.1:4174/) to explore the four roles, or [the Cognia component gallery](http://127.0.0.1:4174/components/) to try all components and variants in the shared design plugin's HTML reference. The gallery is served from the plugin copy tracked in this repository.
 
 Open http://127.0.0.1:4174/CAP-T01-Overview.dc.html for the teacher flow or http://127.0.0.1:4174/STU2-SignIn.dc.html for the student flow (Option 2; Option 1 was retired in November 2026). Progress is stored locally in the browser. The account menu switches Basic / Classroom+; AI drafting uses labelled sample content, not an external AI service.
 

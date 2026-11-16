@@ -1,5 +1,7 @@
 # CAP design authority
 
+Use the [CAP Figma file](https://www.figma.com/design/F4dHxlPbkkc41wE2qbB0Db/Cognia-Assessments-Platform--CAP-) for design context and the [Cognia Design System](https://github.com/gshe-apps/cognia-design-plugin/tree/main/skills/cognia-design) for shared components, tokens, and rules in future CAP designs. The design system's interactive HTML reference is available at `/components/` when the local CAP preview is running.
+
 Use the installed Cognia Design 1.2.0 skill for all CAP UI work. Its documented tokens, type scale, components, spacing, themes and logos take priority over legacy prototype appearance. Read the complete skill documentation before implementation.
 
 The user authorized removing historical visual locks and bringing existing screens into the design system. Do not treat an earlier approval of colour, typography, card styling, header backgrounds or CSS as a reason to retain a conflicting visual rule. Preserve approved navigation destinations, step order, interactions, validation, data, persistence and permissions. Do not publish or push without explicit user approval.

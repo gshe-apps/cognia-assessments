@@ -3,16 +3,19 @@
 (() => {
   const live = window.CogniaLive;
   if (!live) return;
+  const calendar = window.capOverviewCalendar;
+  const event = calendar?.event?.status === 'check' ? calendar.event : null;
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
   const initials = (name) => String(name || '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
-  const MAX_Q = [4, 4, 1, 1];
+  const MAX_Q = event ? event.questions.map(q => q.marks) : [4, 4, 1, 1];
   // 12 Nov: some learners have profile photos (the rest keep initials).
   const PHOTOS = { 'Ava Patel': 'assets/avatars/learner-maria-gonzalez.png', 'Noah Kim': 'assets/avatars/learner-jack-alfredo.png', 'Zoe Martin': 'assets/avatars/learner-kathrine-benedict.png' };
   let sortKey = null, sortDir = 1;   // table sort (column header buttons)
   // Right-hand card stack (12 Nov): works like the admin Overview detail deck. The last card in `deck` is in
   // front and open; clicking a card behind lifts it out and drops it into the front slot.
-  let deck = ['performance', 'insights', 'details', 'live'], deckPrev = null, deckTimer = 0;
+  let deck = event ? ['insights', 'details', 'performance'] : ['performance', 'insights', 'details', 'live'];
+  let deckPrev = null, deckTimer = 0;
   const STRIP = 44;                  // visible height of each card behind the front one
   let searchOpen = false;
 
@@ -34,6 +37,12 @@
   }
 
   function rows() {
+    if (event) {
+      const max = MAX_Q.reduce((a,b)=>a+b,0);
+      return event.scores.map(([name, byQuestion]) => ({
+        name, byQuestion, max, status:'submitted', marks:byQuestion.reduce((a,b)=>a+b,0)
+      }));
+    }
     const data = sample ? sampleRecords() : records;
     return live.ROSTER.map((s) => Object.assign({ passcode: s.passcode, name: s.name, status: 'none' }, data[s.passcode] || {}, { name: s.name }));
   }
@@ -86,6 +95,17 @@
     const submitted = list.filter((r) => r.status === 'submitted');
     const total = list.length;
     const avg = submitted.length ? Math.round(submitted.reduce((a, r) => a + pct(r.marks, r.max), 0) / submitted.length) : null;
+
+    if (event) {
+      page.querySelector('.rr-title h1').textContent = event.title;
+      page.querySelector('.rr-kicker').textContent = event.classLabel + ' · ' + event.type + ' · Sample results';
+      page.querySelector('[data-stack="live"]')?.remove();
+      const date = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(calendar.date(event));
+      const details = [['Class',event.classLabel],['Subject',calendar.subject],['Session date',date],
+        ['Learners',total],['Number of items',MAX_Q.length],['Total points',MAX_Q.reduce((a,b)=>a+b,0)]];
+      page.querySelector('.rr-details').innerHTML = '<dl>' + details.map(([label,value]) =>
+        '<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>').join('') + '</dl>';
+    }
 
     // Live session card
     const slot = page.querySelector('[data-live-panel], [data-live-slot]');
@@ -260,11 +280,11 @@
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && e.target.id === 'resultSearch' && !e.target.value) { searchOpen = false; apply(); document.querySelector('[data-result-search]')?.focus({ preventScroll: true }); return; }
-    if (e.shiftKey && (e.key === 'D' || e.key === 'd') && !e.target.closest('input, textarea')) { sample = !sample; apply(); }
+    if (!event && e.shiftKey && (e.key === 'D' || e.key === 'd') && !e.target.closest('input, textarea')) { sample = !sample; apply(); }
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    live.watch(onData);
+    if (event) apply(); else live.watch(onData);
     const root = document.querySelector('x-dc');
     // Re-apply after each Canvas redraw (menus, role switcher).
     if (root) new MutationObserver(() => { if (!document.querySelector('[data-live-panel]')) apply(); }).observe(root, { childList: true });

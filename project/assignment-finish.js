@@ -2,9 +2,18 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const file=location.pathname.split('/').pop(),confirm=file==='CAP-T09-ConfirmAssignment.dc.html',success=file==='CAP-T10-Scheduled.dc.html';if(!confirm&&!success)return;
  const read=(key,f={})=>{try{return JSON.parse(localStorage.getItem(key))||f}catch{return f}},esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const draft=read('cogniaAssessmentTestsV1',{tests:[]}),m=success?read('cogniaScheduledAssessmentTests',draft):draft,d=read('cogniaDeliverySessions',{recipients:[],sessions:[]}),tests=m.tests||[],t=tests.find(t=>t.id===m.active)||tests[0]||{},qs=tests.flatMap(t=>t.questions||[]),marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),sessions=d.sessions||[],students=d.recipients?.length||0,settings=m.settings||{};
+ const calendar=window.capOverviewCalendar, event=confirm&&calendar?.event?.status==='pending'?calendar.event:null;
+ const draft=read('cogniaAssessmentTestsV1',{tests:[]}),m=event?calendar.assessment(event):success?read('cogniaScheduledAssessmentTests',draft):draft;
+ let d=read('cogniaDeliverySessions',{recipients:[],sessions:[]});
+ if(event){
+  const day=calendar.date(event), date=[day.getFullYear(),day.getMonth()+1,day.getDate()].map(n=>String(n).padStart(2,'0')).join('-');
+  const time=minutes=>String(Math.floor(minutes/60)).padStart(2,'0')+':'+String(minutes%60).padStart(2,'0');
+  const recipients=Array.from({length:event.learnerCount},(_,i)=>String(i+1));
+  d={recipients,sessions:[{name:'Session 1',opens:date+'T'+time(event.start),due:date+'T'+time(event.end)}]};
+ }
+ const tests=m.tests||[],t=tests.find(t=>t.id===m.active)||tests[0]||{},qs=tests.flatMap(t=>t.questions||[]),marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),sessions=d.sessions||[],students=d.recipients?.length||0,settings=m.settings||{};
  const classLabel=delivery=>(delivery.classIds?.length?delivery.classIds:[delivery.classId]).map(id=>id==='5b'?'Grade 5B':'Grade 5A').join(', ');
- const className=classLabel(d);
+ const className=event?.classLabel||classLabel(d);
  const svg=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>',icons={file:svg('<path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8M8 16h6"/>'),users:svg('<circle cx="9" cy="7" r="3"/><circle cx="18" cy="8" r="2"/><path d="M2 21v-3a7 7 0 0 1 14 0v3M17 13a5 5 0 0 1 5 5v3"/>'),calendar:svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18"/>'),clock:svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),check:svg('<path d="m6 12 4 4 8-9"/>'),circle:svg('<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>'),pen:svg('<path d="m4 20 1-5L17 3l4 4L9 19zM14 6l4 4"/>'),bookmark:svg('<path d="M5 3h14v18l-7-5-7 5z"/>'),mail:svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>'),chart:svg('<path d="M5 20v-6h3v6zM11 20V9h3v11zM17 20V4h3v16z"/>')};
  const dates=value=>{if(!value)return 'Not set';const date=new Date(value.slice(0,10)+'T12:00:00');return Number.isNaN(date.getTime())?'Not set':new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).format(date)};
  const questionRows=()=>qs.map((q,i)=>`<div class="af-question-row"><span>${i+1}</span><p>${esc(q.stem)}</p><span class="af-question-type badge badge-secondary">${esc(q.displayType||({'Text entry':'Short answer','Extended text':'Extended response'}[q.type]||q.type))}</span><span class="badge badge-secondary">${q.marks||1} ${(q.marks||1)===1?'point':'points'}</span></div>`).join('')||'<p class="af-muted">No questions have been added.</p>';
@@ -70,6 +79,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   const more=grid.querySelector('.af-more');if(more)more.onclick=()=>{expanded=!expanded;render();grid.querySelector('.af-more')?.focus()};
  };
  render();
+ if(event){
+  const backLink=page.querySelector('.af-title-row a');
+  if(backLink){backLink.href='CAP-T01-Overview.dc.html';backLink.setAttribute('aria-label','Back to Overview');}
+  return;
+ }
  const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.textContent='Create assessment';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
  }
 

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   for(const row of document.querySelectorAll('#libraryList .question-card')){
    const type=row.querySelector('.uc-bank-tags .tiny, .row .tiny')?.textContent||'';
    const stem=row.querySelector('h4')?.textContent.toLowerCase()||'';
-   const matches=row.dataset.itemBank===questionFilter.bank&&stem.includes(questionFilter.term)
+   const matches=(window.capBuilderBankMatch?window.capBuilderBankMatch(row):row.dataset.itemBank===questionFilter.bank)&&stem.includes(questionFilter.term)
     &&(selectedType==='All types'||type===selectedType)
     &&(!hasScopeFilters||matchesScope)
     &&(!questionFilter.standard||row.dataset.bankStandard===questionFilter.standard)
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const empty=document.querySelector('[data-bank-empty]');
   if(empty)empty.hidden=count>0;
  }
+ if(isQuestions)window.capFilterBuilderQuestions=filterQuestions;
  document.addEventListener('input',e=>{if(isQuestions&&e.target.id==='search'){questionFilter.term=e.target.value.toLowerCase();filterQuestions();}});
  document.addEventListener('change',e=>{const fields={bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'};if(isQuestions&&fields[e.target.id]){questionFilter[fields[e.target.id]]=e.target.value;filterQuestions();}if(isQuestions&&e.target.id==='typeFilter'){questionFilter.type=e.target.value;filterQuestions();}});
  if(isQuestions)document.addEventListener('click',e=>{

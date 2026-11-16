@@ -1931,7 +1931,7 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .cl-classes { display:flex; flex-direction:column; gap:var(--space-6); }
 .cl-folder { display:flex; flex-direction:column; }
 /* Tabs (9 Nov): one width for every folder tab (fits the longest short name), text centred vertically. */
-.cl-tab { align-self:flex-start; box-sizing:border-box; display:flex; align-items:center; width:calc(var(--space-16) * 2); height:var(--space-10); padding:0 var(--space-3); white-space:nowrap; overflow:hidden; border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:var(--card); color:var(--card-foreground); }
+.cl-tab { align-self:flex-start; box-sizing:border-box; display:flex; align-items:center; width:calc(var(--space-20) * 2); height:var(--space-10); padding:0 var(--space-3); white-space:nowrap; overflow:hidden; border-radius:var(--radius-xl) var(--radius-xl) 0 0; background:var(--card); color:var(--card-foreground); }
 .cl-folder.is-current .cl-tab,.cl-current-head { background:var(--accent-400); color:var(--primary-foreground); }
 .cl-page .cl-folder.is-current .cl-current-head .cl-class-title { color:var(--primary-foreground); }
 .cl-current { display:flex; flex-direction:column; border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); background:var(--card); overflow:hidden; }
@@ -1970,12 +1970,26 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 
 /* Other classes: overlapping folder stack. Every folder is full height; each one sits one tab-height below the one behind it,
    so the folders behind show only their tab and a strip of their top edge. Only the front folder shows its title. */
-/* 12 Nov: stack sits 32px under the selected class (24px column gap + 8px), Create class follows it. */
-.cl-stack { --tab-h:40px; --folder-h:104px; display:flex; flex-direction:column; margin-top:var(--space-2); }
+/* 12 Nov: stack sits 32px under the selected class (24px column gap + 8px). 16 Nov: Create class moved to the top of the pane. */
+.cl-stack { --tab-h:64px; --folder-h:104px; display:flex; flex-direction:column; margin-top:var(--space-2); }
 .cl-stack-item { position:relative; display:flex; flex-direction:column; width:100%; padding:0; border:0; background:transparent; color:var(--card-foreground); font-family:var(--font-sans); text-align:left; cursor:pointer; transition:all 200ms; }
 .cl-stack-item+.cl-stack-item { margin-top:calc(var(--folder-h) * -1); }
 /* Stack tabs (9 Nov) carry the short class name; width and centring come from .cl-tab. */
 .cl-stack-item .cl-tab { height:var(--tab-h); }
+/* 16 Nov: stack tabs show the class code as 14px muted subtext with the class name under it. */
+.cl-tab-stack { flex-direction:column; align-items:flex-start; justify-content:center; }
+.cl-tab-stack>span { max-width:100%; overflow:hidden; text-overflow:ellipsis; }
+.cl-page .cl-tab-title { font-weight:var(--weight-semibold); }
+/* 16 Nov (2): the front folder of the stack is laid out like the selected class (code-only tab, a header band with
+   the class name and status) but in monochrome, since it is not selected. The folders behind show only their tabs. */
+.cl-stack-head { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); }
+.cl-stack-item.is-front .cl-tab { background:var(--secondary); color:var(--secondary-foreground); }
+.cl-stack-item.is-front .cl-tab-title { display:none; }
+.cl-stack-item.is-front .cl-stack-body { height:auto; min-height:calc(var(--folder-h) + var(--space-10)); padding:0; background:var(--card); }
+.cl-stack-item.is-front .cl-stack-body>* { visibility:visible; }
+.cl-stack-item.is-front .cl-stack-head { align-self:stretch; padding:var(--space-4); background:var(--secondary); border-radius:0 var(--radius-xl) 0 0; }
+.cl-page .cl-stack-item.is-front .cl-class-title { color:var(--muted-foreground); }
+.cl-stack-item.is-front .cl-stack-head .badge { background-color:var(--opacity-neutral-10); color:var(--muted-foreground); }
 .cl-stack-body { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2); box-sizing:border-box; height:var(--folder-h); padding:var(--space-4); border-radius:0 var(--radius-xl) 0 0; background:var(--card); }
 .cl-stack-item { filter:drop-shadow(0 calc(var(--space-1) * -1) var(--space-1) var(--opacity-primary-10)); }
 /* Folder stack (9 Nov): every folder shows only its tab code; the title and badge appear only while a folder rises into place. */
@@ -2023,9 +2037,11 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .cl-table-card { overflow-x:auto; }
 .cl-table { min-width:800px; --table-columns:minmax(176px,1.4fr) minmax(144px,0.9fr) minmax(264px,2fr) minmax(136px,0.9fr) minmax(136px,1fr); }
 .cl-learner { display:flex; align-items:center; gap:var(--space-3); min-width:0; }
-.cl-progress { display:grid; grid-template-columns:40px minmax(96px,1fr) auto; align-items:center; gap:var(--space-3); }
+/* 16 Nov: fixed side columns (percentage right-aligned, count left-aligned) so the gap either side of the bar is always 12px. */
+.cl-progress { display:grid; grid-template-columns:var(--space-10) minmax(96px,1fr) var(--space-16); align-items:center; gap:var(--space-3); }
 /* The plugin table makes every cell flex; the progress cell keeps its own grid so the bar has width (9 Nov). */
 .cl-table .cl-progress[role="cell"] { display:grid; }
+.cl-progress>span:first-child { text-align:right; }
 .cl-progress-track { height:var(--space-1); border-radius:var(--rounded-full); background:var(--secondary); overflow:hidden; }
 .cl-progress-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-300); }
 .cl-muted { color:var(--muted-foreground); }
@@ -4834,11 +4850,6 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page:not(.uc-locked) .approved-bank-heading { min-height: 0; margin: 0 0 var(--space-3); padding: 0; }
 
 .uc-page:not(.uc-locked) .library > :is(.uc-bank-toolbar, #libraryList) { margin-inline: 0; }
-.uc-bank-dropdown > .tab { display: inline-flex; align-items: center; gap: var(--space-2); }
-.uc-bank-dropdown > .menu { inline-size: max-content; }
-.uc-bank-dropdown .menu-item { justify-content: space-between; gap: var(--space-4); }
-.uc-bank-dropdown svg { inline-size: var(--space-4); block-size: var(--space-4); }
-.uc-bank-dropdown .menu-item:not([aria-current="true"]) svg { visibility: hidden; }
 .uc-page:not(.uc-locked) .uc-bank-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 0 var(--space-2); margin: 0; padding-bottom: var(--space-2); }
 .uc-page:not(.uc-locked) .uc-bank-count { font-size: var(--text-body-small); margin: 0; padding-left: var(--space-3); }
 .uc-page:not(.uc-locked) .uc-extra-filters summary svg { width: var(--space-4); height: var(--space-4); }
@@ -5327,7 +5338,8 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-iq .cie-stepper .input { min-height:48px; }
 .uc-iq .cie-option { min-height:52px; }
 .uc-iq .uc-iq-option-status { padding-right:var(--space-2); }
-.uc-iq .uc-iq-mistext { padding-inline:0; }
+/* 16 Nov: the misconception button keeps the button's own 12px side padding so its hover fill clears the text. */
+.uc-iq .uc-iq-mistext { padding-inline:var(--space-3); }
 /* Item analysis panel: 32px top padding so its header lines up with the form, 24px semibold title. */
 .uc-page:not(.uc-locked) .buildergrid > div > .uc-iq-panel { padding-top:var(--space-8); }
 .uc-iq-panel .uc-iq-panel-head .card-title { font-size:var(--text-heading); font-weight:var(--weight-semibold); }
@@ -5384,12 +5396,24 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .ib-bank-switch { display:inline-flex; align-items:center; gap:var(--space-2); margin:0 calc(var(--space-2) * -1); padding:var(--space-1) var(--space-2); border:0; border-radius:var(--radius); background:transparent; color:inherit; font:inherit; cursor:pointer; transition:background-color var(--duration); }
 .ib-bank-switch:hover { background-image:linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 .ib-bank-switch svg { width:24px; height:24px; flex:none; }
-.ib-bank-dialog.dialog { width:min(520px, calc(100vw - var(--space-8))); height:min(640px, calc(100vh - var(--space-16))); }
-.ib-bank-list { gap:var(--space-6); }
-.ib-bank-group { display:flex; flex-direction:column; gap:var(--space-2); }
-.ib-bank-option { width:100%; padding:var(--space-3) var(--space-4); border:0; background:transparent; text-align:left; font:inherit; }
-.ib-bank-option[aria-current="true"] { background-color:var(--secondary); }
+.ib-bank-dialog.dialog { width:min(640px, calc(100vw - var(--space-8))); max-width:none; height:min(640px, calc(100vh - var(--space-16))); }
+/* 16 Nov: the bank groups are a toggle group under the search field; the banks sit in one white list,
+   the same as the assessment library modal (white rows, a line between them, 12px corners). */
+.ib-bank-filters { display:flex; flex-direction:column; gap:var(--space-3); }
+.ib-bank-body { flex:1; }
+.ib-bank-list { margin:0; padding:0; list-style:none; border-radius:var(--radius-xl); overflow:hidden; }
+.ib-bank-list > li { margin:0; }
+.ib-bank-list > li + li { border-top:1px solid var(--border); }
+.ib-bank-option { box-sizing:border-box; width:100%; padding:var(--space-3) var(--space-4); border:0; border-radius:0; background-color:var(--card); color:var(--card-foreground); text-align:left; font:inherit; cursor:pointer; transition:background-color 200ms; }
+.ib-bank-option:hover { background-image:linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.ib-bank-option:focus-visible, .ib-bank-option:focus-within { outline:2px solid var(--ring); outline-offset:-2px; }
+.ib-bank-option[aria-current="true"], .ib-bank-option:has(.checkbox:checked) { background-color:var(--secondary); }
 .ib-bank-option .item-actions svg { width:16px; height:16px; }
+.ib-bank-dialog .dialog-footer .field-error { margin-right:auto; align-self:center; }
+/* 16 Nov: Add your items shows the banks in use as a 16px heading with the same switcher as the Item banks page. */
+.uc-banks-in-use { margin:0 0 var(--space-2); }
+.uc-page .uc-banks-in-use button.uc-bank-switch { margin:0; font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:var(--lh-snug); }
+.uc-banks-in-use .ib-bank-switch svg { width:16px; height:16px; }
 @media (prefers-reduced-motion:reduce) { .ib-bank-switch { transition:none; } }
 
 /* 13 Nov: Review and confirm opened from an assigned assessment (assignment-finish.js): back chevron, no floating bar. */
@@ -5400,3 +5424,16 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 /* 13 Nov: Item banks table view, the Item column is one line with an ellipsis (the full stem is in the row's label). */
 .ib-cellv { align-items:stretch; min-width:0; }
 .ib-gc .ib-rowlink { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; -webkit-line-clamp:unset; }
+
+/* 16 Nov: Tests table groups tests under their assessment (reference: grouped rows with indented children).
+   The assessment row is a 16px semibold label with a muted test count; its tests are indented under it. */
+.ar-table .ar-group-row th[colspan] { text-align:start; vertical-align:middle; font-size:var(--text-body-small); font-weight:var(--weight-regular); color:var(--muted-foreground); }
+.ar-table .ar-group-row .ar-group-title { color:var(--foreground); font-size:var(--text-body-base); font-weight:var(--weight-semibold); }
+.ar-table .ar-test-row td:first-child { padding-inline-start:var(--space-10); }
+
+/* 16 Nov: Item analysis. Rows to improve show the title with an info tooltip; the warning icon sits on a light
+   orange circle; the learning component radios use 14px labels. */
+.uc-iq-title-line { display:flex; align-items:center; gap:var(--space-1); min-height:var(--space-6); }
+.uc-iq-info .tooltip { text-align:left; white-space:normal; }
+.uc-iq-status.uc-iq-status-warn { justify-content:center; width:var(--space-6); height:var(--space-6); border-radius:var(--rounded-full); background-color:var(--warning-light); }
+.uc-iq-checklist label.check { font-size:var(--text-body-small); }

@@ -10,7 +10,7 @@
    host.querySelectorAll('.tf-test-disclosure,.extra-test,.assessment-test-list,.uc-help').forEach(el=>{const error=el.querySelector('#test-flow-error');if(error)host.append(error);el.remove()});
   }
   document.querySelectorAll('.uc-page .question-card h4').forEach(title=>{title.title=title.textContent.trim()});
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}if(!tags.querySelector('.bank-row-difficulty')){const badge=make('<span class="bank-row-difficulty badge badge-secondary"></span>');badge.textContent='DOK '+row.dataset.bankDok;tags.append(badge)}});
+  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}if(!tags.querySelector('.bank-row-difficulty')){const badge=make('<span class="bank-row-difficulty badge badge-'+({'1':'success','2':'warning','3':'destructive'}[row.dataset.bankDok]||'secondary')+'"></span>');badge.textContent='DOK '+row.dataset.bankDok;tags.append(badge)}});
   const page=document.querySelector('main>.page'),methods=page?.querySelector('.qc-methods');if(!methods||page.querySelector('.uc-setup-intro'))return;
   observer.disconnect();page.classList.add('uc-page');document.body.classList.add('unified-create-screen');document.body.classList.remove('cap-monochrome');
   const m=read(),t=m?.tests?.find(t=>t.id===m.active)||m?.tests?.[0];if(!t){observe();return;}
@@ -86,19 +86,6 @@
    const manual=button.dataset.qcMethod==='manual';
    button.replaceChildren(document.createTextNode(manual?'Create manually':'Use item banks'));
   });
-  const bankTrigger=methods.querySelector('[data-qc-method="bank"]');
-  const bankDropdown=make('<div class="dropdown uc-bank-dropdown"></div>');
-  bankTrigger.before(bankDropdown);
-  bankDropdown.append(bankTrigger);
-  bankTrigger.setAttribute('aria-haspopup','menu');
-  bankTrigger.setAttribute('aria-expanded','false');
-  bankTrigger.setAttribute('aria-controls','builder-item-banks');
-  bankTrigger.insertAdjacentHTML('beforeend',icon('<path d="m6 9 6 6 6-6"/>'));
-  const bankMenu=make(`<div class="menu" id="builder-item-banks" role="menu" aria-label="Item banks" hidden>
-   <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-builder-bank="cognia" aria-current="true"><span>Cognia bank</span>${icon('<path d="m20 6-11 11-5-5"/>')}</button>
-   <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-builder-bank="teacher"><span>Educator-created bank</span>${icon('<path d="m20 6-11 11-5-5"/>')}</button>
-  </div>`);
-  bankDropdown.append(bankMenu);
   /* Reuse the runtime's existing multiple-choice form and validation. The old
      conditional drawer is detached by the legacy page composition. */
   const inst=window.cogniaPreview;
@@ -121,6 +108,28 @@
    control.append(select);
   });
   library.querySelector('.approved-bank-heading')?.after(toolbar);if(!toolbar.isConnected)library.prepend(toolbar);
+  /* 16 Nov: Use item banks has no dropdown. The banks in use show as a heading above the items, with a
+     chevrons-up-down switcher that opens the item bank picker (item-bank-switcher.js), where several banks
+     can be ticked and applied with Use. Prototype only: Cognia banks hold the Cognia rows, My banks the
+     educator-created rows, and a grade bank keeps the items whose standard starts with that grade. */
+  const picker=window.capBankPicker;
+  if(picker&&!library.querySelector('.uc-banks-in-use')){
+   const BANK_KEY='cogniaBuilderBanksV1',rowKey={cognia:'cognia',mine:'teacher',specialist:'specialist'};
+   let chosen=['cognia-classroom'];
+   try{const saved=JSON.parse(sessionStorage.getItem(BANK_KEY)||'null');if(Array.isArray(saved)&&saved.length)chosen=saved.filter(id=>picker.banks.some(b=>b.id===id))}catch(e){}
+   if(!chosen.length)chosen=['cognia-classroom'];
+   const gradeOf=b=>{const m=(b.match||[]).join(' ').match(/Grade (\d)/g);return m?m.map(x=>x.slice(6)):null};
+   const inBank=(b,row)=>{if(row.dataset.itemBank!==rowKey[b.group])return false;const grades=gradeOf(b);if(!grades)return true;const std=row.dataset.bankStandard||'';return grades.some(g=>std.startsWith(g+'.')||std.includes('.'+g+'.'))};
+   const bankRows=()=>[...document.querySelectorAll('#libraryList .question-card')];
+   window.capBuilderBankMatch=row=>chosen.some(id=>{const b=picker.banks.find(x=>x.id===id);return b&&inBank(b,row)});
+   const source=make('<div class="uc-banks-in-use" role="heading" aria-level="2"><button type="button" class="ib-bank-switch uc-bank-switch" aria-haspopup="dialog"><span data-bank-names></span>'+icon('<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>')+'</button></div>');
+   const switcher=source.querySelector('button');
+   const label=()=>{const names=chosen.map(id=>picker.banks.find(b=>b.id===id)?.name).filter(Boolean);source.querySelector('[data-bank-names]').textContent=names[0]+(names.length>1?' + '+(names.length-1)+' more':'');switcher.setAttribute('aria-label','Item banks: '+names.join(', ')+'. Change item banks')};
+   label();
+   switcher.onclick=()=>picker.open({multi:true,trigger:switcher,selected:chosen,countFor:b=>bankRows().filter(row=>inBank(b,row)).length,onPick:ids=>{chosen=ids;try{sessionStorage.setItem(BANK_KEY,JSON.stringify(ids))}catch(e){}label();window.capFilterBuilderQuestions?.()}});
+   library.prepend(source);
+   window.capFilterBuilderQuestions?.();
+  }
   library.querySelector('#libraryList').after(make('<p class="text-body-small text-muted-foreground" data-bank-empty hidden>No items match your search or filters.</p>'));
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
   const bankHeading=library.querySelector('.approved-bank-heading')||make('<div class="approved-bank-heading"><h2></h2></div>');

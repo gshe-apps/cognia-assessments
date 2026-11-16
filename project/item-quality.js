@@ -291,9 +291,17 @@
    if (c.id === 'components') extra = `<div class="uc-iq-checklist radio-group" role="radiogroup" aria-label="Learning component">${c.components.map((n, k) => `<label class="check text-body-small"><input class="radio" type="radio" name="uc-iq-comp" data-iq-comp="${esc(n)}"${S.components.includes(n) ? ' checked' : ''}> ${esc(n)}${k === c.suggested && !S.components.length ? ' <span class="badge badge-info">Suggested</span>' : ''}</label>`).join('')}</div>`;
    if (c.id === 'reading' && S.suggest) extra = `<div class="item item-muted uc-iq-suggest"><div class="item-content"><span class="item-title uc-iq-inline">${icon('sparkles')}Suggested wording</span><span class="item-description">${esc(S.suggest)}</span><div class="uc-iq-btnrow"><button type="button" class="btn btn-sm" data-iq="applySuggest">Use this</button><button type="button" class="btn btn-ghost btn-sm" data-iq="suggestToSupport">Add as language support</button><button type="button" class="btn btn-ghost btn-sm" data-iq="dismissSuggest">Dismiss</button></div></div></div>`;
    if (c.id === 'reading' && S.undoStem) extra += `<div class="uc-iq-btnrow"><button type="button" class="btn btn-ghost btn-sm" data-iq="undoStem">${icon('undo')}Undo rewrite</button></div>`;
-   /* The action sits at the right of the row and shows on hover or focus; rows with an action get a hover state. */
-   const action = c.action && !(c.id === 'reading' && S.suggest) ? `<div class="item-actions uc-iq-hover-action"><button type="button" class="btn btn-ghost btn-sm" data-iq-action="${c.action}"${c.target != null ? ` data-target="${c.target}"` : ''}>${c.action === 'suggest' ? icon('sparkles') : ''}${esc(c.actionLabel)}</button></div>` : '';
-   return `<div class="item uc-iq-check${action ? ' uc-iq-check-action' : ''}" data-check="${c.id}"><span class="uc-iq-status">${statusIcon(c.status)}</span><div class="item-content"><span class="item-title">${esc(c.title)}</span><span class="item-description">${esc(c.desc)}</span>${extra}</div>${action}</div>`;
+   /* The action sits at the right of the row and shows on hover or focus; rows with an action get a hover state.
+      16 Nov: every action reads "Fix" with the AI icon; the full action stays in its accessible name. */
+   const action = c.action && !(c.id === 'reading' && S.suggest) ? `<div class="item-actions uc-iq-hover-action"><button type="button" class="btn btn-ghost btn-sm" data-iq-action="${c.action}"${c.target != null ? ` data-target="${c.target}"` : ''} aria-label="Fix: ${esc(c.actionLabel)}">${icon('sparkles')}Fix</button></div>` : '';
+   /* 16 Nov: rows still to improve keep only their title; the explanation moves into an info tooltip, and the
+      warning icon sits on a light orange circle. Passed rows keep their description. */
+   const issue = c.status !== 'pass';
+   const tipId = `uc-iq-tip-${c.id}`;
+   const title = issue && c.desc
+    ? `<span class="uc-iq-title-line"><span class="item-title">${esc(c.title)}</span><span class="tooltip-wrap uc-iq-info"><button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="More about: ${esc(c.title)}" aria-describedby="${tipId}">${icon('info', 'text-info-value')}</button><span class="tooltip" role="tooltip" id="${tipId}">${esc(c.desc)}</span></span></span>`
+    : `<span class="item-title">${esc(c.title)}</span><span class="item-description">${esc(c.desc)}</span>`;
+   return `<div class="item uc-iq-check${action ? ' uc-iq-check-action' : ''}" data-check="${c.id}"><span class="uc-iq-status${c.status === 'warn' ? ' uc-iq-status-warn' : ''}">${statusIcon(c.status)}</span><div class="item-content">${title}${extra}</div>${action}</div>`;
   }
 
   function analysisView() {

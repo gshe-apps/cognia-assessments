@@ -26,15 +26,19 @@
    if (element.textContent !== value) element.textContent = value;
   };
 
-  setText('[data-draft-position]', (draftIndex + 1) + ' of ' + drafts.length);
+  setText('[data-draft-position]', `Draft ${draftIndex + 1} of ${drafts.length}`);
   const title = draft?.title || 'No drafts yet';
   setText('[data-overview-draft-title]', title);
   stack.querySelector('[data-overview-draft-title]').title = title;
   const step = draft?.step === 2 ? 2 : 1;
   stack.querySelector('[data-overview-draft-progress]').hidden = !draft;
-  setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add your items') : '');
-  setText('[data-overview-draft-meta]', draft ? `Step ${step} of 4` : '');
-  stack.querySelector('.od-desk-stack').dataset.sheets = Math.min(3, Math.max(1, drafts.length));
+  setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add assessment items') : '');
+  const progress = stack.querySelector('.od-desk-draft-segments');
+  progress.setAttribute('aria-valuenow', draft ? step : 0);
+  progress.setAttribute('aria-valuetext', draft ? `Step ${step} of 4` : 'No draft');
+  progress.querySelectorAll('.progress').forEach((segment, index) => {
+   segment.toggleAttribute('data-filled', Boolean(draft && index < step));
+  });
   stack.querySelector('[data-draft-pager]').hidden = drafts.length < 2;
   stack.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
   stack.querySelector('[data-draft-step="1"]').disabled = draftIndex >= drafts.length - 1;

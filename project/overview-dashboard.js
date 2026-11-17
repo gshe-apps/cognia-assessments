@@ -13,6 +13,7 @@
    circleAlert: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
    left: '<path d="m15 18-6-6 6-6" />',
    right: '<path d="m9 18 6-6-6-6" />',
+   file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v6h6" />',
    circleDashed: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
    plus: '<path d="M5 12h14" /><path d="M12 5v14" />',
    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" />'
@@ -98,26 +99,29 @@
     <a class="btn" href="${markingQueue}">Open marking queue</a>
    </section>
    <section aria-label="Drafts" data-overview-draft-stack>
-    <div class="od-desk-stack" data-sheets="1"><div class="od-desk-papers" aria-hidden="true"></div>
      <article class="card od-desk-sheet" data-draft-sheet>
       <div class="od-desk-head">
-       <span class="icon-accent od-desk-icon od-desk-draft-icon" aria-hidden="true">${icon(statusIcon.pencil)}</span>
+       <span class="icon-accent od-desk-icon od-desk-draft-icon" aria-hidden="true">${icon('file')}</span>
        <h3 class="card-title od-desk-draft-title" data-overview-draft-title aria-live="polite"></h3>
        <div class="od-desk-pager" data-draft-pager>
         <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Previous draft" data-draft-step="-1">${icon('left')}</button>
-        <span class="text-body-small text-muted-foreground" data-draft-position></span>
+        <span class="text-body-small" data-draft-position></span>
         <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Next draft" data-draft-step="1">${icon('right')}</button>
        </div>
       </div>
       <div class="od-desk-footer">
        <div class="od-desk-draft-step" data-overview-draft-progress>
-        <p class="card-description" data-overview-draft-meta></p>
+        <div class="od-desk-draft-meter">
+         <span class="card-description">Progress</span>
+         <div class="od-desk-draft-segments" role="progressbar" aria-label="Draft progress" aria-valuemin="0" aria-valuemax="4">
+          ${Array.from({length:4}, () => '<div class="progress" aria-hidden="true"><div class="progress-indicator"></div></div>').join('')}
+         </div>
+        </div>
         <p class="text-body-small font-semibold" data-overview-draft-phase></p>
        </div>
        <a class="btn btn-ghost btn-lg od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Continue draft</a>
       </div>
      </article>
-    </div>
    </section>
    <article class="card od-desk-head od-desk-results">
     <span class="alert alert-success od-desk-icon" aria-hidden="true">${icon(statusIcon.check)}</span>

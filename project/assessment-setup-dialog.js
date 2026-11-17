@@ -5,6 +5,7 @@
  const college='College and career readiness';
  const libraryPath='Ready-to-use classroom assessments';
  const statePath='Alabama state standards';
+ const futureStatePath=statePath+' · Future Release';
  const itemPage=({subject,grade})=>subject==='English'?'CAP-T05-Reading.dc.html':grade==='8'?'CAP-T05-Algebra.dc.html':'CAP-T05-Questions.dc.html';
  const signature=({title,grade,subject,standard,pathway})=>JSON.stringify({title,grade,subject,standard:standard||'',pathway:pathway||college});
  function create({host, initial, onSubmit, onClose}) {
@@ -43,7 +44,7 @@
      <div class="cap-setup-columns">
       <div class="field">
        <label class="label" for="uc-pathway">Test pathway</label>
-       <span class="select-wrap"><select class="select" id="uc-pathway"><option>${college}</option><option>${libraryPath}</option><option>${statePath}</option></select></span>
+       <span class="select-wrap"><select class="select" id="uc-pathway"><option>${college}</option><option>${libraryPath}</option><option value="${statePath}" disabled>${futureStatePath}</option></select></span>
       </div>
       <div class="field">
        <div class="cap-setup-label-row"><label class="label" for="cap-standard-select">Standard</label><button class="cap-setup-link" type="button" data-about-standard hidden>About this standard</button></div>
@@ -131,7 +132,10 @@
   function open(settings){
    title.value=settings.title;grade.value=settings.grade;updateSubjects(settings.subject);
    alabamaContract=settings.alabamaContract??true;
-   pathway.options[2].disabled=!alabamaContract;
+   const stateOption=pathway.options[2];
+   const hasSavedStatePath=alabamaContract&&settings.pathway===statePath;
+   stateOption.disabled=!hasSavedStatePath;
+   stateOption.textContent=hasSavedStatePath?statePath:futureStatePath;
    pathway.value=settings.pathway||college;if(!pathway.value||pathway.selectedOptions[0]?.disabled)pathway.value=college;
    duration.value=settings.duration||0;description.value=settings.description??'';
    setOptional(Boolean(Number(settings.duration)||settings.description));

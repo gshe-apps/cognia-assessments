@@ -68,7 +68,7 @@
   box-shadow: none;
   min-height: 52px;
 }
-:where(.hubnav a, .navl a)[aria-current="page"] {
+:where(.navl a)[aria-current="page"] {
   border-bottom: 2px solid var(--brand-coral);
   background: transparent;}
 :where(.hubfoot, .hubfootin) { background: transparent; }
@@ -743,7 +743,7 @@ p{line-height:1.65;}
 .cap-root .hubnav a{display:block;padding:var(--space-1) var(--space-3);border-bottom:2px solid transparent;color:var(--foreground);
   font:var(--weight-semibold) var(--text-body-small)/1.45 var(--font-sans);text-decoration:none;white-space:nowrap;}
 .cap-root .hubnav a:hover{background:var(--hover-overlay);border-radius:var(--radius);}
-.cap-root .hubnav a.on{border-bottom-color:var(--brand-coral);border-radius:0;}
+
 .cap-root .hubright{justify-self:end;display:flex;align-items:center;gap:var(--space-2);}
 .cap-root .hubright .profile-trigger{border:2px solid var(--border);}
 .cap-root .hubright .plain{font:var(--weight-semibold) var(--text-body-small) var(--font-sans);color:var(--foreground);}
@@ -1576,7 +1576,7 @@ html body .cap-root .rj-media-tools b{font-family:Georgia,serif;}
 html body .cap-root.theme-assessments .workspace main.main :is(h1,h2,h3,h4,h5,h6,p,a,button,input,select,textarea,label,legend,span,small,strong,b,summary,th,td,div){font-family:"Open Sans",Arial,sans-serif;}
 
 /* Keep fixed launcher overlays anchored to the viewport and preserve the brand mark. */
-html body .cap-root .hubnav a.on{border-bottom-color:#111;}
+
 html body .cap-root .hublogo img{display:block;width:28px;height:28px;object-fit:contain;filter:none;}
 /* Full-bleed header artwork: retain the image ratio and fade its lower edge. */
 html body .cap-root.theme-assessments .workspace .main .tf-hero{overflow:visible;isolation:isolate;}
@@ -3360,7 +3360,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .uc-page .qbottom .btn { width:100%;}
 .uc-page .question-card .qbottom > div { display:none; }
 .uc-page .question-card .answer-options { display:none; }
-.uc-page .library :is(input:not(.search-input), select) { min-width:0; min-height:40px; padding:var(--space-2) var(--space-3); font-size:var(--text-body-small); border:1px solid var(--border); border-radius:var(--radius); background:var(--input-background); color:var(--foreground); }
+.uc-page .library :is(input:not(.search-input, .checkbox, .radio), select) { min-width:0; min-height:40px; padding:var(--space-2) var(--space-3); font-size:var(--text-body-small); border:1px solid var(--border); border-radius:var(--radius); background:var(--input-background); color:var(--foreground); }
 .uc-page .library .field { margin-bottom:var(--space-2); }
 .uc-page .qc-board { border:1px solid var(--border); border-radius:var(--radius); background:var(--card); padding:var(--space-6); min-height:288px; margin:0; }
 .uc-page .qc-board-header { display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); margin:0 0 var(--space-4); }
@@ -3487,7 +3487,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .uc-page .buildergrid > section { padding:var(--space-6); box-shadow:var(--shadow-sm); }
 .uc-page .approved-bank-heading { display:none; }
 .uc-bank-toolbar { grid-template-columns:minmax(0,1fr) 160px 160px; gap:var(--space-6); margin-bottom:var(--space-4); }
-.uc-page .library :is(input:not(.search-input), select),.uc-page .qc-controls :is(select, textarea, input) { min-height:48px; border:1px solid var(--ring); border-radius:var(--radius); background:var(--card); color:var(--foreground); padding:var(--space-3) var(--space-4); font-size:var(--text-body-base); }
+.uc-page .library :is(input:not(.search-input, .checkbox, .radio), select),.uc-page .qc-controls :is(select, textarea, input) { min-height:48px; border:1px solid var(--ring); border-radius:var(--radius); background:var(--card); color:var(--foreground); padding:var(--space-3) var(--space-4); font-size:var(--text-body-base); }
 .uc-page .library select { appearance:none; background-image:none; }
 .uc-page #libraryList { overflow:visible; border:0; border-radius:0; }
 .uc-page #libraryList .libcount { padding:0 0 var(--space-2); border:0; }
@@ -3692,7 +3692,7 @@ html body.item-method-reference .cap-root .btn.solid {
 .uc-bank-source{display:inline-flex;align-items:center;gap:var(--space-2);white-space:nowrap;font-size:var(--text-body-small);padding:var(--space-2) var(--space-3);background:var(--secondary);color:var(--secondary-foreground);border-radius:var(--rounded-full);}
 .uc-bank-source svg{width:24px;height:24px;stroke:var(--muted-foreground);}
 .uc-page .uc-bank-toolbar{grid-template-columns:minmax(0,1fr) 128px 128px;gap:var(--space-4);margin-bottom:var(--space-6);}
-.uc-page .library :is(input:not(.search-input), select){border:0;box-shadow:none;background:var(--secondary);min-height:48px;font-size:var(--text-body-small);}
+.uc-page .library :is(input:not(.search-input, .checkbox, .radio), select){border:0;box-shadow:none;background:var(--secondary);min-height:48px;font-size:var(--text-body-small);}
 .uc-bank-select-control{position:relative;min-width:0;}
 .uc-bank-select-control select{appearance:none;-webkit-appearance:none;padding-right:var(--space-10);}
 .uc-page .uc-extra-filters{margin-bottom:var(--space-3);}
@@ -5069,7 +5069,7 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page .qc-preview-card .qc-drag-handle { align-self: center; color: var(--muted-foreground); cursor: grab; touch-action: none; }
 .uc-page .qc-preview-card .qc-drag-handle svg { width: 16px; height: 16px; }
 .uc-page .qc-preview-list.qc-reordering, .uc-page .qc-preview-list.qc-reordering * { cursor: grabbing; user-select: none; }
-.uc-page:not(.uc-locked) .qc-preview-card.qc-dragging { position: relative; z-index: 2; opacity: 1; border-bottom-color: transparent; border-radius: var(--radius-xl); background: var(--card); box-shadow: var(--shadow-lg); }
+.uc-page:not(.uc-locked) .qc-preview-card.qc-dragging { position: relative; z-index: 10; opacity: 1; border-bottom-color: transparent; border-radius: var(--radius-xl); background: var(--card); box-shadow: var(--shadow-lg); }
 .uc-page .qc-preview-list.qc-reordering .qc-preview-card:not(.qc-dragging) .uc-card-actions { opacity: 0; }
 .uc-page:not(.uc-locked) .qc-question-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); min-width: 0; }
 .uc-page:not(.uc-locked) .qc-preview-card .qc-stem { margin: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -5633,9 +5633,7 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-iq-status.uc-iq-status-warn { justify-content:center; width:var(--space-6); height:var(--space-6); border-radius:var(--rounded-full); background-color:var(--warning-light); }
 .uc-iq-checklist label.check { font-size:var(--text-body-small); }
 
-/* 17 Nov: the selected nav item takes its hover fill from the plugin's ::before layer (8px corners, straight red
-   underline), so the older hover background on the link itself is switched off here. */
-.cap-root .hubnav a.on:hover, .cap-root .hubnav a[aria-current="page"]:hover { background: transparent; border-radius: 0; }
+/* 17 Nov: the selected nav item's red underline and 8px hover corners come from the plugin (Navigation shell). */
 
 /* 17 Nov, Create manually: answer options use the plugin input group (48px, white, no border, letter as the addon),
    and the hint sits 8px from the label and options at 14px. */
@@ -5677,14 +5675,14 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 
 /* 17 Nov: Item analysis rows. Open-row content and passed rows read at 16px; open-row text is --primary; the chevron
    shows on hover, keyboard focus or when the row is open. */
-.uc-iq-acc-panel, .uc-iq-acc-panel :is(p, .field-hint, label, .item-title, .item-description) { font-size: var(--text-body-base); color: var(--primary); }
+.uc-iq-acc-panel, .uc-iq-acc-panel :is(p, .field-hint, label, .item-title, .item-description) { font-size: var(--text-body-base); color: var(--foreground); }
 .uc-iq-panel details.accordion-item .uc-iq-check :is(.item-title, .item-description) { font-size: var(--text-body-base); }
 .uc-iq-acc-btn .uc-iq-chev { opacity: 0; transition: opacity var(--duration), transform var(--duration); }
 .uc-iq-acc-btn:is(:hover, :focus-visible) .uc-iq-chev, .uc-iq-acc-row.is-open .uc-iq-chev { opacity: 1; }
 @media (hover: none) { .uc-iq-acc-btn .uc-iq-chev { opacity: 1; } }
 
 /* 17 Nov, Use item banks: choose the banks first, then they show as filter chips above the items. */
-.library.uc-choosing-banks > :not(.uc-bank-chooser) { display: none !important; }
+.uc-page .library.uc-choosing-banks > :not(.uc-bank-chooser) { display: none; }
 .library:not(.uc-choosing-banks) > .uc-bank-chooser { display: none; }
 .library.uc-choosing-banks > .uc-bank-chips { display: none; }
 /* 17 Nov: while banks are being chosen (Use item banks only), the chooser takes the full width and the right column
@@ -5719,8 +5717,8 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 /* 17 Nov: bank type multi-select and the Next button in the floating bar. */
 .uc-bank-types-list { display: flex; flex-direction: column; gap: var(--space-3); }
 .uc-bank-types .popover { padding: var(--space-4); }
-.tf-bottom.uc-bar-choosing-banks .solid:not(.uc-bank-next) { display: none !important; }
-.tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-next { display: none !important; }
+.uc-page .tf-bottom.uc-bar-choosing-banks .solid:not(.uc-bank-next) { display: none; }
+.uc-page .tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-next { display: none; }
 /* Next uses the plugin's solid button (not the legacy .solid class, which another script relabels as Continue). */
 .uc-page .tf-bottom .btn.uc-bank-next { background-color: var(--primary); color: var(--primary-foreground); border: 0; }
 .uc-page .tf-bottom .btn.uc-bank-next:hover { background-color: var(--primary-hover); background-image: none; }
@@ -5777,7 +5775,7 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .cl-stack-body { block-size:var(--space-10); }
 .cl-stack-item + .cl-stack-item { margin-block-start:calc(var(--space-4) * -1); }
 /* The body tucks under the tab so tab and body read as one folder shape. */
-.cl-stack-tab { position:relative; z-index:1; }
+.cl-stack-tab { position:relative; z-index:10; }
 .cl-stack-body { position:relative; margin-block-start:calc(var(--space-4) * -1); }
 .cl-stack-item:last-child .cl-stack-body { padding-block-start:var(--space-8); }
 
@@ -5804,10 +5802,6 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-bank-add-item { display:inline-flex; }
 /* 17 Nov: step 2/4 section headings, Details (fields) and Settings (white card). */
 .rj-details .ad-section-title { margin:0; font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:1.5; color:var(--foreground); }
-/* 17 Nov: older prototype rules size every <input> (48px, grey fill, padding). Checkboxes now come from the plugin
-   (16px, 4px corners), so those rules are undone for .checkbox here, with enough weight to beat them. */
-body input.checkbox.checkbox.checkbox { width: 16px; height: 16px; min-width: 16px; min-height: 0; padding: 0; margin: 0; border: 1px solid var(--primary); border-radius: 4px; background-color: var(--primary-foreground); box-shadow: none; }
-body input.checkbox.checkbox.checkbox:checked { background-color: var(--primary); }
 
 /* 17 Nov (3): Settings heading outside the white card, 12px above it, same width as the card. */
 .rj-details .ad-layout > .ad-settings-title { box-sizing:border-box; width:100%; max-width:650px; margin:0 auto calc(var(--space-8) * -1 + var(--space-3)); }
@@ -5834,10 +5828,10 @@ body input.checkbox.checkbox.checkbox:checked { background-color: var(--primary)
 .cl-stack-body > * { visibility:visible; }
 .cl-stack-body > .cl-stack-full { visibility:hidden; }
 .cl-stack-item:not(:last-child) .cl-stack-body { padding-block-start:var(--space-1); }
-.cl-page .cl-stack-body > .badge { flex:none; background-color:color-mix(in srgb, var(--success-light) 60%, var(--card)); color:color-mix(in srgb, var(--success) 60%, var(--card)); }
+.cl-page .cl-stack-body > .badge { flex:none; background-color:color-mix(in srgb, var(--success-light) 50%, var(--card)); }
 .cl-stack-item:last-child .cl-stack-body { -webkit-mask-image:none; mask-image:none; }
 .cl-stack-item:last-child .cl-stack-body > .cl-stack-full { visibility:visible; color:var(--muted-foreground); }
-.tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-count-badge, .tf-bottom .uc-bank-count-badge[hidden] { display:none !important; }
+.uc-page .tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-count-badge, .uc-page .tf-bottom .uc-bank-count-badge[hidden] { display:none; }
 .tf-bottom .uc-bank-count-badge { align-self:center; }
 
 /* 17 Nov (5), Classes folders: no colour change on hover (the lift stays); folders sit almost touching (4px between
@@ -5871,7 +5865,6 @@ body input.checkbox.checkbox.checkbox:checked { background-color: var(--primary)
 .cl-stack-item:last-child .cl-stack-tab { justify-content:center; }
 .cl-stack-item:last-child .cl-stack-body { block-size:calc(var(--space-20) * 2); padding:var(--space-4); padding-inline-end:calc(var(--space-20) + var(--space-4)); }
 .cl-page .cl-stack-item:last-child .cl-stack-full { font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:1.5; color:var(--muted-foreground); }
-.cl-page .cl-stack-item:last-child .cl-stack-body > .cl-stack-full { color:color-mix(in srgb, var(--muted-foreground) 45%, var(--card)); }
 /* 17 Nov (7): hovering a folder lifts it slightly but keeps its place in the stack (no jump to the front); the last
    folder is only as tall as its content. */
 @media (hover:hover) { .cl-stack-item:hover { z-index:auto; } }

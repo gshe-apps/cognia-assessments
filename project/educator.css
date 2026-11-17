@@ -5869,3 +5869,7 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
    folder is only as tall as its content. */
 @media (hover:hover) { .cl-stack-item:hover { z-index:auto; } }
 .cl-stack-item:last-child .cl-stack-body { block-size:auto; }
+/* Classes stack: the last card covers the bodies behind it, so no second edge shows below (17 Nov 2026). */
+.cl-stack-item:last-child .cl-stack-body { min-block-size:var(--space-24); }
+/* Step 2 of 4: settings sit on a white card under their heading (17 Nov 2026). */
+.rj-details .ad-settings { padding:var(--space-6); border-radius:var(--radius-xl); background-color:var(--card); }

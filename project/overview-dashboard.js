@@ -292,7 +292,7 @@
       ${+date===+today?'<span class="badge badge-secondary">Today</span>':''}</header>
      <div class="od-week-events">${events}</div>
     </section>`;
-   }).join('') || '<p class="od-week-empty">No assessments scheduled this week.</p>';
+   }).join('') || '<div class="empty-state od-week-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></span><p class="empty-title">Nothing scheduled</p><p>No assessments are scheduled this week.</p></div>';
   }
 
   calendar.addEventListener('click', event => {

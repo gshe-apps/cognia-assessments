@@ -372,8 +372,6 @@ html body .theme-assessments .ai .ln + .ln{margin-top:calc(-1 * var(--space-1));
 .theme-assessments .sel{font:var(--weight-semibold) var(--text-body-small) var(--font-sans);color:var(--foreground);}
 .theme-assessments .sel select{border:1px solid var(--input);border-radius:var(--radius);background-color:var(--input-background);color:var(--foreground);font:var(--weight-regular) var(--text-body-small) var(--font-sans);min-height:40px;padding:0 var(--space-3);}
 .theme-assessments :is(.sel,.usel) select:focus-visible{outline:none;border-color:var(--ring);box-shadow:0 0 0 3px var(--ring);}
-.theme-assessments .chip{border:0;background:var(--accent-100);color:var(--accent-500);border-radius:var(--radius-full);font-family:var(--font-sans);}
-.theme-assessments .chip button{background:var(--card);color:var(--accent-500);}
 .theme-assessments .fld input,.theme-assessments .fld textarea{border:1px solid var(--input);border-radius:var(--radius);font-family:var(--font-sans);}
 .theme-assessments .seg{border:1px solid var(--input);border-radius:var(--radius);background:var(--card);}
 .theme-assessments .seg label{border-right-color:var(--input);}

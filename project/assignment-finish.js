@@ -65,10 +65,11 @@ document.addEventListener('DOMContentLoaded',()=>{
  };
  const render=()=>{
   const active=tests[front]||{},items=active.questions||[],others=tests.map((x,i)=>i).filter(i=>i!==front).slice(0,2);
-  grid.innerHTML='<p class="af-review-title text-body-base">'+esc(m.title||active.title||'New classroom assessment')+'</p>'
-  +'<div class="af-stack'+(others.length?' has-others':'')+'">'
-  +others.map((i,n)=>'<button type="button" class="af-test-card af-test-card-behind" style="--af-fan:'+(n+1)+'" data-af-test="'+i+'" aria-label="Show '+esc(tests[i].title||'Test '+(i+1))+'"><h3>'+esc(tests[i].title||'Test '+(i+1))+'</h3><dl>'+cardRows(tests[i])+'</dl></button>').reverse().join('')
-  +'<section class="af-test-card af-test-card-front" aria-labelledby="af-front-title"><h3 id="af-front-title">'+esc(active.title||'Test '+(front+1))+'</h3><dl>'+cardRows(active)+'</dl></section></div>'
+  /* 17 Nov: the assessment title sits inside each test card, above the test name. */
+  const eyebrow='<p class="af-card-eyebrow">'+esc(m.title||'New classroom assessment')+'</p>';
+  grid.innerHTML='<div class="af-stack'+(others.length?' has-others':'')+'">'
+  +others.map((i,n)=>'<button type="button" class="af-test-card af-test-card-behind" style="--af-fan:'+(n+1)+'" data-af-test="'+i+'" aria-label="Show '+esc(tests[i].title||'Test '+(i+1))+'">'+eyebrow+'<h3>'+esc(tests[i].title||'Test '+(i+1))+'</h3><dl>'+cardRows(tests[i])+'</dl></button>').reverse().join('')
+  +'<section class="af-test-card af-test-card-front" aria-labelledby="af-front-title">'+eyebrow+'<h3 id="af-front-title">'+esc(active.title||'Test '+(front+1))+'</h3><dl>'+cardRows(active)+'</dl></section></div>'
   +'<section class="af-items card" aria-labelledby="af-items-title"><h3 id="af-items-title" class="text-body-base font-semibold">Items included ('+items.length+')</h3>'
   +(items.length?'<ol class="af-item-list">'+items.map((q,i)=>i<visibleItems||expanded?itemRow(q,i):'').join('')+'</ol>':'<p class="af-muted">No items have been added.</p>')
   +(items.length>visibleItems?'<button type="button" class="btn btn-ghost btn-sm af-more" aria-expanded="'+expanded+'">'+(expanded?'Show fewer items':'View more items')+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m-6-6 6 6 6-6"/></svg></button>':'')+'</section>'

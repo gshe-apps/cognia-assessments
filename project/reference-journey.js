@@ -64,6 +64,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
   const standardOptions=standardChoices.map(values=>'<option value="'+esc(JSON.stringify(values))+'" '+(JSON.stringify(values)===JSON.stringify(selectedStandards)?'selected':'')+'>'+esc(values.length?values.join(', '):'No standard')+'</option>').join('');
 
   main.innerHTML=`<nav class="ad-tests" aria-label="Tests in this assessment"><div class="tabs-list" role="group">${m.tests.map(v=>`<button type="button" class="tab" data-select-test="${esc(v.id)}" aria-pressed="${v.id===t.id}">${esc(v.title)}</button>`).join('')}</div><button type="button" class="tab ad-add-test" aria-haspopup="dialog">${plus}Add another test</button></nav>`
+  +'<h2 class="ad-section-title">Details</h2>'
   +field('tf-assessment-name','Test name',`<input class="input" id="tf-assessment-name" maxlength="100" value="${esc(t.title)}" required>`)
   +field('tf-description','Description',`<textarea class="textarea" id="tf-description" maxlength="500" rows="3" placeholder="Type here">${esc(d.description||'')}</textarea>`,'Optional')
   +`<div class="ad-row ad-row-2">`
@@ -80,6 +81,8 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
   +`</div>`;
 
   const results=settings.results||'After submission';
+  /* 17 Nov: the Settings heading sits outside the white card, like Details. */
+  if(!host.querySelector('.ad-settings-title'))side.before(node('<h2 class="ad-section-title ad-settings-title">Settings</h2>'));
   side.innerHTML=choices('attempts','Attempts',[['One attempt only','1'],['2 attempts','2'],['3 attempts','3']],settings.attempts||'One attempt only','round')
   +`<fieldset class="ad-setting"><legend class="label">Show results to students</legend><div class="ad-radios">${['After submission','After all sessions close','Do not show'].map(v=>`<label class="check"><input type="radio" class="radio" name="ad-results" value="${v}" ${v===results?'checked':''}>${v}</label>`).join('')}</div></fieldset>`
   +`<div class="ad-row ad-row-even">${choices('questionOrder','Item order',[['As created','As created'],['Shuffle','Shuffle']],settings.questionOrder||'As created','group')}${choices('optionOrder','Answer option order',[['As created','As created'],['Shuffle','Shuffle']],settings.optionOrder||'As created','group')}</div>`

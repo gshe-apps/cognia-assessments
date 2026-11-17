@@ -32,9 +32,9 @@
     </div>
     <form class="cap-setup-fields" id="uc-assessment-details" aria-label="Test details" novalidate>
      <div class="field">
-      <label class="label" for="uc-title">Test title</label>
+      <label class="label" for="uc-title">Assessment title</label>
       <input class="input" id="uc-title" maxlength="90" required aria-describedby="cap-title-error">
-      <p class="field-error" id="cap-title-error" hidden>Enter a test title.</p>
+      <p class="field-error" id="cap-title-error" hidden>Enter an assessment title.</p>
      </div>
      <div class="cap-setup-columns">
       <div class="field"><label class="label" for="uc-subject">Subject</label><span class="select-wrap"><select class="select" id="uc-subject" required></select></span></div>

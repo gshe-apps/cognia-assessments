@@ -188,10 +188,7 @@ window.capReferenceAssign = page => {
   options.innerHTML=mode==='classes'?classes.filter(c=>c.name.toLowerCase().includes(term)).map(c=>`<label class="allocation-check menu-item"><input class="checkbox" type="checkbox" data-class="${c.id}" ${data.classIds.includes(c.id)?'checked':''}>${c.name}</label>`).join(''):students.filter(s=>(s.name+' '+classes.find(c=>c.id===s.classId).name).toLowerCase().includes(term)).map(s=>`<button type="button" class="menu-item" data-add-student="${s.id}">${esc(s.name)} · ${classes.find(c=>c.id===s.classId).name}${checked(s.id)?' · Selected':''}</button>`).join('');
   if (!options.innerHTML) options.innerHTML='<p class="text-body-small">No matches found.</p>';
   if (!hasClasses) {
-   rosters.innerHTML = `<div class="card empty-state allocation-roster-empty">
-    <div class="qc-empty-stack" aria-hidden="true"><span class="card"></span><span class="card"></span><span class="card">${icon('plus')}</span></div>
-    <p>Select one or more classes or learners to assign to a session.</p>
-   </div>`;
+   rosters.innerHTML = `<div class="empty-state allocation-roster-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><p class="empty-title">No learners yet</p><p>Select one or more classes or learners to assign to a session.</p></div>`;
    return;
   }
   const visible=students.filter(s=>data.classIds.includes(s.classId)&&(s.name+' '+classes.find(c=>c.id===s.classId).name).toLowerCase().includes(term));
@@ -209,7 +206,7 @@ window.capReferenceAssign = page => {
     ${open?shown.map(studentRow).join(''):''}
    </section>`;
   }).join('');
-  if (!visible.length) rosters.innerHTML='<p class="text-body-small allocation-empty">No students match your search.</p>';
+  if (!visible.length) rosters.innerHTML='<div class="empty-state allocation-empty" role="status"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No learners match</p><p>Try another name or class.</p></div>';
   host.querySelectorAll('[data-all]').forEach(el=>{const n=selected(el.dataset.all).length;el.indeterminate=n>0&&n<roster(el.dataset.all).length;});
  }
  function assignedPills(session) {

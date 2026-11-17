@@ -11,6 +11,7 @@
  /* Lucide icons, unchanged markup */
  const P = {
   chevronRight:'<path d="m9 18 6-6-6-6"/>',
+  chevronDown:'<path d="m6 9 6 6 6-6"/>',
   chevronLeft:'<path d="m15 18-6-6 6-6"/>',
   arrowLeft:'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
   circleCheck:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
@@ -20,6 +21,8 @@
   sparkles:'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>',
   refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
   volume:'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>',
+  scanSearch:'<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="m16 16-1.9-1.9"/>',
+  accessibility:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>',
   eye:'<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
   undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>',
   sort:'<path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><rect x="15" y="4" width="4" height="6" ry="2"/><path d="M17 20v-6h-2"/><path d="M15 20h4"/>',
@@ -179,6 +182,7 @@
   const blank = () => ({type:'Multiple choice', standard: settings.standard || stds[0]?.[0] || '', dok:'2', points:'1', stem:'', options:['','','',''], correct:null, mis:['','','',''], editing:[false,false,false,false], components:[], supports:{language:{on:false,text:'',words:''}, visual:{on:false}, read:{on:false}, hint:{on:false,text:''}, extension:{on:false,text:''}}, suggest:'', undoStem:'', editId:null});
   /* The runtime can rebuild this section on any state change, so the draft and view live outside the DOM. */
   let S = pending.draft || blank(), A = null, view = 'items', previewMode = 'supports';
+  const openChecks = new Set();
   const restoreView = pending.view || 'items';
 
   /* ---------- Left: the item form ---------- */
@@ -214,7 +218,7 @@
     <div class="uc-iq-labelrow"><span class="label" id="uc-iq-options-label">Answer options</span><span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-iq="shuffle" aria-label="Shuffle answer options">${icon('shuffle')}</button><span class="tooltip" role="tooltip">Shuffle items</span></span></div>
     <p class="field-hint">Select a letter to mark the correct answer. For each wrong answer, name the misconception it reveals.</p>
     <div class="uc-iq-options">${LETTERS.map((l, i) => `<div class="uc-iq-option" data-i="${i}">
-     <div class="cie-option" data-iq-row="${i}"><button type="button" class="cie-letter" data-iq-correct="${i}" aria-pressed="false" aria-label="Mark ${l} as the correct answer" title="Mark as correct">${l}</button><input class="cie-option-input" id="uc-iq-o${i}" data-iq-opt="${i}" aria-label="Option ${l}" placeholder="Option ${l}"><span class="uc-iq-option-status" data-iq-status="${i}"></span></div>
+     <div class="cie-option input-group" data-iq-row="${i}"><button type="button" class="cie-letter" data-iq-correct="${i}" aria-pressed="false" aria-label="Mark ${l} as the correct answer" title="Mark as correct">${l}</button><input class="input cie-option-input" id="uc-iq-o${i}" data-iq-opt="${i}" aria-label="Option ${l}" placeholder="Option ${l}"><span class="uc-iq-option-status" data-iq-status="${i}"></span></div>
      <div class="uc-iq-mis" data-iq-misarea="${i}" hidden>
       <span class="uc-iq-mis-icon">${icon('cornerDownRight')}</span>
       <div class="uc-iq-mis-body">
@@ -286,6 +290,10 @@
    <button type="button" class="btn btn-ghost btn-sm uc-iq-back" data-iq-view="${back}">${icon('arrowLeft')}${esc(backLabel)}</button>
    <div class="uc-iq-title-row"><h2 class="card-title" id="uc-iq-panel-title" tabindex="-1">${esc(title)}</h2>${badge}</div>${desc ? `<p class="card-description">${desc}</p>` : ''}</div>`;
 
+  /* 17 Nov: before an item is written, Item analysis and Learner supports show a centred empty state (icon with
+     no background, the panel name, one line of help) under the back button, in place of the panel header. */
+  const emptyPanel = (back, backLabel, ic, title, text) => `<div class="card-header uc-iq-panel-head"><button type="button" class="btn btn-ghost btn-sm uc-iq-back" data-iq-view="${back}">${icon('arrowLeft')}${esc(backLabel)}</button></div><div class="card-content"><div class="empty-state uc-iq-empty"><span class="empty-media" aria-hidden="true">${icon(ic)}</span><h2 class="empty-title" id="uc-iq-panel-title" tabindex="-1">${esc(title)}</h2><p>${esc(text)}</p></div></div>`;
+
   function checkRow(c) {
    let extra = '';
    if (c.id === 'components') extra = `<div class="uc-iq-checklist radio-group" role="radiogroup" aria-label="Learning component">${c.components.map((n, k) => `<label class="check text-body-small"><input class="radio" type="radio" name="uc-iq-comp" data-iq-comp="${esc(n)}"${S.components.includes(n) ? ' checked' : ''}> ${esc(n)}${k === c.suggested && !S.components.length ? ' <span class="badge badge-info">Suggested</span>' : ''}</label>`).join('')}</div>`;
@@ -297,19 +305,25 @@
    /* 16 Nov: rows still to improve keep only their title; the explanation moves into an info tooltip, and the
       warning icon sits on a light orange circle. Passed rows keep their description. */
    const issue = c.status !== 'pass';
+   /* 17 Nov: rows to improve are expandable list rows, like the Item banks analysis: orange warning icon, title and a
+      chevron (shown on hover); open one at a time for the explanation, any options and the Fix button. */
+   if (issue) {
+    const open = openChecks.has(c.id), fix = c.action && !(c.id === 'reading' && S.suggest) ? `<div class="uc-iq-btnrow"><button type="button" class="btn btn-outline btn-sm" data-iq-action="${c.action}"${c.target != null ? ` data-target="${c.target}"` : ''} aria-label="Fix: ${esc(c.actionLabel)}">${icon('sparkles')}Fix</button></div>` : '';
+    return `<div class="uc-iq-acc-row${open ? ' is-open' : ''}" data-check="${c.id}"><button type="button" class="uc-iq-acc-btn" id="uc-iq-acc-b-${c.id}" aria-expanded="${open}" aria-controls="uc-iq-acc-p-${c.id}" data-iq-toggle="${c.id}"><span class="uc-iq-status uc-iq-status-warn">${statusIcon(c.status)}</span><span class="uc-iq-acc-label">${esc(c.title)}</span>${icon('chevronDown', 'uc-iq-chev')}</button><div class="uc-iq-acc-panel" id="uc-iq-acc-p-${c.id}" role="region" aria-labelledby="uc-iq-acc-b-${c.id}"${open ? '' : ' hidden'}>${c.desc ? `<p class="field-hint">${esc(c.desc)}</p>` : ''}${extra}${fix}</div></div>`;
+   }
    const tipId = `uc-iq-tip-${c.id}`;
    const title = issue && c.desc
     ? `<span class="uc-iq-title-line"><span class="item-title">${esc(c.title)}</span><span class="tooltip-wrap uc-iq-info"><button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="More about: ${esc(c.title)}" aria-describedby="${tipId}">${icon('info', 'text-info-value')}</button><span class="tooltip" role="tooltip" id="${tipId}">${esc(c.desc)}</span></span></span>`
     : `<span class="item-title">${esc(c.title)}</span><span class="item-description">${esc(c.desc)}</span>`;
-   return `<div class="item uc-iq-check${action ? ' uc-iq-check-action' : ''}" data-check="${c.id}"><span class="uc-iq-status${c.status === 'warn' ? ' uc-iq-status-warn' : ''}">${statusIcon(c.status)}</span><div class="item-content">${title}${extra}</div>${action}</div>`;
+   return `<div class="item uc-iq-check${action ? ' uc-iq-check-action' : ''}" data-check="${c.id}">${issue ? '' : `<span class="uc-iq-status">${statusIcon(c.status)}</span>`}<div class="item-content">${title}${extra}</div>${action}</div>`;
   }
 
   function analysisView() {
-   if (!A) return head('items', 'Items added', 'Item analysis') + `<div class="card-content"><div class="empty-state"><p>Write an item on the left. The analysis updates as you type.</p></div></div>`;
+   if (!A) return emptyPanel('items', 'Items added', 'scanSearch', 'Item analysis', 'Write an item on the left. The analysis updates as you type.');
    const issues = A.checks.filter(c => c.counted && c.status !== 'pass'), passed = A.checks.filter(c => c.counted && c.status === 'pass');
    const [label, cls] = rating(A.passed);
    return head('items', 'Items added', 'Item analysis', '', `<span class="badge ${cls}">${label}</span>`) + `<div class="card-content uc-iq-panel-body">
-    ${issues.length ? `<div class="uc-iq-group"><h3 class="label">To improve (${issues.length})</h3><div class="item-group">${issues.map(checkRow).join('')}</div></div>` : ''}
+    ${issues.length ? `<div class="uc-iq-group"><h3 class="label">To improve (${issues.length})</h3><div class="uc-iq-acc">${issues.map(checkRow).join('')}</div></div>` : ''}
     ${passed.length ? `<details class="accordion-item"${issues.length ? '' : ' open'}><summary class="accordion-trigger">Passed (${passed.length})</summary><div class="item-group">${passed.map(checkRow).join('')}</div></details>` : ''}
    </div>`;
   }
@@ -323,8 +337,9 @@
   function supportsView() {
    const sup = S.supports;
    const block = (key, desc, body) => `<div class="uc-iq-support"><div class="uc-iq-support-head"><div class="item-content"><span class="item-title" id="uc-iq-sup-${key}">${SUPPORT_NAMES[key]}</span><span class="item-description">${desc}</span></div><button type="button" class="switch" role="switch" aria-checked="${sup[key].on}" aria-labelledby="uc-iq-sup-${key}" data-iq-switch="${key}"></button></div>${sup[key].on ? `<div class="uc-iq-support-body">${body}</div>` : ''}</div>`;
-   return head('analysis', 'Item analysis', 'Learner supports', 'Same question, different ways in. Turn on the supports you want to review now. You assign them to learners in the Assign step.') + `<div class="card-content uc-iq-panel-body">
-    ${!S.stem.trim() ? '<div class="alert alert-info" role="status"><div class="alert-description">Write the item first. Supports are built from its wording and numbers.</div></div>' : ''}
+   /* 17 Nov: Back from Learner supports always returns to the items added, however you got here. */
+   if (!S.stem.trim()) return emptyPanel('items', 'Items added', 'accessibility', 'Learner supports', 'Write an item on the left. Supports are built from its wording and numbers.');
+   return head('items', 'Items added', 'Learner supports') + `<div class="card-content uc-iq-panel-body">
     ${block('language', 'Plainer wording and word help for multilingual learners and anyone who finds dense text hard. The math stays the same.', `<div class="field"><label class="label" for="uc-iq-sup-text">Simplified question</label><textarea class="textarea" id="uc-iq-sup-text" data-iq-sup="language.text" rows="4">${esc(sup.language.text)}</textarea><p class="field-hint">About Grade ${readingGrade(sup.language.text)}, down from Grade ${readingGrade(S.stem)}.</p></div><div class="field"><label class="label" for="uc-iq-sup-words">Word help (one term per line)</label><textarea class="textarea" id="uc-iq-sup-words" data-iq-sup="language.words" rows="3">${esc(sup.language.words)}</textarea></div><div class="uc-iq-btnrow"><button type="button" class="btn btn-ghost btn-sm" data-iq="regenLanguage">${icon('refresh')}Regenerate from question</button></div>`)}
     <div class="separator"></div>
     ${block('visual', 'Fraction bars built from the numbers in the question, for learners who reason better with a picture.', bars())}
@@ -334,7 +349,6 @@
     ${block('hint', 'An optional, collapsed set of steps for learners who need help getting started.', `<div class="field"><label class="label" for="uc-iq-sup-hint">Steps (one per line)</label><textarea class="textarea" id="uc-iq-sup-hint" data-iq-sup="hint.text" rows="3">${esc(sup.hint.text)}</textarea></div>`)}
     <div class="separator"></div>
     ${block('extension', 'A challenge prompt for learners who are ready to go further.', `<div class="field"><label class="label" for="uc-iq-sup-ext">Challenge prompt</label><textarea class="textarea" id="uc-iq-sup-ext" data-iq-sup="extension.text" rows="3">${esc(sup.extension.text)}</textarea></div>`)}
-    <div class="uc-iq-btnrow uc-iq-panel-foot"><button type="button" class="btn btn-outline btn-sm" data-iq-view="preview">${icon('eye')}Preview for learners</button></div>
    </div>`;
   }
 
@@ -507,6 +521,8 @@
   });
 
   panel.addEventListener('click', e => {
+   const tg = e.target.closest('[data-iq-toggle]');
+   if (tg) { const id = tg.dataset.iqToggle; const was = openChecks.has(id); openChecks.clear(); if (!was) openChecks.add(id); renderPanel(false); panel.querySelector(`[data-iq-toggle="${id}"]`)?.focus(); return; }
    const v = e.target.closest('[data-iq-view]');
    if (v) { e.preventDefault(); setView(v.dataset.iqView); return; }
    const sw = e.target.closest('[data-iq-switch]');
@@ -565,7 +581,7 @@
  /* Item preview (13 Nov): the full question first, then grey cards for Standard, DOK, Points and Question type.
     The Standard card opens the standard's details in the same dialog, with a back chevron, like Set up your
     assessment. Add item is the only action, and only when the item can still be added. */
- function preview(q, {grade = '5', standard = '', canAdd = false, onAdd, onClose} = {}) {
+ function preview(q, {grade = '5', standard = '', bank = '', canAdd = false, onAdd, onClose} = {}) {
   const code = q.standard || standard, found = (STANDARDS[String(grade)] || []).find(s => s[0] === code) || Object.values(STANDARDS).flat().find(s => s[0] === code);
   const dok = dokOf(q);
   const type = q.displayType || ({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[q.type] || q.type || 'Multiple choice');
@@ -576,7 +592,7 @@
   dialog.className = 'dialog uc-item-preview theme-assessments';
   dialog.setAttribute('aria-labelledby', 'uc-ip-title');
   dialog.innerHTML = `<section class="uc-ip-view" data-ip-view="item">
-    <div class="dialog-header"><h2 class="dialog-title" id="uc-ip-title" tabindex="-1">Item preview</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" data-ip-close aria-label="Close item preview">${icon('x')}</button></div>
+    <div class="dialog-header"><h2 class="dialog-title" id="uc-ip-title" tabindex="-1">Item preview</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" data-ip-close aria-label="Close item preview">${icon('x')}</button>${bank ? `<p class="dialog-description">From ${esc(bank)}</p>` : ''}</div>
     <div class="dialog-body">
      <p class="text-body-base">${esc(q.stem)}</p>
      ${opts ? `<div class="cie-option-list" role="list" aria-label="Answer options">${opts}</div>` : ''}

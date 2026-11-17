@@ -8,7 +8,7 @@
   /* options.onClose(submitted) replaces the default focus return, e.g. to reopen a previous modal. */
   window.capOpenNewAssessment = (trigger, options = {}) => {
     const {create,itemPage,libraryPath,signature}=window.capAssessmentSetup;
-    const initial={title:'New classroom test',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
+    const initial={title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
     const host=trigger.closest('.theme-assessments')||document.body;
     let submitted=false;
     const setup=create({
@@ -40,7 +40,7 @@
     const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const forms = (window.cogniaAssessmentForms || []).slice(0, 4);
     const host = trigger.closest('.theme-assessments') || document.body;
-    const fileIcon = '<span class="icon-accent"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>';
+    const fileIcon = '<span class="icon-accent"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"/><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/></svg></span>'; /* 17 Nov: Lucide files, an assessment (several tests); a single test keeps file-text */
     const wrap = document.createElement('div');
     wrap.innerHTML = `<dialog class="dialog cap-setup-modal cap-library-modal" aria-labelledby="cap-library-title">
       <div class="cap-setup-heading dialog-header">
@@ -84,7 +84,7 @@
       </div>
       <form method="dialog" class="dialog-footer cap-create-choice-actions">
         <button class="btn" type="submit" value="scratch">Create from scratch</button>
-        <button class="btn btn-ghost" type="submit" value="library">Use assessment library</button>
+        <button class="btn btn-ghost" type="submit" value="library">Use library</button>
       </form>`;
     const host = trigger.closest('.theme-assessments') || document.body;
     host.append(modal);
@@ -109,7 +109,7 @@
         </button>
         <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>
           <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html" data-create-from-scratch>Create from scratch</a>
-          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html" data-use-library>Use assessment library</a>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html" data-use-library>Use library</a>
         </div>
       </div>`;
     host.querySelector('[data-create-from-scratch]').addEventListener('click',event=>{

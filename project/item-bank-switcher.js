@@ -11,7 +11,9 @@
     updown: svg('<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>'),
     x: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
     search: svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
-    check: svg('<path d="M20 6 9 17l-5-5"/>')
+    check: svg('<path d="M20 6 9 17l-5-5"/>'),
+    /* 17 Nov: Lucide circle-check with a solid green fill, shown in place of the item count once a bank is selected. */
+    picked: '<svg class="ib-bank-picked" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" fill="var(--success)" stroke="var(--success)"/><path d="m9 12 2 2 4-4" stroke="var(--success-foreground, #fff)"/></svg>'
   };
   var GROUPS = [['cognia', 'Cognia banks'], ['mine', 'My banks'], ['specialist', 'Content specialist banks']];
   var BANKS = [
@@ -78,7 +80,7 @@
     dialog.className = 'dialog ib-bank-dialog theme-assessments' + (multi ? ' ib-bank-dialog-multi' : '');
     dialog.setAttribute('aria-labelledby', 'ib-bank-dialog-title');
     dialog.innerHTML = '<div class="dialog-header"><h2 class="dialog-title" id="ib-bank-dialog-title">Item banks</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" data-bank-close aria-label="Close">' + ICON.x + '</button>'
-      + (multi ? '<p class="dialog-description">Choose one or more item banks to add items from.</p>' : '') + '</div>'
+      + '</div>'
       + '<div class="ib-bank-filters"><div class="search search-md" role="search">' + ICON.search.replace('<svg', '<svg class="search-icon"') + '<input class="input search-input" type="search" placeholder="Search item banks" aria-label="Search item banks" autocomplete="off" data-bank-search></div>'
       + '<div class="tabs-list ib-bank-groups" role="group" aria-label="Show item banks">'
       + [['all', 'All']].concat(GROUPS).map(function (g) { return '<button type="button" class="tab" data-bank-group="' + g[0] + '" aria-pressed="' + (g[0] === filter) + '">' + g[1] + '</button>'; }).join('')
@@ -90,9 +92,14 @@
     var list = dialog.querySelector('[data-bank-list]'), search = dialog.querySelector('[data-bank-search]'), status = dialog.querySelector('[data-bank-status]'), error = dialog.querySelector('[data-bank-error]');
     function row(b) {
       var on = chosen.indexOf(b.id) > -1;
-      var copy = '<span class="item-content"><span class="item-title">' + esc(b.name) + '</span><span class="item-description">' + esc(groupName(b.group)) + ' · ' + plural(count(b)) + '</span></span>';
-      if (multi) return '<li><label class="item ib-bank-option" data-bank-row="' + b.id + '"><input type="checkbox" class="checkbox" data-bank-check="' + b.id + '"' + (on ? ' checked' : '') + '>' + copy + '</label></li>';
-      return '<li><button type="button" class="item ib-bank-option" data-bank="' + b.id + '"' + (on ? ' aria-current="true"' : '') + '>' + copy + (on ? '<span class="item-actions">' + ICON.check + '<span class="sr-only">Current bank</span></span>' : '') + '</button></li>';
+      /* 17 Nov: the item count sits on the far right; a selected bank shows a solid green check there instead. */
+      /* 17 Nov: the item count is a badge next to the bank type (subtext); the right side holds only the check when selected. */
+      var copy = '<span class="item-content"><span class="item-title">' + esc(b.name) + '</span><span class="item-description ib-bank-name">' + esc(groupName(b.group)) + ' <span class="badge badge-secondary">' + esc(plural(count(b))) + '</span></span></span>';
+      if (multi) return '<li><label class="item ib-bank-option" data-bank-row="' + b.id + '"><input type="checkbox" class="checkbox sr-only" data-bank-check="' + b.id + '"' + (on ? ' checked' : '') + '>' + copy + end(b, on, 'Selected') + '</label></li>';
+      return '<li><button type="button" class="item ib-bank-option" data-bank="' + b.id + '"' + (on ? ' aria-current="true"' : '') + '>' + copy + end(b, on, 'Current bank') + '</button></li>';
+    }
+    function end(b, on, label) {
+      return '<span class="item-actions ib-bank-end" data-bank-end="' + b.id + '" data-count="' + esc(plural(count(b))) + '">' + (on ? ICON.picked + '<span class="sr-only">' + label + '</span>' : '') + '</span>';
     }
     function draw() {
       var term = search.value.trim().toLowerCase();
@@ -101,10 +108,13 @@
       list.innerHTML = banks.map(row).join('');
       var empty = dialog.querySelector('.ib-bank-empty');
       if (!banks.length && !empty) { empty = document.createElement('div'); empty.className = 'empty-state ib-bank-empty'; list.after(empty); }
-      if (empty) { empty.hidden = !!banks.length; empty.innerHTML = '<p>No item banks match your search.</p>'; }
+      if (empty) { empty.hidden = !!banks.length; empty.innerHTML = '<span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No item banks match</p><p>Try another name, or choose All to see every bank.</p>'; }
       status.textContent = banks.length + (banks.length === 1 ? ' item bank' : ' item banks');
     }
-    function close() { dialog.close(); dialog.remove(); if (trigger && trigger.isConnected) trigger.focus(); }
+    /* 17 Nov: the page behind the modal doesn't scroll while it's open. */
+    var root = document.documentElement, prevOverflow = root.style.overflow;
+    root.style.overflow = 'hidden';
+    function close() { root.style.overflow = prevOverflow; dialog.close(); dialog.remove(); if (trigger && trigger.isConnected) trigger.focus(); }
     search.addEventListener('input', draw);
     dialog.addEventListener('change', function (e) {
       var box = e.target.closest('[data-bank-check]');
@@ -112,6 +122,8 @@
       var id = box.dataset.bankCheck;
       chosen = chosen.filter(function (x) { return x !== id; });
       if (box.checked) chosen.push(id);
+      var slot = dialog.querySelector('[data-bank-end="' + id + '"]');
+      if (slot) slot.innerHTML = box.checked ? ICON.picked + '<span class="sr-only">Selected</span>' : '';
       if (error && chosen.length) error.hidden = true;
     });
     dialog.addEventListener('click', function (e) {
@@ -136,8 +148,10 @@
     });
     dialog.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
     draw();
+    /* 17 Nov: the search field is not focused when the modal opens; focus rests on the dialog itself. */
+    dialog.tabIndex = -1;
     dialog.showModal();
-    search.focus();
+    dialog.focus();
   }
   window.capBankPicker = { banks: BANKS, groups: GROUPS, open: picker };
 

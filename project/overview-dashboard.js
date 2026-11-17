@@ -9,6 +9,7 @@
    calendar: '<path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" />',
    check: '<circle cx="12" cy="12" r="10" /><path d="m16 9-5.5 5.5L8 12" />',
    clock: '<circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />',
+   list: '<path d="M8 6h13" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M3 6h.01" /><path d="M3 12h.01" /><path d="M3 18h.01" />',
    circleAlert: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
    left: '<path d="m15 18-6-6 6-6" />',
    right: '<path d="m9 18 6-6-6-6" />',
@@ -21,16 +22,14 @@
    <button type="button" class="btn btn-ghost btn-icon" data-week-step="${step}" aria-label="${label}">${icon(direction)}</button>
    <span class="tooltip" role="tooltip" aria-hidden="true">${label}</span>
   </span>`;
-  const today = new Date(2025, 2, 19);
+  const data = window.capOverviewCalendar;
+  const {today, weekStart, addDays} = data;
   const dayName = new Intl.DateTimeFormat('en-US', {weekday:'short'});
   const shortDate = new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric'});
   const fullDate = new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', year:'numeric'});
-  const addDays = (date, count) => new Date(date.getFullYear(), date.getMonth(), date.getDate()+count);
-  const monday = date => addDays(date, -((date.getDay()+6)%7));
-  let first = monday(today);
+  let first = weekStart;
   let view = 'week';
 
-  const data = window.capOverviewCalendar;
   const sampleWeek = Array.from({length:5},(_,day)=>data.events.filter(item=>item.day===day));
   const markingQueue = 'CAP-T14-ScoringQueue.dc.html';
   const eventLink = item => {
@@ -46,7 +45,7 @@
    pencil: 'Still in draft'
   };
   const statusIcon = {check:'check',review:'circleAlert',pending:'clock',pencil:'circleDashed'};
-  const listTone = {check:'success',review:'warning',pending:'secondary',pencil:'theme-light'};
+  const listTone = {check:'success',review:'warning',pending:'theme-light',pencil:'secondary'};
   const cardLabel = item => item.status==='review' ? statusLabels.review : item.type;
   const hero = root.querySelector('.od-hero');
   const title = hero.querySelector('h1');
@@ -70,9 +69,9 @@
      <button type="button" class="btn btn-ghost od-week-range" data-calendar-today aria-label="Return to the current week">${icon('calendar')}<span data-week-range aria-live="polite"></span></button>
      ${weekButton(1,'right','Next week')}
     </div>
-    <div class="tabs-list od-week-view" role="group" aria-label="Calendar view">
-     <button type="button" class="tab" aria-pressed="true" data-calendar-view="week">Calendar</button>
-     <button type="button" class="tab btn-ghost" aria-pressed="false" data-calendar-view="list">List</button>
+    <div class="button-group button-group-segmented od-week-view" role="group" aria-label="Overview layout">
+     <button type="button" class="btn btn-ghost btn-icon" aria-label="Calendar view" title="Calendar view" aria-pressed="true" data-calendar-view="week">${icon('calendar')}</button>
+     <button type="button" class="btn btn-ghost btn-icon" aria-label="List view" title="List view" aria-pressed="false" data-calendar-view="list">${icon('list')}</button>
     </div>
    </div>
    <div class="od-week-viewport"><div class="od-week-grid" data-overview-days></div></div>`;
@@ -115,7 +114,7 @@
         <p class="card-description" data-overview-draft-meta></p>
         <p class="text-body-small font-semibold" data-overview-draft-phase></p>
        </div>
-       <a class="btn btn-ghost btn-sm od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Continue draft</a>
+       <a class="btn btn-ghost btn-lg od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Continue draft</a>
       </div>
      </article>
     </div>
@@ -130,11 +129,10 @@
 
   const firstHour = 8;
   const endHour = 16;
-  const demoMinute = 10 * 60 + 30;
   const percentOfDay = minute => (minute - firstHour * 60) / ((endHour - firstHour) * 60) * 100;
   const clock = new Intl.DateTimeFormat('en-US', {hour:'numeric', minute:'2-digit'});
   const hourLabel = new Intl.DateTimeFormat('en-US', {hour:'numeric'});
-  const clockDate = minute => new Date(2025, 2, 19, 0, minute);
+  const clockDate = minute => new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, minute);
   const timeOf = item => clock.formatRange(clockDate(item.start),clockDate(item.end));
   const esc = text => String(text ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const info = (label,value) => `<div><dt class="text-body-small text-muted-foreground">${esc(label)}</dt><dd class="text-body-base font-semibold">${esc(value)}</dd></div>`;
@@ -230,16 +228,15 @@
    const top = percentOfDay(item.start);
    const height = percentOfDay(item.end) - top;
    const time = clock.formatRange(clockDate(item.start), clockDate(item.end));
-   return `<a class="od-timed-event" data-status="${item.status}" href="${eventLink(item)}" data-overview-event="${item.id}" aria-haspopup="dialog"
+   const showBand = item.status==='check' || item.status==='review';
+   const status = `<span class="tooltip-wrap od-week-status${item.status==='review'?' alert-warning':''}" data-status="${item.status}">${icon(statusIcon[item.status])}
+    <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
+   </span>`;
+   return `<a class="od-timed-event${showBand?'':' od-timed-event-plain'}" data-status="${item.status}" href="${eventLink(item)}" data-overview-event="${item.id}" aria-haspopup="dialog"
      style="--od-event-start: ${top}%; --od-event-duration: ${height}%"
      aria-label="${item.title}, ${item.type}, ${item.classLabel}, ${time}, ${statusLabels[item.status]}">
-    <span class="od-timed-event-band">
-     <span>${cardLabel(item)}</span>
-     <span class="tooltip-wrap od-week-status${item.status==='review'?' alert-warning':''}" data-status="${item.status}">${icon(statusIcon[item.status])}
-     <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
-    </span>
-    </span>
-    <span class="od-timed-event-copy"><strong class="card-title">${item.title}</strong><span class="card-description">${item.classLabel}</span></span>
+    ${showBand?`<span class="od-timed-event-band"><span>${statusLabels[item.status]}</span>${status}</span>`:''}
+    <span class="od-timed-event-copy"><strong class="card-title">${item.title}</strong>${showBand?'':status}<span class="card-description">${item.classLabel}</span></span>
    </a>`;
   }
 
@@ -247,6 +244,10 @@
    const dates = sampleWeek.map((_, index) => addDays(first, index));
    const hours = Array.from({length:endHour - firstHour}, (_, index) => firstHour + index);
    const slots = '<span class="od-timetable-slot"></span>'.repeat(hours.length);
+   const now = new Date();
+   const minute = now.getHours()*60 + now.getMinutes();
+   const showMarker = dates.some(date => +date===+today) && minute>=firstHour*60 && minute<endHour*60;
+   const markerLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
    return `<div class="od-timetable">
     <div class="od-timetable-head">
      <div aria-hidden="true"></div>
@@ -254,13 +255,13 @@
       ${dayName.format(date)} ${date.getDate()}
      </h3>`).join('')}
     </div>
-    <div class="od-timetable-body" style="--od-marker-position: ${percentOfDay(demoMinute)}%; --od-hour-count: ${hours.length}">
+    <div class="od-timetable-body" style="--od-marker-position: ${percentOfDay(minute)}%; --od-hour-count: ${hours.length}">
      <div class="od-timetable-hours" aria-hidden="true">
       ${hours.map(hour => `<div class="od-timetable-hour"><span>${hourLabel.format(clockDate(hour * 60))}</span></div>`).join('')}
      </div>
-     ${isSampleWeek?'<div class="od-timetable-marker" aria-hidden="true"><span>10:30</span></div>':''}
+     ${showMarker?`<div class="od-timetable-marker" aria-hidden="true"><span>${markerLabel}</span></div>`:''}
      ${dates.map((date, index) => `<section class="od-timetable-day" style="grid-column: ${index + 2}" aria-label="${dayName.format(date)}, ${fullDate.format(date)}"
-        ${+date===+today?'data-today':''}>
+        ${showMarker && +date===+today?'data-today':''}>
       <div class="od-timetable-slots" aria-hidden="true">${slots}</div>
       ${isSampleWeek?sampleWeek[index].map(timedEvent).join(''):''}
      </section>`).join('')}
@@ -274,7 +275,7 @@
    calendar.querySelectorAll('[data-calendar-view]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.calendarView===view)));
    const days = calendar.querySelector('[data-overview-days]');
    days.dataset.view = view;
-   const isSampleWeek = +first===+monday(today);
+   const isSampleWeek = +first===+weekStart;
    if (view==='week') {
     days.innerHTML = weekGrid(isSampleWeek);
     return;
@@ -311,7 +312,7 @@
    const toggle = event.target.closest('[data-calendar-view]');
    if (step) first = addDays(first, 7*Number(step.dataset.weekStep));
    else if (toggle) view = toggle.dataset.calendarView;
-   else if (event.target.closest('[data-calendar-today]')) first = monday(today);
+   else if (event.target.closest('[data-calendar-today]')) first = weekStart;
    else return;
    draw();
   });

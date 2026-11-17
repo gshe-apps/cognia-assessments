@@ -121,27 +121,44 @@ window.capReferenceAssign = page => {
  supportDialog.innerHTML = `
   <form class="cap-setup-view">
    <div class="cap-setup-heading dialog-header">
-    <h2 class="dialog-title" id="allocation-support-title" tabindex="-1" autofocus>Review supports</h2>
+    <div class="allocation-support-heading-copy">
+     <h2 class="dialog-title" id="allocation-support-title" tabindex="-1" autofocus>Review supports</h2>
+     <p class="dialog-description" id="allocation-support-description">Select the accommodations and supports for this learner.</p>
+    </div>
     <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel-support aria-label="Close review supports">${icon('x')}</button>
    </div>
    <div class="cap-setup-fields">
-    <p class="dialog-description" id="allocation-support-description" data-support-student></p>
+    <p class="allocation-support-learner text-body-base font-semibold"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a7 7 0 0 0-14 0v2"/><circle cx="13" cy="7" r="4"/></svg><span data-support-student></span></p>
     <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><div class="cap-setup-columns" data-support-options></div></fieldset>
-    <label class="check text-body-small font-semibold cap-setup-optional"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
    </div>
    <div class="cap-setup-buttons dialog-footer">
+     <label class="check text-body-small cap-setup-optional"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
      <button class="btn btn-ghost btn-lg" type="button" data-cancel-support>Cancel</button>
      <button class="btn btn-lg" type="submit">Save supports</button>
     </div>
   </form>`;
  page.append(supportDialog);
  let supportStudent;
+ const supportPaths = [
+  '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>',
+  '<path d="M12 7v14m0-14C9 4 5 4 2 5v15c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 2"/>',
+  '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
+  '<path d="m12 3 10 5-10 5L2 8Z"/><path d="m2 12 10 5 10-5M2 16l10 5 10-5"/>',
+  '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  '<path d="M4 4h16M12 4v16M8 20h8"/>',
+  '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3M8 11h6M11 8v6"/>',
+  '<circle cx="12" cy="14" r="8"/><path d="M12 10v4M10 2h4m5 3-2 2"/>',
+  '<circle cx="12" cy="12" r="10"/><path d="M12 2v20"/>',
+  '<circle cx="12" cy="8" r="5"/><circle cx="8" cy="16" r="5"/><circle cx="16" cy="16" r="5"/>',
+  '<circle cx="6" cy="6" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="6" cy="18" r="1"/><circle cx="18" cy="6" r="1"/><circle cx="18" cy="12" r="1"/><circle cx="18" cy="18" r="1"/>',
+  '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>'
+ ];
  function openSupports(student) {
   supportStudent=student;
   supportDialog.querySelector('[data-support-student]').textContent=student.name;
   const selectedSupports=supportsFor(student.id);
   supportDialog.querySelector('[data-support-options]').innerHTML=[...new Set([...supportOptions,...selectedSupports])].map(option=>
-   `<label class="check text-body-small"><input class="checkbox" name="support" type="checkbox" value="${esc(option)}" ${selectedSupports.includes(option)?'checked':''}>${esc(option)}</label>`
+   `<label class="card allocation-support-choice"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(option)] || '<path d="M5 12h14M12 5v14"/>'}</svg><input class="checkbox" name="support" type="checkbox" value="${esc(option)}" ${selectedSupports.includes(option)?'checked':''}><span class="text-body-base font-semibold">${esc(option)}</span></label>`
   ).join('');
   supportDialog.querySelector('[name=remember]').checked=Object.hasOwn(remembered,student.id);
   supportDialog.showModal();

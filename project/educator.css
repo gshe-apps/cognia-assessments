@@ -2437,7 +2437,8 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
 .od-week-toolbar { justify-content: space-between; }
 .od-date-controls .btn-ghost { background-color: var(--card); }
-.od-week-view .btn-ghost[aria-pressed="false"] { border-color: transparent; }
+.od-week-view { border-radius: var(--radius); }
+.od-week-view .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }
 .od-week-grid[data-view="week"] { min-height: 100%; }
@@ -2473,7 +2474,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   font-size: var(--text-body-small);
   font-weight: var(--weight-semibold);
 }
-.od-timetable-date[aria-current="date"] { background-color: var(--primary); color: var(--primary-foreground); }
+.od-timetable-date[aria-current="date"] { background-color: color-mix(in srgb, var(--secondary) 80%, var(--ring)); color: var(--secondary-foreground); }
 .od-timetable-body { isolation: isolate; }
 .od-timetable-hours {
   display: grid;
@@ -2558,13 +2559,16 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 }
 .od-timed-event[data-status="check"] { --od-event-tone: var(--success-light); --od-event-tone-strength: 58%; }
 .od-timed-event[data-status="review"] { --od-event-tone: var(--warning-light); }
-.od-timed-event[data-status="pencil"] { --od-event-tone: var(--accent-100); --od-event-tone-strength: 48%; }
+.od-timed-event[data-status="pending"] { --od-event-tone: var(--accent-100); --od-event-tone-strength: 48%; }
 .od-timed-event { transition: transform var(--duration), box-shadow var(--duration); }
 .od-timed-event:hover { transform: translateY(calc(-1 * var(--space-1) / 2)); box-shadow: var(--shadow-md); }
 .od-timed-event:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 .od-timed-event:is(:hover, :focus-visible) { z-index: 30; }
 .od-timed-event-band { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-1) var(--space-3); border-radius: var(--radius) var(--radius) 0 0; background-color: var(--od-event-tone); font-weight: var(--weight-semibold); }
 .od-timed-event-copy { min-width: 0; padding: var(--space-1) var(--space-3); display: grid; align-content: center; gap: var(--space-1); }
+.od-timed-event-plain { height: auto; min-height: 0; grid-template-rows: auto; }
+.od-timed-event-plain .od-timed-event-copy { grid-template-columns: minmax(0, 1fr) auto; align-items: start; padding: var(--space-3); }
+.od-timed-event-plain .card-description { grid-column: 1 / -1; }
 .od-timed-event[data-status="review"] > :is(.od-timed-event-band, .od-timed-event-copy) { padding-inline: var(--space-2); }
 .od-timed-event[data-status="review"] .od-timed-event-band { gap: var(--space-1); }
 .od-timed-event-copy :is(.card-title, .card-description) { font-size: var(--text-body-small); line-height: 1.25; }
@@ -2630,8 +2634,8 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   padding: 0;
 }
 .od-desk .od-desk-icon > svg { grid-row: auto; inline-size: var(--space-6); block-size: var(--space-6); margin: 0; }
-.od-desk-draft-icon.icon-accent { background-color: var(--icon-tile-background); }
-.od-desk-draft-icon.icon-accent .icon { color: var(--icon-tile-foreground); }
+.od-timed-event[data-status="pencil"], .od-desk-draft-icon.icon-accent { background-color: color-mix(in srgb, var(--secondary) 50%, var(--card)); }
+.od-desk-draft-icon.icon-accent .icon { color: var(--muted-foreground); }
 .od-desk-stack { position: relative; }
 .od-desk-stack[data-sheets="2"] { padding-block-start: var(--space-2); }
 .od-desk-stack[data-sheets="3"] { padding-block-start: var(--space-3); }
@@ -2650,6 +2654,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-desk-metrics > * { grid-row: span 2; }
 .od-desk-quantity, .od-desk-progress { display: grid; grid-template-rows: subgrid; align-items: center; }
 .od-desk-quantity > strong, .od-desk-progress > p { align-self: baseline; }
+.od-desk-progress .progress-indicator { background-color: color-mix(in srgb, var(--warning) 80%, var(--foreground)); }
 .od-desk-quantity strong { line-height: 1; }
 .od-desk-draft-title {
   display: -webkit-box;
@@ -4882,6 +4887,19 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .allocation-support-dialog .cap-setup-fields { margin-inline: calc(-1 * var(--space-1)); }
 .allocation-support-dialog :is(.dialog-description, .cap-setup-optional) { margin: 0; }
 .allocation-support-dialog .cap-setup-optional { padding-inline: 0; }
+.allocation-support-dialog.dialog { width: min(960px, calc(100% - var(--space-8))); max-width: none; padding: var(--space-8); }
+.allocation-support-learner { display: flex; align-items: center; gap: var(--space-2); margin: 0; }
+.allocation-support-heading-copy { display: grid; gap: var(--space-1); }
+.allocation-support-dialog .cap-setup-heading { align-items: flex-start; }
+.allocation-support-dialog [data-support-options] { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.allocation-support-choice { position: relative; cursor: pointer; min-height: 0; padding: var(--space-4); justify-content: space-between; gap: var(--space-2); border: 1px solid var(--border); }
+.allocation-support-choice:has(:checked) { background-color: var(--warning-light); border-color: var(--warning); }
+.allocation-support-choice .checkbox { position: absolute; top: var(--space-3); right: var(--space-3); }
+.allocation-support-choice .checkbox:checked { background-color: var(--warning); border-color: var(--warning); }
+.allocation-support-choice > .icon { width: var(--space-6); height: var(--space-6); }
+.allocation-support-choice:focus-within { outline: 3px solid var(--ring); }
+.allocation-support-dialog .dialog-footer .check { margin-inline-end: auto; }
+@media (max-width: 767px) { .allocation-support-dialog [data-support-options] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .allocation-support-dialog .dialog-footer { flex-wrap: wrap; } .allocation-support-dialog .dialog-footer .check { flex-basis: 100%; } }
 .cap-setup-modal .field { min-width: 0; margin: 0; }
 .cap-setup-modal [hidden] { display: none; }
 /* Use assessment library picker (Figma 1504:5530): setup modal size, theme background, white list */

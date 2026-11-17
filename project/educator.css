@@ -5023,7 +5023,7 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .uc-page:not(.uc-locked) .approved-bank-heading { min-height: 0; margin: 0 0 var(--space-3); padding: 0; }
 
 .uc-page:not(.uc-locked) .library > :is(.uc-bank-toolbar, #libraryList) { margin-inline: 0; }
-.uc-page:not(.uc-locked) .uc-bank-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 0 var(--space-2); margin: 0; padding-bottom: var(--space-2); }
+.uc-page:not(.uc-locked) .uc-bank-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 0 var(--space-2); margin: 0; padding-bottom: var(--space-2); }
 .uc-page:not(.uc-locked) .uc-bank-count { font-size: var(--text-body-small); margin: 0; padding-left: var(--space-3); }
 .uc-page:not(.uc-locked) .uc-extra-filters summary svg { width: var(--space-4); height: var(--space-4); }
 .uc-page:not(.uc-locked) #libraryList { overflow: visible; border: 0; background: transparent; }
@@ -5131,25 +5131,7 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 /* Tabs: plain plugin .tab, 12px apart, as on the Assessments screen. */
 .uc-page:not(.uc-locked) .approved-bank-heading .qc-methods { gap: var(--space-3); padding: 0; }
 
-/* Search slides open below the count (Item Bank pattern), on the plugin's white .search. */
-.uc-page:not(.uc-locked) .uc-search-slot {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-row: 2;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-  transition: grid-template-rows var(--duration), opacity var(--duration), visibility 0s linear var(--duration);
-}
-.uc-page:not(.uc-locked) .uc-bank-toolbar:is([data-search-open], :has(.search-input:not(:placeholder-shown))) .uc-search-slot {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
-  transition: grid-template-rows var(--duration), opacity var(--duration), visibility 0s;
-}
-.uc-page:not(.uc-locked) .uc-search-clip { min-height: 0; overflow: hidden; padding-inline: var(--space-1); }
-.uc-page:not(.uc-locked) .uc-search-clip > .search { margin-block: var(--space-2); }
-@media (prefers-reduced-motion: reduce) { .uc-page:not(.uc-locked) .uc-search-slot { transition: none; } }
+.uc-page .uc-extra-filters .uc-search-control { grid-column: 1 / -1; }
 
 /* Right column sits on the page; only the list below the header is white (Figma). */
 .uc-page:not(.uc-locked) .buildergrid > div > .qc-board { background: transparent; }
@@ -5693,23 +5675,25 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-iq-acc-btn:is(:hover, :focus-visible) .uc-iq-chev, .uc-iq-acc-row.is-open .uc-iq-chev { opacity: 1; }
 @media (hover: none) { .uc-iq-acc-btn .uc-iq-chev { opacity: 1; } }
 
-/* 17 Nov, Use item banks: choose the banks first, then they show as filter chips above the items. */
-.uc-page .library.uc-choosing-banks > :not(.uc-bank-chooser) { display: none; }
-.library:not(.uc-choosing-banks) > .uc-bank-chooser { display: none; }
-.library.uc-choosing-banks > .uc-bank-chips { display: none; }
-/* 17 Nov: while banks are being chosen (Use item banks only), the chooser takes the full width and the right column
-   (Build your test) is hidden. */
-.uc-page .buildergrid:has(.library.uc-choosing-banks:not([hidden])) { grid-template-columns: minmax(0, 1fr); }
-.uc-page .buildergrid:has(.library.uc-choosing-banks:not([hidden])) > div:has(.qc-board) { display: none; }
-.uc-bank-chooser { display: flex; flex-direction: column; gap: var(--space-4); }
-.uc-bank-chooser-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-.uc-bank-chooser-head > div:first-child { display: flex; flex-direction: column; gap: var(--space-2); }
-.uc-bank-chooser-tools { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
-.uc-bank-chooser-tools .search { flex: 1 1 320px; max-width: 480px; }
-.uc-bank-table .uc-bank-check { width: var(--space-12); }
-.uc-bank-table label { cursor: pointer; }
-.uc-page .uc-bank-chooser-title { margin: 0; font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
-.uc-bank-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-4); }
+/* Collections filter in Add your items. */
+.uc-bank-field { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; margin-block-end: var(--space-3); }
+.uc-bank-field .uc-extra-filters .filters { top: 100%; }
+.uc-bank-picker.command { position: relative; display: block; min-width: 0; overflow: visible; background: transparent; }
+.uc-page .library .uc-bank-picker .search-input { width: 100%; padding-inline: var(--space-10) var(--space-10); background-color: var(--card); }
+.uc-bank-picker .uc-bank-trigger { position: absolute; inset-block: 0; inset-inline-end: var(--space-2); margin-block: auto; }
+.uc-bank-picker .uc-bank-trigger > svg { position: static; transform: none; }
+.uc-bank-picker .uc-bank-trigger[aria-expanded="true"] > svg { transform: rotate(180deg); }
+.uc-item-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-height: var(--space-8); min-width: 0; }
+.uc-item-summary .chip-list[hidden] { display: none; }
+.uc-item-summary .chip-list { min-width: 0; }
+.uc-bank-selection .chip { min-width: 0; background-color: var(--accent-100); }
+.uc-bank-selection .chip-remove { flex: none; }
+.uc-bank-chip-name { overflow: hidden; text-overflow: ellipsis; }
+.uc-bank-picker > .popover { position: absolute; inset: calc(100% + var(--space-1)) 0 auto; z-index: 20; width: 100%; max-width: none; padding: 0; }
+.uc-bank-picker .command-list { max-height: min(calc(var(--space-24) * 4), 46dvh); }
+.uc-bank-picker .command-group-heading { margin-block: var(--space-1); border-radius: var(--radius); background-color: var(--secondary); }
+.uc-bank-picker .command-item { min-height: var(--space-8); padding-block: var(--space-1); }
+
 /* Open-row content lines up with the row title, after the warning icon. */
 .uc-iq-acc-panel { padding-inline-start: calc(var(--space-3) + var(--space-6) + var(--space-2)); }
 
@@ -5726,18 +5710,6 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 /* Ghost buttons under a field line up with the field's left edge. */
 .uc-iq-support-body .uc-iq-btnrow > .btn-ghost:first-child { margin-inline-start: calc(var(--space-3) * -1); }
 
-/* 17 Nov: bank type multi-select and the Next button in the floating bar. */
-.uc-bank-types-list { display: flex; flex-direction: column; gap: var(--space-3); }
-.uc-bank-types .popover { padding: var(--space-4); }
-.uc-page .tf-bottom.uc-bar-choosing-banks .solid:not(.uc-bank-next) { display: none; }
-.uc-page .tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-next { display: none; }
-/* Next uses the plugin's solid button (not the legacy .solid class, which another script relabels as Continue). */
-.uc-page .tf-bottom .btn.uc-bank-next { background-color: var(--primary); color: var(--primary-foreground); border: 0; }
-.uc-page .tf-bottom .btn.uc-bank-next:hover { background-color: var(--primary-hover); background-image: none; }
-
-/* 17 Nov: bank type filter is a compact white select (40px, no border, chevron down), sized to its label. */
-.uc-bank-types-trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-2); width: auto; min-width: 160px; height: 40px; min-height: 40px; padding: 0 var(--space-3); font-size: var(--text-body-small); background-image: none; cursor: pointer; }
-.uc-bank-types-trigger svg { width: 16px; height: 16px; color: var(--muted-foreground); flex: none; }
 /* 17 Nov, step 2/4: Assessment settings (Attempts etc.) sit on a white card. */
 /* 17 Nov: the settings sit on the page again (no white card), under their own Settings heading. */
 
@@ -5800,18 +5772,6 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .cl-stack-item + .cl-stack-item { margin-block-start:calc((var(--space-24) + var(--space-6) - var(--space-10)) * -1); }
 .cl-stack-item:last-child .cl-stack-body { block-size:auto; }
 
-/* 17 Nov (2), Use item banks: search left; selected count and the bank type dropdown far right; compact dropdown whose
-   chevron points up while open and whose options have a hover fill; Add item bank sits after the last chip. */
-.uc-bank-chooser-tools .uc-bank-types { margin-inline-start:auto; }
-.uc-bank-chooser-tools .search { flex:1 1 320px; }
-.uc-bank-types-trigger svg { transition:transform var(--duration); }
-.uc-bank-types-trigger[aria-expanded="true"] svg { transform:rotate(180deg); }
-.uc-bank-types .popover { padding:var(--space-1); min-width:220px; }
-.uc-bank-types-list { gap:0; }
-.uc-page .uc-bank-type-option { padding:var(--space-2); border-radius:var(--radius); font-size:var(--text-body-small); transition:background-color var(--duration); }
-.uc-bank-type-option:hover { background-color:var(--hover-overlay); }
-.uc-bank-chips { margin-bottom:var(--space-4); }
-.uc-bank-add-item { display:inline-flex; }
 /* 17 Nov: step 2/4 section headings, Details (fields) and Settings (white card). */
 .rj-details .ad-section-title { margin:0; font-size:var(--text-body-base); font-weight:var(--weight-semibold); line-height:1.5; color:var(--foreground); }
 
@@ -5820,16 +5780,16 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 /* Item analysis and Learner supports start level with the fields on the left (Item type). Asked for as 56px; with the
    method pills now above both columns the matching offset is 24px. */
 .uc-page .uc-iq-panel { margin-top:var(--space-6); }
-/* The bank chips span the whole page under the Use item banks / Create manually pills, 16px below them; the bank
-   search row keeps the same 16px. */
-.uc-page .uc-bank-chips { margin:0; }
-.uc-page .uc-bank-chips[hidden] { display:none; }
-.uc-bank-chooser { padding-top:0; }
-/* The method pills sit in their own full-width row above the bank chips. */
-.uc-page .uc-methods-row { margin:0; }
+.uc-page .uc-methods-row { margin: 0; }
 
 /* 17 Nov (4): Build your test starts level with the item list on the left: no extra space above the board. */
 .uc-page:not(.uc-locked) .buildergrid:has(.library:not([hidden])) > div > .qc-board.qc-board { padding-top:var(--space-2); }
+@media (min-width: 1024px) {
+  .uc-page:not(.uc-locked) .buildergrid:has(.library:not([hidden]) .uc-bank-field) > div > .qc-board:has(.qc-empty) {
+    padding-block-start: 0;
+  }
+  .uc-page:not(.uc-locked) .buildergrid:has(.library:not([hidden]) .uc-bank-field) .qc-board:has(.qc-empty) .qc-board-header { display: none; }
+}
 /* Settings heading: same 12px gap above the settings now they have no card. */
 
 /* 17 Nov (4), Classes folders: closer together (32px of each folder shows); the status badge sits top right of each
@@ -5843,8 +5803,6 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .cl-page .cl-stack-body > .badge { flex:none; background-color:color-mix(in srgb, var(--success-light) 50%, var(--card)); }
 .cl-stack-item:last-child .cl-stack-body { -webkit-mask-image:none; mask-image:none; }
 .cl-stack-item:last-child .cl-stack-body > .cl-stack-full { visibility:visible; color:var(--muted-foreground); }
-.uc-page .tf-bottom:not(.uc-bar-choosing-banks) .uc-bank-count-badge, .uc-page .tf-bottom .uc-bank-count-badge[hidden] { display:none; }
-.tf-bottom .uc-bank-count-badge { align-self:center; }
 
 /* 17 Nov (5), Classes folders: no colour change on hover (the lift stays); folders sit almost touching (4px between
    tabs); the status badge sits top right at the same height as the folder name, as on the selected folder. The body

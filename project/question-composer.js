@@ -131,7 +131,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
    };
   });
  }
- function showMethod(){choiceUI.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.qcMethod===prefs.method));library.hidden=prefs.method!=='bank';ai.hidden=prefs.method!=='ai';manual.hidden=prefs.method!=='manual';ai.querySelector('[data-qc-generate]').disabled=!plus();notice.textContent=plus()?'':'Select Classroom+ at the top to activate AI draft generation.';drawBoard();window.capRefreshBankChooser?.()}
+ function showMethod(){choiceUI.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.qcMethod===prefs.method));library.hidden=prefs.method!=='bank';ai.hidden=prefs.method!=='ai';manual.hidden=prefs.method!=='manual';ai.querySelector('[data-qc-generate]').disabled=!plus();notice.textContent=plus()?'':'Select Classroom+ at the top to activate AI draft generation.';drawBoard();window.capFilterBuilderQuestions?.()}
  choiceUI.onclick=e=>{
   const button=e.target.closest('[data-qc-method], [data-builder-bank]');
   if(!button)return;

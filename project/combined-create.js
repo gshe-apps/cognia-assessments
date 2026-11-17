@@ -108,78 +108,134 @@
    control.append(select);
   });
   library.querySelector('.approved-bank-heading')?.after(toolbar);if(!toolbar.isConnected)library.prepend(toolbar);
-  /* 17 Nov: Use item banks starts by asking which item banks to use (tick one or more, then Next). After that the
-     chosen banks show above the items as filter chips (remove one, or Add item bank to open the bank picker), and
-     the list shows only their items. The old switcher heading is gone. Prototype only: Cognia banks hold the Cognia
-     rows, My banks the educator-created rows, and a grade bank keeps the items whose standard starts with that grade. */
+  const removeIcon=icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
+  const itemSummary=make('<div class="uc-item-summary"></div>');
+  // Bank selection filters the library without changing the items already in the test.
   const picker=window.capBankPicker;
-  if(picker&&!library.querySelector('.uc-bank-chips')){
-   const BANK_KEY='cogniaBuilderBanksV1',PICKED_KEY='cogniaBuilderBanksPickedV1:'+t.id,rowKey={cognia:'cognia',mine:'teacher',specialist:'specialist'};
-   let chosen=[];
-   try{const saved=JSON.parse(sessionStorage.getItem(BANK_KEY)||'null');if(Array.isArray(saved))chosen=saved.filter(id=>picker.banks.some(b=>b.id===id))}catch(e){}
-   let picked=false;try{picked=sessionStorage.getItem(PICKED_KEY)==='1'}catch(e){}
-   if((t.state?.chosen||[]).length&&chosen.length)picked=true;
-   if(!chosen.length)picked=false;
-   const gradeOf=b=>{const m=(b.match||[]).join(' ').match(/Grade (\d)/g);return m?m.map(x=>x.slice(6)):null};
-   const inBank=(b,row)=>{if(row.dataset.itemBank!==rowKey[b.group])return false;const grades=gradeOf(b);if(!grades)return true;const std=row.dataset.bankStandard||'';return grades.some(g=>std.startsWith(g+'.')||std.includes('.'+g+'.'))};
-   const bankRows=()=>[...document.querySelectorAll('#libraryList .question-card')];
-   const countFor=b=>bankRows().filter(row=>inBank(b,row)).length;
-   const plural=n=>n+(n===1?' item':' items');
-   window.capBuilderBankMatch=row=>chosen.some(id=>{const b=picker.banks.find(x=>x.id===id);return b&&inBank(b,row)});
-   window.capBankNameForRow=row=>{const b=chosen.map(id=>picker.banks.find(x=>x.id===id)).find(b=>b&&inBank(b,row));return b?b.name:''};
-   const save=()=>{try{sessionStorage.setItem(BANK_KEY,JSON.stringify(chosen));sessionStorage.setItem(PICKED_KEY,picked?'1':'0')}catch(e){}};
-   const xIcon=icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),checkIcon='<svg class="ib-bank-picked" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" fill="var(--success)" stroke="var(--success)"/><path d="m9 12 2 2 4-4" stroke="var(--primary-foreground)"/></svg>';
-   /* Step A, 17 Nov: choosing banks takes the full width (Build your test stays hidden until banks are chosen) and is
-      built for hundreds of banks: a search, a group filter, and a table with a checkbox per bank. The selected count
-      and Next sit at the top so they never scroll away. */
-   let bankTerm='',bankGroups=picker.groups.map(g=>g[0]),bankSort='name',bankDir='ascending';
-   const chooser=make('<section class="uc-bank-chooser" aria-label="Choose item banks"><p class="field-error" data-bank-choose-error role="alert" hidden>Choose at least one item bank.</p><div class="uc-bank-chooser-tools"><div class="search search-md" role="search">'+icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>').replace('<svg','<svg class="search-icon"')+'<input class="input search-input" type="search" placeholder="Search item banks" aria-label="Search item banks" autocomplete="off" data-bank-filter-term></div><div class="popover-wrap popover-end combobox uc-bank-types"><button type="button" class="select uc-bank-types-trigger" aria-haspopup="dialog" aria-expanded="false" aria-label="Bank types: All banks"><span class="combobox-value" data-bank-types-label>All banks</span>'+icon('<path d="m6 9 6 6 6-6"/>')+'</button><div class="popover" role="dialog" aria-label="Bank types" hidden><div class="uc-bank-types-list"><label class="check uc-bank-type-option"><input type="checkbox" class="checkbox" data-bank-filter-all checked>All banks</label>'+picker.groups.map(([g,n])=>'<label class="check uc-bank-type-option"><input type="checkbox" class="checkbox" data-bank-filter-group="'+g+'" checked>'+esc(n)+'</label>').join('')+'</div></div></div></div><div class="table-wrap"><table class="table uc-bank-table"><thead><tr><th scope="col"><span class="sr-only">Select</span></th><th scope="col" aria-sort="ascending" data-bank-sort="name"><button class="table-sort" type="button">Item bank<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="sort-up" d="m7 9 5-5 5 5"/><path class="sort-down" d="m7 15 5 5 5-5"/></svg></button></th><th scope="col" aria-sort="none" data-bank-sort="type"><button class="table-sort" type="button">Type<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="sort-up" d="m7 9 5-5 5 5"/><path class="sort-down" d="m7 15 5 5 5-5"/></svg></button></th><th scope="col" class="num" aria-sort="none" data-bank-sort="items"><button class="table-sort" type="button">Items<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="sort-up" d="m7 9 5-5 5 5"/><path class="sort-down" d="m7 15 5 5 5-5"/></svg></button></th></tr></thead><tbody></tbody></table></div><div class="empty-state" data-bank-none hidden></div></section>');
-   const groupName=id=>(picker.groups.find(g=>g[0]===id)||[])[1]||'';
-   const drawChooser=()=>{
-    const term=bankTerm.trim().toLowerCase(),banks=picker.banks.filter(b=>bankGroups.includes(b.group)&&(!term||(b.name+' '+groupName(b.group)).toLowerCase().includes(term)));
-    const val={name:b=>b.name.toLowerCase(),type:b=>groupName(b.group).toLowerCase(),items:b=>countFor(b)}[bankSort];banks.sort((a,b)=>{const x=val(a),y=val(b),d=typeof x==='number'?x-y:x.localeCompare(y);return bankDir==='ascending'?d:-d});
-    chooser.querySelectorAll('[data-bank-sort]').forEach(th=>th.setAttribute('aria-sort',th.dataset.bankSort===bankSort?bankDir:'none'));
-    chooser.querySelector('tbody').innerHTML=banks.map(b=>{const on=chosen.includes(b.id);return '<tr class="row-link"'+(on?' aria-selected="true"':'')+'><td class="uc-bank-check"><input type="checkbox" class="checkbox" id="uc-bank-'+b.id+'" data-bank-choose="'+b.id+'"'+(on?' checked':'')+'></td><td><label for="uc-bank-'+b.id+'">'+esc(b.name)+'</label></td><td>'+esc(groupName(b.group))+'</td><td class="num">'+countFor(b)+'</td></tr>'}).join('');
-    const none=chooser.querySelector('[data-bank-none]');chooser.querySelector('.table-wrap').hidden=!banks.length;none.hidden=!!banks.length;
-    if(!banks.length)none.innerHTML='<span class="empty-media" aria-hidden="true">'+icon('<path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>')+'</span><p class="empty-title">No item banks match</p><p>Try another name, or tick more bank types.</p>';
-    syncBar();
+  if(picker){
+   const bankKey='cogniaBuilderBanksV1';
+   const banks=new Map(picker.banks.map(bank=>[bank.id,bank]));
+   const chosen=new Set(['cognia-classroom']);
+   try {
+    const saved=JSON.parse(sessionStorage.getItem(bankKey));
+    if(Array.isArray(saved)){
+     const valid=saved.filter(id=>banks.has(id));
+     if(valid.length||saved.length===0){
+      chosen.clear();
+      valid.forEach(id=>chosen.add(id));
+     }
+    }
+   } catch {}
+
+   const rowGroups={cognia:'cognia',mine:'teacher',specialist:'specialist'};
+   const gradesByBank=new Map(picker.banks.map(bank=>[bank.id,(bank.match||[])
+    .flatMap(name=>[...name.matchAll(/Grade (\d+)/g)].map(match=>match[1]))]));
+   const inBank=(bank,row)=>{
+    if(row.dataset.itemBank!==rowGroups[bank.group])return false;
+    const grades=gradesByBank.get(bank.id);
+    const standard=row.dataset.bankStandard||'';
+    return !grades.length||grades.some(grade=>standard.startsWith(grade+'.')||standard.includes('.'+grade+'.'));
    };
-   /* 17 Nov: bank types are a multi-select dropdown, all ticked by default. */
-   const typesLabel=()=>{const names=picker.groups.filter(g=>bankGroups.includes(g[0])).map(g=>g[1]);const text=names.length===picker.groups.length?'All banks':names.length===1?names[0]:names.length?names.length+' selected':'No banks';const all=chooser.querySelector('[data-bank-filter-all]');all.checked=names.length===picker.groups.length;all.indeterminate=names.length>0&&names.length<picker.groups.length;chooser.querySelector('[data-bank-types-label]').textContent=text;chooser.querySelector('.uc-bank-types-trigger').setAttribute('aria-label','Bank types: '+text)};
-   chooser.addEventListener('change',e=>{const ab=e.target.closest('[data-bank-filter-all]');if(ab){chooser.querySelectorAll('[data-bank-filter-group]').forEach(x=>{x.checked=ab.checked});bankGroups=ab.checked?picker.groups.map(g=>g[0]):[];typesLabel();drawChooser();return}
-    const gb=e.target.closest('[data-bank-filter-group]');if(gb){bankGroups=[...chooser.querySelectorAll('[data-bank-filter-group]:checked')].map(x=>x.dataset.bankFilterGroup);typesLabel();drawChooser();return}});
-   chooser.addEventListener('change',e=>{const box=e.target.closest('[data-bank-choose]');if(!box)return;const id=box.dataset.bankChoose;chosen=chosen.filter(x=>x!==id);if(box.checked)chosen.push(id);chooser.querySelector('[data-bank-choose-error]').hidden=true;drawChooser();chooser.querySelector('[data-bank-choose="'+id+'"]')?.focus()});
-   chooser.addEventListener('click',e=>{const sb=e.target.closest('[data-bank-sort] .table-sort');if(sb){const k=sb.parentElement.dataset.bankSort;bankDir=k===bankSort&&bankDir==='ascending'?'descending':'ascending';bankSort=k;drawChooser();chooser.querySelector('[data-bank-sort="'+k+'"] .table-sort').focus();return}
-    const row=e.target.closest('tr.row-link');if(row&&!e.target.closest('input,label')){row.querySelector('[data-bank-choose]').click()}});
-   chooser.querySelector('[data-bank-filter-term]').addEventListener('input',e=>{bankTerm=e.target.value;drawChooser()});
-   /* Next lives in the floating bar, in place of Continue, while banks are being chosen. */
-   /* The bar can be re-rendered, so the button is re-added when missing and the swap is done with a class on the bar. */
-   const goNext=()=>{if(!chosen.length){chooser.querySelector('[data-bank-choose-error]').hidden=false;return}picked=true;chosen=picker.banks.map(b=>b.id).filter(id=>chosen.includes(id));save();show();chips.querySelector('[data-bank-add]').focus()};
-   window.capRefreshBankChooser=()=>show();
-   /* Step B: the banks in use as filter chips, then the items. */
-   const addBtn='<button type="button" class="btn btn-ghost btn-sm" data-bank-add aria-haspopup="dialog">'+icon('<path d="M5 12h14"/><path d="M12 5v14"/>')+'Add item bank</button>';
-   const chips=make('<div class="uc-bank-chips"><div class="chip-list" role="list" aria-label="Item banks in use"></div></div>');
-   const drawChips=()=>{chips.querySelector('.chip-list').innerHTML=chosen.map(id=>{const b=picker.banks.find(x=>x.id===id);return b?'<span class="chip" role="listitem">'+esc(b.name)+'<button type="button" class="chip-remove" data-bank-remove="'+b.id+'" aria-label="Remove '+esc(b.name)+'">'+xIcon+'</button></span>':''}).join('')+'<span role="listitem" class="uc-bank-add-item">'+addBtn+'</span>'};
-   chips.addEventListener('click',e=>{const rm=e.target.closest('[data-bank-remove]');if(rm){const i=chosen.indexOf(rm.dataset.bankRemove);chosen=chosen.filter(x=>x!==rm.dataset.bankRemove);if(!chosen.length)picked=false;save();show();if(picked)(chips.querySelectorAll('.chip-remove')[i]||chips.querySelectorAll('.chip-remove')[i-1]||chips.querySelector('[data-bank-add]')).focus();else chooser.querySelector('[data-bank-choose]')?.focus();return}
-    const add=e.target.closest('[data-bank-add]');if(add)picker.open({multi:true,trigger:add,selected:chosen,countFor,onPick:ids=>{chosen=ids;save();show()}});});
-   const syncBar=()=>{const bar=page.querySelector('.tf-bottom');if(!bar)return;let btn=bar.querySelector('.uc-bank-next');if(!btn){btn=make('<button type="button" class="btn btn-lg uc-bank-next" data-bank-next>Next</button>');const cont=bar.querySelector('.solid');cont?cont.after(btn):bar.append(btn)}btn.onclick=goNext;bar.classList.toggle('uc-bar-choosing-banks',!picked&&!library.hidden);
-    /* 17 Nov: the selected count is a badge in the floating bar, next to Back. */
-    let count=bar.querySelector('.uc-bank-count-badge');if(!count)count=make('<span class="badge badge-secondary uc-bank-count-badge" role="status" aria-live="polite"></span>');
-    const back=bar.querySelector('.uc-items-back')||[...bar.querySelectorAll('a,button')].find(x=>/^Back$/.test(x.textContent.trim()));if(back){if(count.nextElementSibling!==back)back.before(count)}else if(!count.isConnected)btn.before(count);
-    count.textContent=chosen.length+' selected';count.hidden=!chosen.length};
-   const show=()=>{library.classList.toggle('uc-choosing-banks',!picked);chips.hidden=!picked||library.hidden;syncBar();if(picked)drawChips();else drawChooser();window.capFilterBuilderQuestions?.()};
-   library.prepend(chooser);page.querySelector('.buildergrid').before(chips);
-   /* The method pills move above the grid too, so pills, then bank chips, run across the whole page. */
-   const methodsRow=make('<div class="approved-bank-heading uc-methods-row"></div>');chips.before(methodsRow);
-   const placeHeading=()=>{if(methods&&methods.parentElement!==methodsRow)methodsRow.append(methods)};
-   placeHeading();setTimeout(placeHeading,0);
-   show();
+   const matchingBank=row=>[...chosen].map(id=>banks.get(id)).find(bank=>inBank(bank,row));
+   window.capBuilderBankMatch=row=>Boolean(matchingBank(row));
+   window.capBankNameForRow=row=>matchingBank(row)?.name||'';
+
+   const chevron=icon('<path d="m6 9 6 6 6-6"/>');
+   const searchIcon=icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>');
+   const field=make(`
+    <div class="field uc-bank-field">
+     <label class="sr-only" for="uc-bank-search">Search item banks / collections</label>
+     <div class="uc-bank-picker command">
+      <div class="search search-md">
+       ${searchIcon.replace('<svg','<svg class="search-icon"')}
+       <input class="input search-input command-input" id="uc-bank-search" type="search" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-controls="uc-bank-options" placeholder="Search item banks / collections" autocomplete="off">
+       <button class="btn btn-ghost btn-icon btn-sm uc-bank-trigger" type="button" aria-label="Toggle item banks" aria-expanded="false" aria-controls="uc-bank-options">${chevron}</button>
+      </div>
+      <div class="popover" id="uc-bank-options" role="dialog" aria-label="Item banks and collections" hidden>
+        <div class="command-list">
+         ${picker.groups.map(([group,label])=>`
+          <div class="command-group" role="group" aria-label="${esc(label)}">
+           <div class="command-group-heading">${esc(label)}</div>
+           ${picker.banks.filter(bank=>bank.group===group).map(bank=>`
+            <label class="command-item"><input class="checkbox" type="checkbox" value="${esc(bank.id)}" data-bank-option ${chosen.has(bank.id)?'checked':''}>${esc(bank.name)}</label>
+           `).join('')}
+          </div>
+         `).join('')}
+         <p class="command-empty" hidden>No item banks match.</p>
+        </div>
+      </div>
+     </div>
+    </div>`);
+   const trigger=field.querySelector('.uc-bank-trigger');
+   const bankInput=field.querySelector('#uc-bank-search');
+   const bankPopover=field.querySelector('#uc-bank-options');
+   const selection=make('<div class="chip-list uc-bank-selection" role="group" aria-label="Selected item banks"></div>');
+   itemSummary.append(selection);
+   const options=[...field.querySelectorAll('[data-bank-option]')];
+   const setPickerOpen=open=>{
+    bankPopover.hidden=!open;
+    bankInput.setAttribute('aria-expanded',String(open));
+    trigger.setAttribute('aria-expanded',String(open));
+   };
+   ['focus','click','input'].forEach(type=>bankInput.addEventListener(type,()=>setPickerOpen(true)));
+   trigger.addEventListener('click',()=>{
+    const open=bankPopover.hidden;
+    if(open)bankInput.focus();
+    setPickerOpen(open);
+   });
+   field.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&!bankPopover.hidden){
+     event.preventDefault();
+     event.stopPropagation();
+     bankInput.focus();
+     setPickerOpen(false);
+    } else if(event.target===bankInput&&event.key==='ArrowDown'){
+     event.preventDefault();
+     setPickerOpen(true);
+     options.find(option=>!option.closest('[hidden]'))?.focus();
+    }
+   });
+   field.addEventListener('focusout',event=>{
+    if(event.relatedTarget&&!field.contains(event.relatedTarget))setPickerOpen(false);
+   });
+   document.addEventListener('pointerdown',event=>{
+    if(!field.contains(event.target)&&!bankPopover.hidden)setPickerOpen(false);
+   });
+   const renderSelection=()=>{
+    selection.hidden=!chosen.size;
+    selection.innerHTML=[...chosen].map(id=>banks.get(id)).map(bank=>`
+     <span class="chip" title="${esc(bank.name)}"><span class="uc-bank-chip-name">${esc(bank.name)}</span><button class="chip-remove" type="button" data-remove-bank="${esc(bank.id)}" aria-label="Remove ${esc(bank.name)}">${removeIcon}</button></span>
+    `).join('');
+   };
+   const updateSelection=()=>{
+    try{sessionStorage.setItem(bankKey,JSON.stringify([...chosen]));}catch {}
+    options.forEach(option=>{option.checked=chosen.has(option.value)});
+    renderSelection();
+    window.capFilterBuilderQuestions?.();
+   };
+   field.addEventListener('change',event=>{
+    const option=event.target.closest('[data-bank-option]');
+    if(!option)return;
+    if(option.checked)chosen.add(option.value);
+    else chosen.delete(option.value);
+    updateSelection();
+   });
+   selection.addEventListener('click',event=>{
+    const remove=event.target.closest('[data-remove-bank]');
+    if(!remove)return;
+    chosen.delete(remove.dataset.removeBank);
+    updateSelection();
+    (selection.querySelector('.chip-remove')||trigger).focus();
+   });
+   library.prepend(field);
+   renderSelection();
   }
   library.querySelector('#libraryList').after(make('<div class="empty-state" data-bank-empty role="status" hidden><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No items match</p><p>Try another search, or change the item banks or filters.</p></div>'));
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
   const bankHeading=library.querySelector('.approved-bank-heading')||make('<div class="approved-bank-heading"><h2></h2></div>');
   bankHeading.querySelector('h2').textContent='Find and add items';
-  library.before(bankHeading);
+  bankHeading.classList.add('uc-methods-row');
+  page.querySelector('.buildergrid').before(bankHeading);
   bankHeading.querySelector('h2').className='sr-only';
   page.querySelector('.buildergrid>section')?.classList.remove('card');
   const board=page.querySelector('.qc-board');
@@ -199,21 +255,48 @@
    filterFields.append(...filters.children);
    filters.remove();
   });
-  /* Figma: item count on the left, search and filter as icon buttons on the right. Search opens a full-width field below. */
   const count=make('<p class="uc-bank-count text-body-small text-muted-foreground" role="status"></p>');
-  const searchToggle=make('<button type="button" class="btn btn-ghost btn-icon btn-sm uc-search-toggle" aria-label="Search items" title="Search items" aria-expanded="false" aria-controls="search">'+icon('<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>')+'</button>');
-  const setSearch=open=>{toolbar.toggleAttribute('data-search-open',open);searchToggle.setAttribute('aria-expanded',String(open))};/* 17 Nov: opening search doesn't focus the field */
-  searchToggle.onmousedown=e=>e.preventDefault();
-  searchToggle.onclick=()=>setSearch(!toolbar.hasAttribute('data-search-open'));
-  search.addEventListener('keydown',e=>{if(e.key==='Escape'&&!search.value){setSearch(false);searchToggle.focus()}});
-  search.addEventListener('blur',()=>{if(!search.value)setSearch(false)});
-  const searchSlot=make('<div class="uc-search-slot"><div class="uc-search-clip"></div></div>');
-  searchBox.before(searchSlot);searchSlot.firstElementChild.append(searchBox);
-  toolbar.prepend(count);searchSlot.before(searchToggle);
+  itemSummary.prepend(count);toolbar.prepend(itemSummary);
+  filterFields.prepend(searchBox);
   /* Only real filter controls in the popover: no empty select wraps (stray chevrons) or info badges. */
   filterFields.querySelectorAll('.select-wrap').forEach(wrap=>{if(!wrap.querySelector('select'))wrap.remove()});
   filterFields.querySelectorAll(':scope > .badge').forEach(badge=>badge.remove());
-  toolbar.append(extraFilters);
+  const bankField=library.querySelector('.uc-bank-field');
+  (bankField||toolbar).append(extraFilters);
+  if(bankField){
+   const filterTrigger=extraFilters.querySelector('summary');
+   document.addEventListener('pointerdown',event=>{
+    if(extraFilters.open&&!extraFilters.contains(event.target))extraFilters.open=false;
+   });
+   extraFilters.addEventListener('keydown',event=>{
+    if(event.key!=='Escape'||!extraFilters.open)return;
+    event.preventDefault();
+    extraFilters.open=false;
+    filterTrigger.focus();
+   });
+   const filterChips=make('<div class="chip-list uc-item-filter-chips" role="group" aria-label="Item filters" hidden></div>');
+   itemSummary.append(filterChips);
+   const selects=[...filterFields.querySelectorAll('select')];
+   const defaults=new Map(selects.map(select=>[select,select.value]));
+   const renderFilters=()=>{
+    const active=selects.filter(select=>select.value&&select.value!==defaults.get(select));
+    filterChips.hidden=!active.length;
+    filterChips.innerHTML=active.map(select=>{
+     const label=select.selectedOptions[0].textContent;
+     return `<span class="chip">${esc(label)}<button class="chip-remove" type="button" data-remove-filter="${esc(select.id)}" aria-label="Remove filter: ${esc(label)}">${removeIcon}</button></span>`;
+    }).join('');
+   };
+   filterFields.addEventListener('change',renderFilters);
+   filterChips.addEventListener('click',event=>{
+    const remove=event.target.closest('[data-remove-filter]');
+    if(!remove)return;
+    const select=selects.find(control=>control.id===remove.dataset.removeFilter);
+    select.selectedIndex=0;
+    select.dispatchEvent(new Event('change',{bubbles:true}));
+    (filterChips.querySelector('.chip-remove')||filterTrigger).focus();
+   });
+  }
+  window.capFilterBuilderQuestions?.();
   /* Back sits in the floating bar next to Continue (as on the other steps) and reopens the setup modal. */
   const back=make('<button class="btn btn-ghost btn-lg uc-items-back" type="button" data-tf-back="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back</button>');
   page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status sr-only" role="status" hidden></p>'));

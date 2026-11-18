@@ -89,10 +89,8 @@ Every page that displays a list or table must handle the empty case:
 
 ```tsx
 {data.length === 0 && (
-  <div className="flex flex-col items-center gap-4 py-16">
-    <p className="text-body-base text-muted-foreground">No results found.</p>
-    <Button>Add record</Button>
-  </div>
+  // Use the Empty layout (see Empty): icon, title, description, action, on a 50% white surface
+  <Empty className="rounded-xl bg-card/50 py-16 px-6 gap-2">..</Empty>
 )}
 ```
 
@@ -441,7 +439,7 @@ Search inputs filter or find content on the current screen, for example the rows
 Filter chips show the filters applied to a list, table or chart, and let the user remove each one. Always use this component for applied filters; never build chips from badges, buttons or tabs.
 
 **Cognia overlay**
-- White pill (`rounded-full bg-[var(--primary-foreground)]`), 32px high, no border, no shadow. On a white surface (card, popover, menu, dialog) the fill turns `bg-secondary`.
+- Grey pill (`rounded-full bg-secondary`) on every surface, 32px high, no border, no shadow.
 - Label in Body Small (14px) regular, `--foreground`, then a remove button: Lucide `X` (14px) in a 24px round ghost button with `aria-label="Remove [label]"`.
 - 8px between chips; chips wrap onto new lines.
 
@@ -453,7 +451,7 @@ Filter chips show the filters applied to a list, table or chart, and let the use
 
 ```tsx
 <div role="list" aria-label="Applied filters" className="flex flex-wrap gap-2">
-  <span role="listitem" className="inline-flex h-8 items-center gap-1 rounded-full bg-[var(--primary-foreground)] pl-3 pr-1 text-body-small">
+  <span role="listitem" className="inline-flex h-8 items-center gap-1 rounded-full bg-secondary pl-3 pr-1 text-body-small">
     Grade 5
     <Button variant="ghost" size="icon" className="size-6 rounded-full" aria-label="Remove Grade 5"><X className="size-3.5" /></Button>
   </span>
@@ -496,11 +494,12 @@ Checkboxes let users select one or more options.
 **Rules**
 - Use checkboxes for multi-select. Use a switch for a single on/off toggle.
 - Always pair a checkbox with a visible label to its right.
+- Checkboxes are 16px with 4px corners (`rounded-sm`) both unticked and ticked. Unticked: `bg-[var(--primary-foreground)]` with a 1px `border-primary`. Ticked: solid `bg-primary` with a `--primary-foreground` Lucide `Check`.
 - In grouped selection lists, align the group checkbox and its row checkboxes on the same vertical line unless the reference explicitly specifies an offset. Use a shared checkbox column or spacing based on the actual width of preceding controls, gaps, and row padding. Verify alignment in the rendered layout, including when groups expand and rows wrap.
 
 ```tsx
 <div className="flex items-center gap-2">
-  <Checkbox id="terms" />
+  <Checkbox id="terms" className="size-4 rounded-sm border-primary bg-[var(--primary-foreground)] data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
   <Label htmlFor="terms">I agree to the terms and conditions</Label>
 </div>
 ```
@@ -615,6 +614,27 @@ A variant that confirms a finished task, such as "Assessment created". It replac
   </div>
 </dialog>
 ```
+
+**Small dialog**
+
+For short confirmations: one title, one sentence and two actions, such as "Ready to hand in?" or the "Assessment created" success dialog.
+
+- 400px wide (`max-w-[400px]`, `.dialog-sm` in plain CSS), never wider.
+- The two buttons stretch to fill the modal width, side by side and equal width, at every screen size (`flex-row` with `flex-1` on each button). The ghost or outline action sits on the left, the solid main action on the right.
+- Everything else follows Dialog, or Success dialog when it confirms a finished task.
+- Use a standard dialog instead when the content is more than a sentence or there is a form.
+
+```tsx
+<DialogContent showCloseButton={false} className="max-w-[400px]">
+  ...
+  <DialogFooter className="flex-row [&>*]:flex-1">
+    <Button variant="ghost" size="lg">Not yet</Button>
+    <Button size="lg">Hand in</Button>
+  </DialogFooter>
+</DialogContent>
+```
+
+**Plain HTML**: add `.dialog-sm` to the dialog, for example `<dialog class="dialog dialog-sm">` or `<dialog class="dialog dialog-success dialog-sm">`.
 
 ---
 
@@ -989,7 +1009,7 @@ The header is full width, 52px tall, with `px-8` (32px) side padding and three a
 **Rules**
 - The header has no background colour, no bottom border and no shadow. It sits directly on the page background.
 - The selected nav item has a 2px bottom border in `--brand-coral` (the red underline) and `aria-current="page"`. Do not add a background or change the text colour for the selected item.
-- Hover on a nav item uses `--hover-overlay` with `rounded-lg`.
+- Hover on a nav item uses `--hover-overlay` with `rounded-lg`. This includes the selected item: its hover fill has 8px corners on all four sides and sits above the red underline, which stays a straight line with square ends (draw the underline on an `::after` layer 2px tall at the bottom, so the link itself can take `rounded-lg`).
 - Keep the order exactly as above: logo, product name, nav items, grid icon, profile. Do not add other controls to the header.
 - On mobile the nav items move to a second row below the logo and icons, and scroll sideways if they do not fit.
 
@@ -1001,7 +1021,7 @@ The header is full width, 52px tall, with `px-8` (32px) side padding and three a
     <span className="text-body-base font-bold text-foreground">Interim Assessment</span>
   </div>
   <nav aria-label="Interim" className="flex justify-center gap-1">
-    <a href="/interim" aria-current="page" className="text-body-small font-semibold px-3 py-1 border-b-2 border-[var(--brand-coral)]">Overview</a>
+    <a href="/interim" aria-current="page" className="text-body-small font-semibold px-3 py-1 border-b-2 relative border-transparent after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-[var(--brand-coral)] hover:bg-[var(--hover-overlay)] hover:rounded-lg">Overview</a>
     <a href="/interim/library" className="text-body-small font-semibold px-3 py-1 border-b-2 border-transparent hover:bg-[var(--hover-overlay)] rounded-lg">Library</a>
   </nav>
   <div className="flex items-center justify-end gap-2">
@@ -1170,8 +1190,33 @@ A panel that slides up from the bottom, for mobile. Follows the Dialog overlay; 
 
 ### Empty
 
-The empty state for a list, table or page: optional icon in a grey square, a title, one line of help and an action (see Creating a new page). `<Empty><EmptyHeader><EmptyMedia variant="icon">..</EmptyMedia><EmptyTitle>..</EmptyTitle><EmptyDescription>..</EmptyDescription></EmptyHeader><EmptyContent><Button>..</Button></EmptyContent></Empty>`.
+The empty state for a list, table, panel or page. Every empty state in every product uses this one layout.
 
+**Cognia overlay**
+- Layout: one centred column (`flex flex-col items-center justify-center text-center`), `py-16 px-6`.
+- Surface: 50% white (`bg-card/50`, `color-mix(in srgb, var(--card) 50%, transparent)` in plain CSS) with 12px corners (`rounded-xl`). Only the fill is at 50%; text and icon stay fully opaque. On a white surface (inside a card) it reads as white.
+- Icon: a Lucide icon, 24px, `--muted-foreground`, with no background (`EmptyMedia` with `bg-transparent`). 16px below it (`mb-2` on top of the 8px gap) sits the title.
+- Title: Body Strong (`text-body-base font-semibold text-foreground`).
+- Description: one or two short sentences in Body Base (`text-body-base text-muted-foreground`), 8px below the title (`gap-2`).
+- Action (optional): one button, `size="lg"`, 16px below the description. Use it for the way out ("Clear search", "Add item").
+
+**Rules**
+- Show the empty state in place of the content. A table with no rows is never shown: replace the whole table (header row included) with the empty state.
+- Name what is missing and why ("No tests match these filters"), then say what to do next.
+- Do not use illustrations, stacked cards or animation; the icon is the only graphic.
+
+```tsx
+<Empty className="rounded-xl bg-card/50 py-16 px-6 gap-2">
+  <EmptyHeader className="gap-2">
+    <EmptyMedia variant="icon" className="mb-2 bg-transparent"><FileText className="size-6 text-muted-foreground" /></EmptyMedia>
+    <EmptyTitle className="text-body-base font-semibold">No tests yet</EmptyTitle>
+    <EmptyDescription className="text-body-base text-muted-foreground">Create a test to see it here.</EmptyDescription>
+  </EmptyHeader>
+  <EmptyContent className="mt-4"><Button size="lg">Create test</Button></EmptyContent>
+</Empty>
+```
+
+**Plain HTML**: `div.empty-state` > `span.empty-media` (Lucide svg) + `.empty-title` + `p` + optional `button.btn.btn-lg`.
 ### Field
 
 Groups a label, control, hint and error (see Input and forms.md). `<Field><FieldLabel>..</FieldLabel><Input /><FieldDescription>..</FieldDescription><FieldError>..</FieldError></Field>`.

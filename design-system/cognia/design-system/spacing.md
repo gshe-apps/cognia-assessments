@@ -71,11 +71,12 @@ Buttons never use a shadow, including floating action buttons and hover states. 
 
 ## Border radius
 
-Only three values are used across the entire system:
+Only four values are used across the entire system:
 
 | Class | Value | Use for |
 |---|---|---|
-| `rounded-lg` | 8px | All components except cards and tables |
+| `rounded-sm` | 4px | Checkboxes only |
+| `rounded-lg` | 8px | All components except cards, tables and checkboxes |
 | `rounded-xl` | 12px | Cards and tables |
 | `rounded-full` | 9999px | Badges, pills, avatars, search inputs |
 

@@ -327,3 +327,27 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
    Separators: support.js renders each " · " as a lighter grey "|".
    Info icons (Lucide info) use the info blue; the tooltip an info icon opens is white. */
 .sep-bar { color: var(--muted-foreground); opacity: 0.8; }
+
+/* 18 Nov: answer boxes on every question card (Q1 number tray, Q2 match choices).
+   Keep the plugin chip shape; text is semi-bold 16px and centred; hover uses the
+   plugin hover overlay (desktop with a mouse only, as elsewhere in the student flow). */
+.stu2 .tray .chip, .stu2 .mgrid .chip {
+  justify-content: center; text-align: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius); /* 8px, not the plugin chip's full pill */
+  font-size: var(--text-body-base); font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--duration), color var(--duration);
+}
+.stu2 .mgrid .chip.on { background-color: var(--accent-400); color: var(--primary-foreground); }
+@media (hover: hover) and (pointer: fine) {
+  @container stu2 (min-width: 1200px) {
+    .stu2 .tray .chip:hover, .stu2 .mgrid .chip:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+  }
+}
+/* Q2 picked-value badges (67/100 etc.) use accent-400 */
+.stu2 .badge[data-size="value"] { background-color: var(--accent-400); border-color: var(--accent-400); color: var(--primary-foreground); }
+
+/* 18 Nov: the hand-in confirmation is a <div role="dialog">, so the plugin's open-dialog spacing does not reach it.
+   Give it the same 24px gap as every plugin dialog, so the text and the two buttons have room between them. */
+.scrim .dialog { display: flex; flex-direction: column; gap: var(--space-6); max-width: 100%; }

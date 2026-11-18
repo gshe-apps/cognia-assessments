@@ -18,7 +18,7 @@
   if(scopePage!==location.pathname.split('/').pop()){
    t.state||={chosen:[],written:{},edits:{}};t.state.written={...t.state.written,...Object.fromEntries((t.questions||[]).map(q=>[q.id,q]))};t.page=scopePage;localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(m));location.replace(scopePage);return;
   }
-  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your test';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create test</span><h1>Set up your test</h1></div>');hero.querySelector('h1').replaceWith(intro);
+  const hero=page.querySelector('.tf-hero');hero.querySelector('h1').textContent='Create your test';hero.querySelector('p')?.remove();const intro=make('<div class="uc-setup-intro"><span class="uc-eyebrow">Create assessment</span><h1>Set up your assessment by creating a test</h1></div>');hero.querySelector('h1').replaceWith(intro);
   page.querySelector('.tf-back')?.remove();
   page.querySelector('.tf-steps a').href=t.page;
   hero.append(page.querySelector('.tf-steps'));page.querySelector('.tf-top')?.remove();
@@ -35,9 +35,10 @@
   const useClientSample=sessionStorage.getItem('capSetupUseClientSample')==='true';
   sessionStorage.removeItem('capSetupUseClientSample');
   const addedTest=m.tests.indexOf(t)>0;
-  let settings=useClientSample?{...t,title:'New classroom test',standard:'5.NF.A.2'}:addedTest?t:{...t,title:m.title||t.title};
+  let settings=useClientSample?{...t,title:'New classroom test',standard:'5.NF.A.2'}:addedTest?{...t,testName:t.title,assessmentSettings:m.settings}:{...t,title:m.title||t.title,testName:t.title,assessmentSettings:m.settings};
   let ready=sessionStorage.getItem(readyKey)===signature(settings);
   const setup=create({
+   showAssessmentTitle:!addedTest,
    host:page.closest('.theme-assessments'),
    initial:settings,
    onClose:()=>{
@@ -45,11 +46,13 @@
     hero.querySelector('[data-uc-details]').focus();
    },
    onSubmit(next){
-   const {title:nextTitle,...scope}=next;
-   const model=window.capUpdateAssessmentScope(addedTest?next:scope,addedTest?'':nextTitle);
+   const {title:nextTitle,testName:nextTestName,assessmentSettings,...scope}=next;if(nextTestName)scope.title=nextTestName;
+   const patch=addedTest?{...scope,title:nextTestName||next.title}:scope;
+   let model=window.capUpdateAssessmentScope(patch,addedTest?'':nextTitle);
+   if(assessmentSettings){model.settings={...(model.settings||{}),...assessmentSettings};model=window.capUpdateAssessmentScope({},'');}
    const updated=model.tests.find(test=>test.id===model.active)||model.tests[0];
-   settings=addedTest?updated:{...updated,title:model.title};
-   sessionStorage.setItem(readyKey,signature(next));
+   settings=addedTest?{...updated,testName:updated.title,assessmentSettings:model.settings}:{...updated,title:model.title,testName:updated.title,assessmentSettings:model.settings};
+   sessionStorage.setItem(readyKey,signature(addedTest?{...next,title:patch.title}:next));
    ready=true;syncGate();
    inst.refreshQuestionBoard?.();
    if(next.pathway===libraryPath){location.href='CAP-T21-AssessmentLibrary.dc.html';return}

@@ -52,7 +52,7 @@
   } else {
    delete resume.dataset.restoreWork;
    resume.href = 'CAP-T04-Setup.dc.html';
-   resume.textContent = 'Create test';
+   resume.textContent = 'Create assessment';
   }
  }
 

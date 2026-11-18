@@ -4973,7 +4973,8 @@ th[aria-sort="ascending"] .rr-sort-ic, th[aria-sort="descending"] .rr-sort-ic { 
 .cap-standard-body { display: grid; gap: var(--space-4); color: var(--foreground); }
 @media (min-width: 640px) {
   .cap-setup-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cap-setup-optional-fields { grid-template-columns: 168px minmax(0, 1fr); }
+  .cap-setup-optional-fields { grid-template-columns: minmax(0, 1fr); }
+  .cap-setup-duration { max-inline-size: 168px; }
 }
 @media (prefers-reduced-motion: reduce) { .al-action { transition: none; } }
 
@@ -5719,9 +5720,13 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .cl-layout { grid-template-areas:"actions actions" "classes heading" "classes performance"; grid-template-rows:auto auto 1fr; }
 .cl-actions { grid-area:actions; display:flex; justify-content:flex-end; }
 .cl-classes { gap:var(--space-8); }
-.cl-folder.is-current .cl-tab { height:auto; padding:var(--space-3) var(--space-4); width:50%; }
-.cl-current { border-radius:0 var(--radius-xl) var(--radius-xl) var(--radius-xl); }
-.cl-current-head { flex-direction:column; align-items:flex-start; gap:var(--space-2); padding:var(--space-4); }
+.cl-current { border-radius:var(--radius-xl); }
+.cl-current-head { flex-direction:row; align-items:center; justify-content:space-between; gap:var(--space-3); padding:var(--space-4); }
+.cl-current-name { display:flex; flex-direction:column; gap:var(--space-1); min-width:0; }
+.cl-page .cl-current-head .cl-current-code { font-size:var(--text-body-small); color:var(--primary-foreground); }
+.cl-page .cl-current-head .cl-class-title { font-weight:var(--weight-semibold); }
+.cl-page .cl-row .cl-count { font-size:var(--text-body-base); }
+.cl-page .cl-row .cl-count strong { margin-inline-end:var(--space-1); }
 .cl-page .cl-current-head .cl-current-title { font-size:var(--text-heading); font-weight:var(--weight-semibold); line-height:1.2; }
 .cl-details { padding:var(--space-3) var(--space-3) var(--space-6); }
 .cl-row { transition:background-color var(--duration); }
@@ -5843,3 +5848,109 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .cl-stack-item:last-child .cl-stack-body { min-block-size:var(--space-24); }
 /* Step 2 of 4: settings sit on a white card under their heading (17 Nov 2026). */
 .rj-details .ad-settings { padding:var(--space-6); border-radius:var(--radius-xl); background-color:var(--card); }
+
+/* 18 Nov: Classes. No folder tabs. Each other class is a full-width card with a straight top edge, the same header
+   as the current class: code as subtext, bold name below, status badge on the right. */
+.cl-stack-tab { width:100%; min-width:0; max-width:none; flex-direction:row; align-items:center; justify-content:space-between; gap:var(--space-3); border-radius:var(--radius-xl) var(--radius-xl) 0 0; }
+.cl-stack-item:last-child .cl-stack-tab { justify-content:space-between; }
+.cl-stack-name { display:flex; flex-direction:column; gap:var(--space-1); min-width:0; }
+.cl-page .cl-stack-tab .cl-class-title { display:block; font-weight:var(--weight-semibold); }
+.cl-page .cl-stack-tab > .badge { flex:none; background-color:color-mix(in srgb, var(--success-light) 50%, var(--card)); }
+.cl-stack-body { border-radius:0; }
+.cl-page .cl-stack-item:last-child .cl-stack-tab .cl-class-title { display:block; }
+
+/* 18 Nov: setup modal. No focus ring when the Optional settings checkbox is clicked (keyboard focus keeps it),
+   and a plain thin scrollbar with no track lines when the optional fields make the form scroll. */
+.cap-setup-modal .checkbox:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+.cap-setup-modal .cap-setup-fields { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.cap-setup-modal .cap-setup-optional { margin-block: 0; padding: 0; }
+
+/* 18 Nov: step 2/4 Details. One read-only card per test (Edit reopens the setup modal) and an outlined
+   "Add another test" card beside them. Settings moved into the setup modal, so the side panel is gone. */
+.rj-details .ad-layout { grid-template-columns: minmax(0, 1fr); }
+.rj-details .ad-layout .ad-main { display: flex; flex-direction: column; gap: var(--space-4); }
+.rj-details .ad-layout .ad-main > * { max-width: none; margin-inline: 0; }
+.ad-test-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: stretch; }
+.ad-test-card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6); border: 0; border-radius: var(--radius-xl); background-color: var(--card); color: var(--card-foreground); }
+.ad-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.ad-card-name { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.rj-details .ad-card-kicker { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.rj-details .ad-card-head h3 { margin: 0; font-size: var(--text-body-base); font-weight: var(--weight-semibold); line-height: var(--lh-snug); overflow-wrap: anywhere; }
+.rj-details .ad-card-sub { margin: 0; padding-top: var(--space-2); font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
+.ad-dl { display: grid; gap: var(--space-2); margin: 0; }
+.ad-dl-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-3); }
+.rj-details .ad-dl :is(dt, dd) { margin: 0; font-size: var(--text-body-small); line-height: var(--lh-base); overflow-wrap: anywhere; }
+.rj-details .ad-dl dt, .rj-details .ad-dl .ad-empty { color: var(--muted-foreground); }
+.ad-add-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); min-block-size: calc(var(--space-24) * 3); padding: var(--space-6); border: 2px dashed var(--border); border-radius: var(--radius-xl); background: transparent; color: var(--foreground); font: inherit; cursor: pointer; transition: background-color var(--duration); }
+.rj-details .ad-add-card span { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.ad-add-card svg { inline-size: var(--space-6); block-size: var(--space-6); }
+.ad-add-card:hover { background-color: var(--secondary); }
+.ad-add-card:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (max-width: 767px) { .ad-test-cards { grid-template-columns: minmax(0, 1fr); } }
+
+/* Setup modal: assessment settings sit above Optional settings. */
+.cap-setup-settings { display: grid; gap: var(--space-4); }
+.cap-setup-settings[hidden] { display: none; }
+.cap-setup-modal .cap-setup-subtitle { margin: 0; font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.cap-setup-radios { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; border: 0; min-width: 0; }
+.cap-setup-radios legend { inline-size: 100%; margin-block-end: var(--space-2); padding: 0; }
+.cap-setup-settings .tabs-list { flex-wrap: wrap; }
+
+/* 18 Nov (2): test card. Blue banner with the test name and its actions (Learner preview, Edit), then a compact
+   body where values sit right aligned. Setup modal settings use segmented button groups. */
+.ad-test-card { gap: 0; padding: 0; overflow: hidden; }
+.ad-test-card .ad-card-head { align-items: center; padding: var(--space-4); background-color: var(--accent-400); color: var(--primary-foreground); }
+.rj-details .ad-test-card .ad-card-head :is(h3, .ad-card-kicker) { color: var(--primary-foreground); }
+.ad-card-actions { display: flex; flex: none; gap: var(--space-1); }
+.rj-details .ad-card-head .btn-ghost { color: var(--primary-foreground); }
+.rj-details .ad-card-head .btn-ghost:hover { background-color: color-mix(in srgb, var(--primary-foreground) 15%, transparent); color: var(--primary-foreground); }
+.rj-details .ad-card-head .btn-ghost:focus-visible { outline: 2px solid var(--primary-foreground); outline-offset: 2px; }
+.ad-card-body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); }
+.ad-test-card .ad-dl { gap: var(--space-1); }
+.ad-test-card .ad-dl-row { grid-template-columns: auto minmax(0, 1fr); }
+.rj-details .ad-test-card .ad-dl dd { text-align: end; }
+.ad-add-card { min-block-size: calc(var(--space-24) * 2); }
+.cap-setup-settings .button-group-segmented { justify-self: start; align-self: flex-start; inline-size: fit-content; max-inline-size: 100%; }
+
+/* 18 Nov (3): Show results radios sit in one row; selected setting buttons use a darker grey; test cards take
+   30% of the row (the Add another test card fills the rest). */
+.cap-setup-modal .cap-setup-radios { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-6); }
+.cap-setup-modal .cap-setup-radios > .check { inline-size: auto; }
+.cap-setup-settings .button-group-segmented > .btn[aria-pressed="true"] { background-color: color-mix(in srgb, var(--secondary-foreground) 18%, var(--card)); color: var(--secondary-foreground); }
+.ad-test-cards { grid-template-columns: repeat(3, minmax(0, 30%)); }
+@media (max-width: 1023px) { .ad-test-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) { .ad-test-cards { grid-template-columns: minmax(0, 1fr); } }
+.ad-test-card .ad-card-head { flex-wrap: wrap; row-gap: var(--space-2); }
+.ad-test-card .ad-card-name { flex: 1 1 12rem; }
+.ad-test-card .ad-card-actions { margin-inline-start: auto; }
+
+/* 18 Nov (4): Learner preview and Edit are plain ghost buttons above each test card; the Add another test card
+   starts level with the test card, below that button row. */
+.ad-test-item { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.ad-test-item > .ad-card-actions { justify-content: flex-end; block-size: var(--space-8); margin: 0; }
+.ad-test-item > .ad-test-card { flex: 1; }
+.ad-test-cards > .ad-add-card { margin-block-start: calc(var(--space-8) + var(--space-2)); }
+
+/* 18 Nov (5): Settings and Optional settings in the test card are plugin accordion rows, closed by default. */
+.ad-card-acc { margin-block-start: var(--space-2); border-block-start: 1px solid var(--border); }
+.ad-card-acc .accordion-item:last-child { border-block-end: 0; }
+.ad-card-acc .accordion-trigger { padding-block: var(--space-3); }
+.ad-card-acc .accordion-content { padding-block-end: var(--space-3); }
+/* Accordion rows in the test card: plugin hover overlay (not the legacy blue summary hover), 8px corners, and the
+   chevron only shows on hover or keyboard focus. */
+.ad-card-acc .accordion-trigger { padding-inline: var(--space-2); border-radius: var(--radius); transition: background-color var(--duration); }
+body .ad-card-acc .accordion-trigger:hover { background-color: transparent; background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.ad-card-acc .accordion-trigger:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.ad-card-acc .accordion-trigger::after { opacity: 0; }
+.ad-card-acc .accordion-trigger:is(:hover, :focus-visible)::after { opacity: 1; }
+.ad-card-acc { border-block-start: 0; }
+.ad-card-acc .accordion-item { border-block-end: 0; }
+.ad-test-item > .ad-card-actions { justify-content: flex-start; margin-inline-start: 0; }
+
+/* 18 Nov: review confirmation on step 4/4 Finalize, under the assessment settings. */
+.af-review .af-reviewed { align-items: center; }
+/* Test card type: main details 16px (values semibold); Settings and Optional settings row titles 14px semibold. */
+.rj-details .ad-test-card .ad-dl-main :is(dt, dd) { font-size: var(--text-body-base); }
+.rj-details .ad-test-card .ad-dl-main dd { font-weight: var(--weight-semibold); }
+.rj-details .ad-card-acc .accordion-trigger { font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
+.ad-test-card .ad-dl { gap: var(--space-4); }

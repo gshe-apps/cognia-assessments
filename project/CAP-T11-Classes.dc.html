@@ -31,20 +31,20 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
   <div class="cl-actions"><button type="button" class="btn btn-lg" data-action="createClass"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>Create class</button></div>
   <header class="cl-performance-head">
     <h1 id="cl-perf-title" class="text-heading font-semibold" tabindex="-1">Learner performance</h1></header>
-  <div class="cl-classes"><div class="{{folderCls}}"><span class="cl-tab">{{sel.code}}</span><section class="cl-current" aria-labelledby="cl-current-title"><div class="cl-current-head"><h2 id="cl-current-title" class="cl-class-title">{{sel.title}}</h2><span class="cl-badge cl-badge-success badge badge-success">{{sel.status}}</span></div><div class="cl-details">
+  <div class="cl-classes"><div class="{{folderCls}}"><section class="cl-current" aria-labelledby="cl-current-title"><div class="cl-current-head"><div class="cl-current-name"><span class="cl-current-code">{{sel.code}}</span><h2 id="cl-current-title" class="cl-class-title">{{sel.title}}</h2></div><span class="cl-badge cl-badge-success badge badge-success">{{sel.status}}</span></div><div class="cl-details">
   <div class="cl-row cl-row-heading"><span>Class details</span></div>
-  <div class="cl-row"><span>Assessments created</span><strong>{{sel.assessments}}</strong></div>
-  <div class="cl-row cl-learner-summary is-selected" aria-current="true"><span class="cl-row-label">Learners <sc-if value="{{hasAttention}}" hint-placeholder-val="{{ true }}">
+  <div class="cl-row"><span class="cl-count"><strong>{{sel.assessments}}</strong> {{assessmentLabel}}</span></div>
+  <div class="cl-row cl-learner-summary is-selected" aria-current="true"><span class="cl-row-label"><span class="cl-count"><strong>{{learnerCount}}</strong> {{learnerWord}}</span> <sc-if value="{{hasAttention}}" hint-placeholder-val="{{ true }}">
       <span class="badge badge-destructive">
         
         {{attentionSummary}}
       </span>
-    </sc-if></span><strong>{{learnerCount}}</strong></div>
+    </sc-if></span></div>
   <div class="cl-row"><span>Educators</span><span class="cl-avatars" role="list" aria-label="{{educatorLabel}}"><sc-for list="{{educators}}" as="e" hint-placeholder-count="3"><span class="cl-avatar avatar cl-tip" role="listitem" tabindex="0" aria-label="{{e.name}}" data-tip="{{e.name}}"><sc-if value="{{e.photo}}" hint-placeholder-val="{{ false }}"><img src="{{e.photo}}" alt="" width="32" height="32"></sc-if><sc-if value="{{e.noPhoto}}" hint-placeholder-val="{{ true }}">{{e.initials}}</sc-if></span></sc-for><sc-if value="{{hasMoreEducators}}" hint-placeholder-val="{{ true }}"><span class="cl-more cl-tip" tabindex="0" data-tip="{{moreNames}}" aria-label="{{moreLabel}}">{{moreEducators}}</span></sc-if></span></div></div></section></div><div class="cl-stack" role="group" aria-label="Other classes">
   <sc-for list="{{others}}" as="c" hint-placeholder-count="5">
     <button type="button" class="cl-stack-item" onClick="{{c.pick}}" aria-label="{{c.label}}" aria-describedby="{{c.summaryId}}">
-      <span class="cl-stack-tab"><span class="cl-stack-code">{{c.code}}</span><span class="cl-class-title">{{c.shortTitle}}</span></span>
-      <span class="cl-stack-body" aria-hidden="true"><span class="cl-stack-full">{{c.title}}</span><span class="{{c.badgeCls}}">{{c.status}}</span></span>
+      <span class="cl-stack-tab"><span class="cl-stack-name"><span class="cl-stack-code">{{c.code}}</span><span class="cl-class-title">{{c.shortTitle}}</span></span><span class="{{c.badgeCls}}" aria-hidden="true">{{c.status}}</span></span>
+      <span class="cl-stack-body" aria-hidden="true"></span>
       <span class="sr-only" id="{{c.summaryId}}">{{c.summary}}</span>
     </button>
   </sc-for>
@@ -169,6 +169,7 @@ class Component extends DCLogic {
       assessmentLabel: sel.assessments === 1 ? 'assessment created' : 'assessments created',
       learnerSummary: sel.learners.length + (sel.learners.length === 1 ? ' learner' : ' learners'),
       learnerCount: sel.learners.length,
+      learnerWord: sel.learners.length === 1 ? 'learner' : 'learners',
       hasAttention: counts.attention > 0,
       attentionSummary: counts.attention + (counts.attention === 1 ? ' needs attention' : ' need attention'),
       educators: shown.map(person),

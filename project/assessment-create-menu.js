@@ -13,19 +13,20 @@
     let submitted=false;
     const setup=create({
       host,
+      showAssessmentTitle:true,
       initial,
       onClose(){
         setup.remove();
         if(options.onClose)return options.onClose(submitted);
         (trigger.isConnected?trigger:document.getElementById(trigger.id))?.focus();
       },
-      onSubmit(details){
+      onSubmit({assessmentSettings,...details}){
         submitted=true;
         const id='test-'+Date.now();
         const page=itemPage(details);
         /* The setup title names the assessment; its first test starts as "New test" (renamed on step 2). */
-        const test={id,...details,title:'New test',page,state:{chosen:[],written:{},edits:{}},questions:[]};
-        const model={title:details.title,active:id,tests:[test]};
+        const test={id,...details,title:details.testName||'New test',page,state:{chosen:[],written:{},edits:{}},questions:[]};
+        const model={title:details.title,active:id,tests:[test],settings:assessmentSettings};
         localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));
         sessionStorage.setItem('capCreateConfirmed:'+id,signature(details));
         location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':page;
@@ -77,7 +78,7 @@
     modal.setAttribute('aria-labelledby', 'cap-create-choice-title');
     modal.innerHTML = `
       <div class="dialog-header">
-        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create test</h2>
+        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create assessment</h2>
         <form method="dialog" class="dialog-close">
           <button class="btn btn-ghost btn-icon" type="submit" aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
         </form>
@@ -104,7 +105,7 @@
     host.innerHTML = `
       <div class="dropdown dropdown-end">
         <button type="button" class="btn btn-lg" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
-          Create test
+          Create assessment
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </button>
         <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>

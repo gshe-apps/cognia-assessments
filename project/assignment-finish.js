@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  const plain={'One attempt only':'1','2 attempts':'2','3 attempts':'3','Allowed':'Yes','Not allowed':'No','None':'No limit'};
  const show=v=>plain[v]||String(v).replace(/ minutes?$/,' min');
  const attempts=settings.attempts||(d.attempts==='2'?'2 attempts':d.attempts==='3'?'3 attempts':'One attempt only');
- const settingRows=[['Attempts',attempts],['Show results',settings.results||'After submission'],['Item order',settings.questionOrder||'As created'],['Answer option order',settings.optionOrder||'As created'],['Calculator allowed?',settings.calculator||'Not allowed'],['Notes allowed?',settings.notes||'Not allowed'],['Time limit',settings.limit||d.time||'5 minutes']];
+ const settingRows=[['Attempts',attempts],['Show results',settings.results||'After submission'],['Item order',settings.questionOrder||'As created'],['Answer option order',settings.optionOrder||'As created'],['Calculator allowed?',settings.calculator==='Allowed'?'Yes, '+(settings.calculatorType||'Basic'):settings.calculator||'Not allowed'],['Notes allowed?',settings.notes||'Not allowed'],['Time limit',settings.limit||d.time||'5 minutes']];
  const visibleItems=3;let front=Math.max(0,tests.indexOf(t)),expanded=false;
  const cardRows=test=>[['Grade / Year','Year '+(test.grade||'5')],['Subject',test.subject||'Mathematics'],['Number of items',(test.questions||[]).length],['Total points',pointsOf(test)]].map(([a,b])=>'<div><dt>'+a+'</dt><dd>'+esc(b)+'</dd></div>').join('');
  const itemRow=(q,i)=>'<li class="af-item"><span class="af-item-number">'+(i+1)+'</span><div class="af-item-body"><div class="af-item-meta"><span class="text-body-small">'+esc(typeOf(q))+'</span><span class="badge badge-secondary">'+count(Number(q.marks||1),'point')+'</span></div><p>'+esc(q.stem)+'</p></div></li>';
@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    {transform:rest,transformOrigin:'bottom left',zIndex:0,backgroundColor:backBg,color:backInk}
   ],timing);
  };
+ /* 18 Nov: the review confirmation lives here on Finalize (moved from step 2). Creating the assessment needs it ticked. */
+ const askReview=!event&&!document.body.classList.contains('af-assigned-view');let reviewedOk=true;
  const render=()=>{
   const active=tests[front]||{},items=active.questions||[],others=tests.map((x,i)=>i).filter(i=>i!==front).slice(0,2);
   /* 17 Nov: the assessment title sits inside each test card, above the test name. */
@@ -74,8 +76,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   +(items.length?'<ol class="af-item-list">'+items.map((q,i)=>i<visibleItems||expanded?itemRow(q,i):'').join('')+'</ol>':'<p class="af-muted">No items have been added.</p>')
   +(items.length>visibleItems?'<button type="button" class="btn btn-ghost btn-sm af-more" aria-expanded="'+expanded+'">'+(expanded?'Show fewer items':'View more items')+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m-6-6 6 6 6-6"/></svg></button>':'')+'</section>'
   +'<section class="af-block" aria-labelledby="af-audience-title"><h3 id="af-audience-title" class="text-body-base font-semibold">Audience and session</h3><div class="af-tiles"><div class="af-tile af-classes"><span>'+(className.includes(',')?'Classes':'Class')+'</span><b>'+esc(className)+'</b></div><div class="af-tile af-students"><span>Students</span><b>'+students+'</b></div></div>'+sessions.map(sessionTile).join('')+'</section>'
-  +'<section class="af-block" aria-labelledby="af-settings-title"><h3 id="af-settings-title" class="text-body-base font-semibold">Assessment settings</h3><dl class="af-settings-list">'+settingRows.map(([a,b])=>'<div><dt>'+a+'</dt><dd>'+esc(show(b))+'</dd></div>').join('')+'</dl></section><div data-af-error></div>';
+  +'<section class="af-block" aria-labelledby="af-settings-title"><h3 id="af-settings-title" class="text-body-base font-semibold">Assessment settings</h3><dl class="af-settings-list">'+settingRows.map(([a,b])=>'<div><dt>'+a+'</dt><dd>'+esc(show(b))+'</dd></div>').join('')+'</dl></section>'+(askReview?'<label class="check af-reviewed"><input type="checkbox" class="checkbox" id="af-reviewed"'+(reviewedOk?' checked':'')+'><span class="label">I’ve reviewed the items, answer keys, and any AI-generated content.</span></label>':'')+'<div data-af-error></div>';
   if(error)grid.querySelector('[data-af-error]').append(error);
+  const reviewBox=grid.querySelector('#af-reviewed');if(reviewBox)reviewBox.onchange=()=>{reviewedOk=reviewBox.checked;reviewBox.setCustomValidity('')};
   grid.querySelectorAll('[data-af-test]').forEach(b=>b.onclick=()=>{const prev=front;front=Number(b.dataset.afTest);expanded=false;render();shuffle(prev);grid.querySelector('[data-af-test="'+prev+'"]')?.focus({preventScroll:true})});
   const more=grid.querySelector('.af-more');if(more)more.onclick=()=>{expanded=!expanded;render();grid.querySelector('.af-more')?.focus()};
  };
@@ -113,7 +116,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const dialog=document.createElement('dialog');
   /* Figma CAP 1480:11324: compact "Assessment created" alert with two equal actions.
      It fades and lifts in, the check circle pops and the tick draws itself (educator.css). */
-  dialog.className='as-created-dialog dialog dialog-success';
+  dialog.className='as-created-dialog dialog dialog-success dialog-sm';
   dialog.setAttribute('aria-labelledby','as-created-title');
   dialog.setAttribute('aria-describedby','as-created-description');
   const delivery=read('cogniaDeliverySessions',d);
@@ -140,6 +143,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   const confirmLink=event.target.closest('.af-confirm a[href="CAP-T10-Scheduled.dc.html"]');
   if(!confirmLink||event.defaultPrevented)return;
   event.preventDefault();
+  const reviewBox=document.getElementById('af-reviewed');
+  if(reviewBox&&!reviewBox.checked){reviewBox.setCustomValidity('Confirm you have reviewed the items, answer keys and any AI-generated content.');reviewBox.reportValidity();return;}
   history.replaceState({...history.state,capConfirmedAssessment:t.id},'');
   openSuccess();
  });

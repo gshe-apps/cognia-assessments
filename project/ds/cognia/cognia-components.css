@@ -792,6 +792,14 @@ a.card-link:hover > .card { background-image: linear-gradient(var(--hover-overla
   .dialog-success .dialog-footer .btn { flex: 1 1 0; }
 }
 
+/* Small dialog: a short confirmation with one sentence and two actions (Ready to hand in?, Assessment created).
+   400px wide. The two footer buttons stretch to share the full width, side by side, at every screen size:
+   the ghost or outline action on the left, the solid main action on the right. Add .dialog-sm to the dialog.
+   <dialog class="dialog dialog-sm"> .. </dialog>  or  <dialog class="dialog dialog-success dialog-sm"> .. </dialog> */
+.dialog-sm { width: min(400px, calc(100vw - var(--space-8))); }
+.dialog-sm .dialog-footer { flex-direction: row; justify-content: stretch; }
+.dialog-sm .dialog-footer .btn { flex: 1 1 0; width: auto; min-width: 0; }
+
 .sheet {
   margin: 0 0 0 auto;
   width: 75%;

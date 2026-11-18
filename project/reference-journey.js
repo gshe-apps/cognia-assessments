@@ -33,6 +33,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  const hero=page.querySelector('.tf-hero'),detailsTop=page.querySelector('.tf-top');
  if(detailsTop){const progress=detailsTop.querySelector('.tf-steps');if(progress)hero.append(progress);detailsTop.remove();}
  hero.querySelector(':scope>div>p')?.remove();
+ const heroTitle=hero.querySelector('h1');if(heroTitle)heroTitle.textContent='Test details';
  const m=model();let t=active(m);if(!t)return;
  const original=page.querySelector('.reviewgrid aside section'),instructions=original.querySelector('#instructions'),time=original.querySelector('#timeLimit'),reviewed=original.querySelector('#reviewed');
  const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
@@ -40,93 +41,88 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  instructions.remove();
 
  /* Header actions sit left of Save as draft (teacher-flow-upgrade.js appends that button to the hero). */
- const tools=node('<div class="ad-hero-actions" role="group" aria-label="Assessment actions"><button type="button" class="btn btn-ghost btn-lg" data-preview-test title="Preview the test content students will see">Student preview</button><button type="button" class="btn ghost btn-ghost btn-lg rj-bank-reuse" data-bank title="Save this assessment for reuse">Bank for reuse</button></div>');
+ const tools=node('<div class="ad-hero-actions" role="group" aria-label="Assessment actions"><button type="button" class="btn ghost btn-ghost btn-lg rj-bank-reuse" data-bank title="Save this assessment for reuse">Bank for reuse</button></div>');
  hero.append(tools);
 
  const host=node('<section class="ad-layout"><div class="ad-main"></div><div class="ad-settings"></div></section>');
  page.querySelector('.reviewgrid').before(host);
  const main=host.firstElementChild,side=host.lastElementChild;
  let selected=t.id;
- const select=id=>{selected=id;m.active=id;save(m);draw()};
 
- const choices=(key,label,options,current,kind='chips')=>`<div class="ad-setting" role="group" aria-labelledby="ad-${key}-label"><p class="label" id="ad-${key}-label">${label}</p><div class="ad-${kind} ${kind==='group'?'button-group button-group-segmented':'tabs-list tabs-list-secondary'}">${options.map(([value,text])=>`<button type="button" class="ad-choice ${kind==='group'?'btn btn-ghost':'tab'}" data-choice="${key}" data-value="${esc(value)}" aria-pressed="${value===current}">${esc(text)}</button>`).join('')}</div></div>`;
- const field=(id,label,control,hint='')=>`<div class="field">${hint?`<div class="ad-label-row"><label class="label" for="${id}">${label}</label><span class="field-hint">${hint}</span></div>`:`<label class="label" for="${id}">${label}</label>`}${control}</div>`;
- const dropdown=(id,attr,options)=>`<span class="select-wrap"><select class="select" id="${id}" ${attr}>${options}</select></span>`;
+ /* 18 Nov: Details is read-only. Each test is a card showing what was entered in the setup modal (plus total
+    points); Edit reopens that modal. An outlined card next to them adds another test. Settings live in the modal. */
+ const pencil=svg('<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>');
+ const eye=svg('<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>');
+ const settingText={attempts:{'One attempt only':'1','2 attempts':'2','3 attempts':'3'},calculator:{'Not allowed':'No'},notes:{'Allowed':'Yes','Not allowed':'No'},limit:{'None':'No limit'}};
+ const detailsFor=x=>{x.details=x.details||{description:x.description||m.details?.description||'',instructions:m.details?.instructions||instructions.value,resource:x.resource||'',notes:x.notes||'',duration:Number(x.duration)>0?x.duration+' minutes':'None'};return x.details};
+ const minutesOf=d=>parseInt(d,10)||0;
+ const row=(label,value)=>`<div class="ad-dl-row"><dt>${label}</dt><dd${value?'':' class="ad-empty"'}>${value?esc(value):'Not added'}</dd></div>`;
+ function card(x,i){
+  const d=detailsFor(x),marks=(x.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks;
+  const stds=(d.standards||[x.standard].filter(Boolean)).join(', '),s={...(window.capAssessmentSetup?.settingDefaults||{}),...m.settings};
+  const set=k=>k==='calculator'&&s.calculator==='Allowed'?'Yes, '+(s.calculatorType||'Basic'):settingText[k]?.[s[k]]||s[k];
+  return `<div class="ad-test-item"><div class="ad-card-actions"><button type="button" class="btn btn-ghost btn-sm" data-edit-details="${esc(x.id)}" aria-haspopup="dialog" aria-label="Edit ${esc(x.title)}">${pencil}Edit</button><button type="button" class="btn btn-ghost btn-sm" data-card-preview="${esc(x.id)}" aria-haspopup="dialog" aria-label="Learner preview of ${esc(x.title)}">${eye}Learner preview</button></div><article class="card ad-test-card" aria-labelledby="ad-test-${esc(x.id)}"><header class="ad-card-head"><div class="ad-card-name"><h3 id="ad-test-${esc(x.id)}">${esc(x.title)}</h3></div></header><div class="ad-card-body">`
+  +`<dl class="ad-dl ad-dl-main">${row('Subject',x.subject)}${row('Grade level',x.grade?'Grade '+x.grade:'')}${row('Test pathway',x.pathway||'College and career readiness')}${row('Standards',stds)}${row('Total points',String(points))}</dl>`
+  +`<div class="ad-card-acc"><details class="accordion-item"><summary class="accordion-trigger">Settings</summary><div class="accordion-content"><dl class="ad-dl">${row('Attempts',set('attempts'))}${row('Show results to learners',set('results'))}${row('Item order',set('questionOrder'))}${row('Answer option order',set('optionOrder'))}${row('Calculator allowed?',set('calculator'))}${row('Notes allowed?',set('notes'))}${row('Time limit',set('limit'))}</dl></div></details>`
+  +`<details class="accordion-item"><summary class="accordion-trigger">Optional settings</summary><div class="accordion-content"><dl class="ad-dl">${row('Duration in minutes',minutesOf(d.duration)?String(minutesOf(d.duration)):'')}${row('Description',d.description)}${row('Resource link',d.resource)}${row('Additional notes',d.notes)}</dl></div></details></div></div></article></div>`;
+ }
+ function syncDelivery(){
+  time.value=m.settings?.limit||'5 minutes';
+  const delivery=JSON.parse(localStorage.getItem('cogniaDeliverySessions')||'null');if(delivery){delivery.time=time.value;delivery.attempts=m.settings?.attempts==='2 attempts'?'2':m.settings?.attempts==='3 attempts'?'3':'1';localStorage.setItem('cogniaDeliverySessions',JSON.stringify(delivery))}
+ }
+ function openSetup(trigger,{initial,heading,submitLabel,showSettings,showAssessmentTitle,onSubmit}){
+  const api=window.capAssessmentSetup;if(!api)return;persist();let done=false;
+  const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,heading,submitLabel,showSettings,showAssessmentTitle,
+   onSubmit(details){done=true;onSubmit(details,api)},
+   onClose(){setup.remove();if(!done)(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
+  setup.open(initial);
+ }
+ const persist=()=>{
+  m.settings=m.settings||{};
+  m.tests.forEach(x=>{const d=detailsFor(x);d.instructions=instructions.value});
+  m.details={...m.details,instructions:instructions.value};
+  syncDelivery();save(m);
+  page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));
+ };
+ host.rjPersist=persist;
 
  function draw(){
   t=m.tests.find(x=>x.id===selected)||m.tests[0];
-  t.details=t.details||{description:m.details?.description||'',instructions:m.details?.instructions||instructions.value};
-  const d=t.details,settings=m.settings=m.settings||{};
-  const marks=(t.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks||1;
-  const showResources=d.showResources??Boolean(d.resource||d.notes);
-  const selectedStandards=d.standards||[t.standard].filter(Boolean),availableStandards=[...new Set([...selectedStandards,t.standard,...(String(t.grade)==="5"&&t.subject==="Mathematics"?["5.NF.A.1","5.NF.A.2","5.NF.B.3","5.NF.B.4"]:[]),...(t.questions||[]).map(q=>q.standard),...(window.cogniaAssessmentForms||[]).filter(f=>String(f.grade)===String(t.grade)&&f.subject===t.subject).map(f=>f.standard)].filter(Boolean))];
-  const standardChoices=[[],...availableStandards.map(value=>[value])];if(selectedStandards.length>1)standardChoices.push(selectedStandards);
-  const standardOptions=standardChoices.map(values=>'<option value="'+esc(JSON.stringify(values))+'" '+(JSON.stringify(values)===JSON.stringify(selectedStandards)?'selected':'')+'>'+esc(values.length?values.join(', '):'No standard')+'</option>').join('');
+  side.remove();host.querySelector('.ad-settings-title')?.remove();
+  main.innerHTML=`<div class="ad-test-cards">${m.tests.map(card).join('')}<button type="button" class="ad-add-card ad-add-test" aria-haspopup="dialog">${plus}<span>Add another test</span></button></div>`
+;
+  /* 18 Nov: the review confirmation moved to step 4/4 Finalize, so step 2 no longer asks for it. */
+  reviewed.checked=true;reviewed.closest('label').hidden=true;
+  syncDelivery();
 
-  main.innerHTML=`<nav class="ad-tests" aria-label="Tests in this assessment"><div class="tabs-list" role="group">${m.tests.map(v=>`<button type="button" class="tab" data-select-test="${esc(v.id)}" aria-pressed="${v.id===t.id}">${esc(v.title)}</button>`).join('')}</div><button type="button" class="tab ad-add-test" aria-haspopup="dialog">${plus}Add another test</button></nav>`
-  +'<h2 class="ad-section-title">Details</h2>'
-  +field('tf-assessment-name','Test name',`<input class="input" id="tf-assessment-name" maxlength="100" value="${esc(t.title)}" required>`)
-  +field('tf-description','Description',`<textarea class="textarea" id="tf-description" maxlength="500" rows="3" placeholder="Type here">${esc(d.description||'')}</textarea>`,'Optional')
-  +`<div class="ad-row ad-row-2">`
-   +field('ad-grade','Grade / Year',dropdown('ad-grade','data-grade',['4','5','6','8'].map(g=>`<option value="${g}" ${g===String(t.grade)?'selected':''}>Year ${g}</option>`).join('')))
-   +field('ad-subject','Subject',dropdown('ad-subject','data-subject',['Mathematics','English'].map(v=>`<option ${t.subject===v?'selected':''}>${v}</option>`).join('')))
-  +`</div><div class="ad-row ad-row-3">`
-   +field('ad-duration','Duration',dropdown('ad-duration','data-duration','<option>None</option>'+[5,8,10,15,20,30,45,60].map(n=>`<option ${d.duration===n+' minutes'?'selected':''}>${n} minutes</option>`).join('')))
-   +field('ad-standards','Standards',dropdown('ad-standards','data-standard-select',standardOptions))
-   +field('ad-points','Total points',`<div class="ad-stepper"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-points-step="-1" aria-label="Decrease total points">${minus}</button><input class="input" id="ad-points" type="number" inputmode="numeric" min="1" max="999" value="${points}" data-points><button type="button" class="btn btn-ghost btn-icon btn-sm" data-points-step="1" aria-label="Increase total points">${plus}</button></div>`)
-  +`</div><label class="check ad-toggle"><input type="checkbox" class="checkbox" data-resources-toggle ${showResources?'checked':''} aria-controls="ad-resources"><span class="label">Add resources (optional)</span></label>`
-  +`<div class="ad-resources" id="ad-resources" ${showResources?'':'hidden'}>`
-   +field('ad-resource','Resource link',`<input class="input" id="ad-resource" type="url" data-resource placeholder="https://…" value="${esc(d.resource||'')}">`)
-   +field('tf-notes','Additional notes',`<textarea class="textarea" id="tf-notes" rows="3" placeholder="Type here">${esc(d.notes||'')}</textarea>`)
-  +`</div>`;
-
-  const results=settings.results||'After submission';
-  /* 17 Nov: the Settings heading sits outside the white card, like Details. */
-  if(!host.querySelector('.ad-settings-title'))side.before(node('<h2 class="ad-section-title ad-settings-title">Settings</h2>'));
-  side.innerHTML=choices('attempts','Attempts',[['One attempt only','1'],['2 attempts','2'],['3 attempts','3']],settings.attempts||'One attempt only','round')
-  +`<fieldset class="ad-setting"><legend class="label">Show results to students</legend><div class="ad-radios">${['After submission','After all sessions close','Do not show'].map(v=>`<label class="check"><input type="radio" class="radio" name="ad-results" value="${v}" ${v===results?'checked':''}>${v}</label>`).join('')}</div></fieldset>`
-  +`<div class="ad-row ad-row-even">${choices('questionOrder','Item order',[['As created','As created'],['Shuffle','Shuffle']],settings.questionOrder||'As created','group')}${choices('optionOrder','Answer option order',[['As created','As created'],['Shuffle','Shuffle']],settings.optionOrder||'As created','group')}</div>`
-  +`<div class="ad-row ad-row-even">${choices('calculator','Calculator allowed?',[['Allowed','Yes'],['Not allowed','No']],settings.calculator||'Not allowed','group')}${choices('notes','Notes allowed?',[['Allowed','Yes'],['Not allowed','No']],settings.notes||'Not allowed','group')}</div>`
-  +choices('limit','Time limit',[5,10,15,20].map(n=>[n+' minutes',n+' min']),settings.limit||'5 minutes')
-  +'<div class="ad-confirm"></div>';
-  const confirm=reviewed.closest('label');confirm.classList.add('check');reviewed.classList.add('checkbox');confirm.querySelector('span')?.classList.add('label');side.querySelector('.ad-confirm').append(confirm);
-  time.value=settings.limit||'5 minutes';
-
-  const q=s=>host.querySelector(s);
-  const persist=()=>{
-   t.title=q('#tf-assessment-name').value.trim()||t.title;
-   d.description=q('#tf-description').value;d.instructions=instructions.value;d.notes=q('#tf-notes').value;d.resource=q('[data-resource]').value;d.duration=q('[data-duration]').value;d.standards=JSON.parse(q('[data-standard-select]').value);d.points=Math.max(1,Number(q('[data-points]').value)||marks||1);d.showResources=q('[data-resources-toggle]').checked;
-   t.grade=q('[data-grade]').value;t.subject=q('[data-subject]').value;
-   m.details={...m.details,description:d.description,instructions:d.instructions,notes:d.notes};
-   host.querySelectorAll('[data-choice][aria-pressed="true"]').forEach(b=>{m.settings[b.dataset.choice]=b.dataset.value});
-   if(!host.querySelector('[data-choice="limit"][aria-pressed="true"]'))m.settings.limit='None';
-   time.value=m.settings.limit;m.settings.results=q('[name="ad-results"]:checked')?.value||'After submission';
-   save(m);
-   const delivery=JSON.parse(localStorage.getItem('cogniaDeliverySessions')||'null');if(delivery){delivery.time=time.value;delivery.attempts=m.settings.attempts==='2 attempts'?'2':m.settings.attempts==='3 attempts'?'3':'1';localStorage.setItem('cogniaDeliverySessions',JSON.stringify(delivery))}
-   page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));
-  };
-  host.onchange=persist;host.rjPersist=persist;
-  /* Add another test: the setup dialog names the new test (default "New test"); Continue adds it to this
-     assessment and opens step 1/4 so its items can be added. */
-  q('.ad-add-test').onclick=e=>{const trigger=e.currentTarget,api=window.capAssessmentSetup;if(!api)return;persist();
-   const initial={title:'New test',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||''};
-   let added=false;
-   const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,
-    onSubmit(details){
-     added=true;const id='test-'+Date.now(),itemsPage=api.itemPage(details);
-     const test={id,...details,page:itemsPage,state:{chosen:[],written:{},edits:{}},questions:[]};
-     m.tests.push(test);m.active=id;save(m);
-     sessionStorage.setItem('capCreateConfirmed:'+id,api.signature(details));
-     location.href=itemsPage},
-    onClose(){setup.remove();if(!added)(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
-   const dialog=[...document.querySelectorAll('.cap-setup-modal')].pop();
-   if(dialog){dialog.querySelector('#cap-setup-title').textContent='Add a test';dialog.querySelector('label[for="uc-title"]').textContent='Test name';dialog.querySelector('#cap-title-error').textContent='Enter a test name.';dialog.querySelector('#uc-pathway')?.closest('.field')?.setAttribute('hidden','')}
-   setup.open(initial)};
-  main.querySelectorAll('[data-select-test]').forEach(b=>b.onclick=()=>{persist();select(b.dataset.selectTest)});
-  q('[data-resources-toggle]').addEventListener('change',e=>{q('#ad-resources').hidden=!e.target.checked});
-  main.querySelectorAll('[data-points-step]').forEach(b=>b.onclick=()=>{const input=q('[data-points]');input.value=Math.min(999,Math.max(1,(Number(input.value)||1)+Number(b.dataset.pointsStep)));persist()});
-  /* Choice pills: one pressed per group. Time limit can be switched off by pressing the selected pill again. */
-  side.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')==='true';if(on&&b.dataset.choice!=='limit')return;side.querySelectorAll(`[data-choice="${b.dataset.choice}"]`).forEach(x=>x.setAttribute('aria-pressed',String(x===b&&!on)));persist()});
+  main.querySelectorAll('[data-card-preview]').forEach(b=>b.onclick=()=>{persist();const x=m.tests.find(v=>v.id===b.dataset.cardPreview);selected=x.id;m.active=x.id;save(m);window.capLearnerPreview(x)});
+  main.querySelectorAll('[data-edit-details]').forEach(b=>b.onclick=()=>{
+   const x=m.tests.find(v=>v.id===b.dataset.editDetails),d=detailsFor(x),first=m.tests.indexOf(x)===0;
+   selected=x.id;m.active=x.id;
+   openSetup(b,{heading:'Edit test details',submitLabel:'Save changes',showAssessmentTitle:true,
+    initial:{title:m.title,testName:x.title,grade:String(x.grade||'5'),subject:x.subject||'Mathematics',standard:(d.standards||[])[0]||x.standard||'',pathway:x.pathway,
+     duration:minutesOf(d.duration)||'',description:d.description||'',resource:d.resource||'',notes:d.notes||'',assessmentSettings:m.settings},
+    onSubmit(details,api){
+     if(details.title)m.title=details.title;x.title=details.testName||x.title;x.grade=details.grade;x.subject=details.subject;x.standard=details.standard;x.pathway=details.pathway;x.duration=details.duration;
+     d.description=details.description;d.resource=details.resource;d.notes=details.notes;d.duration=Number(details.duration)>0?details.duration+' minutes':'None';
+     d.standards=details.standard?[details.standard]:[];d.showResources=Boolean(details.resource||details.notes);
+     m.settings={...(m.settings||{}),...details.assessmentSettings};
+     sessionStorage.setItem('capCreateConfirmed:'+x.id,api.signature({...details,title:first?m.title:x.title}));
+     persist();draw();main.querySelector(`[data-edit-details="${x.id}"]`)?.focus();
+    }});
+  });
+  /* Add another test: the same setup modal names the new test (default "New test"); Continue adds it to this
+     assessment and opens step 1/4 so its items can be added. It is the same modal as Create from scratch. */
+  main.querySelector('.ad-add-test').onclick=e=>openSetup(e.currentTarget,{
+   initial:{title:m.title,testName:'New test',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||'',assessmentSettings:m.settings},
+   onSubmit({assessmentSettings,...details},api){
+    if(assessmentSettings)m.settings={...(m.settings||{}),...assessmentSettings};
+    const id='test-'+Date.now(),itemsPage=api.itemPage(details);
+    const test={id,...details,title:details.testName||'New test',page:itemsPage,state:{chosen:[],written:{},edits:{}},questions:[]};
+    m.tests.push(test);m.active=id;save(m);
+    sessionStorage.setItem('capCreateConfirmed:'+id,api.signature({...details,title:test.title}));
+    location.href=itemsPage;
+   }});
  }
 
  /* Bank for reuse: the button itself becomes a green "Assessment banked" with a check. No status line under it. */
@@ -136,7 +132,6 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  const bankedId=()=>'assessment-'+m.tests.map(x=>x.id).join('-')+'-banked';
  try{if(JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]').some(e=>e.id===bankedId()))paintBanked()}catch{}
  bankButton.addEventListener('click',e=>{if(bankButton.dataset.banked){e.stopPropagation();try{const archive=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]');localStorage.setItem('cogniaAssessmentArchiveV1',JSON.stringify(archive.filter(x=>x.id!==bankedId())));const work=JSON.parse(localStorage.getItem('cogniaAssessmentWork')||'{}');delete work.banked;localStorage.setItem('cogniaAssessmentWork',JSON.stringify(work))}catch{}paintUnbanked();return}host.rjPersist?.();setTimeout(()=>{if(!e.defaultPrevented)paintBanked()})});
- tools.querySelector('[data-preview-test]').onclick=()=>{host.rjPersist?.();window.capLearnerPreview(t)};
  draw();page.addEventListener('click',e=>{if(e.target.closest('a'))host.rjPersist?.()},true);
 };
 window.capReferenceAssign=page=>{

@@ -5954,3 +5954,6 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 .rj-details .ad-test-card .ad-dl-main dd { font-weight: var(--weight-semibold); }
 .rj-details .ad-card-acc .accordion-trigger { font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
 .ad-test-card .ad-dl { gap: var(--space-4); }
+
+/* 18 Nov: the Overview section heading follows the 24/16/14 scale (a legacy global h2 rule made it 20px). */
+.od-priorities-intro h2 { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }

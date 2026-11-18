@@ -3,6 +3,7 @@
  const archiveKey = 'cogniaAssessmentArchiveV1';
  let draftIndex = 0;
  let draftAnimation;
+ const hiddenDrafts = new Set();
 
  function getDrafts() {
   let entries;
@@ -11,8 +12,10 @@
   if (!Array.isArray(entries)) return [];
   const drafts = entries.filter(entry => entry?.status === 'draft' && entry.id && entry.model?.tests?.length);
   const saved = drafts.filter(entry => !entry.sample);
-  if (saved.length) return saved.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
-  return drafts.sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
+  const ordered = saved.length
+   ? saved.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')))
+   : drafts.sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
+  return ordered.filter(entry => !hiddenDrafts.has(entry.id));
  }
 
  function apply() {
@@ -26,19 +29,20 @@
    if (element.textContent !== value) element.textContent = value;
   };
 
-  setText('[data-draft-position]', `Draft ${draftIndex + 1} of ${drafts.length}`);
-  const title = draft?.title || 'No drafts yet';
+  setText('[data-draft-position]', `${draftIndex + 1} of ${drafts.length}`);
+  const title = draft?.title || 'No drafts to show';
   setText('[data-overview-draft-title]', title);
   stack.querySelector('[data-overview-draft-title]').title = title;
   const step = draft?.step === 2 ? 2 : 1;
   stack.querySelector('[data-overview-draft-progress]').hidden = !draft;
   setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add assessment items') : '');
-  const progress = stack.querySelector('.od-desk-draft-segments');
+  const progress = stack.querySelector('[data-draft-meter]');
   progress.setAttribute('aria-valuenow', draft ? step : 0);
   progress.setAttribute('aria-valuetext', draft ? `Step ${step} of 4` : 'No draft');
-  progress.querySelectorAll('.progress').forEach((segment, index) => {
-   segment.toggleAttribute('data-filled', Boolean(draft && index < step));
-  });
+  progress.style.setProperty('--value', draft ? `${step * 25}%` : '0%');
+  const dismiss = stack.querySelector('[data-dismiss-draft]');
+  dismiss.hidden = !draft;
+  dismiss.dataset.dismissDraft = draft?.id || '';
   stack.querySelector('[data-draft-pager]').hidden = drafts.length < 2;
   stack.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
   stack.querySelector('[data-draft-step="1"]').disabled = draftIndex >= drafts.length - 1;
@@ -58,6 +62,13 @@
 
  window.capUpdateOverviewDraftStack = apply;
  document.addEventListener('click', event => {
+  const dismiss = event.target.closest('[data-dismiss-draft]');
+  if (dismiss?.dataset.dismissDraft) {
+   hiddenDrafts.add(dismiss.dataset.dismissDraft);
+   apply();
+   if (dismiss.hidden) dismiss.closest('[data-draft-sheet]').querySelector('[data-overview-resume]').focus();
+   return;
+  }
   const button = event.target.closest('[data-overview-draft-stack] [data-draft-step]');
   if (!button || button.disabled) return;
   const direction = Number(button.dataset.draftStep);
@@ -66,7 +77,7 @@
   if (button.disabled) button.parentElement.querySelector('button:not(:disabled)')?.focus();
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const sheet = button.closest('[data-draft-sheet]');
+  const sheet = button.closest('[data-draft-sheet]').querySelector('[data-draft-entry]');
   const style = getComputedStyle(sheet);
   const distance = parseFloat(style.getPropertyValue('--space-1'));
   const duration = parseFloat(style.getPropertyValue('--duration'));

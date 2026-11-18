@@ -103,7 +103,9 @@ document.addEventListener('DOMContentLoaded',()=>{
  const readJSON=(k,f)=>{try{return JSON.parse(stored(k))??f}catch{return f}};
  const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
  const itemsPage=()=>{const m=readJSON(key,{});return (m.tests?.find(t=>t.id===m.active)||m.tests?.[0])?.page||'CAP-T05-Questions.dc.html'};
- const previous=()=>step===2?itemsPage():step===3?'CAP-T06-Review.dc.html?stage=details':'CAP-T08-AudienceDelivery.dc.html';
+ const fromItem=new URLSearchParams(location.search).get('fromItem');
+ const itemReturn=/^i\d+$/.test(fromItem||'')?'CAP-T12-QuestionLibrary.dc.html?item='+encodeURIComponent(fromItem):null;
+ const previous=()=>itemReturn||(step===2?itemsPage():step===3?'CAP-T06-Review.dc.html?stage=details':'CAP-T08-AudienceDelivery.dc.html');
  /* Same entry shape as the draft archive used by the Assessments list (client-connected-feedback.js). */
  const draftId=m=>m?.tests?.length?'assessment-'+m.tests.map(t=>t.id).join('-'):null;
  function isSaved(){const id=draftId(readJSON(key,null));if(!id)return false;const entry=readJSON(archiveKey,[]).find(e=>e.id===id&&e.status==='draft');return !!entry&&(entry.step||1)===step&&JSON.stringify(entry.model)===stored(key)}
@@ -129,7 +131,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const bar=document.querySelector('.tf-bottom');
   if(bar){
    bar.querySelectorAll('a[href="CAP-T07-DraftSaved.dc.html"]').forEach(a=>a.remove());
-   if(step>1)bar.querySelectorAll('a:not(.solid)').forEach(a=>{
+   if(step>1||itemReturn)bar.querySelectorAll('a:not(.solid)').forEach(a=>{
     if(!a.dataset.tfBack&&!/^back\b/i.test(a.textContent.trim()))return;
     const href=previous();
     if(a.dataset.tfBack&&a.getAttribute('href')===href&&a.querySelector('svg')&&a.textContent.trim()==='Back')return;

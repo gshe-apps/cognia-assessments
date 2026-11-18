@@ -36,7 +36,7 @@
   };
 
   /* Use assessment library: pick a ready-made Cognia assessment in a modal (Figma 1504:5530).
-     Same fixed size and theme background as the setup modal; choosing one goes to step 3 (Assign). */
+     Same fixed size and theme background as the setup modal; choosing one opens Test details. */
   window.capOpenLibraryPicker = (trigger) => {
     const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const forms = (window.cogniaAssessmentForms || []).slice(0, 4);

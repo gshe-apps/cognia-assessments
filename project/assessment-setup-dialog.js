@@ -42,15 +42,22 @@
   const modal=make(`<dialog class="dialog cap-setup-modal" aria-labelledby="cap-setup-title">
    <section class="cap-setup-view" data-setup-view="form">
     <div class="cap-setup-heading dialog-header">
-     <h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>${esc(heading||'Set up your assessment by creating a test')}</h2>
+     <div class="cap-setup-title-row">
+      <span class="icon-accent" aria-hidden="true">${icon('<path d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/>')}</span>
+      <div><h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>${esc(heading||'Set up your assessment by creating a test')}</h2>
+       <p class="dialog-description">Choose a subject, grade level, pathway and standard for your test.</p></div>
+     </div>
      ${closeButton()}
     </div>
     <form class="cap-setup-fields" id="uc-assessment-details" aria-label="Test details" novalidate>
-     <div class="field" data-assessment-title-field ${showAssessmentTitle?'':'hidden'}>
+     <div class="item item-muted cap-assessment-title" data-assessment-title-field ${showAssessmentTitle?'':'hidden'}>
       <label class="label" for="uc-title">Assessment title</label>
+      <div class="field">
       <input class="input" id="uc-title" maxlength="90" required aria-describedby="cap-title-error">
       <p class="field-error" id="cap-title-error" hidden>Enter an assessment title.</p>
+      </div>
      </div>
+     <h3 class="text-body-base font-semibold">Test details</h3>
      <div class="field" data-test-name-field>
       <label class="label" for="cap-test-name">Test name</label>
       <input class="input" id="cap-test-name" maxlength="90" required aria-describedby="cap-test-name-error">
@@ -70,6 +77,10 @@
        <span class="select-wrap"><select class="select" id="cap-standard-select"></select></span>
       </div>
      </div>
+     <details class="cap-settings-disclosure">
+      <summary class="item"><span class="item-content text-body-base font-semibold">Quick settings</span>
+       ${icon('<path d="M5 12h14"/><path class="cap-settings-plus" d="M12 5v14"/>')}</summary>
+      <div class="cap-settings-content">
      <div class="cap-setup-settings" data-settings-block ${showSettings?'':'hidden'}>
       ${choice('attempts')}
       <fieldset class="field cap-setup-radios"><legend class="label">Show results to learners</legend>${resultOptions.map(v=>`<label class="check"><input type="radio" class="radio" name="cap-results" value="${esc(v)}"> ${esc(v)}</label>`).join('')}</fieldset>
@@ -78,8 +89,7 @@
       <div data-calc-type hidden>${choice('calculatorType')}</div>
       ${choice('limit')}
      </div>
-     <label class="check text-body-small font-semibold cap-setup-optional"><input class="checkbox" type="checkbox" id="cap-optional-toggle" aria-controls="cap-optional-fields" aria-expanded="false"> Optional settings</label>
-     <div class="cap-setup-optional-fields" id="cap-optional-fields" hidden>
+     <div class="cap-setup-optional-fields">
       <div class="field cap-setup-duration">
        <label class="label" for="cap-duration">Duration in minutes</label>
        <div class="cap-setup-stepper">
@@ -93,6 +103,8 @@
       <div class="field"><label class="label" for="cap-resource">Resource link</label><input class="input" id="cap-resource" type="url" placeholder="https://…"></div>
       <div class="field"><label class="label" for="cap-notes">Additional notes</label><textarea class="textarea" id="cap-notes" rows="3" placeholder="Type here"></textarea></div>
      </div>
+      </div>
+     </details>
     </form>
     <div class="cap-setup-buttons dialog-footer">
      <button class="btn btn-ghost btn-lg" type="button" data-close-setup>Cancel</button>
@@ -115,7 +127,7 @@
   const panel=find('form'), title=find('#uc-title'), subject=find('#uc-subject'), grade=find('#uc-grade'), pathway=find('#uc-pathway');
   const duration=find('#cap-duration'), description=find('#cap-description'), resource=find('#cap-resource'), notes=find('#cap-notes');
   const testName=find('#cap-test-name'), testNameField=find('[data-test-name-field]');
-  const optional=find('#cap-optional-toggle'), optionalFields=find('#cap-optional-fields');
+  const settingsDisclosure=find('.cap-settings-disclosure');
   const standardSelect=find('#cap-standard-select'), aboutStandard=find('[data-about-standard]');
   const formView=find('[data-setup-view="form"]'), standardView=find('[data-setup-view="standard"]');
   const preview=find('.cap-standard-preview'), standardTitle=find('#cap-standard-title');
@@ -150,9 +162,6 @@
    standardSelect.replaceChildren(new Option('Select a standard',''),...available.map(s=>new Option(label(s),s.code)));
    standardSelect.value=standard;
   }
-  function setOptional(on){
-   optional.checked=on;optionalFields.hidden=!on;optional.setAttribute('aria-expanded',String(on));
-  }
   function showView(name){
    formView.hidden=name!=='form';standardView.hidden=name!=='standard';
    modal.setAttribute('aria-labelledby',name==='form'?'cap-setup-title':'cap-standard-title');
@@ -160,6 +169,7 @@
   }
   const scope=()=>({title:title.value.trim(),grade:grade.value,subject:subject.value,standard,pathway:pathway.value});
   function open(settings){
+   settingsDisclosure.open=false;
    title.value=settings.title;grade.value=settings.grade;updateSubjects(settings.subject);
    alabamaContract=settings.alabamaContract??true;
    const stateOption=pathway.options[2];
@@ -173,7 +183,6 @@
    modal.querySelectorAll('[data-set]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===chosen[b.dataset.set])));
    modal.querySelectorAll('[name="cap-results"]').forEach(r=>r.checked=r.value===chosen.results);
    syncCalc();
-   setOptional(Boolean(Number(settings.duration)||settings.description||settings.resource||settings.notes));
    standard=settings.standard||'';renderStandards();renderPreview();
    for(const [input,error] of [[testName,'#cap-test-name-error'],[title,'#cap-title-error'],[duration,'#cap-duration-error']]){
     input.removeAttribute('aria-invalid');find(error).hidden=true;
@@ -184,7 +193,6 @@
   modal.querySelectorAll('[data-close-setup]').forEach(button=>button.onclick=()=>modal.close());
   modal.querySelectorAll('[data-back-setup]').forEach(button=>button.onclick=()=>showView('form'));
   aboutStandard.onclick=()=>showView('standard');
-  optional.onchange=()=>setOptional(optional.checked);
   modal.querySelectorAll('[data-step]').forEach(button=>button.onclick=()=>{
    duration.value=Math.max(0,(parseInt(duration.value,10)||0)+Number(button.dataset.step));
   });
@@ -203,14 +211,13 @@
   panel.onsubmit=event=>{
    event.preventDefault();
    const next=scope();
-   const useOptional=optional.checked;
    let invalid;
-   for(const [input,error,valid] of [[testName,'#cap-test-name-error',testNameField.hidden||Boolean(testName.value.trim())],[title,'#cap-title-error',Boolean(next.title)],[duration,'#cap-duration-error',!useOptional||duration.validity.valid]]){
+   for(const [input,error,valid] of [[testName,'#cap-test-name-error',testNameField.hidden||Boolean(testName.value.trim())],[title,'#cap-title-error',Boolean(next.title)],[duration,'#cap-duration-error',duration.validity.valid]]){
     input.setAttribute('aria-invalid',String(!valid));find(error).hidden=valid;
     if(!valid&&!invalid)invalid=input;
    }
-   if(invalid){invalid.focus();return}
-   onSubmit({...next,duration:useOptional&&Number(duration.value)>0?duration.value:'',description:useOptional?description.value.trim():'',resource:useOptional?resource.value.trim():'',notes:useOptional?notes.value.trim():'',...(testNameField.hidden?{}:{testName:testName.value.trim()}),...(showSettings?{assessmentSettings:readSettings()}:{}),alabamaContract});
+   if(invalid){const disclosure=invalid.closest('details');if(disclosure)disclosure.open=true;invalid.focus();return}
+   onSubmit({...next,duration:Number(duration.value)>0?duration.value:'',description:description.value.trim(),resource:resource.value.trim(),notes:notes.value.trim(),...(testNameField.hidden?{}:{testName:testName.value.trim()}),...(showSettings?{assessmentSettings:readSettings()}:{}),alabamaContract});
    modal.close();
   };
   return {open, remove:()=>modal.remove()};

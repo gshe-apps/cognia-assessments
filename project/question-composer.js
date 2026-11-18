@@ -59,7 +59,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
    peek.setAttribute('aria-label','Preview item: '+q.stem);
    peek.onclick=()=>window.capItemQuality.preview(
     {...items.get(q.id),...inst.state.edits?.[q.id],standard:q.standard,dok:q.dok},
-    {grade:t.grade,bank:window.capBankNameForRow?.(row)||'',canAdd:q.canAdd,onAdd:q.add,onClose:()=>{
+    {grade:t.grade,...window.capBuilderBankContext?.(row),canAdd:q.canAdd,onAdd:q.add,onClose:()=>{
      library.querySelector(`[data-bank-id="${CSS.escape(q.id)}"] [data-item-preview]`)?.focus();
     }}
    );

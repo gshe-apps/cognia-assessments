@@ -6,22 +6,18 @@ document.addEventListener('DOMContentLoaded',()=>{
  const model=()=>read('cogniaAssessmentTestsV1',null),forms=window.cogniaAssessmentForms||[];
  const ledger=()=>read('cogniaItemLifecycleV1',{}),archive=()=>read('cogniaAssessmentArchiveV1',[]);
  const isQuestions=/CAP-T05-/.test(page),isReview=page==='CAP-T06-Review.dc.html';
- const initialScope=model()?.tests?.find(t=>t.id===model()?.active)||model()?.tests?.[0];
- const questionFilter={bank:'cognia',term:'',type:'All types',grade:initialScope?.grade||'5',subject:initialScope?.subject||'Mathematics',standard:'',dok:''};
+ const questionFilter={bank:'cognia',term:'',type:'All types',grade:'',subject:'',standard:'',dok:''};
  function filterQuestions(){
   const selectedType={'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[questionFilter.type]||questionFilter.type;
-  const scope=model();
-  const test=scope?.tests?.find(t=>t.id===scope.active);
-  const matchesScope=(!questionFilter.grade||questionFilter.grade===(test?.grade||'5'))
-   &&(!questionFilter.subject||questionFilter.subject===(test?.subject||'Mathematics'));
-  const hasScopeFilters=!!document.getElementById('bankGrade');
   let count=0;
   for(const row of document.querySelectorAll('#libraryList .question-card')){
    const type=row.querySelector('.uc-bank-tags .tiny, .row .tiny')?.textContent||'';
    const stem=row.querySelector('h4')?.textContent.toLowerCase()||'';
+   const {grade,subject}=window.capBuilderBankContext?.(row)||{};
    const matches=(window.capBuilderBankMatch?window.capBuilderBankMatch(row):row.dataset.itemBank===questionFilter.bank)&&stem.includes(questionFilter.term)
     &&(selectedType==='All types'||type===selectedType)
-    &&(!hasScopeFilters||matchesScope)
+    &&(!questionFilter.grade||questionFilter.grade===grade)
+    &&(!questionFilter.subject||questionFilter.subject===subject)
     &&(!questionFilter.standard||row.dataset.bankStandard===questionFilter.standard)
     &&(!questionFilter.dok||'DOK '+row.dataset.bankDok===questionFilter.dok);
    row.hidden=!matches;
@@ -67,14 +63,14 @@ document.addEventListener('DOMContentLoaded',()=>{
  function saveSnapshot(status){const m=model();if(!m)return;const entries=archive(),id=modelId(m)+(status==='banked'?'-banked':'');let index=entries.findIndex(e=>e.id===id);if(index>=0&&entries[index].status==='assigned'){entries[index].id=id+'-scheduled-'+Date.parse(entries[index].updatedAt);index=-1;}const entry={id,title:m.title,status,...(index>=0&&entries[index].step?{step:entries[index].step}:{}),updatedAt:new Date().toISOString(),model:JSON.parse(JSON.stringify(m)),delivery:read('cogniaDeliverySessions',null)};if(index<0)entries.unshift(entry);else entries[index]=entry;put('cogniaAssessmentArchiveV1',entries);}
  function preserveCurrent(){const m=model();if(!m)return;const saved=archive().find(e=>e.id===modelId(m));if(saved?.status==='assigned')return;saveSnapshot(saved?.status||'draft');}
 
- function restore(id,details,target){const entry=archive().find(e=>e.id===id);if(!entry)return;preserveCurrent();const restored=JSON.parse(JSON.stringify(entry.model));if(entry.status==='banked'){const suffix='-reuse-'+Date.now();restored.active+=suffix;restored.tests.forEach(t=>t.id+=suffix);restored.origin='builder';}
+ function restore(id,details,target,navigate=url=>location.assign(url)){const entry=archive().find(e=>e.id===id);if(!entry)return;preserveCurrent();const restored=JSON.parse(JSON.stringify(entry.model));if(entry.status==='banked'){const suffix='-reuse-'+Date.now();restored.active+=suffix;restored.tests.forEach(t=>t.id+=suffix);restored.origin='builder';}
   /* Details confirmed in the setup dialog on the Assessments table: apply them so the builder opens ready, without asking again. */
   if(details&&window.capAssessmentSetup){const {itemPage,libraryPath,signature}=window.capAssessmentSetup,t=restored.tests.find(t=>t.id===restored.active)||restored.tests[0];Object.assign(t,details,{page:itemPage(details)});if(restored.tests.length===1)restored.title=t.title;put('cogniaAssessmentTestsV1',restored);sessionStorage.setItem('capCreateConfirmed:'+t.id,signature(t));location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':t.page;return;}
-  put('cogniaAssessmentTestsV1',restored);location.href=target||(entry.model.tests[0].libraryForm?'CAP-T08-AudienceDelivery.dc.html':entry.model.tests.find(t=>t.id===entry.model.active)?.page||'CAP-T06-Review.dc.html');}
+  put('cogniaAssessmentTestsV1',restored);navigate(target||(entry.model.tests[0].libraryForm?'CAP-T08-AudienceDelivery.dc.html':entry.model.tests.find(t=>t.id===entry.model.active)?.page||'CAP-T06-Review.dc.html'));}
  /* Opening a saved assessment, 10 Nov: drafts reopen on the step where Save as draft was clicked (1 Create or 2 Review),
     banked ones on step 2 (as a fresh copy) and assigned ones on step 4 Finalize. */
- function openSaved(id){const entry=archive().find(e=>e.id===id);if(!entry)return;
-  if(entry.status==='assigned'){preserveCurrent();put('cogniaAssessmentTestsV1',JSON.parse(JSON.stringify(entry.model)));if(entry.delivery)put('cogniaDeliverySessions',entry.delivery);location.href='CAP-T09-ConfirmAssignment.dc.html?view=assigned';return;}
+ function openSaved(id,navigate=url=>location.assign(url)){const entry=archive().find(e=>e.id===id);if(!entry)return;
+  if(entry.status==='assigned'){preserveCurrent();put('cogniaAssessmentTestsV1',JSON.parse(JSON.stringify(entry.model)));if(entry.delivery)put('cogniaDeliverySessions',entry.delivery);navigate('CAP-T09-ConfirmAssignment.dc.html?view=assigned');return;}
   const stepTwo=entry.status==='banked'||entry.step===2;
   /* Step 1 drafts were already set up, so the item builder opens without the setup dialog. */
   if(!stepTwo&&window.capAssessmentSetup){
@@ -84,95 +80,341 @@ document.addEventListener('DOMContentLoaded',()=>{
     sessionStorage.setItem('capCreateConfirmed:'+t.id,window.capAssessmentSetup.signature(settings));
    }
   }
-  restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null);}
+  restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null,navigate);}
  window.capRestoreWork=restore;window.capOpenSaved=openSaved;window.capStartLibraryForm=id=>startForm(id);
- function startForm(id){const form=forms.find(f=>f.id===id);if(!form)return;const usage=read('cogniaLibraryUsageV1',{});usage[id]=Date.now();put('cogniaLibraryUsageV1',usage);preserveCurrent();const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,page:form.page,libraryForm:form.id,state:{chosen:form.questions.map(q=>q.id),written:{},edits:{}},questions:JSON.parse(JSON.stringify(form.questions))};put('cogniaAssessmentTestsV1',{title:form.title,active:test.id,tests:[test],origin:'library'});try{if(window.capAssessmentSetup)sessionStorage.setItem('capCreateConfirmed:'+test.id,window.capAssessmentSetup.signature({...test}));}catch{}try{sessionStorage.setItem('capLibraryReturn',/CAP-T0[5-9]-|CAP-T10-/.test(page)?'CAP-T21-AssessmentLibrary.dc.html':page);}catch{}location.href='CAP-T08-AudienceDelivery.dc.html';}
+
+ if(page==='CAP-T03-Assessments.dc.html'){
+  const query=new URLSearchParams(location.search);
+  const name=query.get('associated'),fromItem=query.get('fromItem');
+  if(name&&fromItem){
+   const items=window.capItemBankData().filter(item=>item.assoc.some(([title])=>title===name));
+   const source=items.find(item=>item.id===fromItem);
+   if(source){
+    // Register the linked sample once in the same archive used by Tests and its editor.
+    const testId='item-bank-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+    const id='assessment-'+testId,entries=archive();
+    if(!entries.some(entry=>entry.id===id)){
+     const subject=source.subject==='ELA'?'English':'Mathematics';
+     const questions=items.map(item=>({
+      id:'bank-'+item.id,stem:item.stem,type:item.type,standard:item.std,marks:1,origin:'cognia',
+      options:item.opts||[],correct:item.correct?.[0]??null,sampleAnswer:item.sample||'',
+      ...(item.correct?.length>1?{correctAnswers:item.correct}:{}),
+     }));
+     const test={id:testId,title:name,grade:source.grade,subject,standard:source.std,
+      page:subject==='English'?'CAP-T05-Reading.dc.html':'CAP-T05-Questions.dc.html',
+      state:{chosen:questions.map(q=>q.id),written:Object.fromEntries(questions.map(q=>[q.id,q])),edits:{}},questions};
+     entries.push({id,title:name,status:'draft',step:2,sample:true,updatedAt:new Date().toISOString(),
+      model:{title:name,origin:'builder',active:testId,tests:[test]}});
+     put('cogniaAssessmentArchiveV1',entries);
+    }
+    openSaved(id,path=>{
+     const destination=new URL(path,location.href);
+     destination.searchParams.set('fromItem',fromItem);
+     location.replace(destination.href);
+    });
+    return;
+   }
+  }
+ }
+ function startForm(id,draftId){
+  const form=forms.find(f=>f.id===id);if(!form)return false;
+  const draft=draftId&&archive().find(entry=>entry.id===draftId&&entry.status==='draft'&&entry.model?.tests?.length);
+  if(draftId&&!draft)return false;
+  const current=model(),sameDraft=Boolean(draft&&current&&modelId(current)===draft.id);
+  const delivery=draft?(sameDraft?read('cogniaDeliverySessions',null):draft.delivery):null;
+  if(!sameDraft)preserveCurrent();
+  const questions=JSON.parse(JSON.stringify(form.questions));
+  const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,
+   page:form.page,libraryForm:form.id,state:{chosen:questions.map(q=>q.id),written:{},edits:{}},questions};
+  const assessment=draft?JSON.parse(JSON.stringify(sameDraft?current:draft.model)):
+   {title:form.title,active:test.id,tests:[],origin:'library'};
+  assessment.tests.push(test);
+  put('cogniaAssessmentTestsV1',assessment);
+  if(delivery)put('cogniaDeliverySessions',delivery);else localStorage.removeItem('cogniaDeliverySessions');
+  if(draft){
+   const updated={...draft,id:modelId(assessment),title:assessment.title,step:2,updatedAt:new Date().toISOString(),model:assessment,delivery};
+   put('cogniaAssessmentArchiveV1',archive().map(entry=>entry.id===draft.id?updated:entry));
+  }
+  const usage=read('cogniaLibraryUsageV1',{});usage[id]=Date.now();put('cogniaLibraryUsageV1',usage);
+  try{
+   if(window.capAssessmentSetup)sessionStorage.setItem('capCreateConfirmed:'+test.id,window.capAssessmentSetup.signature(test));
+   sessionStorage.setItem('capLibraryReturn',/CAP-T0[5-9]-|CAP-T10-/.test(page)?'CAP-T21-AssessmentLibrary.dc.html':page);
+  }catch{}
+  location.href='CAP-T06-Review.dc.html?stage=details';
+  return true;
+ }
+ function mountLibraryDraftMenu(formId,dropdown){
+  const trigger=dropdown.querySelector('#al-use-test-trigger'),menu=dropdown.querySelector('#al-use-test-menu');
+  const branch=menu.querySelector('.al-draft-branch'),add=branch.querySelector('button'),submenu=branch.querySelector('.menu');
+  const savedDate=new Intl.DateTimeFormat(undefined,{dateStyle:'medium'});
+  const savedClock=new Intl.DateTimeFormat(undefined,{timeStyle:'medium'});
+  const savedTime=new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'medium'});
+  let openedByHover=false;
+  function closeDrafts(){
+   submenu.hidden=true;
+   submenu.replaceChildren();
+   add.setAttribute('aria-expanded','false');
+  }
+  function openDrafts(focus=false){
+   if(submenu.hidden){
+    const today=savedDate.format(Date.now()),datesByName=new Map();
+    const drafts=archive().filter(entry=>entry.status==='draft'&&entry.model?.tests?.length)
+     .map(draft=>{
+      const name=draft.title||draft.model.title,timestamp=Date.parse(draft.updatedAt);
+      const date=Number.isFinite(timestamp)?savedDate.format(timestamp):'';
+      const key=JSON.stringify([name,date]);
+      datesByName.set(key,(datesByName.get(key)||0)+1);
+      return {draft,name,timestamp,date,key};
+     }).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+    submenu.innerHTML=drafts.length?drafts.map(({draft,name,timestamp,date,key})=>{
+     const dateLabel=date===today?'Today':date;
+     const saved=date
+      ?`<time class="al-draft-saved text-muted-foreground" datetime="${escape(draft.updatedAt)}" title="Last saved ${escape(savedTime.format(timestamp))}">${escape(dateLabel)}${datesByName.get(key)>1?' · '+escape(savedClock.format(timestamp)):''}</time>`
+      :'<span class="al-draft-saved text-muted-foreground">Save time unavailable</span>';
+     return `
+     <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-library-draft="${escape(draft.id)}">
+      <span class="al-draft-copy"><span class="al-draft-name text-body-small font-semibold">${escape(name)}</span>${saved}</span>
+      <span class="badge badge-warning al-draft-count">${draft.model.tests.length} ${draft.model.tests.length===1?'Test':'Tests'}</span>
+     </button>`;
+    }).join(''):`
+      <p class="al-draft-status text-body-small text-muted-foreground" role="presentation">No saved drafts</p>
+      <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-start-form="${escape(formId)}">Start from scratch</button>`;
+    submenu.hidden=false;
+    add.setAttribute('aria-expanded','true');
+   }
+   if(focus)submenu.querySelector('[role="menuitem"]')?.focus();
+  }
+  function closeMenu(){
+   menu.hidden=true;
+   trigger.setAttribute('aria-expanded','false');
+   openedByHover=false;
+   closeDrafts();
+  }
+  trigger.addEventListener('pointerenter',event=>{
+   if(event.pointerType!=='mouse'||!menu.hidden)return;
+   menu.hidden=false;
+   trigger.setAttribute('aria-expanded','true');
+   openedByHover=true;
+  });
+  trigger.addEventListener('click',event=>{
+   if(!openedByHover||menu.hidden)return;
+   event.stopPropagation();
+   openedByHover=false;
+   menu.querySelector('[role="menuitem"]').focus();
+  });
+  dropdown.addEventListener('pointerleave',event=>{
+   if(event.pointerType==='mouse'&&openedByHover&&!menu.contains(document.activeElement))closeMenu();
+  });
+  branch.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')openDrafts();});
+  branch.addEventListener('pointerleave',event=>{
+   if(event.pointerType==='mouse'&&!submenu.contains(document.activeElement))closeDrafts();
+  });
+  branch.addEventListener('focusout',event=>{
+   if(event.relatedTarget&&!branch.contains(event.relatedTarget))closeDrafts();
+  });
+  add.addEventListener('click',event=>{
+   event.stopPropagation();
+   openDrafts(true);
+  });
+  submenu.addEventListener('click',event=>{
+   const pick=event.target.closest('[data-library-draft]');
+   if(pick&&!startForm(formId,pick.dataset.libraryDraft)){
+    event.stopPropagation();
+    closeDrafts();openDrafts(true);
+   }
+  });
+  menu.addEventListener('keydown',event=>{
+   if(event.target===add&&['ArrowLeft','ArrowRight'].includes(event.key)){
+    event.preventDefault();event.stopPropagation();openDrafts(true);return;
+   }
+   if(!submenu.contains(event.target)){
+    if(['ArrowUp','ArrowDown','Home','End'].includes(event.key))closeDrafts();
+    return;
+   }
+   if(event.key==='Tab'){closeMenu();trigger.focus();return;}
+   if(['Escape','ArrowLeft','ArrowRight'].includes(event.key)){
+    event.preventDefault();event.stopPropagation();closeDrafts();add.focus();return;
+   }
+   const items=[...submenu.querySelectorAll('[role="menuitem"]')];
+   const index=items.indexOf(document.activeElement);
+   const destinations={ArrowDown:(index+1)%items.length,ArrowUp:(index-1+items.length)%items.length,Home:0,End:items.length-1};
+   if(!Object.hasOwn(destinations,event.key))return;
+   event.preventDefault();event.stopPropagation();items[destinations[event.key]]?.focus();
+  });
+  new MutationObserver(()=>{if(menu.hidden){openedByHover=false;closeDrafts();}})
+   .observe(menu,{attributes:true,attributeFilter:['hidden']});
+ }
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form · Grade ${f.grade} · ${escape(f.subject)} · ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions dialog-footer"><button class="btn solid btn-lg" data-assign-form="${f.id}">Use complete assessment →</button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
- /* Library (11 Nov): Item Bank layout, assessments on the left and a preview on the right.
-    Uses the Item Bank's .ib classes; search, filter and sort are ghost icon buttons. State lives here so re-renders keep it. */
- const libState={selected:null,term:'',grade:'',subject:'',format:'',sort:'recent',search:false,filters:false};
+ const libState={selected:null,term:'',grade:'',subject:'',format:'',sort:'recent',filters:false};
  function renderLibrary(){
   const root=document.getElementById('assessment-library');if(!root)return;
-  root.className='ib al-ib';
+  root.className='al-library';
   const svg=path=>'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+path+'</svg>';
-  const arrow=svg('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'),check=svg('<path d="M20 6 9 17l-5-5"/>');
+  const searchIcon=svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>');
+  const closeIcon=svg('<path d="m18 6-12 12M6 6l12 12"/>');
+  const chevronDown=svg('<path d="m6 9 6 6 6-6"/>');
+  const chevronLeft=svg('<path d="m15 18-6-6 6-6"/>');
+  const newTestIcon=svg('<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="18" y2="12"/><line x1="9" x2="15" y1="15" y2="15"/>');
+  const chevron=svg('<path d="m9 18 6-6-6-6"/>');
+  const check=svg('<path d="m20 6-11 11-5-5"/>');
+  const subjectIcons={
+   Mathematics:svg('<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/>'),
+   English:svg('<path d="M12 7v14m0-14C9 4 5 4 2 5v15c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 2"/>'),
+  };
   const formatNames={'Text entry':'Short answer','Extended text':'Extended response'};
-  const formatsOf=form=>{const types=[...new Set((form.questions||[]).map(q=>formatNames[q.type]||q.displayType||q.type).filter(Boolean))];return [...new Set([...(form.format?[form.format]:[]),...types,...(types.length>1?['Mixed formats']:[])])];};
-  const grades=[...new Set(forms.map(f=>String(f.grade)))].sort((a,b)=>Number(a)-Number(b));
-  const subjects=[...new Set(forms.map(f=>f.subject))].sort();
-  const formats=[...new Set(forms.flatMap(formatsOf))];
-  const options=(values,label=v=>v)=>values.map(v=>'<option value="'+escape(v)+'">'+escape(label(v))+'</option>').join('');
-  const sorts=[['recent','Recently used'],['title','Title A–Z'],['grade','Grade level']];
-  const tool=(attrs,label,icon)=>'<button type="button" class="ib-icon-btn btn btn-ghost btn-icon" '+attrs+' aria-label="'+label+'">'+icon+'<span class="ib-tip" aria-hidden="true">'+label+'</span></button>';
-  const select=(id,label,all,values,text)=>'<div class="ib-field"><label class="ib-sr" for="'+id+'">'+label+'</label><span class="select-wrap"><select class="select" id="'+id+'"><option value="">'+all+'</option>'+options(values,text)+'</select></span></div>';
-  root.innerHTML='<section class="ib-list" aria-labelledby="al-title"><h1 id="al-title" class="ib-sr">Cognia assessment library</h1>'
-   +'<div class="ib-toolbar"><p class="ib-count" id="form-count" role="status"></p><div class="ib-tools">'
-   +tool('data-al-search aria-pressed="false"','Search assessments',svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'))
-   +tool('data-al-filter aria-pressed="false"','Filter assessments',svg('<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>'))
-   +'<div class="dropdown dropdown-end">'+tool('id="al-sort-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="al-sort-menu"','Sort assessments',svg('<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>'))
-   +'<div class="menu" role="menu" id="al-sort-menu" aria-labelledby="al-sort-trigger" hidden>'+sorts.map(([v,l])=>'<button type="button" class="menu-item" role="menuitem" tabindex="-1" data-al-sort="'+v+'">'+l+'<span class="al-sort-check" data-al-sort-check="'+v+'">'+check+'</span></button>').join('')+'</div></div>'
-   +'</div></div>'
-   +'<div class="ib-controls"><div class="ib-slot ib-slot-search" hidden><div class="ib-slot-in"><div class="search search-md ib-search" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input class="input search-input" id="form-search" type="search" aria-label="Search by title or standard" placeholder="Search by title or standard" autocomplete="off"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div></div></div>'
-   +'<div class="ib-slot ib-slot-filter" hidden><div class="ib-slot-in"><div class="ib-filters">'+select('form-grade','Grade','All grades',grades,g=>'Grade '+g)+select('form-subject','Subject','All subjects',subjects)+select('form-format','Format','All formats',formats)+'</div></div></div></div>'
-   +'<ul class="ib-items" id="form-results" aria-label="Assessments"></ul></section>'
-   +'<section class="ib-detail" id="al-detail" aria-live="polite" aria-labelledby="al-d-title"></section>';
-  const $=s=>root.querySelector(s),search=$('#form-search'),controls=$('.ib-controls');
-  search.value=libState.term;$('#form-grade').value=libState.grade;$('#form-subject').value=libState.subject;$('#form-format').value=libState.format;
-  function panels(){
-   $('.ib-slot-search').hidden=!(libState.search||libState.term);$('.ib-slot-filter').hidden=!libState.filters;
-   controls.classList.toggle('has-any',!$('.ib-slot-search').hidden||libState.filters);
-   $('[data-al-search]').setAttribute('aria-pressed',String(!$('.ib-slot-search').hidden));
-   $('[data-al-filter]').setAttribute('aria-pressed',String(libState.filters));
-   root.querySelectorAll('[data-al-sort-check]').forEach(c=>c.hidden=c.dataset.alSortCheck!==libState.sort);
-  }
+  const formatOf=item=>formatNames[item.type]||item.displayType||item.type||'Item';
+  const formatsOf=form=>{
+   const types=[...new Set(form.questions.map(formatOf))];
+   return [...new Set([form.format,...types,...(types.length>1?['Mixed formats']:[])].filter(Boolean))];
+  };
+  const grades=[...new Set(forms.map(form=>String(form.grade)))].sort((a,b)=>Number(a)-Number(b));
+  const subjects=[...new Set(forms.map(form=>form.subject))].sort();
+  const formats=[...new Set(forms.flatMap(formatsOf))].sort();
+  const itemCount=count=>count+(count===1?' item':' items');
+  const pointCount=count=>count+(count===1?' point':' points');
+  const scope=form=>'Grade '+escape(form.grade)+' '+escape(form.subject);
+  const select=(key,label,defaultLabel,choices)=>`
+   <div class="field"><label class="label" for="form-${key}">${label}</label>
+    <span class="select-wrap"><select class="select" id="form-${key}" data-library-filter="${key}">
+     ${defaultLabel?`<option value="">${defaultLabel}</option>`:''}
+     ${choices.map(([value,text])=>`<option value="${escape(value)}">${escape(text)}</option>`).join('')}
+    </select></span>
+   </div>`;
+  const pairs=values=>values.map(value=>[value,value]);
+  root.innerHTML=`
+   <header class="al-page-heading">
+    <h1 class="text-heading font-semibold">Classroom test library</h1>
+    <p class="text-body-base text-muted-foreground">Choose a ready-to-use test for your assessment.</p>
+   </header>
+   <div class="al-layout">
+    <section class="al-browser" aria-labelledby="al-browse-title">
+     <h2 class="text-body-base font-semibold" id="al-browse-title">Ready-to-use tests <span id="form-count" role="status"></span></h2>
+     <div class="al-tools">
+      <div class="search search-md" role="search">
+       ${searchIcon.replace('<svg','<svg class="search-icon"')}
+       <input class="input search-input" id="form-search" type="search" placeholder="Search tests" aria-label="Search tests" autocomplete="off">
+       <span class="tooltip-wrap search-clear"><button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="Clear search">${closeIcon}</button><span class="tooltip" role="tooltip">Clear search</span></span>
+      </div>
+      <span class="tooltip-wrap">
+       <button type="button" class="btn btn-ghost btn-icon" data-al-filter aria-label="Filter tests" aria-expanded="false" aria-controls="al-filters">
+        ${svg('<path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/>')}
+       </button><span class="tooltip" role="tooltip">Filter tests</span>
+      </span>
+     </div>
+     <div id="al-filters" class="al-filters" hidden>
+      ${select('grade','Grade','All grades',grades.map(grade=>[grade,'Grade '+grade]))}
+      ${select('subject','Subject','All subjects',pairs(subjects))}
+      ${select('format','Format','All formats',pairs(formats))}
+      ${select('sort','Sort by','',[['recent','Recently used'],['title','Title A–Z'],['grade','Grade level']])}
+     </div>
+     <ul class="al-tests" id="form-results" aria-label="Ready-to-use tests"></ul>
+    </section>
+    <section class="al-detail" id="al-detail" aria-labelledby="al-d-title"></section>
+   </div>`;
+  const $=selector=>root.querySelector(selector);
+  const search=$('#form-search'),filters=$('#al-filters'),filterButton=$('[data-al-filter]'),panel=$('#al-detail');
+  search.value=libState.term;
+  const fields=[...filters.querySelectorAll('select')];
+  fields.forEach(field=>field.value=libState[field.dataset.libraryFilter]);
+  const showFilters=()=>{
+   filters.hidden=!libState.filters;
+   filterButton.setAttribute('aria-expanded',String(libState.filters));
+  };
   function detail(form){
-   const panel=$('#al-detail');if(!form){panel.innerHTML='';return;}
-   const qs=form.questions||[],points=qs.reduce((n,q)=>n+Number(q.marks||0),0);
-   panel.innerHTML='<div class="ib-d-head"><div class="ib-d-title"><h2 id="al-d-title">'+escape(form.title)+'</h2><div class="ib-d-badges"><span class="al-meta">'+escape(form.standard)+'</span><span class="badge badge-secondary">'+qs.length+' '+(qs.length===1?'item':'items')+'</span><span class="al-meta">'+points+' '+(points===1?'point':'points')+'</span></div></div>'
-    +'<div class="ib-d-actions"><button type="button" class="btn btn-lg" data-start-form="'+escape(form.id)+'">Use assessment'+arrow+'</button></div></div>'
-    +'<div class="al-carousel" data-al-carousel tabindex="-1"><div class="al-viewport"><div class="al-track">'
-    +qs.map((q,i)=>'<div class="ib-card al-slide" role="group" aria-roledescription="item" aria-label="Item '+(i+1)+' of '+qs.length+'"'+(i?' aria-hidden="true" inert':'')+'><div class="ib-card-hd"><div><p class="ib-strong">Item '+(i+1)+'</p><p class="ib-muted">'+escape(formatNames[q.type]||q.displayType||q.type||'Item')+'</p></div><p class="ib-muted">'+Number(q.marks||0)+' '+(Number(q.marks)===1?'point':'points')+'</p></div><p class="ib-stem">'+escape(q.stem)+'</p>'
-     +(q.options?.length?'<ul class="ib-opts" aria-label="Answer options">'+q.options.map((o,k)=>'<li class="ib-opt'+(k===q.correct?' is-correct':'')+'"><span class="ib-letter" aria-hidden="true">'+String.fromCharCode(65+k)+'</span><span class="ib-opt-text">'+escape(o)+'</span>'+(k===q.correct?'<span class="ib-correct">'+check+'<span class="ib-sr">Correct answer</span></span>':'')+'</li>').join('')+'</ul>':'')+'</div>').join('')
-    +'</div></div>'
-    +(qs.length>1?'<nav class="al-pager tabs-list tabs-list-secondary" aria-label="Items">'+qs.map((q,i)=>'<button type="button" class="al-page tab" data-al-go="'+i+'" aria-label="Item '+(i+1)+'" aria-pressed="'+(i===0)+'">'+(i+1)+'</button>').join('')+'</nav>':'')
-    +'</div>';
-   slide(0,false);
-  }
-  /* 11 Nov: the preview shows one item at a time; the numbered buttons (or Left/Right keys) fade to that item. */
-  function slide(to,animate=true){
-   const box=$('[data-al-carousel]');if(!box)return;const slides=[...box.querySelectorAll('.al-slide')];if(!slides.length)return;
-   const i=Math.max(0,Math.min(slides.length-1,to));box.dataset.index=i;
-   const view=box.querySelector('.al-viewport');
-   box.classList.toggle('is-still',!animate);
-   slides.forEach((s,k)=>{const off=k!==i;s.classList.toggle('is-active',!off);s.toggleAttribute('inert',off);s.setAttribute('aria-hidden',String(off));});
-   view.style.height=slides[i].offsetHeight+'px';
-   box.querySelectorAll('[data-al-go]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.alGo)===i)));
+   panel.hidden=!form;
+   if(panel.dataset.form===(form?.id||''))return;
+   panel.dataset.form=form?.id||'';
+   if(!form){panel.replaceChildren();return;}
+   const items=form.questions,points=items.reduce((total,item)=>total+Number(item.marks||0),0);
+   panel.innerHTML=`
+    <header class="al-preview-heading">
+     <div><h2 class="text-body-base font-semibold" id="al-d-title">${escape(form.title)}</h2>
+      <p class="text-body-small text-muted-foreground">${scope(form)} · ${itemCount(items.length)} · ${pointCount(points)}</p></div>
+     <div class="dropdown dropdown-end al-use-test">
+      <button type="button" class="btn btn-lg" id="al-use-test-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="al-use-test-menu">Use this test${chevronDown}</button>
+      <div class="menu" id="al-use-test-menu" role="menu" aria-labelledby="al-use-test-trigger" hidden>
+       <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-start-form="${escape(form.id)}">${newTestIcon}Start from scratch</button>
+       <div class="al-draft-branch" role="none">
+        <button type="button" class="menu-item" id="al-draft-trigger" role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="false" aria-controls="al-draft-menu">${chevronLeft}Add to assessment</button>
+        <div class="menu al-draft-menu" id="al-draft-menu" role="menu" aria-labelledby="al-draft-trigger" hidden></div>
+       </div>
+      </div>
+     </div>
+    </header>
+    <div class="al-items">
+     ${items.map((item,index)=>{
+      const standard=item.standard||form.standard;
+      const metadata=`${escape(formatOf(item))} · ${pointCount(Number(item.marks||0))}`;
+      const options=item.options?.length?`
+       <ul class="ib-opts" aria-label="Answer options">
+        ${item.options.map((option,i)=>{
+         const correct=(Array.isArray(item.correct)?item.correct:[item.correct]).includes(i);
+         return `<li class="ib-opt${correct?' is-correct':''}">
+          <span class="ib-letter">${String.fromCharCode(65+i)}</span><span class="ib-opt-text" data-stem>${escape(option)}</span>
+          ${correct?`<span class="badge badge-success">${check}Correct answer</span>`:''}
+         </li>`;
+        }).join('')}
+       </ul>`:`<p class="text-body-small text-muted-foreground">${escape(item.sampleAnswer||answer(item))}</p>`;
+      return `<details class="card accordion-item al-item-card" name="library-items"${index===0?' open':''}>
+       <summary class="accordion-trigger"><span class="al-item-heading">
+        <span data-stem>${escape(item.stem)}</span>
+        <span class="al-item-summary-meta text-body-small text-muted-foreground font-normal">${metadata}</span>
+       </span></summary>
+       <div class="accordion-content al-item-content">
+        ${options}
+        <div class="al-item-footer">
+         ${standard?`<span class="badge badge-warning">Standard ${escape(standard)}</span>`:''}
+         <span class="text-body-small text-muted-foreground">${metadata}</span>
+        </div>
+       </div>
+      </details>`;
+     }).join('')}
+    </div>`;
+   mountLibraryDraftMenu(form.id,panel.querySelector('.al-use-test'));
   }
   function draw(){
    const term=libState.term.trim().toLowerCase(),usage=read('cogniaLibraryUsageV1',{});
-   const matches=forms.filter(f=>(!term||(f.title+' '+f.standard).toLowerCase().includes(term))&&(!libState.grade||String(f.grade)===libState.grade)&&(!libState.subject||f.subject===libState.subject)&&(!libState.format||formatsOf(f).includes(libState.format)));
-   if(libState.sort==='title')matches.sort((a,b)=>a.title.localeCompare(b.title));else if(libState.sort==='grade')matches.sort((a,b)=>Number(a.grade)-Number(b.grade)||a.title.localeCompare(b.title));else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
-   if(!matches.some(f=>f.id===libState.selected))libState.selected=matches[0]?.id||null;
-   /* 12 Nov: heading names the set, with an info tooltip explaining where these come from. */
-   $('#form-count').innerHTML='<span>Classroom assessments ('+matches.length+')</span><span class="tooltip-wrap ib-info"><button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="About classroom assessments" aria-describedby="al-count-tip">'+svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>')+'</button><span class="tooltip" role="tooltip" id="al-count-tip">Ready-to-use assessments from Cognia.</span></span>';
-   $('#form-results').innerHTML=matches.length?matches.map(f=>{const n=(f.questions||[]).length;return '<li class="ib-row"><button type="button" class="ib-item" data-al-select="'+escape(f.id)+'" aria-current="'+(f.id===libState.selected)+'"><span class="ib-item-top"><span class="ib-item-grade">Grade '+escape(f.grade)+' '+escape(f.subject)+'</span><span class="ib-badge badge badge-secondary">'+n+' '+(n===1?'item':'items')+'</span></span><span class="ib-item-stem">'+escape(f.title)+'</span></button></li>';}).join(''):'<li class="al-empty"><div class="empty-state" role="status"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No assessments match</p><p>Try a different search or clear your filters.</p><button type="button" class="btn btn-outline btn-lg" data-clear-library>Clear filters</button></div></li>';
-   detail(forms.find(f=>f.id===libState.selected));panels();
+   const matches=forms.filter(form=>(!term||(form.title+' '+form.standard).toLowerCase().includes(term))
+    &&(!libState.grade||String(form.grade)===libState.grade)&&(!libState.subject||form.subject===libState.subject)
+    &&(!libState.format||formatsOf(form).includes(libState.format)));
+   if(libState.sort==='title')matches.sort((a,b)=>a.title.localeCompare(b.title));
+   else if(libState.sort==='grade')matches.sort((a,b)=>Number(a.grade)-Number(b.grade)||a.title.localeCompare(b.title));
+   else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
+   const selected=matches.find(form=>form.id===libState.selected)||matches[0];
+   libState.selected=selected?.id||null;
+   $('#form-count').textContent='('+matches.length+')';
+   $('#form-results').innerHTML=matches.length?matches.map(form=>`
+    <li><button class="item al-test" type="button" data-al-select="${escape(form.id)}" aria-controls="al-detail" aria-current="${form===selected}">
+     <span class="item-media icon-accent">${subjectIcons[form.subject]||icon}</span>
+     <span class="item-content"><span class="text-body-base font-semibold">${escape(form.title)}</span>
+      <span class="item-description">${scope(form)} · ${itemCount(form.questions.length)}</span></span>
+     <span class="item-actions">${chevron.replace('<svg','<svg class="icon"')}</span>
+    </button></li>`).join(''):`
+    <li><div class="empty-state" role="status"><span class="empty-media">${searchIcon}</span>
+     <p class="empty-title">No tests match</p><p>Try a different search or clear your filters.</p>
+     <button type="button" class="btn btn-outline" data-clear-library>Clear filters</button>
+    </div></li>`;
+   detail(selected);
   }
-  $('[data-al-search]').onmousedown=e=>e.preventDefault();
-  $('[data-al-search]').onclick=()=>{libState.search=$('.ib-slot-search').hidden;panels();};/* 17 Nov: opening search or filters doesn't focus the field */
-  search.addEventListener('blur',()=>{if(!search.value){libState.search=false;panels();}});
-  search.addEventListener('keydown',e=>{if(e.key==='Escape'&&!search.value){libState.search=false;panels();$('[data-al-search]').focus();}});
   search.addEventListener('input',()=>{libState.term=search.value;draw();});
-  $('[data-al-filter]').onclick=()=>{libState.filters=!libState.filters;panels();};
-  root.querySelectorAll('.ib-filters select').forEach(s=>s.addEventListener('change',()=>{libState[s.id.slice(5)]=s.value;draw();}));
-  root.addEventListener('click',e=>{
-   const pick=e.target.closest('[data-al-select]');if(pick){libState.selected=pick.dataset.alSelect;root.querySelectorAll('[data-al-select]').forEach(b=>b.setAttribute('aria-current',String(b===pick)));detail(forms.find(f=>f.id===libState.selected));return;}
-   const go=e.target.closest('[data-al-go]');if(go){slide(Number(go.dataset.alGo));return;}
-   const sort=e.target.closest('[data-al-sort]');if(sort){libState.sort=sort.dataset.alSort;draw();return;}
-   if(e.target.closest('[data-clear-library]')){Object.assign(libState,{term:'',grade:'',subject:'',format:''});renderLibrary();}
-  });
-  root.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const box=e.target.closest('[data-al-carousel]');if(!box||e.target.closest('input,select,textarea'))return;e.preventDefault();slide(Number(box.dataset.index||0)+(e.key==='ArrowRight'?1:-1));});
-  if(!window.capAlResize){window.capAlResize=true;window.addEventListener('resize',()=>{const box=document.querySelector('#assessment-library [data-al-carousel]');if(!box)return;const s=box.querySelectorAll('.al-slide')[Number(box.dataset.index||0)];if(s)box.querySelector('.al-viewport').style.height=s.offsetHeight+'px';});}
+  filterButton.onclick=()=>{libState.filters=!libState.filters;showFilters();};
+  fields.forEach(field=>field.addEventListener('change',()=>{libState[field.dataset.libraryFilter]=field.value;draw();}));
+  root.onclick=event=>{
+   const pick=event.target.closest('[data-al-select]');
+   if(pick){
+    libState.selected=pick.dataset.alSelect;
+    root.querySelectorAll('[data-al-select]').forEach(button=>button.setAttribute('aria-current',String(button===pick)));
+    detail(forms.find(form=>form.id===libState.selected));
+   }
+   if(event.target.closest('[data-clear-library]')){
+    Object.assign(libState,{term:'',grade:'',subject:'',format:''});
+    search.value='';
+    fields.forEach(field=>field.value=libState[field.dataset.libraryFilter]);
+    search.focus();
+    draw();
+   }
+  };
+  showFilters();
   draw();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;

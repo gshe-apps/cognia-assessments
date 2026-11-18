@@ -13,6 +13,8 @@
    circleAlert: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
    left: '<path d="m15 18-6-6 6-6" />',
    right: '<path d="m9 18 6-6-6-6" />',
+   dots: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+   close: '<path d="m6 6 12 12M18 6 6 18"/>',
    file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v6h6" />',
    circleDashed: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
    plus: '<path d="M5 12h14" /><path d="M12 5v14" />',
@@ -32,9 +34,9 @@
   let view = 'week';
 
   const sampleWeek = Array.from({length:5},(_,day)=>data.events.filter(item=>item.day===day));
-  const markingQueue = 'CAP-T14-ScoringQueue.dc.html';
+  const scoringQueue = 'CAP-T14-ScoringQueue.dc.html';
   const eventLink = item => {
-   if (item.status==='review') return markingQueue;
+   if (item.status==='review') return scoringQueue;
    if (item.status==='pencil') return 'CAP-T03-Assessments.dc.html?view=drafts';
    const target = item.status==='check' ? 'CAP-T13-Results.dc.html?' : 'CAP-T09-ConfirmAssignment.dc.html?view=assigned&';
    return target+'calendarEvent='+item.id;
@@ -77,7 +79,11 @@
    </div>
    <div class="od-week-viewport"><div class="od-week-grid" data-overview-days></div></div>`;
 
-  const completed = data.events.find(item=>item.status==='check');
+  const completed = data.events.filter(item=>item.status==='check');
+  const priorityMenu = (id, label, href, action) => `<div class="dropdown dropdown-end">
+   <button type="button" id="od-${id}-trigger" class="btn btn-ghost btn-icon btn-xs" aria-label="${label}" aria-haspopup="menu" aria-expanded="false" aria-controls="od-${id}-menu">${icon('dots')}</button>
+   <div class="menu" role="menu" id="od-${id}-menu" aria-labelledby="od-${id}-trigger" hidden><a class="menu-item" role="menuitem" tabindex="-1" href="${href}">${action}</a></div>
+  </div>`;
   priorities.classList.add('od-desk');
   priorities.innerHTML = `
    <header class="od-priorities-intro"><h2>Today’s priorities</h2></header>
@@ -85,7 +91,7 @@
    <section class="card od-desk-sheet" aria-labelledby="od-marking-title">
     <div class="od-desk-head">
      <span class="alert alert-warning od-desk-icon" aria-hidden="true">${icon(statusIcon.review)}</span>
-     <h3 id="od-marking-title" class="card-title">Marking queue</h3>
+     <h3 id="od-marking-title" class="card-title">Scoring queue</h3>
      <span class="badge badge-warning">Needs review</span>
     </div>
     <div class="od-desk-metrics">
@@ -96,40 +102,77 @@
       <div class="progress" role="progressbar" aria-label="Responses reviewed" aria-valuenow="68" style="--value:68%"><div class="progress-indicator"></div></div>
      </div>
     </div>
-    <a class="btn" href="${markingQueue}">Open marking queue</a>
+    <a class="btn btn-outline" href="${scoringQueue}">Open scoring queue</a>
    </section>
    <section aria-label="Drafts" data-overview-draft-stack>
      <article class="card od-desk-sheet" data-draft-sheet>
       <div class="od-desk-head">
        <span class="icon-accent od-desk-icon od-desk-draft-icon" aria-hidden="true">${icon('file')}</span>
-       <h3 class="card-title od-desk-draft-title" data-overview-draft-title aria-live="polite"></h3>
+       <h3 class="card-title">Drafts</h3>
+       <div class="od-desk-actions">
        <div class="od-desk-pager" data-draft-pager>
         <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Previous draft" data-draft-step="-1">${icon('left')}</button>
         <span class="text-body-small" data-draft-position></span>
         <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Next draft" data-draft-step="1">${icon('right')}</button>
        </div>
+       ${priorityMenu('drafts','Draft options','CAP-T03-Assessments.dc.html?view=drafts','View all drafts')}
+       </div>
+      </div>
+      <div class="od-desk-entry od-desk-draft-entry" data-draft-entry>
+      <div class="od-desk-entry-heading">
+       <h4 class="card-title" data-overview-draft-title aria-live="polite"></h4>
+       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Hide draft from overview" data-dismiss-draft>${icon('close')}</button>
       </div>
       <div class="od-desk-footer">
        <div class="od-desk-draft-step" data-overview-draft-progress>
-        <div class="od-desk-draft-meter">
-         <span class="card-description">Progress</span>
-         <div class="od-desk-draft-segments" role="progressbar" aria-label="Draft progress" aria-valuemin="0" aria-valuemax="4">
-          ${Array.from({length:4}, () => '<div class="progress" aria-hidden="true"><div class="progress-indicator"></div></div>').join('')}
-         </div>
-        </div>
-        <p class="text-body-small font-semibold" data-overview-draft-phase></p>
+        <div class="progress" data-draft-meter role="progressbar" aria-label="Draft progress" aria-valuemin="0" aria-valuemax="4"><div class="progress-indicator"></div></div>
+        <p class="card-description" data-overview-draft-phase></p>
        </div>
-       <a class="btn btn-ghost btn-lg od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Continue draft</a>
+       <a class="btn btn-ghost btn-sm od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Continue draft</a>
+      </div>
       </div>
      </article>
    </section>
-   <article class="card od-desk-head od-desk-results">
-    <span class="alert alert-success od-desk-icon" aria-hidden="true">${icon(statusIcon.check)}</span>
-    <div><h3 class="card-title">${completed.title}</h3><p class="card-description">${completed.classLabel} · ${completed.scores.length} learners</p></div>
-    <a class="btn btn-ghost btn-sm od-desk-secondary" href="${eventLink(completed)}" aria-label="View results for ${completed.title}">View</a>
+   <article class="card od-desk-sheet od-desk-completed" aria-labelledby="od-completed-title">
+    <div class="od-desk-head">
+     <span class="alert alert-success od-desk-icon" aria-hidden="true">${icon(statusIcon.check)}</span>
+     <h3 class="card-title" id="od-completed-title">Completed</h3>
+     <div class="od-desk-actions">
+      <div class="od-desk-pager" ${completed.length<2?'hidden':''}>
+       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Previous completed assessment" data-completed-step="-1">${icon('left')}</button>
+       <span class="text-body-small" data-completed-position aria-live="polite"></span>
+       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Next completed assessment" data-completed-step="1">${icon('right')}</button>
+      </div>
+      ${priorityMenu('completed','Completed assessment options','CAP-T13-Results.dc.html','View all results')}
+     </div>
+    </div>
+    <div class="od-desk-entry od-desk-results">
+     <div aria-live="polite"><h4 class="card-title" data-completed-name></h4><p class="card-description" data-completed-meta></p></div>
+     <a class="btn btn-ghost btn-sm od-desk-secondary" data-completed-results>View results</a>
+    </div>
    </article>
    </div>`;
   window.capUpdateOverviewDraftStack();
+  const completedCard = priorities.querySelector('.od-desk-completed');
+  const completedButtons = [...completedCard.querySelectorAll('[data-completed-step]')];
+  let completedIndex = 0;
+  function showCompleted() {
+   const entry = completed[completedIndex];
+   completedCard.querySelector('[data-completed-position]').textContent = `${completedIndex+1} of ${completed.length}`;
+   completedCard.querySelector('[data-completed-name]').textContent = entry.title;
+   completedCard.querySelector('[data-completed-meta]').textContent = `${entry.classLabel} · ${entry.scores.length} learners`;
+   const link = completedCard.querySelector('[data-completed-results]');
+   link.href = eventLink(entry);
+   link.setAttribute('aria-label',`View results for ${entry.title}`);
+   completedButtons[0].disabled = completedIndex === 0;
+   completedButtons[1].disabled = completedIndex === completed.length-1;
+  }
+  completedButtons.forEach(button=>button.addEventListener('click',()=>{
+   completedIndex += Number(button.dataset.completedStep);
+   showCompleted();
+   if (button.disabled) completedButtons.find(control=>!control.disabled)?.focus();
+  }));
+  showCompleted();
 
   const firstHour = 8;
   const endHour = 16;
@@ -165,9 +208,9 @@
      </section>`;
     action=`<a class="btn btn-lg" href="${eventLink(item)}">View results</a>`;
    } else if(item.status==='review'){
-    heading='Marking queue'; tone='warning';
+    heading='Scoring queue'; tone='warning';
     body=`<dl class="od-event-metrics">${info('Written responses to score',item.responsesToScore)}${info('Learners assigned',item.learnerCount)}</dl>`;
-    action=`<a class="btn btn-lg" href="${eventLink(item)}">Open marking queue</a>`;
+    action=`<a class="btn btn-lg" href="${eventLink(item)}">Open scoring queue</a>`;
    } else if(item.status==='pencil'){
     heading='Draft progress'; tone='secondary';
     const model=data.assessment(item), id='assessment-'+model.active;

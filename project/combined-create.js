@@ -10,7 +10,28 @@
    host.querySelectorAll('.tf-test-disclosure,.extra-test,.assessment-test-list,.uc-help').forEach(el=>{const error=el.querySelector('#test-flow-error');if(error)host.append(error);el.remove()});
   }
   document.querySelectorAll('.uc-page .question-card h4').forEach(title=>{title.title=title.textContent.trim()});
-  document.querySelectorAll('.uc-page .question-card').forEach(row=>{let tags=row.querySelector('.uc-bank-tags');if(!tags){tags=document.createElement('div');tags.className='uc-bank-tags';row.append(tags)}const type=row.querySelector('.row > .tiny');if(type){type.className='tiny text-body-small text-muted-foreground';type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[type.textContent.trim()]||type.textContent.trim());tags.append(type)}if(!tags.querySelector('.bank-row-difficulty')){const badge=make('<span class="bank-row-difficulty badge badge-'+({'1':'success','2':'warning','3':'destructive'}[row.dataset.bankDok]||'secondary')+'"></span>');badge.textContent='DOK '+row.dataset.bankDok;tags.append(badge)}});
+  document.querySelectorAll('.uc-page .question-card').forEach(row=>{
+   let tags=row.querySelector('.uc-bank-tags');
+   if(!tags){tags=make('<div class="uc-bank-tags"></div>');row.append(tags);}
+   const type=row.querySelector('.row > .tiny');
+   if(type){
+    type.className='tiny text-body-small text-muted-foreground';
+    const label=type.textContent.trim();
+    type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[label]||label);
+    tags.append(type);
+   }
+   if(!tags.querySelector('.bank-row-difficulty')){
+    const tone={'1':'success','2':'warning','3':'destructive'}[row.dataset.bankDok]||'secondary';
+    const badge=make('<span class="bank-row-difficulty badge badge-'+tone+'"></span>');
+    badge.textContent='DOK '+row.dataset.bankDok;
+    tags.append(badge);
+   }
+   if(row.dataset.bankStandard&&!tags.querySelector('.bank-row-standard')){
+    const standard=make('<span class="bank-row-standard text-body-small text-muted-foreground"></span>');
+    standard.textContent=row.dataset.bankStandard;
+    tags.append(standard);
+   }
+  });
   const page=document.querySelector('main>.page'),methods=page?.querySelector('.qc-methods');if(!methods||page.querySelector('.uc-setup-intro'))return;
   observer.disconnect();page.classList.add('uc-page');document.body.classList.add('unified-create-screen');document.body.classList.remove('cap-monochrome');
   const m=read(),t=m?.tests?.find(t=>t.id===m.active)||m?.tests?.[0];if(!t){observe();return;}
@@ -37,6 +58,7 @@
   const addedTest=m.tests.indexOf(t)>0;
   let settings=useClientSample?{...t,title:'New classroom test',standard:'5.NF.A.2'}:addedTest?{...t,testName:t.title,assessmentSettings:m.settings}:{...t,title:m.title||t.title,testName:t.title,assessmentSettings:m.settings};
   let ready=sessionStorage.getItem(readyKey)===signature(settings);
+  let syncBankScope=()=>{};
   const setup=create({
    showAssessmentTitle:!addedTest,
    host:page.closest('.theme-assessments'),
@@ -54,6 +76,7 @@
    settings=addedTest?{...updated,testName:updated.title,assessmentSettings:model.settings}:{...updated,title:model.title,testName:updated.title,assessmentSettings:model.settings};
    sessionStorage.setItem(readyKey,signature(addedTest?{...next,title:patch.title}:next));
    ready=true;syncGate();
+   syncBankScope();
    inst.refreshQuestionBoard?.();
    if(next.pathway===libraryPath){location.href='CAP-T21-AssessmentLibrary.dc.html';return}
    const destination=itemPage(next);
@@ -116,122 +139,70 @@
   // Bank selection filters the library without changing the items already in the test.
   const picker=window.capBankPicker;
   if(picker){
-   const bankKey='cogniaBuilderBanksV1';
-   const banks=new Map(picker.banks.map(bank=>[bank.id,bank]));
-   const chosen=new Set(['cognia-classroom']);
+   const bankKey='cogniaBuilderBank:'+t.id;
+   const banks=picker.builderCollections;
+   const banksById=new Map(banks.map(bank=>[bank.id,bank]));
+   const cogniaBanks=banks.filter(bank=>bank.group==='cognia');
+   const gradeOf=bank=>bank.match[0].split(' ')[1];
+   const subjectOf=bank=>bank.match[0].endsWith(' ELA')?'ELA':'Mathematics';
+   const scopeKey=()=>settings.grade+':'+settings.subject;
+   const defaultBank=()=>cogniaBanks.find(bank=>gradeOf(bank)===String(settings.grade)
+    &&subjectOf(bank)===(settings.subject==='English'?'ELA':'Mathematics'))?.id||'';
+   const defaultSelection=()=>[defaultBank()].filter(Boolean);
+   let setupScope=scopeKey();
+   let selected=new Set(defaultSelection());
    try {
     const saved=JSON.parse(sessionStorage.getItem(bankKey));
-    if(Array.isArray(saved)){
-     const valid=saved.filter(id=>banks.has(id));
-     if(valid.length||saved.length===0){
-      chosen.clear();
-      valid.forEach(id=>chosen.add(id));
-     }
+    if(saved?.scope===setupScope){
+     const ids=Array.isArray(saved.ids)?saved.ids:saved.id===''?[]:[saved.id];
+     const valid=ids.filter(id=>banksById.has(id));
+     if(valid.length||!ids.length)selected=new Set(valid);
     }
    } catch {}
 
    const rowGroups={cognia:'cognia',mine:'teacher',specialist:'specialist'};
-   const gradesByBank=new Map(picker.banks.map(bank=>[bank.id,(bank.match||[])
-    .flatMap(name=>[...name.matchAll(/Grade (\d+)/g)].map(match=>match[1]))]));
-   const inBank=(bank,row)=>{
-    if(row.dataset.itemBank!==rowGroups[bank.group])return false;
-    const grades=gradesByBank.get(bank.id);
+   const itemContext=row=>{
     const standard=row.dataset.bankStandard||'';
-    return !grades.length||grades.some(grade=>standard.startsWith(grade+'.')||standard.includes('.'+grade+'.'));
+    const match=standard.match(/^(?:([A-Z]+)\.)?(\d+)\./);
+    return {
+     grade:match?.[2]||String(settings.grade),
+     subject:match?(match[1]?'English':'Mathematics'):settings.subject
+    };
    };
-   const matchingBank=row=>[...chosen].map(id=>banks.get(id)).find(bank=>inBank(bank,row));
-   window.capBuilderBankMatch=row=>Boolean(matchingBank(row));
-   window.capBankNameForRow=row=>matchingBank(row)?.name||'';
+   const matchesBank=(row,bank)=>{
+    if(row.dataset.itemBank!==rowGroups[bank.group])return false;
+    const {grade,subject}=itemContext(row);
+    const itemScope='Grade '+grade+(subject==='English'?' ELA':' Maths');
+    return bank.match.includes(itemScope);
+   };
+   const matchingBank=row=>[...selected].map(id=>banksById.get(id)).find(bank=>matchesBank(row,bank));
+   window.capBuilderBankMatch=row=>selected.size?Boolean(matchingBank(row)):row.dataset.itemBank==='cognia';
+   window.capBuilderBankContext=row=>({...itemContext(row),bank:matchingBank(row)?.name||picker.banks[0].name});
 
-   const chevron=icon('<path d="m6 9 6 6 6-6"/>');
-   const searchIcon=icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>');
-   const field=make(`
-    <div class="field uc-bank-field">
-     <label class="sr-only" for="uc-bank-search">Search item banks / collections</label>
-     <div class="uc-bank-picker command">
-      <div class="search search-md">
-       ${searchIcon.replace('<svg','<svg class="search-icon"')}
-       <input class="input search-input command-input" id="uc-bank-search" type="search" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-controls="uc-bank-options" placeholder="Search item banks / collections" autocomplete="off">
-       <button class="btn btn-ghost btn-icon btn-sm uc-bank-trigger" type="button" aria-label="Toggle item banks" aria-expanded="false" aria-controls="uc-bank-options">${chevron}</button>
-      </div>
-      <div class="popover" id="uc-bank-options" role="dialog" aria-label="Item banks and collections" hidden>
-        <div class="command-list">
-         ${picker.groups.map(([group,label])=>`
-          <div class="command-group" role="group" aria-label="${esc(label)}">
-           <div class="command-group-heading">${esc(label)}</div>
-           ${picker.banks.filter(bank=>bank.group===group).map(bank=>`
-            <label class="command-item"><input class="checkbox" type="checkbox" value="${esc(bank.id)}" data-bank-option ${chosen.has(bank.id)?'checked':''}>${esc(bank.name)}</label>
-           `).join('')}
-          </div>
-         `).join('')}
-         <p class="command-empty" hidden>No item banks match.</p>
-        </div>
-      </div>
-     </div>
-    </div>`);
-   const trigger=field.querySelector('.uc-bank-trigger');
-   const bankInput=field.querySelector('#uc-bank-search');
-   const bankPopover=field.querySelector('#uc-bank-options');
-   const selection=make('<div class="chip-list uc-bank-selection" role="group" aria-label="Selected item banks"></div>');
-   itemSummary.append(selection);
-   const options=[...field.querySelectorAll('[data-bank-option]')];
-   const setPickerOpen=open=>{
-    bankPopover.hidden=!open;
-    bankInput.setAttribute('aria-expanded',String(open));
-    trigger.setAttribute('aria-expanded',String(open));
-   };
-   ['focus','click','input'].forEach(type=>bankInput.addEventListener(type,()=>setPickerOpen(true)));
-   trigger.addEventListener('click',()=>{
-    const open=bankPopover.hidden;
-    if(open)bankInput.focus();
-    setPickerOpen(open);
+   const dropdown=picker.createDropdown({
+    banks,
+    selected,
+    canOpen:()=>ready,
+    countFor:bank=>[...library.querySelectorAll('#libraryList .question-card')].filter(row=>matchesBank(row,bank)).length,
+    onChange:saveSelection,
    });
-   field.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&!bankPopover.hidden){
-     event.preventDefault();
-     event.stopPropagation();
-     bankInput.focus();
-     setPickerOpen(false);
-    } else if(event.target===bankInput&&event.key==='ArrowDown'){
-     event.preventDefault();
-     setPickerOpen(true);
-     options.find(option=>!option.closest('[hidden]'))?.focus();
-    }
-   });
-   field.addEventListener('focusout',event=>{
-    if(event.relatedTarget&&!field.contains(event.relatedTarget))setPickerOpen(false);
-   });
-   document.addEventListener('pointerdown',event=>{
-    if(!field.contains(event.target)&&!bankPopover.hidden)setPickerOpen(false);
-   });
-   const renderSelection=()=>{
-    selection.hidden=!chosen.size;
-    selection.innerHTML=[...chosen].map(id=>banks.get(id)).map(bank=>`
-     <span class="chip" title="${esc(bank.name)}"><span class="uc-bank-chip-name">${esc(bank.name)}</span><button class="chip-remove" type="button" data-remove-bank="${esc(bank.id)}" aria-label="Remove ${esc(bank.name)}">${removeIcon}</button></span>
-    `).join('');
-   };
-   const updateSelection=()=>{
-    try{sessionStorage.setItem(bankKey,JSON.stringify([...chosen]));}catch {}
-    options.forEach(option=>{option.checked=chosen.has(option.value)});
-    renderSelection();
+   function saveSelection(){
+    try{sessionStorage.setItem(bankKey,JSON.stringify({scope:setupScope,ids:[...selected]}));}catch {}
     window.capFilterBuilderQuestions?.();
+   }
+   syncBankScope=()=>{
+    if(setupScope===scopeKey())return;
+    setupScope=scopeKey();
+    selected.clear();
+    defaultSelection().forEach(id=>selected.add(id));
+    dropdown.refresh();
+    saveSelection();
    };
-   field.addEventListener('change',event=>{
-    const option=event.target.closest('[data-bank-option]');
-    if(!option)return;
-    if(option.checked)chosen.add(option.value);
-    else chosen.delete(option.value);
-    updateSelection();
+   page.addEventListener('click',event=>{
+    if(event.target.closest('[data-qc-method]'))dropdown.close();
    });
-   selection.addEventListener('click',event=>{
-    const remove=event.target.closest('[data-remove-bank]');
-    if(!remove)return;
-    chosen.delete(remove.dataset.removeBank);
-    updateSelection();
-    (selection.querySelector('.chip-remove')||trigger).focus();
-   });
-   library.prepend(field);
-   renderSelection();
+   library.prepend(dropdown.field);
+   itemSummary.append(dropdown.selection);
   }
   library.querySelector('#libraryList').after(make('<div class="empty-state" data-bank-empty role="status" hidden><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No items match</p><p>Try another search, or change the item banks or filters.</p></div>'));
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
@@ -258,6 +229,19 @@
    filterFields.append(...filters.children);
    filters.remove();
   });
+  const gradeFilter=filterFields.querySelector('#bankGrade');
+  const subjectFilter=filterFields.querySelector('#bankSubject');
+  const standardFilter=filterFields.querySelector('#bankStandard');
+  for(const field of [gradeFilter,subjectFilter]){
+   if(field)field.selectedIndex=0;
+  }
+  if(gradeFilter&&!Array.from(gradeFilter.options).some(option=>option.value==='7')){
+   gradeFilter.add(new Option('Grade 7','7'),gradeFilter.querySelector('[value="8"]'));
+  }
+  if(standardFilter){
+   const standards=[...new Set(inst.renderVals().bank.map(item=>item.standard).filter(Boolean))].sort();
+   standardFilter.replaceChildren(new Option('All standards',''),...standards.map(code=>new Option(code,code)));
+  }
   const count=make('<p class="uc-bank-count text-body-small text-muted-foreground" role="status"></p>');
   itemSummary.prepend(count);toolbar.prepend(itemSummary);
   filterFields.prepend(searchBox);

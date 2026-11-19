@@ -102,16 +102,6 @@
       "x": 0,
       "y": 1884
     },
-    "CAP-T02-OverviewStats.dc.html": {
-      "expand": "fill",
-      "h": 1104,
-      "is_interactive": true,
-      "page": "teacher-student",
-      "title": "Teacher · Overview (stats open)",
-      "w": 1440,
-      "x": 1520,
-      "y": 1884
-    },
     "CAP-T03-Assessments.dc.html": {
       "expand": "fill",
       "h": 1088,
@@ -609,7 +599,6 @@
   "order": [
     "CAP-T20-Interim.dc.html",
     "CAP-T01-Overview.dc.html",
-    "CAP-T02-OverviewStats.dc.html",
     "CAP-T03-Assessments.dc.html",
     "CAP-T04-Setup.dc.html",
     "CAP-T05-Questions.dc.html",

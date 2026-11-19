@@ -241,7 +241,7 @@ Cards group related content and actions into a single container.
 
 **Rules**
 - Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Tables share it (see Table). Every other component keeps 8px (`rounded-lg`).
-- Cards never have a border, in any variant or state, including selected and highlighted. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. Keep the default card surface for selection or emphasis unless the user explicitly requests the themed treatment.
+- Cards never have a border, in any variant or state, including selected and highlighted, and no project stylesheet may add one. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. Keep the default card surface for selection or emphasis unless the user explicitly requests the themed treatment.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
 - Clickable cards use the 10% black overlay on hover and retain their default shadow treatment.
@@ -305,6 +305,9 @@ import { BarChart } from 'lucide-react'
 **Rules**
 - Use Lucide icons only, in every product and prototype. Never draw your own SVG icon, use another icon set, or use emoji or text symbols (such as →, ▲, ▼, ✓, ×) as icons. If Lucide has no fitting icon, ask the designer.
 - In HTML prototypes, paste the Lucide SVG unchanged: `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`, `stroke-width="2"`, round caps and joins, and `aria-hidden="true"` unless it is the only label.
+- Size an icon with `width` and `height` (or CSS), never by redrawing it. Never change the stroke width, in the markup or in CSS: every icon is 2.
+- Feather icons and SVGs exported from Figma look like Lucide but are not Lucide. Copy the icon from lucide.dev.
+- The design check matches every icon against `assets/lucide-icons.json`, the signatures of every Lucide icon, and fails on any icon that is not one of them.
 - Default icon colour is always `--muted-foreground`. Use `text-muted-foreground` on all icons unless a specific variant applies.
 - Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context.
 - Never hardcode a colour value for icons — always use a CSS variable.
@@ -950,8 +953,8 @@ Skeletons show a placeholder while content is loading.
 ### Separator
 
 **Rules**
-- Use separators to divide logically distinct sections — not for decorative spacing.
-- Prefer spacing over separators for minor visual separation.
+- Use a separator only between the items of a list (menu items, command items, a settings list). Never use one, or a one-sided border, to divide sections, cards, rows of metrics, or the header, body and footer of a card, popover or dialog. Use spacing, grouping or a heading instead (see Global rules in `DESIGN.md`).
+- Never use a vertical separator, a dot or a pipe between pieces of content on one line. Use a badge, a right-aligned value, subtext above the title, or separate lines.
 
 ```tsx
 <Separator />

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    const drawRecipients=()=>{
      const labels=[...form.querySelectorAll('[name=recipient]')];const count=cls.value==='5b'?4:6;
      labels.forEach((input,i)=>{input.closest('label').hidden=i>=count;input.checked=i<count&&data.recipients.includes(input.value);});
-     document.querySelector('.roster-list legend').textContent='Recipients · '+count+' students';
+     document.querySelector('.roster-list legend').innerHTML='Recipients <span class="badge badge-secondary">'+count+' students</span>';
    };
    drawRecipients();
    function render(){
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    });
  }else{
    const summary=document.querySelector('.summary-list');if(!summary)return;
-   const values={'Class':data.classIds?.length?data.classIds.map(id=>id==='5b'?'Grade 5B':'Grade 5A').join(', '):data.classId==='5b'?'Grade 5B':'Grade 5A','Recipients':data.recipients.length+' students','Attempts / time':data.attempts+' · '+(data.time==='None'?'No time limit':data.time)};
+   const values={'Class':data.classIds?.length?data.classIds.map(id=>id==='5b'?'Grade 5B':'Grade 5A').join(', '):data.classId==='5b'?'Grade 5B':'Grade 5A','Recipients':data.recipients.length+' students','Attempts':String(data.attempts),'Time limit':data.time==='None'?'None':data.time};
    [...summary.children].forEach(row=>{const name=row.querySelector('dt')?.textContent;if(name==='Opens'||name==='Due')row.remove();else if(values[name])row.querySelector('dd').textContent=values[name];});
    const row=document.createElement('div');const dt=document.createElement('dt');dt.textContent='Sessions ('+data.sessions.length+')';const dd=document.createElement('dd');dd.className='session-summary';
    data.sessions.forEach(s=>{const item=document.createElement('div');item.className='session-summary-item';const name=document.createElement('b');name.textContent=s.name;item.append(name,document.createTextNode(s.noLimit?'Available at any time':format(s.opens)+' – '+format(s.due)));if(data.allocationVersion===1){const names={'5a':['Aiden Brooks','Amara Singh','Ben Clarke','Chloe Martin','Daniel Kim','Emma Lewis'],'5b':['Finn Adams','Grace Chen','Hannah Davis','Isaac Evans']};const audience=document.createElement('p');audience.textContent=(s.recipients||[]).length+' students: '+(s.recipients||[]).map(id=>{const [c,i]=id.split(':');return names[c]?.[i]||id}).join(', ');item.append(audience)}dd.append(item);});row.append(dt,dd);summary.append(row);

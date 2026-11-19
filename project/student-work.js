@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded',()=>{
  fractions.dataset.workState=state;reading.dataset.workState='Submitted';
  fractions.querySelector('.tag').textContent=state;
  const count=Object.keys(attempt?.answers||{}).length;
- fractions.querySelector('p.muted').textContent=state==='In progress'?`${count} of 4 answers saved. Pick up where you left off.`:state==='Submitted'?'Submitted · awaiting teacher review.': 'Complete during today’s lesson.';
+ fractions.querySelector('p.muted').textContent=state==='In progress'?`${count} of 4 answers saved. Pick up where you left off.`:state==='Submitted'?'Submitted and awaiting teacher review.': 'Complete during today’s lesson.';
  const open=fractions.querySelector('.student-card-action a');
- if(state==='In progress'){open.href='CAP-S05-Question.dc.html';open.textContent='Continue assessment →';}
+ if(state==='In progress'){open.href='CAP-S05-Question.dc.html';open.innerHTML='Continue assessment <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>';}
  if(state==='Submitted'){open.removeAttribute('href');open.setAttribute('role','button');open.tabIndex=0;open.textContent='View submission status';open.dataset.showSubmission='fractions';open.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open.click();}});}
  const empty=document.createElement('div');empty.className='student-work-empty';empty.setAttribute('role','status');empty.hidden=true;list.append(empty);
  function filter(value){

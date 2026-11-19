@@ -46,7 +46,6 @@ Images live in `project/assets/`. `serve.cjs` still answers old canvas image pat
 - **Plan**: every account menu has a Basic / Classroom+ switch. On Basic, Classroom+ features are locked, and the teacher Interim hub shows as a paid add-on.
 - The Interim navigation has two tabs, Overview and Library. The Overview summary cards open All schools / All students (pre-filtered) and Subgroups.
 - **All schools / All students**: the selected row opens a side column with a water-fill completion card, a stack of detail cards (click one to bring it to the front) and a follow-up alert for anything below the 50% benchmark.
-- The Follow-up screens (DA 4, School 4) are kept, as other screens still link to them.
 - **My Hubs**: product tiles take their hub colour (Cognia accent 200). Screeners and Alt Assessments are disabled for now; their status badges show in the hover description.
 
 ## Run the interactive browser prototype

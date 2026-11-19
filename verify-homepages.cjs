@@ -37,10 +37,8 @@ const shell=(instance,file)=>{
  }
  reports.push(`${file}: district and school Home, results destinations, Observations and Surveys links, account, role switch, hub and plan state passed`);
 }
-// Educators use the one Home too (2 Nov): the retired educator Home only forwards old links.
+// Educators use the one Home too (2 Nov).
 {
- const old=read('CAP-T00-Home.dc.html');
- assert(old.includes("setItem('cogniaPersona', 'educator')")&&old.includes("location.replace('District-Home.dc.html')"),'CAP-T00-Home.dc.html: forwards to the shared Home as the educator');
  const instance=runDC(read('District-Home.dc.html'),{cogniaPersona:'educator'});const vals=instance.renderVals();
  assert.equal(vals.firstName,'Sara');assert.equal(vals.orgName,'Lincoln Middle School');assert.equal(vals.overviewHref,'CAP-T01-Overview.dc.html','educator results open the classroom assessment Overview');
  assert(/<sc-if value="\{\{isEducator\}\}" hint-placeholder-val="\{\{ false \}\}"><span class="hp-btn hp-btn-ghost hp-btn-static[^"]*"/.test(read('District-Home.dc.html')),'educator Show me where has hover only and does not navigate (5 Nov)');assert.equal(vals.assessTitle,'Assessment results this month');assert(/English/.test(vals.courseTitle),'educator course is about English');assert.equal(vals.isAdmin,false);
@@ -84,7 +82,7 @@ for(const file of fs.readdirSync(root).filter(n=>n.endsWith('.html'))){
    assert(fs.existsSync(path.join(root,target)),`${file}: missing ${target}`);
  }
 }
-assert(switches>=50);
+assert(switches>=38);
 reports.push(`${switches} educator role-switch links checked across existing flows`);
 for(const file of ['home-pages.js','persona-routing.js'])new vm.Script(read(file));
 const homeCss=(read('admin.css').split('/* ---- from home-pages.css ---- */')[1]||'').split('/* ---- from ')[0];

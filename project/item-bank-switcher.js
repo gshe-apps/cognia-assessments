@@ -31,12 +31,12 @@
    const removeIcon=icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
    const chevron=icon('<path d="m6 9 6 6 6-6"/>');
    const right=icon('<path d="m9 18 6-6-6-6"/>');
-   const folder=icon('<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7a2 2 0 0 1-1.6-.8l-.8-1.4A2 2 0 0 0 9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>');
-   const person=icon('<circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>');
-   const people=icon('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-4m-3-12a4 4 0 0 1 0 8"/><circle cx="9" cy="7" r="4"/>');
-   const addBankIcon=icon('<path d="M12 5v14m-7-7h14"/>');
+   const folder=icon('<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />');
+   const person=icon('<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />');
+   const people=icon('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" />');
+   const addBankIcon=icon('<path d="M5 12h14" /><path d="M12 5v14" />');
    const removeBankIcon=icon('<path d="M5 12h14"/>');
-   const searchIcon=icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>');
+   const searchIcon=icon('<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />');
    const option=(bank,label)=>`
     <button class="command-item" type="button" aria-pressed="false" data-bank-option="${esc(bank.id)}">
      ${folder}<span class="uc-bank-option-label"><span class="font-semibold" data-bank-label>${esc(label)}</span><span class="text-body-small text-muted-foreground font-normal" data-bank-count aria-hidden="true"></span></span><span class="uc-bank-trailing"></span>

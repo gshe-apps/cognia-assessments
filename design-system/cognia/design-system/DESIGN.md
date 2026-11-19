@@ -27,6 +27,12 @@ Read all of these in full before writing any code:
 
 - Use the default visual variant of each component. Use a themed or product-accented variant only when the user explicitly asks for it for that component or surface.
 - Use 10% opacity black (`#000000`) over the resting surface for all hover feedback in every theme and mode. Use `--hover-overlay` and keep the foreground at its resting opacity.
+- Never use grey lines to separate content. No Separator, `<hr>` or one-sided border (top, right, bottom or left) between sections, cards, rows, metrics, or a card's or popover's parts. Separate content with spacing from the 8 point scale, by grouping it on its own card or `bg-secondary` surface, or with a heading. Lists are the exception: the items of a list (menu items, command items, a settings list) may keep a separator between them. The Navigation shell and Footer keep their documented lines, and tables follow the Table rule (no lines).
+- Never put a dot (`·`), bullet (`•`), pipe (`|`) or slash between pieces of content on one line, such as "Grade 5 · Mathematics" or "Formative | Scheduled". Strings of separators read as machine-made. Choose the layout by what the content means:
+  - A status or a category: a badge.
+  - A label and its value: the label on the left in `text-muted-foreground`, the value right aligned.
+  - Context for a title (type, grade, subject, date): subtext above the title.
+  - Two separate facts: each on its own line, or each with its own Lucide icon, spaced with the gap scale.
 
 - Always use design system tokens, components, and patterns over hardcoded values. Never hardcode colors, spacing, typography, or UI elements if a system equivalent exists.
 - If anything in the design system is unclear or a token/component does not obviously apply to the implementation at hand, stop and ask in the terminal before proceeding. Do not interpret or approximate — ask.

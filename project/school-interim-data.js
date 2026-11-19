@@ -24,7 +24,7 @@ window.CG_INTERIM = (function () {
     { subject: 'ELA', teacher: 'Mr Hughes', grade: '9', total: 19, done: 10, ab: 52, tr: 1, checks: 2 },
     { subject: 'Maths', teacher: 'Ms Shah', grade: '9', total: 19, done: 10, ab: 54, tr: 2, checks: 3 },
     { subject: 'Maths', teacher: 'Mr Doyle', grade: '9', total: 18, done: 9, ab: 50, tr: 0, checks: 1 }
-  ].map((c) => Object.assign(c, { name: GL[c.grade] + ' ' + c.subject, key: GL[c.grade] + ' ' + c.subject + ' · ' + c.teacher }));
+  ].map((c) => Object.assign(c, { name: GL[c.grade] + ' ' + c.subject, key: GL[c.grade] + ' ' + c.subject + ' (' + c.teacher + ')' }));
   // Two lowest reading standards per grade (sample).
   const STD = {
     6: [['RI.6.1', 'Cite text evidence to support analysis'], ['RL.6.2', 'Determine a theme and summarize']],

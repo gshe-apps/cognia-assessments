@@ -37,7 +37,7 @@ window.capReferenceAssign = page => {
  const needsReview = () => students.some(s=>checked(s.id)&&(s.support||supportsFor(s.id).length));
  const reviewMessage = 'Check accommodations and recipient access before continuing';
  const icon = name => {
-  const paths = {trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5m4-5v5"/>',down:'<path d="m6 9 6 6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',person:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>'};
+  const paths = {trash:'<path d="M10 11v6" /><path d="M14 11v6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />',down:'<path d="m6 9 6 6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',x:'<path d="M18 6 6 18" /><path d="m6 6 12 12" />',plus:'<path d="M5 12h14" /><path d="M12 5v14" />',search:'<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />',person:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>'};
   return '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
  };
  const iconControl = (attrs,label,name) => '<button type="button" class="btn btn-ghost btn-icon btn-sm" '+attrs+' aria-label="'+esc(label)+'">'+icon(name)+'</button>';
@@ -57,7 +57,7 @@ window.capReferenceAssign = page => {
  form.prepend(host);
  host.innerHTML = `<section class="allocation-panel"><div class="card-content allocation-recipient-content">
   <div class="allocation-heading"><div class="allocation-mode tabs-list" role="group" aria-label="Select recipients"><button class="tab" type="button" aria-pressed="true" data-mode="classes">Classes</button><button class="tab" type="button" aria-pressed="false" data-mode="students">Students</button></div></div>
-  <div class="allocation-picker"><div class="search search-md allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes" aria-controls="allocation-options"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
+  <div class="allocation-picker"><div class="search search-md allocation-search-field" role="search"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></svg><input class="input search-input" type="search" aria-label="Add or search classes" placeholder="Add or search classes" aria-controls="allocation-options"><span class="tooltip-wrap search-clear"><button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span class="tooltip" role="tooltip">Clear search</span></span></div><div id="allocation-options" class="menu allocation-options" hidden></div></div>
   <div class="allocation-filters"><div class="chip-list" role="list" aria-label="Selected classes" data-class-pills></div><button type="button" class="btn btn-ghost btn-sm" data-clear-selection>Clear all</button></div><div data-rosters></div><label class="allocation-check text-body-small"><input class="checkbox" type="checkbox" name="accommodations">I’ve checked accommodations and recipient access.</label><span id="allocation-review-error" hidden>${reviewMessage}</span>
   <div class="toast-region allocation-review-toast" inert><div class="toast toast-error">
    <span class="toast-message">${reviewMessage}</span>
@@ -128,7 +128,7 @@ window.capReferenceAssign = page => {
     <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel-support aria-label="Close review supports">${icon('x')}</button>
    </div>
    <div class="cap-setup-fields">
-    <p class="allocation-support-learner text-body-base font-semibold"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a7 7 0 0 0-14 0v2"/><circle cx="13" cy="7" r="4"/></svg><span data-support-student></span></p>
+    <p class="allocation-support-learner text-body-base font-semibold"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" /></svg><span data-support-student></span></p>
     <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><div class="cap-setup-columns" data-support-options></div></fieldset>
    </div>
    <div class="cap-setup-buttons dialog-footer">
@@ -140,25 +140,25 @@ window.capReferenceAssign = page => {
  page.append(supportDialog);
  let supportStudent;
  const supportPaths = [
-  '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>',
-  '<path d="M12 7v14m0-14C9 4 5 4 2 5v15c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 2"/>',
-  '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
-  '<path d="m12 3 10 5-10 5L2 8Z"/><path d="m2 12 10 5 10-5M2 16l10 5 10-5"/>',
+  '<path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />',
+  '<path d="M12 5v16" /><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" />',
+  '<rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />',
+  '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />',
   '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-  '<path d="M4 4h16M12 4v16M8 20h8"/>',
-  '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3M8 11h6M11 8v6"/>',
-  '<circle cx="12" cy="14" r="8"/><path d="M12 10v4M10 2h4m5 3-2 2"/>',
-  '<circle cx="12" cy="12" r="10"/><path d="M12 2v20"/>',
-  '<circle cx="12" cy="8" r="5"/><circle cx="8" cy="16" r="5"/><circle cx="16" cy="16" r="5"/>',
-  '<circle cx="6" cy="6" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="6" cy="18" r="1"/><circle cx="18" cy="6" r="1"/><circle cx="18" cy="12" r="1"/><circle cx="18" cy="18" r="1"/>',
-  '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>'
+  '<path d="M12 4v16" /><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2" /><path d="M9 20h6" />',
+  '<circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /><line x1="11" x2="11" y1="8" y2="14" /><line x1="8" x2="14" y1="11" y2="11" />',
+  '<line x1="10" x2="14" y1="2" y2="2" /><line x1="12" x2="15" y1="14" y2="11" /><circle cx="12" cy="14" r="8" />',
+  '<circle cx="12" cy="12" r="10" /><path d="M12 18a6 6 0 0 0 0-12v12z" />',
+  '<circle cx="15" cy="9" r="7" /><circle cx="9" cy="15" r="7" />',
+  '<circle cx="12" cy="5" r="1" /><circle cx="19" cy="5" r="1" /><circle cx="5" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="19" cy="19" r="1" /><circle cx="5" cy="19" r="1" />',
+  '<rect width="16" height="20" x="4" y="2" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" />'
  ];
  function openSupports(student) {
   supportStudent=student;
   supportDialog.querySelector('[data-support-student]').textContent=student.name;
   const selectedSupports=supportsFor(student.id);
   supportDialog.querySelector('[data-support-options]').innerHTML=[...new Set([...supportOptions,...selectedSupports])].map(option=>
-   `<label class="card allocation-support-choice"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(option)] || '<path d="M5 12h14M12 5v14"/>'}</svg><input class="checkbox" name="support" type="checkbox" value="${esc(option)}" ${selectedSupports.includes(option)?'checked':''}><span class="text-body-base font-semibold">${esc(option)}</span></label>`
+   `<label class="card allocation-support-choice"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(option)] || '<path d="M5 12h14" /><path d="M12 5v14" />'}</svg><input class="checkbox" name="support" type="checkbox" value="${esc(option)}" ${selectedSupports.includes(option)?'checked':''}><span class="text-body-base font-semibold">${esc(option)}</span></label>`
   ).join('');
   supportDialog.querySelector('[name=remember]').checked=Object.hasOwn(remembered,student.id);
   supportDialog.showModal();
@@ -191,7 +191,7 @@ window.capReferenceAssign = page => {
   return actionsMenu(id, label, items, `data-class-actions="${group.id}"`);
  }
  function actionsMenu(id, label, items, attrs = '') {
-  return `<div class="dropdown dropdown-end"><button type="button" class="btn btn-ghost btn-icon btn-sm" ${attrs} aria-label="${esc(label)}" title="${esc(label)}" aria-haspopup="menu" aria-expanded="false" aria-controls="${id}"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button><div class="menu" role="menu" id="${id}" aria-label="${esc(label)}" hidden>${items}</div></div>`;
+  return `<div class="dropdown dropdown-end"><button type="button" class="btn btn-ghost btn-icon btn-sm" ${attrs} aria-label="${esc(label)}" title="${esc(label)}" aria-haspopup="menu" aria-expanded="false" aria-controls="${id}"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" /></svg></button><div class="menu" role="menu" id="${id}" aria-label="${esc(label)}" hidden>${items}</div></div>`;
  }
  function drawRoster() {
   const hasClasses = data.classIds.length > 0;
@@ -202,10 +202,10 @@ window.capReferenceAssign = page => {
   searchInput.setAttribute('aria-label', searchInput.placeholder);
   options.hidden=!picker;
   const term=search.trim().toLowerCase();
-  options.innerHTML=mode==='classes'?classes.filter(c=>c.name.toLowerCase().includes(term)).map(c=>`<label class="allocation-check menu-item"><input class="checkbox" type="checkbox" data-class="${c.id}" ${data.classIds.includes(c.id)?'checked':''}>${c.name}</label>`).join(''):students.filter(s=>(s.name+' '+classes.find(c=>c.id===s.classId).name).toLowerCase().includes(term)).map(s=>`<button type="button" class="menu-item" data-add-student="${s.id}">${esc(s.name)} · ${classes.find(c=>c.id===s.classId).name}${checked(s.id)?' · Selected':''}</button>`).join('');
+  options.innerHTML=mode==='classes'?classes.filter(c=>c.name.toLowerCase().includes(term)).map(c=>`<label class="allocation-check menu-item"><input class="checkbox" type="checkbox" data-class="${c.id}" ${data.classIds.includes(c.id)?'checked':''}>${c.name}</label>`).join(''):students.filter(s=>(s.name+' '+classes.find(c=>c.id===s.classId).name).toLowerCase().includes(term)).map(s=>`<button type="button" class="menu-item" data-add-student="${s.id}"><span>${esc(s.name)} <span class="text-muted-foreground">${classes.find(c=>c.id===s.classId).name}</span></span>${checked(s.id)?'<span class="badge badge-secondary">Selected</span>':''}</button>`).join('');
   if (!options.innerHTML) options.innerHTML='<p class="text-body-small">No matches found.</p>';
   if (!hasClasses) {
-   rosters.innerHTML = `<div class="empty-state allocation-roster-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><p class="empty-title">No learners yet</p><p>Select one or more classes or learners to assign to a session.</p></div>`;
+   rosters.innerHTML = `<div class="empty-state allocation-roster-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" /></svg></span><p class="empty-title">No learners yet</p><p>Select one or more classes or learners to assign to a session.</p></div>`;
    return;
   }
   const visible=students.filter(s=>data.classIds.includes(s.classId)&&(s.name+' '+classes.find(c=>c.id===s.classId).name).toLowerCase().includes(term));
@@ -324,7 +324,7 @@ window.capReferenceAssign = page => {
    ${sessionActions(s)}${iconControl(`data-collapse-session="${esc(s.id)}" aria-expanded="${openSessionId === s.id}" aria-controls="body-${esc(s.id)}"`,(openSessionId !== s.id?'Expand':'Collapse')+' '+s.name,openSessionId !== s.id?'right':'down')}
   </div><p class="field-error allocation-name-error" id="${errorId}" ${missing?'':'hidden'}>${sessionNameWarning}</p><div id="body-${esc(s.id)}" ${openSessionId !== s.id?'hidden':''}>
    <div class="allocation-fields allocation-schedule"><label class="field"><span class="label">Date *</span><input class="input" type="date" required data-field="date" value="${esc(s.opens.slice(0,10))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">Start time *</span><input class="input" type="time" required data-field="start" value="${esc(s.opens.slice(11,16))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">End time *</span><input class="input" type="time" required data-field="end" value="${esc(s.due.slice(11,16))}" ${s.noLimit?'disabled':''}></label></div>
-   <div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger"><span>Access settings and instructions</span><svg class="allocation-settings-indicator icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path class="allocation-settings-plus" d="M12 5v14"/></svg></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label></div></details></div></section>`;
+   <div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger"><span>Access settings and instructions</span><svg class="allocation-settings-indicator icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path class="allocation-settings-plus" d="M12 5v14"/></svg></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label></div></details></div></section>`;
   }).join('');
  }
  function counts() {

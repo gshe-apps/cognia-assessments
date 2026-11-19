@@ -6,9 +6,11 @@
   "styles": [
     "project/**/*.css"
   ],
+  "scripts": [
+    "project/*.js"
+  ],
   "exclude": [
     "project/ds/cognia/tokens.css",
-    "project/CAP-T00-Home.dc.html",
     "project/Main.dc.html"
   ],
   "tokenCopy": "project/ds/cognia/tokens.css",
@@ -62,5 +64,10 @@
   },
   "baseline": "cognia-design.baseline.json",
   "componentsCopy": "project/ds/cognia/cognia-components.css",
-  "componentsScriptCopy": "project/ds/cognia/cognia-components.js"
+  "componentsScriptCopy": "project/ds/cognia/cognia-components.js",
+  "lineExempt": [
+    ".od-timetable-marker",
+    ".listline",
+    ".os-envchart"
+  ]
 }

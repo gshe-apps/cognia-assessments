@@ -110,11 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.cogniaPreview = instance;
 });
 
-// 12 Nov: every " · " separator in the flows reads as a lighter grey "|" (the .sep-bar style lives in each
-// flow stylesheet). Text stays as authored in templates and scripts; this swaps it in the rendered page,
-// including text that scripts render later. SVG text, form controls and editable areas are left alone.
+// 19 Nov: the "·" to grey "|" swap is gone. The plugin forbids dot or pipe separators between content, so
+// screens use badges, right-aligned values, subtext above the title or separate lines instead.
 (() => {
-  const SKIP = 'script,style,textarea,select,option,input,svg,[contenteditable],title,.sep-bar';
   // 12 Nov: the educator flow says "learner", not "student". Screens that load educator.css swap the word
   // (case kept) in rendered text and in placeholder, aria-label, title and data-tip. The role switcher and
   // the hub window keep "Student", since they name the student persona and match the admin flow.
@@ -127,29 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!LEARNERS || el.nodeType !== 1 || el.closest(KEEP)) return;
     ATTRS.forEach((a) => { const v = el.getAttribute(a); if (v && WORD.test(v)) { WORD.lastIndex = 0; el.setAttribute(a, learner(v)); } WORD.lastIndex = 0; });
   };
-  const make = () => { const s = document.createElement('span'); s.className = 'sep-bar'; s.setAttribute('aria-hidden', 'true'); s.textContent = '|'; return s; };
   const fix = (node) => {
     if (LEARNERS && node.nodeValue && /[Ss]tudent/.test(node.nodeValue) && node.parentElement && !node.parentElement.closest(KEEP)) {
       const next = learner(node.nodeValue);
       if (next !== node.nodeValue) node.nodeValue = next;
     }
-    const text = node.nodeValue;
-    if (!text || !text.includes('·')) return;
-    const parent = node.parentElement;
-    if (!parent || parent.closest(SKIP)) return;
-    const parts = text.split('·');
-    const frag = document.createDocumentFragment();
-    parts.forEach((part, i) => {
-      if (i) frag.append(make());
-      if (part) frag.append(document.createTextNode(part));
-    });
-    node.replaceWith(frag);
   };
   const scan = (root) => {
     if (root.nodeType === 3) { fix(root); return; }
     if (root.nodeType !== 1) return;
     if (LEARNERS) { fixAttrs(root); root.querySelectorAll('[placeholder],[aria-label],[title],[data-tip]').forEach(fixAttrs); }
-    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.nodeValue.includes('·') || (LEARNERS && /[Ss]tudent/.test(n.nodeValue))) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (LEARNERS && /[Ss]tudent/.test(n.nodeValue)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
     const found = []; while (walk.nextNode()) found.push(walk.currentNode);
     found.forEach(fix);
   };

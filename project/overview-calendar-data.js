@@ -24,6 +24,8 @@
    ].map((marks, index) => [`Learner ${index + 1}`, marks])},
   {id:'graphing-practice',day:2,type:'Formative',start:780,end:825,title:'Graphing Practice',classLabel:'Grade 7B',grade:'7',status:'pending',learnerCount:22,
    questions:[question('graph-1','Which point lies on the y-axis?',['(2, 0)','(0, 3)','(3, 2)','(1, 1)'],1),question('graph-2','What is the x-coordinate of (−2, 4)?',['−2','2','4','−4'],0)]},
+  {id:'ratios-exit-ticket',day:3,type:'Formative',start:660,end:690,title:'Ratios Exit Ticket',classLabel:'Grade 6B',grade:'6',status:'pending',learnerCount:24,
+   questions:[question('ratio-1','Which ratio is equal to 2:3?',['4:6','3:2','2:5','6:4'],0),question('ratio-2','There are 3 red and 5 blue counters. What is the ratio of red to blue?',['5:3','3:5','3:8','8:3'],1)]},
   {id:'transformations-quiz',day:3,type:'Screeners',start:570,end:615,title:'Transformations Quiz',classLabel:'Grade 6A',grade:'6',status:'pencil',standard:'6.NS.C.8',
    questions:[question('transform-1','Point (2, 3) moves 4 units right. Where is it now?',['(6, 3)','(2, 7)','(−2, 3)','(4, 3)'],0),question('transform-2','Point (5, 1) moves 2 units up. Where is it now?',['(7, 1)','(5, 3)','(3, 1)','(5, −1)'],1)]}
  ];

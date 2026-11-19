@@ -103,14 +103,6 @@
    "motion.delay": 1,
    "z-index.off-scale": 1
   },
-  "project/MOD-AltAssessments.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 10,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1
-  },
   "project/MOD-Interim.dc.html": {
    "type.raw-size": 4,
    "type.weight": 4,
@@ -122,22 +114,6 @@
    "z-index.off-scale": 2,
    "radius.off-scale": 1,
    "render.contrast": 11
-  },
-  "project/MOD-Screeners.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 10,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1
-  },
-  "project/PA-AltAssessments.dc.html": {
-   "type.raw-size": 4,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 11,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1
   },
   "project/PA-Interim.dc.html": {
    "type.raw-size": 4,
@@ -168,14 +144,6 @@
    "motion.delay": 1,
    "colour.hardcoded": 1
   },
-  "project/PA-Screeners.dc.html": {
-   "type.raw-size": 4,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 11,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1
-  },
   "project/PA1-Home.dc.html": {
    "type.raw-size": 1,
    "type.weight": 1,
@@ -205,23 +173,6 @@
    "colour.hardcoded": 2,
    "render.contrast": 17
   },
-  "project/PA2-Students.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 24,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 3,
-   "motion.duration": 9,
-   "colour.status-text-outside-badge": 9,
-   "z-index.off-scale": 1,
-   "radius.off-scale": 4,
-   "colour.surface-token-as-text": 5,
-   "shadow.not-a-token": 3,
-   "motion.easing": 3,
-   "colour.hardcoded": 2,
-   "render.contrast": 509
-  },
   "project/PA2-Subgroups.dc.html": {
    "type.raw-size": 3,
    "type.weight": 4,
@@ -237,36 +188,6 @@
    "shadow.not-a-token": 3,
    "motion.easing": 3,
    "colour.hardcoded": 2
-  },
-  "project/PA3-Trends.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 13,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1,
-   "shell.nav-selected": 1
-  },
-  "project/PA5-Followup.dc.html": {
-   "type.raw-size": 4,
-   "type.weight": 5,
-   "logo.restyled": 1,
-   "spacing.off-scale": 15,
-   "type.off-scale-size": 1,
-   "shell.nav-selected": 1
-  },
-  "project/SA2-Combined.dc.html": {
-   "type.raw-size": 4,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 19,
-   "type.off-scale-size": 3,
-   "colour.accent-text": 1,
-   "radius.off-scale": 4,
-   "z-index.off-scale": 6,
-   "colour.surface-token-as-text": 1,
-   "render.size-off-scale": 3,
-   "render.contrast": 3
   },
   "project/SA2-Hub.dc.html": {
    "type.raw-size": 3,
@@ -318,38 +239,10 @@
    "motion.easing": 3,
    "colour.hardcoded": 2
   },
-  "project/SA3-Mockup.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 4,
-   "logo.restyled": 1,
-   "spacing.off-scale": 13,
-   "type.off-scale-size": 2,
-   "colour.accent-text": 1,
-   "radius.off-scale": 2,
-   "z-index.off-scale": 5,
-   "render.size-off-scale": 1
-  },
-  "project/SA6-Respond.dc.html": {
-   "type.raw-size": 3,
-   "type.weight": 5,
-   "logo.restyled": 1,
-   "spacing.off-scale": 14,
-   "type.off-scale-size": 1,
-   "colour.accent-text": 1,
-   "shell.nav-selected": 1
-  },
   "project/STU2-SignIn.dc.html": {
    "spacing.off-scale": 1,
    "shell.header-missing": 1,
    "shell.footer-missing": 1
-  },
-  "project/SUP-Home-Goal.dc.html": {
-   "type.raw-size": 1,
-   "type.weight": 1,
-   "logo.restyled": 1,
-   "spacing.off-scale": 2,
-   "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1
   },
   "project/CAP-T06-Review.dc.html": {
    "render.contrast": 11

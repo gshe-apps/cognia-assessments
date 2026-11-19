@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const save = patch => localStorage.setItem(key, JSON.stringify({...get(), ...patch}));
   if (new URLSearchParams(location.search).has('additionalTest')) {
     const title = document.getElementById('title');
-    if (title) title.value = 'Fractions check · Test ' + (get().tests + 1);
+    if (title) title.value = 'Fractions check, test ' + (get().tests + 1);
     const next = document.getElementById('setupContinue');
     next?.addEventListener('click', () => save({tests:get().tests + 1}));
   }
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.test-count').forEach(el => { if(work.tests > 1) el.textContent = work.tests + ' tests in this assessment'; });
   document.addEventListener('click', event => {
     const bank = event.target.closest('[data-bank]');
-    if (bank) { save({banked:true}); bank.textContent = 'Assessment banked ✓'; bank.disabled = true; }
+    if (bank) { save({banked:true}); bank.textContent='Assessment banked'; bank.disabled = true; }
     if (event.target.closest('a[href="CAP-T07-DraftSaved.dc.html"]')) save({draftSaved:true});
     const preview = event.target.closest('[data-action="preview"],[data-action="overviewPreview"]');
     if(preview) window.open('STU2-Classroom.dc.html','_blank');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(event.target.closest('[data-action="allAssessments"]')) location.href='CAP-T03-Assessments.dc.html';
   });
   const banked = document.getElementById('banked-assessments');
-  if(banked && work.banked) banked.innerHTML = '<div class="bank-notice"><b>Banked for later: Fractions check</b><p>Your assessment is saved in this browser and ready to continue.</p><a class="btn ghost btn-ghost btn-lg" href="CAP-T06-Review.dc.html">Review &amp; assign →</a></div>';
+  if(banked && work.banked) banked.innerHTML = '<div class="bank-notice"><b>Banked for later: Fractions check</b><p>Your assessment is saved in this browser and ready to continue.</p><a class="btn ghost btn-ghost btn-lg" href="CAP-T06-Review.dc.html">Review &amp; assign <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></a></div>';
   const tabs = document.querySelector('.assessment-view-tabs');
   if(tabs) {
     const requested = new URLSearchParams(location.search).get('view');
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   if(location.pathname.endsWith('CAP-S06-ReviewAnswers.dc.html')) {
     const answered = Object.keys(attempt.answers).length;
-    document.querySelector('.student-title p').textContent = `${answered} of 4 questions answered · all changes saved`;
+    document.querySelector('.student-title p').textContent = `${answered} of 4 questions answered. All changes saved.`;
     document.querySelectorAll('.student-review-row').forEach((row,index) => {
       const answer = attempt.answers[index];
       row.querySelector('small').textContent = answer == null ? 'Not answered' : 'ABCD'[answer]+'. '+questions[index][1][answer];
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(answered === 4) {
       document.querySelector('.infobox').textContent = 'All questions answered. Review your work, then submit.';
       const next = document.querySelector('.student-actions .solid');
-      next.textContent = 'Continue to submit →';next.href='CAP-S07-Submit.dc.html';
+      next.innerHTML='Continue to submit <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>';next.href='CAP-S07-Submit.dc.html';
     }
     return;
   }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       label.lastElementChild.textContent = options[index];
     });
     document.querySelector('[data-action="stPrevious"]').disabled = attempt.index === 0;
-    const next = document.querySelector('[data-next-question]'); next.textContent = attempt.index === 3 ? 'Review answers →' : 'Next question →';
+    const next = document.querySelector('[data-next-question]'); next.textContent = attempt.index === 3 ? 'Review answers <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>' : 'Next question <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>';
   }
   document.addEventListener('change',event => { if(event.target.name === 'studentAnswer') {attempt.answers[attempt.index] = event.target.value;persist();} });
   document.addEventListener('click',event => {

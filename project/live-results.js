@@ -98,7 +98,7 @@
 
     if (event) {
       page.querySelector('.rr-title h1').textContent = event.title;
-      page.querySelector('.rr-kicker').textContent = event.classLabel + ' · ' + event.type + ' · Sample results';
+      page.querySelector('.rr-kicker').textContent = event.type + ' assessment for ' + event.classLabel + ', sample results';
       page.querySelector('[data-stack="live"]')?.remove();
       const date = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(calendar.date(event));
       const details = [['Class',event.classLabel],['Subject',calendar.subject],['Session date',date],
@@ -144,8 +144,8 @@
       const weakest = submitted.length ? perQ.map((p, q) => ({ q: q + 1, p })).sort((a, b) => a.p - b.p)[0] : null;
       const waiting = total - submitted.length;
       ins.innerHTML = (
-        '<div class="rr-insight"><span class="rr-icon rr-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/></svg></span><div><strong>' + (avg === null ? 'Waiting for the first hand-in' : avg + '% average score') + '</strong><p>' + (avg === null ? 'Results appear here as soon as a learner hands in.' : 'Based on ' + submitted.length + ' auto-scored ' + (submitted.length === 1 ? 'test' : 'tests') + '.') + '</p></div></div>'
-        + '<div class="rr-insight"><span class="rr-icon rr-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2zM12 9v5M12 17h.01"/></svg></span><div><strong>' + (weakest ? 'Q' + weakest.q + ' is the hardest so far' : waiting + ' learners still to hand in') + '</strong><p>' + (weakest ? weakest.p + '% of marks earned. A good one to revisit with the class.' : 'Copy the link and share the session code to get started.') + '</p></div></div>');
+        '<div class="rr-insight"><span class="rr-icon rr-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="m16 9-5.5 5.5L8 12" /></svg></span><div><strong>' + (avg === null ? 'Waiting for the first hand-in' : avg + '% average score') + '</strong><p>' + (avg === null ? 'Results appear here as soon as a learner hands in.' : 'Based on ' + submitted.length + ' auto-scored ' + (submitted.length === 1 ? 'test' : 'tests') + '.') + '</p></div></div>'
+        + '<div class="rr-insight"><span class="rr-icon rr-warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg></span><div><strong>' + (weakest ? 'Q' + weakest.q + ' is the hardest so far' : waiting + ' learners still to hand in') + '</strong><p>' + (weakest ? weakest.p + '% of marks earned. A good one to revisit with the class.' : 'Copy the link and share the session code to get started.') + '</p></div></div>');
     }
 
     // Student table (12 Nov: rows do not open anything; columns sort from their headers)

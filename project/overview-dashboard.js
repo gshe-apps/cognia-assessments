@@ -9,13 +9,13 @@
    calendar: '<path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" />',
    check: '<circle cx="12" cy="12" r="10" /><path d="m16 9-5.5 5.5L8 12" />',
    clock: '<circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />',
-   list: '<path d="M8 6h13" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M3 6h.01" /><path d="M3 12h.01" /><path d="M3 18h.01" />',
+   list: '<path d="M3 5h.01" /><path d="M3 12h.01" /><path d="M3 19h.01" /><path d="M8 5h13" /><path d="M8 12h13" /><path d="M8 19h13" />',
    circleAlert: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
    left: '<path d="m15 18-6-6 6-6" />',
    right: '<path d="m9 18 6-6-6-6" />',
-   dots: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
-   close: '<path d="m6 6 12 12M18 6 6 18"/>',
-   file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v6h6" />',
+   dots: '<circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" />',
+   close: '<path d="M18 6 6 18" /><path d="m6 6 12 12" />',
+   file: '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" />',
    circleDashed: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
    plus: '<path d="M5 12h14" /><path d="M12 5v14" />',
    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><path d="M16 3.128a4 4 0 0 1 0 7.744" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><circle cx="9" cy="7" r="4" />'
@@ -52,11 +52,10 @@
   const cardLabel = item => item.status==='review' ? statusLabels.review : item.type;
   const hero = root.querySelector('.od-hero');
   const title = hero.querySelector('h1');
-  title.textContent = 'Good afternoon, Joe';
+  title.textContent = 'Good afternoon, Sara';
   const heading = document.createElement('div');
   title.before(heading);
   heading.append(title);
-  heading.insertAdjacentHTML('beforeend','<p>Your assessment workspace for planning, assigning and tracking student progress.</p>');
 
   const calendar = root.querySelector('.od-calendar');
   const priorities = root.querySelector('.od-folder-grid');
@@ -96,7 +95,6 @@
     </div>
     <div class="od-desk-metrics">
      <p class="od-desk-quantity text-muted-foreground"><strong class="text-heading text-foreground font-semibold">2</strong> <span>assessments</span></p>
-     <span class="separator separator-vertical" aria-hidden="true"></span>
      <div class="od-desk-progress">
       <p class="text-muted-foreground"><strong class="text-body-base text-foreground font-semibold">68%</strong> reviewed</p>
       <div class="progress" role="progressbar" aria-label="Responses reviewed" aria-valuenow="68" style="--value:68%"><div class="progress-indicator"></div></div>
@@ -147,7 +145,7 @@
      </div>
     </div>
     <div class="od-desk-entry od-desk-results">
-     <div aria-live="polite"><h4 class="card-title" data-completed-name></h4><p class="card-description" data-completed-meta></p></div>
+     <div aria-live="polite"><p class="card-description" data-completed-class></p><h4 class="card-title" data-completed-name></h4><p class="card-description" data-completed-meta></p></div>
      <a class="btn btn-ghost btn-sm od-desk-secondary" data-completed-results>View results</a>
     </div>
    </article>
@@ -160,7 +158,8 @@
    const entry = completed[completedIndex];
    completedCard.querySelector('[data-completed-position]').textContent = `${completedIndex+1} of ${completed.length}`;
    completedCard.querySelector('[data-completed-name]').textContent = entry.title;
-   completedCard.querySelector('[data-completed-meta]').textContent = `${entry.classLabel} · ${entry.scores.length} learners`;
+   completedCard.querySelector('[data-completed-class]').textContent = entry.classLabel;
+   completedCard.querySelector('[data-completed-meta]').textContent = `${entry.scores.length} learners`;
    const link = completedCard.querySelector('[data-completed-results]');
    link.href = eventLink(entry);
    link.setAttribute('aria-label',`View results for ${entry.title}`);
@@ -218,7 +217,8 @@
     const questions=draft.model.tests.flatMap(test=>test.questions||[]);
     const step=draft.step===2?2:1;
     body=`<section class="od-event-draft card"><div class="card-content">
-     <h3 class="text-body-base font-semibold">${step===2?'Step 2 of 4 · Review':'Step 1 of 4 · Add your items'}</h3>
+     <p class="text-body-small text-muted-foreground">Step ${step} of 4</p>
+     <h3 class="text-body-base font-semibold">${step===2?'Review':'Add your items'}</h3>
      <p class="text-body-small text-muted-foreground">${step===2?'Review the items, instructions and settings.':'Add or edit questions before reviewing the test.'}</p>
      <div class="progress" role="progressbar" aria-label="Current builder step" aria-valuemin="0" aria-valuemax="4" aria-valuenow="${step}" style="--value:${step*25}%"><div class="progress-indicator"></div></div>
     </div></section><dl class="od-event-metrics">${info('Items added',questions.length)}${info('Total points',points(questions))}</dl>`;
@@ -237,8 +237,8 @@
    dialog.setAttribute('aria-labelledby','od-event-title');
    dialog.innerHTML=`<div class="dialog-header">
     <h2 class="dialog-title" id="od-event-title" tabindex="-1" autofocus>${esc(draft?.title||item.title)}</h2>
-    <button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-    <p class="dialog-description">${esc(item.type)} · ${esc(item.classLabel)}${draft?'':' · '+esc(date)}</p>
+    <button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></button>
+    <p class="dialog-description">${esc(item.type)} assessment for ${esc(item.classLabel)}${draft?'':', '+esc(date)}</p>
    </div>
    <div class="dialog-body">
     <div class="od-event-summary"><h3 class="text-body-base font-semibold">${heading}</h3><span class="badge badge-${tone}">${draft?'Draft':statusLabels[item.status]}</span></div>
@@ -275,15 +275,24 @@
    const top = percentOfDay(item.start);
    const height = percentOfDay(item.end) - top;
    const time = clock.formatRange(clockDate(item.start), clockDate(item.end));
-   const showBand = item.status==='check' || item.status==='review';
    const status = `<span class="tooltip-wrap od-week-status${item.status==='review'?' alert-warning':''}" data-status="${item.status}">${icon(statusIcon[item.status])}
     <span class="tooltip" aria-hidden="true">${statusLabels[item.status]}</span>
    </span>`;
-   return `<a class="od-timed-event${showBand?'':' od-timed-event-plain'}" data-status="${item.status}" href="${eventLink(item)}" data-overview-event="${item.id}" aria-haspopup="dialog"
+   if (item.end - item.start <= 30) return `<a class="od-timed-event od-timed-event-plain od-timed-event-short" data-status="${item.status}" href="${eventLink(item)}" data-overview-event="${item.id}" aria-haspopup="dialog"
      style="--od-event-start: ${top}%; --od-event-duration: ${height}%"
      aria-label="${item.title}, ${item.type}, ${item.classLabel}, ${time}, ${statusLabels[item.status]}">
-    ${showBand?`<span class="od-timed-event-band"><span>${statusLabels[item.status]}</span>${status}</span>`:''}
-    <span class="od-timed-event-copy"><strong class="card-title">${item.title}</strong>${showBand?'':status}<span class="card-description">${item.classLabel}</span></span>
+    <span class="od-timed-event-copy"><strong class="card-title od-timed-event-line">${item.title}</strong>${status}</span>
+    <span class="hover-card" aria-hidden="true">
+     <span class="badge badge-${listTone[item.status]} od-event-hover-badge">${statusLabels[item.status]}</span>
+     <strong class="card-title od-event-hover-title">${item.title}</strong>
+     <span class="od-event-hover-row"><span class="card-description">Time</span><span>${time}</span></span>
+     <span class="od-event-hover-row"><span class="card-description">Class</span><span>${item.classLabel}</span></span>
+    </span>
+   </a>`;
+   return `<a class="od-timed-event od-timed-event-plain" data-status="${item.status}" href="${eventLink(item)}" data-overview-event="${item.id}" aria-haspopup="dialog"
+     style="--od-event-start: ${top}%; --od-event-duration: ${height}%"
+     aria-label="${item.title}, ${item.type}, ${item.classLabel}, ${time}, ${statusLabels[item.status]}">
+    <span class="od-timed-event-copy"><strong class="card-title">${item.title}</strong>${status}<span class="card-description">${item.classLabel}</span></span>
    </a>`;
   }
 
@@ -340,7 +349,7 @@
       ${+date===+today?'<span class="badge badge-secondary">Today</span>':''}</header>
      <div class="od-week-events">${events}</div>
     </section>`;
-   }).join('') || '<div class="empty-state od-week-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></span><p class="empty-title">Nothing scheduled</p><p>No assessments are scheduled this week.</p></div>';
+   }).join('') || '<div class="empty-state od-week-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></svg></span><p class="empty-title">Nothing scheduled</p><p>No assessments are scheduled this week.</p></div>';
   }
 
   calendar.addEventListener('click', event => {

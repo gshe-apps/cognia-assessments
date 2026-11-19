@@ -8,13 +8,7 @@
   "stu2.css"
  ],
  "screens": {
-  "CAP-T00-Home.dc.html": [],
   "CAP-T01-Overview.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "educator.css"
-  ],
-  "CAP-T02-OverviewStats.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "educator.css"
@@ -139,17 +133,7 @@
    "ds/cognia/cognia-components.css",
    "admin.css"
   ],
-  "MOD-AltAssessments.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
   "MOD-Interim.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "MOD-Screeners.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "admin.css"
@@ -169,22 +153,12 @@
    "ds/cognia/cognia-components.css",
    "admin.css"
   ],
-  "PA-AltAssessments.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
   "PA-Interim.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "admin.css"
   ],
   "PA-Overview.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "PA-Screeners.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "admin.css"
@@ -199,27 +173,7 @@
    "ds/cognia/cognia-components.css",
    "admin.css"
   ],
-  "PA2-Students.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
   "PA2-Subgroups.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "PA3-Trends.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "PA5-Followup.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "SA2-Combined.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "admin.css"
@@ -239,16 +193,6 @@
    "ds/cognia/cognia-components.css",
    "admin.css"
   ],
-  "SA3-Mockup.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
-  "SA6-Respond.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
-  ],
   "STU2-Classroom.dc.html": [
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
@@ -258,11 +202,6 @@
    "ds/cognia/tokens.css",
    "ds/cognia/cognia-components.css",
    "stu2.css"
-  ],
-  "SUP-Home-Goal.dc.html": [
-   "ds/cognia/tokens.css",
-   "ds/cognia/cognia-components.css",
-   "admin.css"
   ]
  }
 }

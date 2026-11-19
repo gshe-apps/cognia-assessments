@@ -5,7 +5,7 @@
  const college='College and career readiness';
  const libraryPath='Ready-to-use classroom assessments';
  const statePath='Alabama state standards';
- const futureStatePath=statePath+' · Future Release';
+ const futureStatePath=statePath+' (future release)';
  const itemPage=({subject,grade})=>subject==='English'?'CAP-T05-Reading.dc.html':grade==='8'?'CAP-T05-Algebra.dc.html':'CAP-T05-Questions.dc.html';
  const signature=({title,grade,subject,standard,pathway})=>JSON.stringify({title,grade,subject,standard:standard||'',pathway:pathway||college});
  /* Assessment settings (attempts, results, order, tools, time limit) live in this modal, above Optional settings. */
@@ -43,7 +43,7 @@
    <section class="cap-setup-view" data-setup-view="form">
     <div class="cap-setup-heading dialog-header">
      <div class="cap-setup-title-row">
-      <span class="icon-accent" aria-hidden="true">${icon('<path d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/>')}</span>
+      <span class="icon-accent" aria-hidden="true">${icon('<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />')}</span>
       <div><h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>${esc(heading||'Set up your assessment by creating a test')}</h2>
        <p class="dialog-description">Choose a subject, grade level, pathway and standard for your test.</p></div>
      </div>
@@ -154,8 +154,8 @@
      <div><h4 class="text-body-small font-semibold">Learning components</h4>
       <ul><li>Represent a word problem with an equation</li><li>Solve fraction word problems with unlike denominators</li><li>Use benchmark fractions to check reasonableness</li></ul></div>
      <div><h4 class="text-body-small font-semibold">Progression</h4>
-      <ul><li>Builds on 4.NF.B.3 and 5.NF.A.1</li><li>Leads to 5.NF.B.6 · Fraction multiplication word problems</li></ul></div>
-    </div>`:p(`Grade ${esc(selected.grade)} · ${esc(selected.title)}`);
+      <ul><li>Builds on 4.NF.B.3 and 5.NF.A.1</li><li>Leads to 5.NF.B.6, fraction multiplication word problems</li></ul></div>
+    </div>`:p(`Grade ${esc(selected.grade)} ${esc(selected.title)}`);
   }
   function renderStandards(){
    const available=standards.filter(s=>s.subject===subject.value&&s.grade===grade.value);

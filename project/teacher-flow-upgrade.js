@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 /* Floating bar, 10 Nov: plain "Back" (arrow + word, goes to the previous screen), plain "Continue" and
-   "Create assessment" on the last step. Save as draft leaves the bar and sits top right of the page on steps 1 and 2.
+   "Create" on the last step. Save as draft leaves the bar and sits top right of the page on steps 1 and 2.
    It is a toggle: click to save (turns into a green "Draft saved" button with a check), click again to unsave.
    The saved state is read from the draft archive, so it shows as unsaved again once the assessment changes. */
 (()=>{
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(a.dataset.tfBack&&a.getAttribute('href')===href&&a.querySelector('svg')&&a.textContent.trim()==='Back')return;
     a.dataset.tfBack='1';a.href=href;a.removeAttribute('title');a.removeAttribute('aria-label');a.innerHTML=arrowLeft+'Back';
    });
-   const label=step<4?'Continue':'Create assessment';
+   const label=step<4?'Continue':'Create';
    bar.querySelectorAll('.solid').forEach(b=>{if(b.textContent.trim()!==label)b.textContent=label});
   }
   if(step<=2){

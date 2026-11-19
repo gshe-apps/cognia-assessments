@@ -45,7 +45,7 @@
     const wrap = document.createElement('div');
     wrap.innerHTML = `<dialog class="dialog cap-setup-modal cap-library-modal" aria-labelledby="cap-library-title">
       <div class="cap-setup-heading dialog-header">
-        <h2 class="dialog-title" id="cap-library-title" tabindex="-1" autofocus>Select a Cognia assessment</h2>
+        <h2 class="dialog-title" id="cap-library-title" tabindex="-1" autofocus>Select a Cognia test</h2>
         <button class="btn btn-ghost btn-icon dialog-close" type="button" data-close-library aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
       </div>
       <ul class="cap-library-list">${forms.map((f) => {
@@ -78,14 +78,14 @@
     modal.setAttribute('aria-labelledby', 'cap-create-choice-title');
     modal.innerHTML = `
       <div class="dialog-header">
-        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create assessment</h2>
+        <h2 class="dialog-title" id="cap-create-choice-title" tabindex="-1" autofocus>Create new</h2>
         <form method="dialog" class="dialog-close">
           <button class="btn btn-ghost btn-icon" type="submit" aria-label="Close">${svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button>
         </form>
       </div>
       <form method="dialog" class="dialog-footer cap-create-choice-actions">
-        <button class="btn" type="submit" value="scratch">Create from scratch</button>
-        <button class="btn btn-ghost" type="submit" value="library">Use library</button>
+        <button class="btn" type="submit" value="scratch">From scratch</button>
+        <button class="btn btn-ghost" type="submit" value="library">From Cognia</button>
       </form>`;
     const host = trigger.closest('.theme-assessments') || document.body;
     host.append(modal);
@@ -105,12 +105,12 @@
     host.innerHTML = `
       <div class="dropdown dropdown-end">
         <button type="button" class="btn btn-lg" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
-          Create assessment
+          Create new
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </button>
         <div class="menu" role="menu" id="create-assessment-menu" aria-labelledby="create-assessment-trigger" hidden>
-          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html" data-create-from-scratch>Create from scratch</a>
-          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html" data-use-library>Use library</a>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T04-Setup.dc.html" data-create-from-scratch>From scratch</a>
+          <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T21-AssessmentLibrary.dc.html" data-use-library>From Cognia</a>
         </div>
       </div>`;
     host.querySelector('[data-create-from-scratch]').addEventListener('click',event=>{

@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   option.setAttribute('aria-current','true');
   filterQuestions();
  });
+ /* 19 Nov: one-off clean-up, once per browser. Tests saved while trying out the prototype (many titled
+    "New classroom assessment") are cleared and the sample drafts are seeded again, so the Tests table and
+    Overview drafts start from the same sample data for every reviewer. */
+ try{if(teacher&&!localStorage.getItem('cogniaAssessmentCleanupV2')){const all=JSON.parse(localStorage.getItem('cogniaAssessmentArchiveV1')||'[]'),seen=new Set();localStorage.setItem('cogniaAssessmentArchiveV1',JSON.stringify(all.filter(e=>e&&e.sample&&!seen.has(e.id)&&seen.add(e.id))));localStorage.removeItem('cogniaClientDraftSeedV1');localStorage.setItem('cogniaAssessmentCleanupV2',new Date().toISOString())}}catch{}
  if(teacher&&!localStorage.getItem('cogniaClientDraftSeedV1')){const entries=archive();for(const f of forms){if(entries.some(e=>e.title===f.title&&e.status==='draft'))continue;const id='sample-'+f.id,questions=(f.items||f.questions).filter(q=>q.tier!=='plus'),test={id,title:f.title,grade:f.grade,subject:f.subject,standard:f.standard,page:f.page,state:{chosen:questions.map(q=>q.id),written:{},edits:{}},questions};entries.push({id:'assessment-'+id,title:f.title,status:'draft',sample:true,updatedAt:new Date().toISOString(),model:{title:f.title,active:id,origin:'builder',tests:[test]}});}put('cogniaAssessmentArchiveV1',entries);localStorage.setItem('cogniaClientDraftSeedV1','1');}
  window.capUpdateOverviewDraftStack?.();
  // Preserve text immediately: exported blur handlers otherwise lose input when another control redraws the canvas.
@@ -245,10 +249,14 @@ document.addEventListener('DOMContentLoaded',()=>{
    .observe(menu,{attributes:true,attributeFilter:['hidden']});
  }
  function libraryPreview(id){const f=forms.find(f=>f.id===id);if(!f)return;const d=modal(f.title,`<p>Complete Cognia form for Grade ${f.grade} ${escape(f.subject)}, standard ${escape(f.standard)}</p><p>This form is assigned as provided. Editing and customisation are not part of this proposed flow.</p>${f.questions.map((q,i)=>`<section class="client-preview-question"><h3>${i+1}. ${escape(q.stem)}</h3>${q.options?.length?'<ol type="A">'+q.options.map(o=>`<li>${escape(o)}</li>`).join('')+'</ol>':''}<details><summary>Answer key</summary><p>${escape(answer(q))}</p></details></section>`).join('')}<div class="client-dialog-actions dialog-footer"><button class="btn solid btn-lg" data-assign-form="${f.id}">Use complete assessment <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></button></div>`);d.querySelector('[data-assign-form]').onclick=()=>startForm(id);}
- const libState={selected:null,term:'',grade:'',subject:'',format:'',sort:'recent',filters:false};
+ const libState={selected:(location.hash.match(/^#form-([\w-]+)$/)||[])[1]||null,term:'',grade:'',subject:'',format:'',sort:'recent',filters:false};
+ /* 19 Nov: a Cognia test opened from Tests (#form-<id>) shows only its preview, with a back chevron to the Cognia tests tab. */
+ const libSingle=!!libState.selected;
  function renderLibrary(){
   const root=document.getElementById('assessment-library');if(!root)return;
-  root.className='al-library';
+  root.className='al-library'+(libSingle?' al-single':'');
+  /* A test opened from Tests keeps Tests as the current nav item. */
+  if(libSingle){const markTests=()=>document.querySelectorAll('.hubnav a').forEach(link=>{const tests=link.getAttribute('href')==='CAP-T03-Assessments.dc.html';link.classList.toggle('on',tests);if(tests)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});markTests();if(!window.capSingleNavWatch){window.capSingleNavWatch=new MutationObserver(()=>{const cur=document.querySelector('.hubnav a[aria-current="page"]');if(cur&&cur.getAttribute('href')!=='CAP-T03-Assessments.dc.html')markTests();});window.capSingleNavWatch.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['aria-current','class']});}}
   const svg=path=>'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+path+'</svg>';
   const searchIcon=svg('<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />');
   const closeIcon=svg('<path d="M18 6 6 18" /><path d="m6 6 12 12" />');
@@ -328,12 +336,12 @@ document.addEventListener('DOMContentLoaded',()=>{
    const items=form.questions,points=items.reduce((total,item)=>total+Number(item.marks||0),0);
    panel.innerHTML=`
     <header class="al-preview-heading">
-     <div><h2 class="text-body-base font-semibold" id="al-d-title">${escape(form.title)}</h2>
-      <p class="text-body-small text-muted-foreground">${scope(form)}, ${itemCount(items.length)} worth ${pointCount(points)}</p></div>
+     <div class="al-back-title">${libSingle?`<span class="tooltip-wrap"><a class="btn btn-ghost btn-icon al-back" href="CAP-T03-Assessments.dc.html?view=cognia" aria-label="Back to Cognia tests">${chevronLeft}</a><span class="tooltip" role="tooltip">Back to Cognia tests</span></span>`:''}<div><h2 class="text-body-base font-semibold" id="al-d-title">${escape(form.title)}</h2>
+      <p class="text-body-small text-muted-foreground">${scope(form)}, ${itemCount(items.length)} worth ${pointCount(points)}</p></div></div>
      <div class="dropdown dropdown-end al-use-test">
-      <button type="button" class="btn btn-lg" id="al-use-test-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="al-use-test-menu">Use this test${chevronDown}</button>
+      <button type="button" class="btn btn-lg" id="al-use-test-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="al-use-test-menu">Use test${chevronDown}</button>
       <div class="menu" id="al-use-test-menu" role="menu" aria-labelledby="al-use-test-trigger" hidden>
-       <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-start-form="${escape(form.id)}">${newTestIcon}Start from scratch</button>
+       <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-start-form="${escape(form.id)}">${newTestIcon}As is</button>
        <div class="al-draft-branch" role="none">
         <button type="button" class="menu-item" id="al-draft-trigger" role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="false" aria-controls="al-draft-menu">${chevronLeft}Add to assessment</button>
         <div class="menu al-draft-menu" id="al-draft-menu" role="menu" aria-labelledby="al-draft-trigger" hidden></div>

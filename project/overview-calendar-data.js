@@ -14,7 +14,7 @@
     ['Chloe Martin',[4,4,1,1]],['Daniel Kim',[3,2,1,1]],['Emma Lewis',[4,2,1,1]]
    ]},
   {id:'fractions-check',day:1,type:'Formative',start:570,end:615,title:'Fractions check',classLabel:'Grade 5A',grade:'5',status:'review',learnerCount:6,responsesToScore:2},
-  {id:'unit-4-assessment',day:2,type:'Summative',start:510,end:570,title:'Unit 4 Assessment',classLabel:'Grade 7A',grade:'7',status:'check',
+  {id:'unit-4-assessment',day:2,type:'Summative',start:510,end:570,title:'Unit 4 Test',classLabel:'Grade 7A',grade:'7',status:'check',
    questions:[question('unit-4-1','What is 25% of 80?',['15','20','25','40'],1),question('unit-4-2','A value increases from 40 to 50. What is the percentage increase?',['10%','20%','25%','50%'],2)],
    scores:[
     [1,1],[1,1],[1,0],[1,1],[0,1],[1,1],

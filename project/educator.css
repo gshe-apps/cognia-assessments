@@ -6032,3 +6032,29 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 .cap-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .ib-preview-meta { justify-content: flex-start; }
 .cap-root .menu-item[data-add-student] { justify-content: space-between; gap: var(--space-2); }
+
+/* 19 Nov: Status select beside the source tabs on Tests, label to the left. Layout only. */
+.assessment-catalogue .ar-status-field { display: flex; flex-direction: row; align-items: center; gap: var(--space-2); margin: 0; }
+.assessment-catalogue .ar-status-field[hidden] { display: none; }
+.assessment-catalogue .ar-status-field + .ar-search { margin-left: 0; }
+
+/* 19 Nov: Tests toolbar. Status and search on the left, the main action pushed to the far right. Layout only. */
+.assessment-catalogue .ar-collection-heading .ar-search { margin-left: 0; }
+.assessment-catalogue .ar-collection-heading .ar-primary-action { margin-left: auto; }
+.assessment-catalogue .ar-collection-heading .ar-primary-action[hidden] { display: none; }
+
+/* 19 Nov: Tests top row, source tabs left and Create new right. Layout only. */
+.assessment-catalogue .ar-intro-grid.ar-tabs-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+/* 19 Nov: search and its filter button sit together on the left. Layout only. */
+.assessment-catalogue .ar-collection-heading { justify-content: flex-start; gap: var(--space-2); }
+
+/* 19 Nov: Cognia test opened from Tests. Only the preview shows, with a back chevron beside its title; the library heading stays for screen readers. Layout only. */
+#assessment-library.al-single .al-browser { display: none; }
+#assessment-library.al-single .al-layout { grid-template-columns: minmax(0, 1fr); }
+#assessment-library.al-single .al-detail { padding-inline-start: 0; }
+#assessment-library.al-single .al-page-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.al-preview-heading > .al-back-title { display: flex; align-items: center; gap: var(--space-2); }
+#assessment-library.al-single .al-items { max-width: 650px; width: 100%; margin-inline: auto; }
+/* 19 Nov: Tests toolbar. A note on the left explains the tab; search and filter sit on the far right. Layout only. */
+.assessment-catalogue .ar-collection-heading .ar-tabs { margin: 0 auto 0 0; }
+.assessment-catalogue .ar-page-title { display: flex; flex-direction: column; gap: var(--space-1); }

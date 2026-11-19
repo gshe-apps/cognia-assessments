@@ -94,7 +94,7 @@
      <span class="badge badge-warning">Needs review</span>
     </div>
     <div class="od-desk-metrics">
-     <p class="od-desk-quantity text-muted-foreground"><strong class="text-heading text-foreground font-semibold">2</strong> <span>assessments</span></p>
+     <p class="od-desk-quantity text-muted-foreground"><strong class="text-heading text-foreground font-semibold">2</strong> <span>tests</span></p>
      <div class="od-desk-progress">
       <p class="text-muted-foreground"><strong class="text-body-base text-foreground font-semibold">68%</strong> reviewed</p>
       <div class="progress" role="progressbar" aria-label="Responses reviewed" aria-valuenow="68" style="--value:68%"><div class="progress-indicator"></div></div>
@@ -137,11 +137,11 @@
      <h3 class="card-title" id="od-completed-title">Completed</h3>
      <div class="od-desk-actions">
       <div class="od-desk-pager" ${completed.length<2?'hidden':''}>
-       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Previous completed assessment" data-completed-step="-1">${icon('left')}</button>
+       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Previous completed test" data-completed-step="-1">${icon('left')}</button>
        <span class="text-body-small" data-completed-position aria-live="polite"></span>
-       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Next completed assessment" data-completed-step="1">${icon('right')}</button>
+       <button type="button" class="btn btn-ghost btn-icon btn-xs" aria-label="Next completed test" data-completed-step="1">${icon('right')}</button>
       </div>
-      ${priorityMenu('completed','Completed assessment options','CAP-T13-Results.dc.html','View all results')}
+      ${priorityMenu('completed','Completed test options','CAP-T13-Results.dc.html','View all results')}
      </div>
     </div>
     <div class="od-desk-entry od-desk-results">
@@ -230,7 +230,7 @@
       <h3 class="text-body-base font-semibold">Delivery</h3>
       <dl class="od-event-metrics">${info('Date',date)}${info('Time',timeOf(item))}</dl>
      </div></section>`;
-    action=`<a class="btn btn-lg" href="${eventLink(item)}">Review assessment</a>`;
+    action=`<a class="btn btn-lg" href="${eventLink(item)}">Review test</a>`;
    }
    const dialog=document.createElement('dialog');
    dialog.className='dialog od-event-preview';
@@ -238,12 +238,12 @@
    dialog.innerHTML=`<div class="dialog-header">
     <h2 class="dialog-title" id="od-event-title" tabindex="-1" autofocus>${esc(draft?.title||item.title)}</h2>
     <button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></button>
-    <p class="dialog-description">${esc(item.type)} assessment for ${esc(item.classLabel)}${draft?'':', '+esc(date)}</p>
+    <p class="dialog-description">${esc(item.type)} test for ${esc(item.classLabel)}${draft?'':', '+esc(date)}</p>
    </div>
    <div class="dialog-body">
     <div class="od-event-summary"><h3 class="text-body-base font-semibold">${heading}</h3><span class="badge badge-${tone}">${draft?'Draft':statusLabels[item.status]}</span></div>
     ${body}
-    <p class="text-body-small text-muted-foreground">Sample assessment</p>
+    <p class="text-body-small text-muted-foreground">Sample test</p>
    </div>
    <div class="dialog-footer"><button class="btn btn-ghost btn-lg" type="button" data-dismiss-event>Close</button>${action}</div>`;
    dialog.addEventListener('close',()=>{dialog.remove();trigger.focus({preventScroll:true});},{once:true});
@@ -342,14 +342,14 @@
     const showCreate = isSampleWeek && index===sampleWeek.length-1;
     if (view==='list' && !items.length && !showCreate) return '';
     const events = showCreate
-     ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create assessment</span></button>`
+     ? `<button type="button" class="btn btn-ghost od-week-create" aria-haspopup="dialog" data-week-create>${icon('plus')}<span>Create new</span></button>`
      : items.map(assessmentCard).join('');
     return `<section class="od-week-day card${+date===+today?' card-themed':''}" ${+date===+today?'aria-current="date"':''}>
      <header><h3>${dayName.format(date)} <span>${shortDate.format(date)}</span></h3>
       ${+date===+today?'<span class="badge badge-secondary">Today</span>':''}</header>
      <div class="od-week-events">${events}</div>
     </section>`;
-   }).join('') || '<div class="empty-state od-week-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></svg></span><p class="empty-title">Nothing scheduled</p><p>No assessments are scheduled this week.</p></div>';
+   }).join('') || '<div class="empty-state od-week-empty"><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></svg></span><p class="empty-title">Nothing scheduled</p><p>No tests are scheduled this week.</p></div>';
   }
 
   calendar.addEventListener('click', event => {

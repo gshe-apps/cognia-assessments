@@ -35,7 +35,7 @@
   stack.querySelector('[data-overview-draft-title]').title = title;
   const step = draft?.step === 2 ? 2 : 1;
   stack.querySelector('[data-overview-draft-progress]').hidden = !draft;
-  setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add assessment items') : '');
+  setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add test items') : '');
   const progress = stack.querySelector('[data-draft-meter]');
   progress.setAttribute('aria-valuenow', draft ? step : 0);
   progress.setAttribute('aria-valuetext', draft ? `Step ${step} of 4` : 'No draft');
@@ -56,7 +56,7 @@
   } else {
    delete resume.dataset.restoreWork;
    resume.href = 'CAP-T04-Setup.dc.html';
-   resume.textContent = 'Create assessment';
+   resume.textContent = 'Create new';
   }
  }
 

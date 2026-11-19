@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(backLink){backLink.href='CAP-T01-Overview.dc.html';backLink.setAttribute('aria-label','Back to Overview');}
   return;
  }
- const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.textContent='Create assessment';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
+ const bar=page.querySelector('.actionbar'),back=bar.querySelector('a:not(.solid)'),cta=bar.querySelector('a.solid');back.textContent='Back';back.href='CAP-T08-AudienceDelivery.dc.html';cta.textContent='Create';page.querySelectorAll(':scope>.assessment-test-list,:scope>.tf-test-disclosure').forEach(e=>e.hidden=true);
  }
 
  function renderSuccess(container, modal){

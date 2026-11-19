@@ -1,9 +1,14 @@
 /* Keeps the Overview draft stack in sync with the existing saved-assessment workflow. */
 (() => {
  const archiveKey = 'cogniaAssessmentArchiveV1';
+ const reviewPage = 'CAP-T06-Review.dc.html?stage=details';
+ const reviewSampleId = 'assessment-sample-shapes';
  let draftIndex = 0;
  let draftAnimation;
- const hiddenDrafts = new Set();
+
+ function opensInReview(draft) {
+  return draft.step === 2 || (!draft.step && draft.sample && draft.id === reviewSampleId);
+ }
 
  function getDrafts() {
   let entries;
@@ -11,11 +16,21 @@
   catch { return []; }
   if (!Array.isArray(entries)) return [];
   const drafts = entries.filter(entry => entry?.status === 'draft' && entry.id && entry.model?.tests?.length);
-  const saved = drafts.filter(entry => !entry.sample);
-  const ordered = saved.length
-   ? saved.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')))
-   : drafts.sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
-  return ordered.filter(entry => !hiddenDrafts.has(entry.id));
+  const saved = drafts.filter(entry => !entry.sample)
+   .sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+  const samples = drafts.filter(entry => entry.sample)
+   .sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
+  const titles = new Set();
+  const unique = [...saved, ...samples].filter(entry => {
+   const title = String(entry.title || '').trim().toLowerCase();
+   if (titles.has(title)) return false;
+   titles.add(title);
+   return true;
+  });
+  if (unique.length < 2) return unique;
+  const [latest, ...others] = unique;
+  const next = others.find(entry => opensInReview(entry) !== opensInReview(latest)) || others[0];
+  return [latest, next, ...others.filter(entry => entry !== next)].slice(0, 3);
  }
 
  function apply() {
@@ -29,44 +44,48 @@
    if (element.textContent !== value) element.textContent = value;
   };
 
-  setText('[data-draft-position]', `${draftIndex + 1} of ${drafts.length}`);
   const title = draft?.title || 'No drafts to show';
   setText('[data-overview-draft-title]', title);
   stack.querySelector('[data-overview-draft-title]').title = title;
-  const step = draft?.step === 2 ? 2 : 1;
-  stack.querySelector('[data-overview-draft-progress]').hidden = !draft;
-  setText('[data-overview-draft-phase]', draft ? (step === 2 ? 'Review your test' : 'Add test items') : '');
-  const progress = stack.querySelector('[data-draft-meter]');
-  progress.setAttribute('aria-valuenow', draft ? step : 0);
-  progress.setAttribute('aria-valuetext', draft ? `Step ${step} of 4` : 'No draft');
-  progress.style.setProperty('--value', draft ? `${step * 25}%` : '0%');
-  const dismiss = stack.querySelector('[data-dismiss-draft]');
-  dismiss.hidden = !draft;
-  dismiss.dataset.dismissDraft = draft?.id || '';
-  stack.querySelector('[data-draft-pager]').hidden = drafts.length < 2;
+  const progress = stack.querySelector('[data-overview-draft-progress]');
+  progress.parentElement.hidden = !draft;
+  const inReview = draft && opensInReview(draft);
+  const percent = draft ? (inReview ? 50 : 25) : 0;
+  setText('[data-overview-draft-percent]', `${percent}% complete`);
+  progress.setAttribute('aria-valuenow', percent);
+  progress.style.setProperty('--value', `${percent}%`);
+  stack.querySelector('[data-draft-pages]').hidden = drafts.length < 2;
+  setText('[data-draft-position]', `${draftIndex + 1} of ${drafts.length}`);
   stack.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
   stack.querySelector('[data-draft-step="1"]').disabled = draftIndex >= drafts.length - 1;
 
   const resume = stack.querySelector('[data-overview-resume]');
+  delete resume.dataset.overviewSampleReview;
   if (draft) {
    const test = draft.model.tests.find(test => test.id === draft.model.active) || draft.model.tests[0];
-   resume.dataset.restoreWork = draft.id;
-   resume.href = draft.step === 2 ? 'CAP-T06-Review.dc.html?stage=details' : (test.page || 'CAP-T05-Questions.dc.html');
-   resume.textContent = 'Continue draft';
+   if (inReview && !draft.step) {
+    delete resume.dataset.restoreWork;
+    resume.dataset.overviewSampleReview = draft.id;
+   } else {
+    resume.dataset.restoreWork = draft.id;
+   }
+   resume.href = inReview ? reviewPage : (test.page || 'CAP-T05-Questions.dc.html');
+   resume.textContent = 'Finish up';
+   resume.setAttribute('aria-label','Finish up draft');
   } else {
    delete resume.dataset.restoreWork;
    resume.href = 'CAP-T04-Setup.dc.html';
    resume.textContent = 'Create new';
+   resume.removeAttribute('aria-label');
   }
  }
 
  window.capUpdateOverviewDraftStack = apply;
  document.addEventListener('click', event => {
-  const dismiss = event.target.closest('[data-dismiss-draft]');
-  if (dismiss?.dataset.dismissDraft) {
-   hiddenDrafts.add(dismiss.dataset.dismissDraft);
-   apply();
-   if (dismiss.hidden) dismiss.closest('[data-draft-sheet]').querySelector('[data-overview-resume]').focus();
+  const sample = event.target.closest('[data-overview-sample-review]');
+  if (sample) {
+   event.preventDefault();
+   window.capRestoreWork(sample.dataset.overviewSampleReview, null, reviewPage);
    return;
   }
   const button = event.target.closest('[data-overview-draft-stack] [data-draft-step]');
@@ -74,7 +93,7 @@
   const direction = Number(button.dataset.draftStep);
   draftIndex += direction;
   apply();
-  if (button.disabled) button.parentElement.querySelector('button:not(:disabled)')?.focus();
+  if (button.disabled) button.parentElement.querySelector('[data-draft-step]:enabled')?.focus();
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const sheet = button.closest('[data-draft-sheet]').querySelector('[data-draft-entry]');

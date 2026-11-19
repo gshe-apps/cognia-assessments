@@ -3,6 +3,7 @@
  const read=()=>{try{return JSON.parse(localStorage.getItem('cogniaAssessmentTestsV1'))}catch{return null}};
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const make=h=>{const w=document.createElement('div');w.innerHTML=h;return w.firstElementChild};
+ const icon=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
  function mount(){
   window.capSyncCreationGate?.();
   const host=document.querySelector('main>.page');
@@ -18,13 +19,15 @@
     type.className='tiny text-body-small text-muted-foreground';
     const label=type.textContent.trim();
     type.textContent=({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[label]||label);
+    tags.querySelector('.tiny')?.remove();
     tags.append(type);
    }
-   if(!tags.querySelector('.bank-row-difficulty')){
-    const tone={'1':'success','2':'warning','3':'destructive'}[row.dataset.bankDok]||'secondary';
-    const badge=make('<span class="bank-row-difficulty badge badge-'+tone+'"></span>');
-    badge.textContent='DOK '+row.dataset.bankDok;
-    tags.append(badge);
+   const dok=row.dataset.bankDok;
+   if(dok&&!row.querySelector(':scope > .bank-row-difficulty')){
+    const tone={'1':'success','2':'warning','3':'destructive'}[dok]||'secondary';
+    const badge=make('<span class="bank-row-difficulty badge badge-'+tone+'"><span>DOK</span> <span></span></span>');
+    badge.lastElementChild.textContent=dok;
+    row.prepend(badge);
    }
    if(row.dataset.bankStandard&&!tags.querySelector('.bank-row-standard')){
     const standard=make('<span class="bank-row-standard text-body-small text-muted-foreground"></span>');
@@ -43,7 +46,6 @@
   page.querySelector('.tf-back')?.remove();
   page.querySelector('.tf-steps a').href=t.page;
   hero.append(page.querySelector('.tf-steps'));page.querySelector('.tf-top')?.remove();
-  const icon=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
   const layers=icon('<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />');
   const progress=hero.querySelector('.tf-steps');
   window.capRenderAssessmentProgress(progress,1,[

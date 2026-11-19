@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // (case kept) in rendered text and in placeholder, aria-label, title and data-tip. The role switcher and
   // the hub window keep "Student", since they name the student persona and match the admin flow.
   let LEARNERS = false;   // set once the page's stylesheets are known (support.js loads before them)
-  const KEEP = 'script,style,textarea,[contenteditable],.rolemodal,.rolelist,.appdlg,.appmodal';
+  const KEEP = 'script,style,textarea,[contenteditable],[data-preserve-student-wording],.rolemodal,.rolelist,.appdlg,.appmodal';
   const WORD = /\b([Ss])tudent(s?)\b/g;
   const learner = (t) => t.replace(WORD, (m, s1, pl) => (s1 === 'S' ? 'L' : 'l') + 'earner' + pl);
   const ATTRS = ['placeholder', 'aria-label', 'title', 'data-tip'];

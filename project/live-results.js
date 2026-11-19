@@ -25,6 +25,50 @@
   const arrived = {};          // passcode -> time it was first seen submitted (for the highlight)
   let firstLoad = true;
 
+  function updateReviewButton() {
+    if (!event) return;
+    const button = document.querySelector('[data-confirm-result-review]');
+    if (!button) return;
+    const reviewed = calendar.results.isReviewed(event);
+    button.setAttribute('aria-disabled', String(reviewed));
+    button.textContent = reviewed ? 'Reviewed' : 'Mark as reviewed';
+  }
+
+  function mountResultMenu() {
+    const title = document.querySelector('.rr-page .rr-title');
+    if (!title || !calendar?.results.entries.length || title.querySelector('[data-result-menu]')) return;
+    title.querySelector('.rr-switch')?.remove();
+    const menu = document.createElement('div');
+    menu.className = 'dropdown';
+    menu.dataset.resultMenu = '';
+    menu.innerHTML = `
+      <button type="button" class="btn btn-ghost btn-sm" id="rr-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="rr-assessment-menu">
+        Switch assessment
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="menu" id="rr-assessment-menu" role="menu" aria-labelledby="rr-assessment-trigger" hidden>
+        <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T13-Results.dc.html" ${event?'':'aria-current="page"'}>Fractions check</a>
+        ${calendar.results.entries.map(entry=>`<a class="menu-item" role="menuitem" tabindex="-1" href="${esc(calendar.results.href(entry))}" ${entry===event?'aria-current="page"':''}>${esc(entry.title)}</a>`).join('')}
+      </div>`;
+    const actions = document.createElement('div');
+    actions.className = 'rr-assessment-actions';
+    actions.append(menu);
+    if (event) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-outline btn-sm';
+      button.dataset.confirmResultReview = '';
+      button.addEventListener('click', () => {
+        if (calendar.results.isReviewed(event)) return;
+        calendar.results.markReviewed(event);
+        updateReviewButton();
+      });
+      actions.append(button);
+    }
+    title.append(actions);
+    updateReviewButton();
+  }
+
   function sampleRecords() {
     const marks = [9, 7, 10, 5, 8];
     const all = {};
@@ -284,9 +328,17 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
+    mountResultMenu();
     if (event) apply(); else live.watch(onData);
     const root = document.querySelector('x-dc');
     // Re-apply after each Canvas redraw (menus, role switcher).
-    if (root) new MutationObserver(() => { if (!document.querySelector('[data-live-panel]')) apply(); }).observe(root, { childList: true });
+    if (root) new MutationObserver(() => {
+      mountResultMenu();
+      if (!document.querySelector('[data-live-panel]')) apply();
+    }).observe(root, { childList: true });
+  });
+  window.addEventListener('pageshow', updateReviewButton);
+  window.addEventListener('storage', e => {
+    if (event && (!e.key || e.key === calendar.results.reviewKey(event))) updateReviewButton();
   });
 })();

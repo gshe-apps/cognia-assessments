@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  const render=()=>{
   const active=tests[front]||{},items=active.questions||[],others=tests.map((x,i)=>i).filter(i=>i!==front).slice(0,2);
   /* 17 Nov: the assessment title sits inside each test card, above the test name. */
-  const eyebrow='<p class="af-card-eyebrow">'+esc(m.title||'New classroom assessment')+'</p>';
+  const eyebrow='<p class="af-card-eyebrow">'+esc(m.title||'Fall 2026')+'</p>';
   grid.innerHTML='<div class="af-stack'+(others.length?' has-others':'')+'">'
   +others.map((i,n)=>'<button type="button" class="af-test-card af-test-card-behind" style="--af-fan:'+(n+1)+'" data-af-test="'+i+'" aria-label="Show '+esc(tests[i].title||'Test '+(i+1))+'">'+eyebrow+'<h3>'+esc(tests[i].title||'Test '+(i+1))+'</h3><dl>'+cardRows(tests[i])+'</dl></button>').reverse().join('')
   +'<section class="af-test-card af-test-card-front" aria-labelledby="af-front-title">'+eyebrow+'<h3 id="af-front-title">'+esc(active.title||'Test '+(front+1))+'</h3><dl>'+cardRows(active)+'</dl></section></div>'

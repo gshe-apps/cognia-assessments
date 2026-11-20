@@ -1,16 +1,16 @@
 {
- "plugin": "1.10.0",
+ "plugin": "1.25.0",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/admin.css": {
-   "type.raw-size": 119,
-   "type.off-scale-size": 25,
-   "colour.accent-text": 16,
-   "spacing.off-scale": 105,
+   "type.raw-size": 118,
+   "type.off-scale-size": 24,
+   "colour.accent-text": 13,
+   "spacing.off-scale": 103,
    "z-index.off-scale": 17,
    "motion.duration": 13,
    "logo.restyled": 1,
-   "colour.hardcoded": 4,
+   "colour.hardcoded": 3,
    "colour.opacity-on-text": 1,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 5,
@@ -19,12 +19,12 @@
    "shadow.not-a-token": 5
   },
   "project/educator.css": {
-   "type.raw-size": 193,
+   "type.raw-size": 191,
    "motion.duration": 36,
-   "type.off-scale-size": 572,
-   "type.weight": 42,
+   "type.off-scale-size": 565,
+   "type.weight": 41,
    "z-index.off-scale": 52,
-   "spacing.off-scale": 1117,
+   "spacing.off-scale": 1110,
    "shadow.not-a-token": 35,
    "motion.easing": 6,
    "motion.layout-property": 2,
@@ -32,9 +32,9 @@
    "colour.accent-text": 12,
    "colour.status-text-outside-badge": 7,
    "colour.surface-token-as-text": 5,
-   "radius.off-scale": 91,
-   "type.font-family": 105,
-   "colour.hardcoded": 616
+   "radius.off-scale": 85,
+   "colour.hardcoded": 576,
+   "type.font-family": 104
   },
   "project/stu2.css": {
    "z-index.off-scale": 2,
@@ -60,9 +60,6 @@
   },
   "project/CAP-T07-DraftSaved.dc.html": {
    "spacing.off-scale": 2
-  },
-  "project/CAP-T15-ScoreResponse.dc.html": {
-   "spacing.off-scale": 1
   },
   "project/CAP-T16-Insights.dc.html": {
    "spacing.off-scale": 3
@@ -112,8 +109,7 @@
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "z-index.off-scale": 2,
-   "radius.off-scale": 1,
-   "render.contrast": 11
+   "render.contrast": 9
   },
   "project/PA-Interim.dc.html": {
    "type.raw-size": 4,
@@ -124,7 +120,6 @@
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "z-index.off-scale": 2,
-   "radius.off-scale": 1,
    "render.contrast": 10
   },
   "project/PA-Overview.dc.html": {
@@ -138,7 +133,6 @@
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "z-index.off-scale": 2,
-   "radius.off-scale": 1,
    "motion.easing": 1,
    "motion.layout-property": 1,
    "motion.delay": 1,
@@ -160,15 +154,15 @@
    "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
-   "spacing.off-scale": 23,
+   "spacing.off-scale": 18,
    "type.off-scale-size": 2,
    "colour.accent-text": 3,
    "motion.duration": 9,
-   "colour.status-text-outside-badge": 9,
+   "colour.status-text-outside-badge": 8,
    "z-index.off-scale": 1,
-   "radius.off-scale": 5,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
+   "radius.off-scale": 1,
    "motion.easing": 3,
    "colour.hardcoded": 2,
    "render.contrast": 17
@@ -177,14 +171,14 @@
    "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
-   "spacing.off-scale": 22,
+   "spacing.off-scale": 20,
    "type.off-scale-size": 2,
    "colour.accent-text": 3,
    "motion.duration": 11,
-   "colour.status-text-outside-badge": 11,
+   "colour.status-text-outside-badge": 10,
    "z-index.off-scale": 1,
-   "radius.off-scale": 4,
    "colour.surface-token-as-text": 4,
+   "radius.off-scale": 2,
    "shadow.not-a-token": 3,
    "motion.easing": 3,
    "colour.hardcoded": 2
@@ -200,7 +194,6 @@
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "z-index.off-scale": 2,
-   "radius.off-scale": 1,
    "motion.easing": 1,
    "motion.layout-property": 1,
    "motion.delay": 1,
@@ -210,15 +203,15 @@
    "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
-   "spacing.off-scale": 23,
+   "spacing.off-scale": 18,
    "type.off-scale-size": 2,
    "colour.accent-text": 3,
    "motion.duration": 9,
-   "colour.status-text-outside-badge": 9,
+   "colour.status-text-outside-badge": 8,
    "z-index.off-scale": 1,
-   "radius.off-scale": 5,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
+   "radius.off-scale": 1,
    "motion.easing": 3,
    "colour.hardcoded": 2,
    "render.contrast": 14
@@ -227,15 +220,15 @@
    "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
-   "spacing.off-scale": 22,
+   "spacing.off-scale": 19,
    "type.off-scale-size": 2,
    "colour.accent-text": 3,
    "motion.duration": 11,
-   "colour.status-text-outside-badge": 11,
+   "colour.status-text-outside-badge": 10,
    "z-index.off-scale": 1,
-   "radius.off-scale": 4,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
+   "radius.off-scale": 1,
    "motion.easing": 3,
    "colour.hardcoded": 2
   },
@@ -245,7 +238,7 @@
    "shell.footer-missing": 1
   },
   "project/CAP-T06-Review.dc.html": {
-   "render.contrast": 11
+   "render.contrast": 1
   },
   "project/STU2-Classroom.dc.html": {
    "shell.footer-missing": 1

@@ -8,7 +8,7 @@
   /* options.onClose(submitted) replaces the default focus return, e.g. to reopen a previous modal. */
   window.capOpenNewAssessment = (trigger, options = {}) => {
     const {create,itemPage,libraryPath,signature}=window.capAssessmentSetup;
-    const initial={title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
+    const initial={title:'Fall 2026',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
     const host=trigger.closest('.theme-assessments')||document.body;
     let submitted=false;
     const setup=create({

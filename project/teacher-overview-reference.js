@@ -1,110 +1,61 @@
-/* Keeps the Overview draft stack in sync with the existing saved-assessment workflow. */
+/* Keeps the Overview Drafts list in sync with the saved-assessment workflow (the same drafts as Tests, Drafts). */
 (() => {
  const archiveKey = 'cogniaAssessmentArchiveV1';
  const reviewPage = 'CAP-T06-Review.dc.html?stage=details';
  const reviewSampleId = 'assessment-sample-shapes';
- let draftIndex = 0;
- let draftAnimation;
+ const shown = 3;
+ const filePen = '<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z" /></svg>';
+ const esc = text => String(text ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
  function opensInReview(draft) {
   return draft.step === 2 || (!draft.step && draft.sample && draft.id === reviewSampleId);
  }
 
+ // Every draft. Tests, Drafts lists the same set.
  function getDrafts() {
   let entries;
   try { entries = JSON.parse(localStorage.getItem(archiveKey) || '[]'); }
   catch { return []; }
   if (!Array.isArray(entries)) return [];
   const drafts = entries.filter(entry => entry?.status === 'draft' && entry.id && entry.model?.tests?.length);
-  const saved = drafts.filter(entry => !entry.sample)
-   .sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
-  const samples = drafts.filter(entry => entry.sample)
-   .sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
-  const titles = new Set();
-  const unique = [...saved, ...samples].filter(entry => {
-   const title = String(entry.title || '').trim().toLowerCase();
-   if (titles.has(title)) return false;
-   titles.add(title);
-   return true;
-  });
-  if (unique.length < 2) return unique;
-  const [latest, ...others] = unique;
-  const next = others.find(entry => opensInReview(entry) !== opensInReview(latest)) || others[0];
-  return [latest, next, ...others.filter(entry => entry !== next)].slice(0, 3);
+  // Most recently changed first, the same order as Tests, Drafts (sorted by Last updated).
+  return drafts.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')) || String(a.title || '').localeCompare(String(b.title || '')));
+ }
+
+ function row(draft) {
+  const test = draft.model.tests.find(test => test.id === draft.model.active) || draft.model.tests[0];
+  const inReview = opensInReview(draft);
+  const href = inReview ? reviewPage : (test.page || 'CAP-T05-Questions.dc.html');
+  const open = inReview && !draft.step ? `data-overview-sample-review="${esc(draft.id)}"` : `data-restore-work="${esc(draft.id)}"`;
+  // A draft made for a class shows the class ("Grade 6A"); otherwise its grade and subject.
+  const context = draft.classLabel || [test.grade && 'Grade ' + test.grade, test.subject].filter(Boolean).join(' ');
+  return `<div role="listitem"><a class="item" href="${esc(href)}" ${open}>
+   <span class="item-media item-media-icon">${filePen}</span>
+   <span class="item-content"><span class="item-title">${esc(draft.title)}</span>${context ? `<span class="item-description">${esc(context)}</span>` : ''}</span>
+   <span class="item-actions item-actions-reveal"><span class="btn btn-ghost btn-sm">Continue</span></span>
+  </a></div>`;
  }
 
  function apply() {
   const stack = document.querySelector('[data-overview-draft-stack]');
   if (!stack) return;
   const drafts = getDrafts();
-  draftIndex = Math.min(Math.max(0, draftIndex), Math.max(0, drafts.length - 1));
-  const draft = drafts[draftIndex];
-  const setText = (selector, value) => {
-   const element = stack.querySelector(selector);
-   if (element.textContent !== value) element.textContent = value;
-  };
-
-  const title = draft?.title || 'No drafts to show';
-  setText('[data-overview-draft-title]', title);
-  stack.querySelector('[data-overview-draft-title]').title = title;
-  const progress = stack.querySelector('[data-overview-draft-progress]');
-  progress.parentElement.hidden = !draft;
-  const inReview = draft && opensInReview(draft);
-  const percent = draft ? (inReview ? 50 : 25) : 0;
-  setText('[data-overview-draft-percent]', `${percent}% complete`);
-  progress.setAttribute('aria-valuenow', percent);
-  progress.style.setProperty('--value', `${percent}%`);
-  stack.querySelector('[data-draft-pages]').hidden = drafts.length < 2;
-  setText('[data-draft-position]', `${draftIndex + 1} of ${drafts.length}`);
-  stack.querySelector('[data-draft-step="-1"]').disabled = draftIndex === 0;
-  stack.querySelector('[data-draft-step="1"]').disabled = draftIndex >= drafts.length - 1;
-
-  const resume = stack.querySelector('[data-overview-resume]');
-  delete resume.dataset.overviewSampleReview;
-  if (draft) {
-   const test = draft.model.tests.find(test => test.id === draft.model.active) || draft.model.tests[0];
-   if (inReview && !draft.step) {
-    delete resume.dataset.restoreWork;
-    resume.dataset.overviewSampleReview = draft.id;
-   } else {
-    resume.dataset.restoreWork = draft.id;
-   }
-   resume.href = inReview ? reviewPage : (test.page || 'CAP-T05-Questions.dc.html');
-   resume.textContent = 'Finish up';
-   resume.setAttribute('aria-label','Finish up draft');
-  } else {
-   delete resume.dataset.restoreWork;
-   resume.href = 'CAP-T04-Setup.dc.html';
-   resume.textContent = 'Create new';
-   resume.removeAttribute('aria-label');
-  }
+  const count = stack.querySelector('[data-draft-count]');
+  count.textContent = drafts.length;
+  count.hidden = !drafts.length;
+  const list = stack.querySelector('[data-draft-list]');
+  if (drafts.length) list.setAttribute('role', 'list'); else list.removeAttribute('role');
+  list.innerHTML = drafts.length
+   ? drafts.slice(0, shown).map(row).join('')
+   : `<div class="empty-state"><span class="empty-media">${filePen}</span><p class="empty-title">No drafts</p><p>Tests you save as a draft show here.</p></div>`;
  }
 
  window.capUpdateOverviewDraftStack = apply;
  document.addEventListener('click', event => {
   const sample = event.target.closest('[data-overview-sample-review]');
-  if (sample) {
-   event.preventDefault();
-   window.capRestoreWork(sample.dataset.overviewSampleReview, null, reviewPage);
-   return;
-  }
-  const button = event.target.closest('[data-overview-draft-stack] [data-draft-step]');
-  if (!button || button.disabled) return;
-  const direction = Number(button.dataset.draftStep);
-  draftIndex += direction;
-  apply();
-  if (button.disabled) button.parentElement.querySelector('[data-draft-step]:enabled')?.focus();
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const sheet = button.closest('[data-draft-sheet]').querySelector('[data-draft-entry]');
-  const style = getComputedStyle(sheet);
-  const distance = parseFloat(style.getPropertyValue('--space-1'));
-  const duration = parseFloat(style.getPropertyValue('--duration'));
-  draftAnimation?.cancel();
-  draftAnimation = sheet.animate([
-   {opacity: 0.65, transform: `translateX(${direction * distance}px)`},
-   {opacity: 1, transform: 'none'}
-  ], {duration, easing: 'ease-out'});
+  if (!sample) return;
+  event.preventDefault();
+  window.capRestoreWork(sample.dataset.overviewSampleReview, null, reviewPage);
  });
  window.addEventListener('storage', event => {
   if (event.key === archiveKey || event.key === null) apply();

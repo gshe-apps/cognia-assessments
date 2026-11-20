@@ -1,0 +1,33 @@
+#!/bin/sh
+# Runs the Cognia design checks before every commit that touches the prototype.
+# Turn it on once per clone:  git config core.hooksPath .githooks
+# The full check, with rendered contrast and layout, runs on GitHub. This is the fast static part.
+
+if ! git diff --cached --name-only | grep -qE '^(project/|design-system/|cognia-design\.)'; then
+  exit 0
+fi
+
+root=$(git rev-parse --show-toplevel)
+cd "$root" || exit 1
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Cognia design check skipped: Node is not installed."
+  exit 0
+fi
+
+fail=0
+
+# If the local plugin install is there, make sure the copies in this repo are current.
+if [ -d .cognia-design-plugin/skills/cognia-design ]; then
+  node scripts/sync-design-system.cjs --check || fail=1
+fi
+
+node design-system/cognia/checks/check-project.cjs --static-only || fail=1
+node scripts/check-design-system.cjs >/dev/null || { node scripts/check-design-system.cjs; fail=1; }
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "Commit stopped: fix the issues above against the cognia-design plugin."
+  echo "Never raise cognia-design.baseline.json to make it pass."
+  exit 1
+fi

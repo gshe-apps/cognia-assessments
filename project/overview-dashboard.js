@@ -12,9 +12,11 @@
    circleAlert: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
    left: '<path d="m15 18-6-6 6-6" />',
    right: '<path d="m9 18 6-6-6-6" />',
-   circleDashed: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
+   arrowUpRight: '<path d="M7 7h10v10" /><path d="M7 17 17 7" />',
+  fileCheck: '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="m9 15 2 2 4-4" />',
+  circleDashed: '<path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" />',
   };
-  const icon = name => '<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+icons[name]+'</svg>';
+  const icon = (name, tone = '') => '<svg class="icon'+(tone ? ' icon-'+tone : '')+'" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+icons[name]+'</svg>';
   const weekButton = (step, direction, label) => `<span class="tooltip-wrap">
    <button type="button" class="btn btn-ghost btn-icon" data-week-step="${step}" aria-label="${label}">${icon(direction)}</button>
    <span class="tooltip" role="tooltip" aria-hidden="true">${label}</span>
@@ -33,6 +35,7 @@
   const eventsOn = date => data.events.filter(item=>+data.date(item)===+date).sort((a,b)=>a.start-b.start);
   const scoringQueue = 'CAP-T14-ScoringQueue.dc.html';
   const scoring = window.capFractionsScoring;
+  const scoringAssessment = data.events.find(item => item.id === 'fractions-check');
   const eventLink = item => {
    if (item.status==='review') return scoringQueue;
    if (item.status==='pencil') return 'CAP-T03-Assessments.dc.html?view=drafts';
@@ -77,113 +80,69 @@
 
   const esc = text => String(text ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const results = data.results;
-  const scoringAssessment = data.events.find(item => item.id === 'fractions-check');
   priorities.classList.add('od-desk');
   priorities.innerHTML = `
-   <header class="od-priorities-intro"><h2>Today’s priorities</h2></header>
+   <header class="od-priorities-intro"><h2 class="text-body-small font-normal">Today’s priorities</h2></header>
    <div class="od-desk-cards">
-   <section class="card od-desk-sheet" aria-labelledby="od-marking-title">
-    <div class="od-desk-head">
-     <span class="alert alert-warning od-desk-icon" aria-hidden="true">${icon(statusIcon.review)}</span>
-     <h3 id="od-marking-title" class="card-title"><a class="card-link od-desk-card-target" href="${scoringQueue}">${esc(scoringAssessment.title)}</a></h3>
-     <span class="badge badge-warning" data-scoring-overview-status>Needs review</span>
+   <section class="od-desk-group" aria-labelledby="od-scoring-title" data-scoring-required>
+    <div class="od-desk-group-head">
+     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-scoring-title">${icon('circleAlert','warning')}Scoring required by you<span class="badge badge-secondary" data-scoring-count></span></h3>
     </div>
-    <div class="od-desk-progress">
-     <p class="text-body-small text-muted-foreground" data-scoring-overview-message></p>
-     <div class="progress" role="progressbar" aria-label="Items reviewed" aria-valuemax="${scoring.totalItems}" data-scoring-overview-progress><div class="progress-indicator"></div></div>
-    </div>
+    <div class="card-stack" data-scoring-list></div>
    </section>
-   <section aria-label="Drafts" data-overview-draft-stack>
-     <article class="card od-desk-sheet" data-draft-sheet>
-      <div class="od-desk-head">
-       <span class="icon-accent od-desk-icon od-desk-draft-icon" aria-hidden="true">${icon(statusIcon.pencil)}</span>
-       <h3 class="card-title">Drafts</h3>
-       <div class="od-desk-draft-pages" role="group" aria-label="Browse drafts" data-draft-pages hidden>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon" aria-label="Previous draft" data-draft-step="-1">${icon('left')}</button>
-        <span class="text-body-small" data-draft-position></span>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon" aria-label="Next draft" data-draft-step="1">${icon('right')}</button>
-       </div>
-      </div>
-      <div class="od-desk-entry od-desk-draft-entry" data-draft-entry>
-       <h4 class="card-title" data-overview-draft-title aria-live="polite"></h4>
-       <div class="od-desk-footer">
-        <div class="od-desk-draft-progress">
-         <p class="text-body-small text-muted-foreground" data-overview-draft-percent></p>
-         <div class="progress" data-overview-draft-progress role="progressbar" aria-label="Draft progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="progress-indicator"></div>
-         </div>
-        </div>
-        <a class="btn btn-ghost btn-sm od-desk-secondary" href="CAP-T03-Assessments.dc.html?view=drafts" data-overview-resume>Finish up</a>
-       </div>
-      </div>
-     </article>
+   <section class="od-desk-group" aria-labelledby="od-results-title" data-results-ready>
+    <div class="od-desk-group-head">
+     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-results-title">${icon('check','success')}Results are in</h3>
+     <a class="btn btn-ghost btn-sm" href="CAP-T03-Assessments.dc.html?view=completed" aria-label="View all results">View all${icon('arrowUpRight')}</a>
+    </div>
+    <ul class="od-desk-results" data-results-list></ul>
    </section>
-   <article class="card od-desk-sheet" aria-labelledby="od-results-ready-title" data-results-ready>
-    <div class="od-desk-head">
-     <span class="alert alert-success od-desk-icon od-desk-results-icon" aria-hidden="true">${icon(statusIcon.check)}</span>
-     <h3 class="card-title" id="od-results-ready-title"><a class="card-link od-desk-card-target" href="CAP-T13-Results.dc.html">Your results are in</a></h3>
+   <section class="od-desk-group" aria-labelledby="od-drafts-title" data-overview-draft-stack>
+    <div class="od-desk-group-head">
+     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-drafts-title">${icon('circleDashed')}Drafts<span class="badge badge-secondary" data-draft-count></span></h3>
+     <a class="btn btn-ghost btn-sm" href="CAP-T03-Assessments.dc.html?view=drafts" aria-label="View all drafts">View all${icon('arrowUpRight')}</a>
     </div>
-    <div class="od-desk-entry" data-unreviewed-results>
-     <p class="text-body-small" aria-live="polite" aria-atomic="true"><strong class="text-foreground font-semibold" data-results-count></strong> <span data-results-copy></span></p>
-    </div>
-    <div class="od-desk-results-summary" data-reviewed-results hidden>
-     <p class="card-description">You’ve reviewed all results.</p>
-     <button type="button" class="btn btn-ghost btn-sm od-desk-secondary" data-dismiss-results-ready>Dismiss</button>
-    </div>
-   </article>
+    <div class="item-group item-group-divided" data-draft-list></div>
+   </section>
    </div>`;
   window.capUpdateOverviewDraftStack();
 
-  const scoringStatus = priorities.querySelector('[data-scoring-overview-status]');
-  const scoringMessage = priorities.querySelector('[data-scoring-overview-message]');
-  const scoringProgress = priorities.querySelector('[data-scoring-overview-progress]');
-  function drawScoringProgress() {
-   const remaining = scoring.pendingCount();
-   const total = scoring.totalItems;
-   const reviewed = total - remaining;
-   scoringStatus.textContent = remaining ? 'Needs review' : 'Scored';
-   scoringStatus.classList.toggle('badge-warning', remaining > 0);
-   scoringStatus.classList.toggle('badge-success', remaining === 0);
-   scoringMessage.innerHTML = remaining
-    ? `<strong class="text-foreground font-semibold">${remaining}</strong> of <strong class="text-foreground font-semibold">${total}</strong> items still outstanding.`
-    : `All ${total} items reviewed.`;
-   scoringProgress.setAttribute('aria-valuenow', reviewed);
-   scoringProgress.setAttribute('aria-valuetext', `${reviewed} of ${total} items reviewed`);
-   scoringProgress.style.setProperty('--value', `${reviewed / total * 100}%`);
+  // Scoring required by you: every test with responses still to score, each opening its own tab of the scoring queue.
+  const scoringCard = priorities.querySelector('[data-scoring-required]');
+  const scoringList = scoringCard.querySelector('[data-scoring-list]');
+  const ringTone = share => share >= .75 ? 'success' : share >= .5 ? 'warning' : 'destructive';
+  function drawScoring() {
+   const tests = window.capScoringQueue.tests();
+   scoringCard.hidden = !tests.length;
+   scoringCard.querySelector('[data-scoring-count]').textContent = tests.length;
+   // Title, class 4px below it, then Score (on hover) on the left; the ring on the right. The next card covers the
+   // lower part of this one until it slides up on hover.
+   scoringList.innerHTML = tests.map(test => `<a class="card-link card-link-raised" href="${esc(test.href)}" aria-label="Score ${esc(test.title)}, ${esc(test.classLabel)}, ${test.scored} of ${test.total} scored"><div class="card od-desk-score">
+     <span class="item-content"><span class="item-title">${esc(test.title)}</span><span class="item-description">${esc(test.classLabel)}</span>
+      <span class="item-actions item-actions-reveal"><span class="btn btn-ghost btn-sm">Score${icon('right')}</span></span></span>
+     <span class="progress-ring progress-ring-${ringTone(test.scored / test.total)}" style="--value:${Math.round(test.scored / test.total * 100)}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="progress-ring-track" cx="20" cy="20" r="18" pathLength="100"/><circle class="progress-ring-indicator" cx="20" cy="20" r="18" pathLength="100"/></svg><span class="progress-ring-label" aria-hidden="true">${test.scored}/${test.total}</span></span>
+    </div></a>`).join('');
   }
-  drawScoringProgress();
-  window.addEventListener('pageshow', drawScoringProgress);
+  drawScoring();
+  window.addEventListener('pageshow', drawScoring);
   window.addEventListener('storage', event => {
-   if (scoring.isScoreChange(event)) drawScoringProgress();
+   if (window.capScoringQueue.isScoreChange(event)) drawScoring();
   });
 
+  // Results are in: completed assessments whose results have not been reviewed yet, newest first.
   const readyCard = priorities.querySelector('[data-results-ready]');
-  const unreviewedResults = readyCard.querySelector('[data-unreviewed-results]');
-  const resultsCount = readyCard.querySelector('[data-results-count]');
-  const resultsCopy = readyCard.querySelector('[data-results-copy]');
-  const reviewedResults = readyCard.querySelector('[data-reviewed-results]');
-  const resultsRevision = JSON.stringify(results.entries.map(event => [event.id,results.revision(event)]));
-  let dismissedHere = false;
+  const resultsList = readyCard.querySelector('[data-results-list]');
   function drawResultsReady() {
-   const pending = results.entries.filter(event => !results.isReviewed(event)).length;
-   const caughtUp = results.entries.length > 0 && pending === 0;
-   readyCard.hidden = !results.entries.length || (caughtUp && (dismissedHere || results.read(results.dismissedKey) === resultsRevision));
-   reviewedResults.hidden = !caughtUp;
-   unreviewedResults.hidden = !pending;
-   if (resultsCount.textContent !== String(pending)) {
-    resultsCount.textContent = pending;
-    resultsCopy.textContent = pending === 1 ? 'assessment is ready to review.' : 'assessments are ready to review.';
-   }
+   const pending = results.entries.filter(event => !results.isReviewed(event)).sort((a,b) => b.day - a.day || b.start - a.start);
+   readyCard.hidden = !pending.length;
+   resultsList.innerHTML = pending.slice(0, 2).map(event => `<li><a class="card-link card-link-raised" href="${esc(results.href(event))}"><div class="card od-desk-result">
+     <span class="od-desk-result-media">${icon('fileCheck','theme').replace('stroke-width="2"','stroke-width="1.5"')}<span class="badge badge-success">Ready</span></span>
+     <span class="item-content"><span class="item-title">${esc(event.title)}</span><span class="item-description">${esc(event.classLabel)}</span></span>
+    </div></a></li>`).join('');
   }
-  readyCard.querySelector('[data-dismiss-results-ready]').addEventListener('click', () => {
-   dismissedHere = true;
-   results.write(results.dismissedKey,resultsRevision);
-   drawResultsReady();
-   priorities.querySelector('[data-overview-resume]').focus();
-  });
   window.addEventListener('pageshow', drawResultsReady);
   window.addEventListener('storage', event => {
-   if (!event.key || event.key === results.dismissedKey || results.entries.some(entry => results.reviewKey(entry) === event.key)) drawResultsReady();
+   if (!event.key || results.entries.some(entry => results.reviewKey(entry) === event.key)) drawResultsReady();
   });
   drawResultsReady();
 

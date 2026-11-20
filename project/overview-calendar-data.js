@@ -73,5 +73,20 @@
   isReviewed(event) { return this.read(this.reviewKey(event)) === this.revision(event); },
   markReviewed(event) { this.write(this.reviewKey(event),this.revision(event)); }
  };
+ /* 20 Nov: the calendar's draft (Transformations Quiz, Grade 6A) is also a saved draft, once per browser, so Overview
+    Drafts and Tests, Drafts list it first and it opens in the builder like any other draft. */
+ try {
+  const archiveKey = 'cogniaAssessmentArchiveV1', seedKey = 'cogniaCalendarDraftSeedV1';
+  const draftEvent = events.find(event => event.status === 'pencil');
+  if (draftEvent && !localStorage.getItem(seedKey)) {
+   const entries = JSON.parse(localStorage.getItem(archiveKey) || '[]');
+   if (!entries.some(entry => entry?.status === 'draft' && entry.title === draftEvent.title)) {
+    entries.push({id:'calendar-draft-' + draftEvent.id, title:draftEvent.title, status:'draft', sample:true, classLabel:draftEvent.classLabel,
+     updatedAt:new Date().toISOString(), model:assessment(draftEvent)});
+    localStorage.setItem(archiveKey, JSON.stringify(entries));
+   }
+   localStorage.setItem(seedKey, new Date().toISOString());
+  }
+ } catch {}
  window.capOverviewCalendar = {events,date,subject,assessment,today,weekStart,addDays,results,event:events.find(event=>event.id===selected)};
 })();

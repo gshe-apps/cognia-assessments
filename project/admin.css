@@ -869,11 +869,6 @@ html body .theme-assessments .card.preview.schprev{display:flex;flex-direction:c
 /* Filter chips */
 .theme-assessments .filtchips{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);}
 
-.theme-assessments .fchip:hover{border-color:var(--ring);}
-.theme-assessments .fchip .fchipk{color:var(--foreground);font-weight:600;}
-.theme-assessments .fchip.on{background:var(--accent-100);color:var(--accent-400);border-color:var(--accent-100);font-weight:600;}
-.theme-assessments .fchip.on svg{width:14px;height:14px;}
-.theme-assessments .fchip.on:hover{border-color:var(--accent-200);}
 
 /* Design status badges */
 html body .theme-assessments .tag.st-ok{background:var(--success-light) ;color:var(--success) ;border:1px solid var(--success) ;}
@@ -1111,7 +1106,6 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 /* Cluster: chips row + average line hover */
 .theme-assessments .clmain .tctrls{justify-content:space-between;align-items:center;}
 .theme-assessments .clmain .filtchips{flex:1 1 auto;}
-.theme-assessments button.fchip{border:1px solid var(--border);cursor:pointer;}
 .theme-assessments .hbname2{margin:0;font:700 15px var(--font-sans);}
 .theme-assessments .hbtrack{overflow:visible;}
 .theme-assessments .hbtrack b.hbavgl{position:absolute;top:-6px;bottom:-6px;width:14px;margin-left:-7px;border:0;cursor:pointer;outline:none;z-index:2;}

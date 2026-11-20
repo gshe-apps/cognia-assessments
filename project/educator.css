@@ -2176,11 +2176,6 @@ html body.student-friendly .sj-root :is(input:not([type=radio]):not([type=checkb
 .ib-ms-opt[aria-selected="true"] .ib-check svg { opacity:1; }
 .ib-scrim { position:fixed; inset:0; z-index:10; }
 /* Applied filter chips (same pattern as the administrator All schools list): label, remove x, Clear all at the end. */
-.ib-chips { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2); }
-.ib-chip { display:inline-flex; align-items:center; gap:var(--space-1); min-height:var(--space-8); padding:0 var(--space-1) 0 var(--space-3); border-radius:var(--rounded-full); background:var(--card); color:var(--foreground); white-space:nowrap; }
-.ib-chip-x { display:grid; place-items:center; width:var(--space-6); height:var(--space-6); padding:0; border:0; border-radius:var(--rounded-full); background:transparent; color:var(--foreground); cursor:pointer; transition:all 200ms; }
-.ib-chip-x:hover { background:var(--secondary); }
-.ib .ib-chip-x svg { width:14px; height:14px; }
 .ib-clear { min-height:var(--space-8); padding:0 var(--space-3); border:0; border-radius:var(--radius); background:transparent; color:var(--foreground); font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans); cursor:pointer; transition:all 200ms; }
 .ib-clear:hover { background:var(--secondary); }
 .ib-count { align-self:flex-end; color:var(--muted-foreground); }
@@ -2429,7 +2424,6 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview :is(.od-hero h1, .od-hero p, .od-priorities-intro h2, .od-priorities-intro p, .od-priority-stats, .od-priority-stats dd) { margin: 0; }
 .od-overview .od-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .od-overview .od-hero h1 { font: var(--weight-semibold) var(--text-heading)/1.3 var(--font-sans); }
-.od-priorities-intro h2 { font: var(--weight-semibold) var(--text-subheading)/1.3 var(--font-sans); }
 .od-overview .od-hero p { margin-top: var(--space-1); font-size: var(--text-body-base); }
 .od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-4) var(--space-8); }
 .od-overview .od-calendar { display: grid; gap: var(--space-4); min-width: 0; }
@@ -2454,7 +2448,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   min-inline-size: calc(var(--od-time-gutter) + 5 * (var(--od-day-width) + var(--od-slot-gap)) + 2 * var(--space-3));
   padding: var(--space-3) var(--space-2);
 }
-.od-desk-draft-entry, .od-desk [data-unreviewed-results], .od-desk-progress .progress {
+.od-desk-progress .progress {
   background-color: color-mix(in srgb, var(--secondary) 60%, var(--background));
 }
 .od-timetable-head, .od-timetable-body {
@@ -2559,7 +2553,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   border-radius: var(--radius);
   z-index: 20;
 }
-:is(.od-timed-event, .od-month-event)[data-status="check"], .od-desk-results-icon {
+:is(.od-timed-event, .od-month-event)[data-status="check"] {
   background-color: color-mix(in srgb, var(--success-light) 58%, var(--card));
 }
 :is(.od-timed-event, .od-month-event)[data-status="review"] { --od-event-tone: var(--warning-light); }
@@ -2652,10 +2646,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   padding: 0;
 }
 .od-desk .od-desk-icon > svg { grid-row: auto; inline-size: var(--space-6); block-size: var(--space-6); margin: 0; }
-.od-desk-draft-icon, .od-timed-event[data-status="pencil"] { background-color: color-mix(in srgb, var(--secondary) 50%, var(--card)); }
-.od-desk-draft-icon .icon { color:var(--muted-foreground); }
-.od-desk-draft-pages { display:flex; align-items:center; gap:var(--space-1); white-space:nowrap; }
-.od-desk-draft-pages[hidden] { display:none; }
+.od-timed-event[data-status="pencil"] { background-color: color-mix(in srgb, var(--secondary) 50%, var(--card)); }
 .od-desk .od-desk-sheet {
   position: relative;
   display: grid;
@@ -2668,34 +2659,28 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   box-shadow: var(--shadow-sm);
 }
 .od-desk-card-target::after { content:""; position:absolute; inset:0; border-radius:inherit; }
-.od-desk [data-dismiss-results-ready] { position:relative; z-index:10; }
-.od-desk :is([data-draft-sheet], [data-results-ready]) { gap: var(--space-2); }
-.od-desk :is([data-results-ready], [data-unreviewed-results], [data-reviewed-results])[hidden] { display:none; }
 .od-desk-progress { display:grid; gap:var(--space-2); }
 .od-desk-progress .progress-indicator { background-color: color-mix(in srgb, var(--warning) 80%, var(--foreground)); }
-.od-desk-entry { border-radius: var(--radius); padding: var(--space-3); }
-.od-desk-draft-entry { display:grid; gap:var(--space-2); }
-.od-desk-entry .card-title { overflow-wrap:anywhere; }
-.od-desk-footer {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.od-desk-footer > a { margin-inline-start: auto; }
-.od-desk-draft-progress { display:grid; gap:var(--space-2); flex:1 1 var(--space-24); }
-.od-desk-draft-progress[hidden] { display:none; }
-.od-desk-draft-progress .progress { background-color:color-mix(in srgb, var(--muted-foreground) 15%, var(--border)); }
-.od-desk-draft-progress .progress-indicator { background-color:var(--accent-300); }
-.od-desk .od-desk-secondary { background-color: var(--card); }
-.od-desk-results-summary {
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  gap:var(--space-2);
-}
+/* Overview Drafts and Results are in (Figma 1924:12601). Layout only: the look comes from the
+   plugin's Item, Card, Badge, Button and icon-accent classes. */
+.od-desk-group { display: grid; gap: var(--space-2); }
+.od-desk-group[hidden] { display: none; }
+.od-desk-group-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.od-desk-group-title { display: flex; align-items: center; gap: var(--space-2); }
+.od-desk-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.od-desk-result { gap: var(--space-4); padding: var(--space-3); }
+.od-desk-result-media { display: grid; justify-items: center; padding-block-start: var(--space-4); padding-inline-end: var(--space-6); }
+.od-desk-result-media .icon { inline-size: var(--space-8); block-size: var(--space-8); }
+.od-desk-result-media .badge { margin-block-start: calc(-1 * var(--space-1)); transform: translateX(var(--space-6)); }
+/* Scoring required: title, its class 4px below, then Score (on hover) on the left; the ring on the right. Cards
+   overlap by 48px, which tucks the foot of the class and Score under the next card; hovering slides the card up by
+   the same amount to show them (plugin Card stack). */
+.od-desk-group > .card-stack { --stack-overlap: var(--space-12); }
+.od-desk-score { flex-direction: row; align-items: flex-start; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-4) var(--space-2); }
+.od-desk [data-draft-list] .item { padding-block: var(--space-3); }
+.od-desk-result .item-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Tests: the Drafts or Completed filter chip sits 16px above the table. */
+.ar-view-chips { margin-block-end: var(--space-4); }
 .od-overview .od-priority-tile.card { display: grid; gap: var(--space-4); padding: var(--space-4); transition: transform var(--duration) ease-out, box-shadow var(--duration) ease-out; }
 .od-overview .card-link:hover > .od-priority-tile.card,
 .od-overview .od-overview-draft > .od-priority-tile:hover {
@@ -5892,7 +5877,7 @@ svg:is(:has(> path[d="M12 16v-4"]), :has(> line[x1="12"][y1="16"][y2="12"])) { s
 .uc-item-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-height: var(--space-8); min-width: 0; }
 .uc-item-summary .chip-list[hidden] { display: none; }
 .uc-item-summary .chip-list { min-width: 0; }
-.uc-bank-selection .chip { min-width: 0; background-color: var(--accent-100); }
+.uc-bank-selection .chip { min-width: 0; }
 .uc-bank-selection .chip-remove { flex: none; }
 .uc-bank-chip-name { overflow: hidden; text-overflow: ellipsis; }
 .uc-bank-picker > .popover { position: absolute; inset: calc(100% + var(--space-1)) 0 auto; z-index: 20; width: 100%; max-width: none; padding: 0; }
@@ -6170,7 +6155,6 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 .ad-test-card .ad-dl { gap: var(--space-4); }
 
 /* 18 Nov: the Overview section heading follows the 24/16/14 scale (a legacy global h2 rule made it 20px). */
-.od-priorities-intro h2 { font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
 
 /* 19 Nov: a row of metadata badges replaces dot and pipe separators (plugin Global rules). Layout only. */
 .cap-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
@@ -6202,3 +6186,165 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 /* 19 Nov: Tests toolbar. A note on the left explains the tab; search and filter sit on the far right. Layout only. */
 .assessment-catalogue .ar-collection-heading .ar-tabs { margin: 0 auto 0 0; }
 .assessment-catalogue .ar-page-title { display: flex; flex-direction: column; gap: var(--space-1); }
+
+/* 20 Nov (Figma 1929:15618): Test details. One centred 450px white card per test with a tab rail on its right
+   edge (Overview, Items, Settings, Learner preview), and a dashed Add another test button under the cards.
+   The rail is offset on the left so the card itself sits on the page centre. Plugin tokens only. */
+.rj-details .ad-test-stack { --ad-rail: 8.5rem; display: flex; flex-direction: column; align-items: center; gap: var(--space-8); }
+.rj-details .ad-test-item { display: flex; flex-direction: row; align-items: flex-start; gap: 0; padding-inline-start: var(--ad-rail); }
+.rj-details .ad-test-card { position: relative; display: flex; flex-direction: column; inline-size: 450px; max-inline-size: 100%; min-block-size: 34rem; padding: var(--space-6); padding-block-start: var(--space-12); gap: var(--space-8); border: 0; border-radius: var(--radius-xl); background-color: var(--card); box-shadow: var(--shadow-lg); overflow: visible; }
+.rj-details .ad-card-edit { position: absolute; inset-block-start: var(--space-3); inset-inline-end: var(--space-3); }
+.rj-details .ad-card-edit svg { inline-size: 16px; block-size: 16px; }
+.rj-details .ad-card-panel { display: flex; flex: 1; flex-direction: column; gap: var(--space-8); }
+.rj-details .ad-card-hero { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8); text-align: center; }
+.rj-details .ad-card-icon { display: inline-flex; }
+.rj-details .ad-card-icon svg { color: var(--accent-300); }
+.rj-details .ad-card-icon svg { inline-size: 40px; block-size: 40px; stroke-width: 1.5; }
+.rj-details .ad-card-hero .ad-card-name { align-items: center; gap: var(--space-1); }
+.rj-details .ad-card-hero .ad-card-kicker { margin: 0; font-size: var(--text-body-base); color: var(--foreground); }
+.rj-details .ad-test-card .ad-card-hero h3 { margin: 0; font-size: var(--text-heading); font-weight: var(--weight-semibold); line-height: var(--lh-tight); color: var(--foreground); }
+.rj-details .ad-test-card .ad-dl { gap: 0; }
+.rj-details .ad-test-card .ad-dl-main { margin-block-start: auto; }
+.rj-details .ad-test-card .ad-dl-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-2); }
+.rj-details .ad-test-card .ad-dl-main :is(dt, dd) { font-size: var(--text-body-small); color: var(--foreground); }
+.rj-details .ad-test-card .ad-dl-main dd { font-weight: var(--weight-semibold); text-align: end; }
+.rj-details .ad-test-card .ad-dl-main dd.ad-empty { font-weight: var(--weight-regular); color: var(--muted-foreground); }
+
+/* Items view: a plain list, the item type as subtext above the stem and its points as a badge on the right. */
+.rj-details .ad-item-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.rj-details .ad-item-list .ad-dl-row { align-items: flex-start; }
+.rj-details .ad-item-stem { display: flex; flex-direction: column; gap: var(--space-1); min-inline-size: 0; font-size: var(--text-body-small); overflow-wrap: anywhere; }
+.rj-details .ad-item-kind { color: var(--muted-foreground); }
+.rj-details .ad-items-link { align-self: flex-start; margin-block-start: auto; }
+.rj-details .ad-empty-state { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); text-align: center; }
+.rj-details .ad-empty-state h4 { margin: 0; font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.rj-details .ad-empty-state p { margin: 0; font-size: var(--text-body-small); color: var(--muted-foreground); }
+
+/* Tab rail: grey tabs tucked against the card's right edge, square on the left and 8px round on the right. */
+.rj-details .ad-test-tabs { display: flex; flex-direction: column; gap: var(--space-2); inline-size: var(--ad-rail); padding-block-start: var(--space-8); }
+.rj-details .ad-test-tab { display: flex; align-items: center; min-block-size: var(--space-10); padding: var(--space-2) var(--space-3); border: 0; border-radius: 0 var(--radius) var(--radius) 0; background-color: var(--secondary); color: var(--foreground); font: inherit; font-size: var(--text-body-small); font-weight: var(--weight-semibold); line-height: var(--lh-base); text-align: start; white-space: nowrap; cursor: pointer; transition: background-color var(--duration); }
+.rj-details .ad-test-tab:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.rj-details .ad-test-tab[aria-selected="true"] { background-color: var(--accent-100); box-shadow: var(--shadow-sm); }
+.rj-details .ad-test-tab:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* Add another test: dashed, full card width, icon and label on one line. */
+.rj-details .ad-add-test-row { display: flex; align-items: center; justify-content: center; gap: var(--space-2); inline-size: 450px; max-inline-size: 100%; padding: var(--space-3); border: 2px dashed var(--opacity-neutral-30); border-radius: var(--radius-xl); background: transparent; color: var(--foreground); font: inherit; font-size: var(--text-body-small); font-weight: var(--weight-semibold); cursor: pointer; transition: background-color var(--duration); }
+.rj-details .ad-add-test-row svg { inline-size: 16px; block-size: 16px; }
+.rj-details .ad-add-test-row:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.rj-details .ad-add-test-row:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.rj-details .ad-test-stack { margin-block-end: var(--space-24); }
+
+/* Narrow screens: the rail moves under the card as a row of tabs. */
+@media (max-width: 767px) {
+ .rj-details .ad-test-item { flex-direction: column; padding-inline-start: 0; inline-size: 100%; align-items: stretch; }
+ .rj-details .ad-test-card { inline-size: 100%; }
+ .rj-details .ad-test-tabs { flex-direction: row; flex-wrap: wrap; inline-size: auto; padding-block-start: 0; }
+ .rj-details .ad-test-tab { border-radius: 0 0 var(--radius) var(--radius); }
+}
+
+/* 20 Nov (2): Test details card. Fixed height so the content scrolls inside it, page-turn ghost for tab changes,
+   Settings sits at the top of the card, and Learner preview plays inside the card. */
+.rj-details .ad-test-item { position: relative; }
+.rj-details .ad-test-card { block-size: 34rem; min-block-size: 0; transform-origin: left center; backface-visibility: hidden; }
+.rj-details .ad-page-ghost { position: absolute; margin: 0; pointer-events: none; transform-origin: left center; backface-visibility: hidden; }
+.rj-details .ad-card-panel { min-block-size: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; margin-inline-end: calc(var(--space-2) * -1); padding-inline-end: var(--space-2); }
+.rj-details .ad-card-panel[data-view="settings"] .ad-dl-main { margin-block-start: 0; }
+.rj-details .ad-test-card[data-view="preview"] { padding-block-start: var(--space-6); }
+.rj-details .ad-card-panel[data-view="preview"] { overflow: hidden; margin-inline-end: 0; padding-inline-end: 0; }
+
+/* Learner preview inside the card: the same parts as the full-screen preview, sized to the card, with the
+   previous and next arrows in a row under the question. */
+.lp-inline { display: flex; flex: 1; flex-direction: column; min-block-size: 0; color: var(--foreground); }
+.lp-inline .lp-top { max-width: none; }
+.lp-inline .lp-stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); max-width: none; margin: var(--space-4) 0 0; }
+.lp-inline .lp-behind { display: none; }
+.lp-inline .lp-card { position: relative; inset: auto; flex: 1 1 100%; align-self: stretch; block-size: calc(100% - var(--space-10) - var(--space-3)); min-block-size: 0; border-radius: var(--radius); background: var(--muted); box-shadow: none; }
+.lp-inline .lp-end { background: transparent; }
+.lp-inline .lp-body { padding: var(--space-4) var(--space-4) 0; }
+.lp-inline .lp-stem { font-size: var(--text-body-base); }
+.lp-inline .lp-big { font-size: var(--text-body-base); }
+.lp-inline .lp-opt { min-height: var(--space-12); }
+.lp-inline .lp-arrow { position: static; inline-size: var(--space-10); block-size: var(--space-10); transform: none; box-shadow: var(--shadow-sm); }
+.lp-inline .lp-arrow svg { inline-size: 16px; block-size: 16px; }
+.lp-inline .lp-finish { inline-size: var(--space-16); block-size: var(--space-16); }
+.lp-inline .lp-end-actions .btn { min-block-size: 0; }
+.rj-details .ad-card-hero .ad-card-name { flex: none; }
+/* 20 Nov (3): side tabs are 14px semibold; the selected one is accent-200. */
+.rj-details .ad-test-tab { font-size: var(--text-body-small); font-weight: var(--weight-semibold); }
+.rj-details .ad-test-tab[aria-selected="true"] { background-color: var(--accent-200); }
+
+/* 20 Nov (4): curled page turn. Thin hinged strips bend the page as it turns; the paper's back shows as it goes
+   over, and the bend is shaded. Built by turnPage() in reference-journey.js. */
+.rj-details .ad-curl { position: absolute; z-index: 20; pointer-events: none; perspective: 2000px; perspective-origin: left center; transform-style: preserve-3d; }
+.rj-details .ad-curl-strip { position: absolute; top: 0; transform-origin: left center; transform-style: preserve-3d; }
+.rj-details .ad-curl-face, .rj-details .ad-curl-back { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; background-color: var(--card); }
+.rj-details .ad-curl-back { transform: rotateY(180deg); background-color: color-mix(in srgb, var(--card) 94%, var(--foreground)); }
+.rj-details .ad-curl-shade { position: absolute; inset: 0; background-color: var(--foreground); opacity: 0; pointer-events: none; }
+.rj-details .ad-curl-under { position: absolute; margin: 0; pointer-events: none; }
+
+/* 20 Nov (5): Test details card. Items use the Finalize step's item rows; Settings and Items content start 12px
+   below the edit icon; Learner preview fits its card (scaled by JS), with ghost Back and Next buttons and an
+   expand icon that opens the full-screen preview. */
+.rj-details .ad-test-card:is([data-view="settings"], [data-view="items"]) { padding-block-start: var(--space-16); }
+.rj-details .ad-af-items { margin: 0; }
+.rj-details .ad-af-items .af-item { align-items: flex-start; padding-inline: 0; }
+.rj-details .ad-af-items .af-item-body p { margin: 0; }
+.lp-inline .lp-top .btn-icon svg { inline-size: 16px; block-size: 16px; }
+.lp-inline .lp-card { overflow: hidden; }
+.lp-inline .lp-body { padding-block-end: var(--space-4); overflow: hidden; }
+.lp-inline .lp-ans { flex: none; overflow: visible; padding-block-end: 0; }
+.lp-inline .lp-step svg { inline-size: 16px; block-size: 16px; }
+.lp-inline .lp-step.hide { visibility: hidden; }
+
+/* 20 Nov (6): selected side tab is accent-400 with white text; Items pages with Back and Next instead of
+   scrolling; Delete test sits bottom left of the setup modal as a red outline button. */
+.rj-details .ad-test-tab[aria-selected="true"] { background-color: var(--accent-400); color: var(--primary-foreground); }
+.rj-details .ad-card-panel[data-view="items"] { overflow: hidden; }
+.rj-details .ad-card-panel[data-view="items"] .ad-af-items { flex: 1; min-block-size: 0; overflow: hidden; }
+.rj-details .ad-items-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.rj-details .ad-items-pager[hidden] { display: none; }
+.rj-details .ad-items-pager .lp-step svg { inline-size: 16px; block-size: 16px; }
+.rj-details .ad-items-pager .lp-step.hide { visibility: hidden; }
+.rj-details .ad-items-range { color: var(--muted-foreground); }
+.cap-setup-modal .cap-setup-delete { border-color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+@media (min-width: 768px) { .cap-setup-modal .cap-setup-delete { margin-inline-end: auto; } }
+
+/* 20 Nov (7): test deck. The chosen test's card sits in front; up to two other tests peek out above it as plain
+   stacked cards (no tabs) and can be clicked. A pager under the card shows the test name, "1 of 3" and chevrons.
+   Long test names end in an ellipsis. Add another test moved to the header as an outline button. */
+.rj-details .ad-deck { padding-block-start: var(--space-6); gap: var(--space-4); }
+.rj-details .ad-deck .ad-test-card { z-index: 10; }
+.rj-details .ad-deck-behind { position: absolute; z-index: 0; inset-block-start: 0; inset-inline-start: var(--ad-rail); inline-size: 450px; block-size: 34rem; padding: 0; border: 0; border-radius: var(--radius-xl); background-color: color-mix(in srgb, var(--card) calc(100% - var(--ad-depth) * 4%), var(--foreground)); box-shadow: var(--shadow-sm); transform-origin: top center; transform: translateY(calc(var(--ad-depth) * -10px)) scale(calc(1 - var(--ad-depth) * 0.05)); cursor: pointer; transition: transform var(--duration); }
+.rj-details .ad-deck-behind:hover { transform: translateY(calc(var(--ad-depth) * -14px)) scale(calc(1 - var(--ad-depth) * 0.05)); }
+.rj-details .ad-deck-behind:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.rj-details .ad-test-pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); inline-size: 450px; max-inline-size: 100%; }
+.rj-details .ad-test-pager .btn-icon svg { inline-size: 16px; block-size: 16px; }
+.rj-details .ad-test-pager-name { display: flex; flex: 1; flex-direction: column; align-items: center; gap: var(--space-1); min-inline-size: 0; text-align: center; }
+.rj-details .ad-test-pager-title { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-body-base); font-weight: var(--weight-semibold); }
+.rj-details .ad-test-pager-count { font-size: var(--text-body-small); color: var(--muted-foreground); }
+.rj-details .ad-card-hero .ad-card-name { inline-size: 100%; min-inline-size: 0; }
+.rj-details .ad-card-hero :is(.ad-card-kicker, h3) { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cap-root .rj-details .tf-hero > .ad-add-test { align-self: center; flex-shrink: 0; }
+@media (max-width: 767px) { .rj-details .ad-deck-behind { display: none; } }
+.rj-details .ad-deck { padding-block-start: var(--space-8); }
+.rj-details .ad-deck-behind { transform: translateY(calc(var(--ad-depth) * -14px)) scale(calc(1 - var(--ad-depth) * 0.04)); background-color: color-mix(in srgb, var(--card) calc(100% - var(--ad-depth) * 5%), var(--foreground)); box-shadow: var(--shadow-md); }
+.rj-details .ad-deck-behind:hover { transform: translateY(calc(var(--ad-depth) * -18px)) scale(calc(1 - var(--ad-depth) * 0.04)); }
+
+/* 20 Nov (8): fanned deck. Other tests fan out to the left behind the front card (which keeps its tabs on the
+   right). The pager is just chevrons and "1 of 3". */
+.rj-details .ad-deck { padding-block-start: var(--space-6); }
+.rj-details .ad-deck-behind { transform-origin: bottom center; transform: translateX(calc(var(--ad-depth) * -32px)) rotate(calc(var(--ad-depth) * -5deg)); background-color: color-mix(in srgb, var(--card) calc(100% - var(--ad-depth) * 3%), var(--foreground)); box-shadow: var(--shadow-md); }
+.rj-details .ad-deck-behind:hover { transform: translateX(calc(var(--ad-depth) * -32px - 12px)) rotate(calc(var(--ad-depth) * -5deg - 2deg)); }
+.rj-details .ad-test-pager-count { font-size: var(--text-body-small); font-weight: var(--weight-semibold); color: var(--foreground); }
+
+/* Setup modal (Create a new assessment, Edit test details): no title icon, a fixed height, and the form scrolls
+   inside it when Quick settings or optional fields make it long. Quick settings uses the plugin hover overlay. */
+.cap-setup-modal:has(.cap-settings-disclosure) { height: min(720px, calc(100dvh - var(--space-8))); }
+.cap-setup-modal:has(.cap-settings-disclosure) .cap-setup-view { flex: 1 1 auto; min-height: 0; }
+.cap-setup-modal:has(.cap-settings-disclosure) .cap-setup-fields { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+body .cap-setup-modal .cap-settings-disclosure > summary { padding-inline: var(--space-2); border-radius: var(--radius); background-color: transparent; background-image: linear-gradient(var(--hover-fade), var(--hover-fade)); transition: --hover-fade var(--duration); }
+body .cap-setup-modal .cap-settings-disclosure > summary:hover { background-color: transparent; --hover-fade: var(--hover-overlay); }
+body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.rj-details .ad-deck > .ad-test-pager { margin-block-start: var(--space-6); }
+/* 20 Nov (9): Quick settings optional fields stack in one column (Description, Resource link, Additional notes). */
+.cap-setup-modal .cap-setup-optional-fields { grid-template-columns: minmax(0, 1fr); }

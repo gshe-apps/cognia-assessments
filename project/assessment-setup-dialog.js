@@ -21,7 +21,7 @@
   limit:['Time limit',[['None','No limit'],['5 minutes','5 min'],['10 minutes','10 min'],['15 minutes','15 min'],['20 minutes','20 min']]]
  };
  const resultOptions=['After submission','After all sessions close','Do not show'];
- function create({host, initial, onSubmit, onClose, heading, submitLabel, showSettings=true, showAssessmentTitle=false}) {
+ function create({host, initial, onSubmit, onClose, onDelete, heading, submitLabel, showSettings=true, showAssessmentTitle=false}) {
   /* Assessment title shows when the first test of a new assessment is created and whenever a test is edited. */
   const forms=window.cogniaAssessmentForms||[];
   const sampleStandards=[
@@ -44,7 +44,6 @@
    <section class="cap-setup-view" data-setup-view="form">
     <div class="cap-setup-heading dialog-header">
      <div class="cap-setup-title-row">
-      <span class="icon-accent" aria-hidden="true">${icon('<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />')}</span>
       <h2 class="dialog-title" id="cap-setup-title" tabindex="-1" autofocus>${esc(heading||'Create a new assessment')}</h2>
      </div>
      <div class="cap-setup-header-actions">
@@ -114,7 +113,8 @@
      </details>
     </form>
     <div class="cap-setup-buttons dialog-footer">
-     <button class="btn btn-outline btn-lg" type="button" data-close-setup>Cancel</button>
+     ${onDelete?'<button class="btn btn-outline btn-lg is-destructive cap-setup-delete" type="button" data-delete-setup>Delete test</button>':''}
+     <button class="btn btn-ghost btn-lg" type="button" data-close-setup>Cancel</button>
      <button class="btn btn-lg" type="submit" form="uc-assessment-details" data-submit-setup>${esc(submitLabel||'Continue')}</button>
     </div>
    </section>
@@ -181,9 +181,9 @@
    (name==='form'?aboutStandard:standardTitle).focus();
   }
   const scope=()=>({title:title.value.trim(),grade:grade.value,subject:subject.value,standard,pathway:pathway.value});
-  function open(settings){
+  function open(settings,{expandSettings=false}={}){
    showHelp(false);
-   settingsDisclosure.open=false;
+   settingsDisclosure.open=expandSettings;
    title.value=settings.title;grade.value=settings.grade;updateSubjects(settings.subject);
    alabamaContract=settings.alabamaContract??true;
    const stateOption=pathway.options[2];
@@ -204,6 +204,8 @@
    }
    formView.hidden=false;standardView.hidden=true;modal.setAttribute('aria-labelledby','cap-setup-title');
    if(!modal.open)modal.showModal();
+   /* Opened from a Settings view: Quick settings start expanded and scrolled into view. */
+   if(expandSettings)requestAnimationFrame(()=>settingsDisclosure.scrollIntoView({block:'start',behavior:'smooth'}));
   }
   modal.querySelectorAll('[data-close-setup]').forEach(button=>button.onclick=()=>modal.close());
   modal.querySelectorAll('[data-back-setup]').forEach(button=>button.onclick=()=>showView('form'));
@@ -213,6 +215,19 @@
   modal.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{modal.querySelectorAll(`[data-set="${b.dataset.set}"]`).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));syncCalc()});
   const readSettings=()=>{const out={results:modal.querySelector('[name="cap-results"]:checked')?.value||settingDefaults.results};modal.querySelectorAll('[data-set][aria-pressed="true"]').forEach(b=>out[b.dataset.set]=b.dataset.value);return {...settingDefaults,...out}};
   modal.onclose=()=>onClose?.();
+  /* Delete test (20 Nov): a small confirmation on top of the setup modal; confirming closes both. */
+  modal.querySelector('[data-delete-setup]')?.addEventListener('click',()=>{
+   const name=(modal.querySelector('#cap-test-name')?.value||initial.testName||'this test').trim();
+   const confirm=make(`<dialog class="dialog dialog-sm cap-delete-confirm" aria-labelledby="cap-delete-title" aria-describedby="cap-delete-text">
+    <div class="dialog-header"><h2 class="dialog-title" id="cap-delete-title">Delete this test?</h2>${closeButton().replace('data-close-setup','data-close-delete').replace('Close setup','Close')}</div>
+    <p class="dialog-description" id="cap-delete-text">${esc(name)} and its items will be removed from this assessment. This can't be undone.</p>
+    <div class="dialog-footer"><button class="btn btn-ghost btn-lg" type="button" data-close-delete>Cancel</button><button class="btn btn-destructive btn-lg" type="button" data-confirm-delete>Delete test</button></div>
+   </dialog>`);
+   modal.append(confirm);confirm.querySelectorAll('[data-close-delete]').forEach(b=>b.onclick=()=>confirm.close());
+   confirm.onclose=()=>confirm.remove();
+   confirm.querySelector('[data-confirm-delete]').onclick=()=>{confirm.close();onDelete();modal.close()};
+   confirm.showModal();confirm.querySelector('[data-close-delete].btn-ghost').focus();
+  });
   standardSelect.onchange=()=>{standard=standardSelect.value;renderPreview()};
   function changeScope(){
    if(!standards.some(s=>s.code===standard&&s.grade===grade.value&&s.subject===subject.value))standard='';

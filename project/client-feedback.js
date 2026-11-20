@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!teacher)return;const a=event.target.closest('a'),bank=event.target.closest('[data-bank]');
   if(bank){saveSnapshot('banked');return;}
   if(!a)return;const href=a.getAttribute('href')||'';
-  if(href==='CAP-T04-Setup.dc.html'&&/create|build your own/i.test(a.textContent)){preserveCurrent();const id='test-'+Date.now();put('cogniaAssessmentTestsV1',{title:'New classroom assessment',active:id,origin:'builder',tests:[{id,title:'New classroom assessment',grade:'5',subject:'Mathematics',standard:'5.NF.A.1',page:'CAP-T05-Questions.dc.html',state:{chosen:[],written:{},edits:{}},questions:[]}]});}
+  if(href==='CAP-T04-Setup.dc.html'&&/create|build your own/i.test(a.textContent)){preserveCurrent();const id='test-'+Date.now();put('cogniaAssessmentTestsV1',{title:'Fall 2026',active:id,origin:'builder',tests:[{id,title:'New test',grade:'5',subject:'Mathematics',standard:'5.NF.A.1',page:'CAP-T05-Questions.dc.html',state:{chosen:[],written:{},edits:{}},questions:[]}]});}
   if(href==='CAP-T07-DraftSaved.dc.html')saveSnapshot('draft');
   /* 13 Nov: no item approval step; teachers continue without the Review item dialog. */
   if(isReview&&model()?.origin!=='library'&&href==='CAP-T08-AudienceDelivery.dc.html'&&!document.getElementById('reviewed')?.checked){event.preventDefault();event.stopImmediatePropagation();const input=document.getElementById('reviewed');input?.setCustomValidity('Check the assessment settings and student instructions before continuing.');input?.reportValidity();input?.addEventListener('change',()=>input.setCustomValidity(''),{once:true});return;}

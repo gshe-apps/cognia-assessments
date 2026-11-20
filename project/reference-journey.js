@@ -43,39 +43,144 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  /* Header actions sit left of Save as draft (teacher-flow-upgrade.js appends that button to the hero). */
  const tools=node('<div class="ad-hero-actions" role="group" aria-label="Assessment actions"><button type="button" class="btn ghost btn-ghost btn-lg rj-bank-reuse" data-bank title="Save this assessment for reuse">Bank for reuse</button></div>');
  hero.append(tools);
+ /* 20 Nov: Add another test is an outline button at the far right of the header; Save as draft (added to the
+    hero by teacher-flow-upgrade.js) becomes a ghost button beside it. */
+ const addBtn=node('<button type="button" class="btn btn-outline btn-lg ad-add-test" aria-haspopup="dialog">Add another test</button>');
+ const placeAdd=()=>{const draft=hero.querySelector('.tf-hero-draft');if(draft){draft.classList.replace('btn-outline','btn-ghost');if(draft.nextElementSibling!==addBtn)draft.after(addBtn)}else if(!addBtn.isConnected)hero.append(addBtn)};
+ placeAdd();new MutationObserver(placeAdd).observe(hero,{childList:true});
 
  const host=node('<section class="ad-layout"><div class="ad-main"></div><div class="ad-settings"></div></section>');
  page.querySelector('.reviewgrid').before(host);
  const main=host.firstElementChild,side=host.lastElementChild;
  let selected=t.id;
 
- /* 18 Nov: Details is read-only. Each test is a card showing what was entered in the setup modal (plus total
-    points); Edit reopens that modal. An outlined card next to them adds another test. Settings live in the modal. */
- const pencil=svg('<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>');
- const eye=svg('<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>');
+ /* 20 Nov (Figma 1929:15618): one centred white card per test. The card shows the assessment title above the test
+    name, then its details; a square-pen icon top right reopens the setup modal. A tab rail on the card's right edge
+    switches the card between Overview, Items and Settings, and opens Learner preview. A dashed full-width button
+    under the cards adds another test. */
+ const pencil=svg('<path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>');
+ const fileText=svg('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>');
  const settingText={attempts:{'One attempt only':'1','2 attempts':'2','3 attempts':'3'},calculator:{'Not allowed':'No'},notes:{'Allowed':'Yes','Not allowed':'No'},limit:{'None':'No limit'}};
  const detailsFor=x=>{x.details=x.details||{description:x.description||m.details?.description||'',instructions:m.details?.instructions||instructions.value,resource:x.resource||'',notes:x.notes||'',duration:Number(x.duration)>0?x.duration+' minutes':'None'};return x.details};
  const minutesOf=d=>parseInt(d,10)||0;
  const row=(label,value)=>`<div class="ad-dl-row"><dt>${label}</dt><dd${value?'':' class="ad-empty"'}>${value?esc(value):'Not added'}</dd></div>`;
- function card(x,i){
-  const d=detailsFor(x),marks=(x.questions||[]).reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks;
-  const stds=(d.standards||[x.standard].filter(Boolean)).join(', '),s={...(window.capAssessmentSetup?.settingDefaults||{}),...m.settings};
-  const set=k=>k==='calculator'&&s.calculator==='Allowed'?'Yes, '+(s.calculatorType||'Basic'):settingText[k]?.[s[k]]||s[k];
-  return `<div class="ad-test-item"><div class="ad-card-actions"><button type="button" class="btn btn-ghost btn-sm" data-edit-details="${esc(x.id)}" aria-haspopup="dialog" aria-label="Edit ${esc(x.title)}">${pencil}Edit</button><button type="button" class="btn btn-ghost btn-sm" data-card-preview="${esc(x.id)}" aria-haspopup="dialog" aria-label="Learner preview of ${esc(x.title)}">${eye}Learner preview</button></div><article class="card ad-test-card" aria-labelledby="ad-test-${esc(x.id)}"><header class="ad-card-head"><div class="ad-card-name"><h3 id="ad-test-${esc(x.id)}">${esc(x.title)}</h3></div></header><div class="ad-card-body">`
-  +`<dl class="ad-dl ad-dl-main">${row('Subject',x.subject)}${row('Grade level',x.grade?'Grade '+x.grade:'')}${row('Test pathway',x.pathway||'College and career readiness')}${row('Standards',stds)}${row('Total points',String(points))}</dl>`
-  +`<div class="ad-card-acc"><details class="accordion-item"><summary class="accordion-trigger">Settings</summary><div class="accordion-content"><dl class="ad-dl">${row('Attempts',set('attempts'))}${row('Show results to learners',set('results'))}${row('Item order',set('questionOrder'))}${row('Answer option order',set('optionOrder'))}${row('Calculator allowed?',set('calculator'))}${row('Notes allowed?',set('notes'))}${row('Time limit',set('limit'))}</dl></div></details>`
-  +`<details class="accordion-item"><summary class="accordion-trigger">Optional settings</summary><div class="accordion-content"><dl class="ad-dl">${row('Duration in minutes',minutesOf(d.duration)?String(minutesOf(d.duration)):'')}${row('Description',d.description)}${row('Resource link',d.resource)}${row('Additional notes',d.notes)}</dl></div></details></div></div></article></div>`;
+ const views={},previewState={},itemPage={};
+ const arrowBack=svg('<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'),arrowNext=svg('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>');const tabs=[['overview','Overview'],['items','Items'],['settings','Settings'],['preview','Learner preview']];
+ /* What the card's edit icon does in each view: Overview edits the test details, Items opens the item editor,
+    Settings opens the setup modal with Quick settings expanded. Learner preview has no edit. */
+ const editLabel={overview:'Edit test details',items:'Edit items',settings:'Edit settings'};
+ const kindOf=q=>q.displayType||({'Text entry':'Short answer','Extended text':'Extended response','Choice':'Multiple choice'}[q.type]||q.type||'Item');
+ function panel(x,view){
+  if(view==='preview')return '';
+  const d=detailsFor(x),qs=x.questions||[],marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks;
+  if(view==='items')return qs.length
+   ?`<ol class="af-item-list ad-af-items">${qs.map((q,n)=>{const pts=Number(q.marks||1);return `<li class="af-item"><span class="af-item-number">${n+1}</span><div class="af-item-body"><div class="af-item-meta"><span class="text-body-small">${esc(kindOf(q))}</span><span class="badge badge-secondary">${pts} ${pts===1?'point':'points'}</span></div><p>${esc(q.stem||'Untitled item')}</p></div></li>`}).join('')}</ol><div class="ad-items-pager"><button type="button" class="btn btn-ghost lp-step" data-items-go="-1">${arrowBack}Back</button><span class="ad-items-range text-body-small" aria-live="polite"></span><button type="button" class="btn btn-ghost lp-step" data-items-go="1">Next${arrowNext}</button></div>`
+   :`<div class="ad-empty-state"><h4>No items yet</h4><p>Use the edit button to add items to this test.</p></div>`;
+  if(view==='settings'){
+   const s={...(window.capAssessmentSetup?.settingDefaults||{}),...m.settings};
+   const set=k=>k==='calculator'&&s.calculator==='Allowed'?'Yes, '+(s.calculatorType||'Basic'):settingText[k]?.[s[k]]||s[k];
+   return `<dl class="ad-dl ad-dl-main">${row('Attempts',set('attempts'))}${row('Show results to learners',set('results'))}${row('Item order',set('questionOrder'))}${row('Answer option order',set('optionOrder'))}${row('Calculator allowed?',set('calculator'))}${row('Notes allowed?',set('notes'))}${row('Time limit',set('limit'))}${row('Duration in minutes',minutesOf(d.duration)?String(minutesOf(d.duration)):'')}${row('Resource link',d.resource)}</dl>`;
+  }
+  const stds=(d.standards||[x.standard].filter(Boolean)).join(', ');
+  return `<div class="ad-card-hero"><span class="ad-card-icon">${fileText}</span><div class="ad-card-name"><p class="ad-card-kicker">${esc(m.title||'Fall 2026')}</p><h3 id="ad-test-${esc(x.id)}" title="${esc(x.title)}">${esc(x.title)}</h3></div></div>`
+   +`<dl class="ad-dl ad-dl-main">${row('Subject',x.subject)}${row('Grade level',x.grade?'Grade '+x.grade:'')}${row('Test pathway',x.pathway||'College and career readiness')}${row('Standards',stds)}${row('Items',String(qs.length))}${row('Total points',String(points))}</dl>`;
+ }
+ function card(x){
+  const id=esc(x.id),view=views[x.id]||'overview',label=editLabel[view];
+  return `<div class="ad-test-item" data-test="${id}"><article class="card ad-test-card" aria-label="${esc(x.title)}"><button type="button" class="btn btn-ghost btn-icon ad-card-edit" data-edit-details="${id}" aria-label="${label?esc(label+': '+x.title):''}" title="${label||''}" ${label?'':'hidden'}>${pencil}</button>`
+   +`<div class="ad-card-panel" role="tabpanel" id="ad-panel-${id}" aria-labelledby="ad-tab-${id}-${view}" data-view="${view}">${panel(x,view)}</div></article>`
+   +`<div class="ad-test-tabs" role="tablist" aria-orientation="vertical" aria-label="${esc(x.title)} sections">${tabs.map(([k,l])=>`<button type="button" role="tab" class="ad-test-tab" id="ad-tab-${id}-${k}" data-view-tab="${k}" data-test-id="${id}" aria-controls="ad-panel-${id}" aria-selected="${view===k}" tabindex="${view===k?0:-1}">${l}</button>`).join('')}</div></div>`;
+ }
+ /* Items view pages instead of scrolling (20 Nov): rows are measured and split into pages that fit the card,
+    and Back and Next step through them, like the learner preview. */
+ function paginate(item,x){
+  const list=item.querySelector('.ad-card-panel[data-view="items"] .ad-af-items');if(!list)return;
+  const rows=[...list.children],pager=item.querySelector('.ad-items-pager');rows.forEach(r=>r.hidden=false);
+  const room=list.clientHeight,pages=[[]];let top=rows[0]?.offsetTop||0;
+  rows.forEach(r=>{if(pages.at(-1).length&&r.offsetTop+r.offsetHeight-top>room){pages.push([]);top=r.offsetTop}pages.at(-1).push(r)});
+  const show=n=>{const p=Math.max(0,Math.min(pages.length-1,n));itemPage[x.id]=p;rows.forEach(r=>r.hidden=!pages[p].includes(r));
+   const first=rows.indexOf(pages[p][0])+1,last=rows.indexOf(pages[p].at(-1))+1;
+   pager.querySelector('.ad-items-range').textContent=`${p+1} of ${pages.length}`;pager.querySelector('.ad-items-range').setAttribute('aria-label',`Page ${p+1} of ${pages.length}, items ${first} to ${last} of ${rows.length}`);
+   pager.querySelector('[data-items-go="-1"]').classList.toggle('hide',p===0);pager.querySelector('[data-items-go="1"]').classList.toggle('hide',p===pages.length-1)};
+  pager.hidden=pages.length<2;show(itemPage[x.id]||0);
+  pager.querySelectorAll('[data-items-go]').forEach(b=>b.onclick=()=>{show((itemPage[x.id]||0)+Number(b.dataset.itemsGo));const next=pager.querySelector('.lp-step:not(.hide)');if(b.classList.contains('hide'))next?.focus()});
+ }
+ /* Fill a card's panel for its view. Learner preview plays inside the card (no full-screen dialog). */
+ function fill(item,x,view){
+  const cardEl=item.querySelector('.ad-test-card'),panelEl=item.querySelector('.ad-card-panel'),edit=item.querySelector('.ad-card-edit'),label=editLabel[view];
+  panelEl.dataset.view=view;panelEl.setAttribute('aria-labelledby',`ad-tab-${x.id}-${view}`);panelEl.innerHTML=panel(x,view);panelEl.scrollTop=0;
+  edit.hidden=!label;if(label){edit.title=label;edit.setAttribute('aria-label',label+': '+x.title)}
+  cardEl.dataset.view=view;
+  item.querySelectorAll('[data-view-tab]').forEach(b=>{const on=b.dataset.viewTab===view;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1});
+  if(view==='preview')window.capLearnerPreview(x,{host:panelEl,state:previewState[x.id]=previewState[x.id]||{}});
+  if(view==='items')paginate(item,x);
+ }
+ /* Turn a page with a curl (20 Nov). The page is cut into thin vertical strips, each hinged to the one before it,
+    so the page bends as it turns: the outer edge lifts first and rolls over, the spine follows, and the back of the
+    paper shows as it goes over. Going down the tab list the current page turns away to reveal the new one; going
+    back up, the new page rolls back in over the old one. Skipped for reduced motion. */
+ function curlPage(cardEl,content){
+  const w=cardEl.offsetWidth,h=cardEl.offsetHeight,n=24,sw=w/n;
+  const root=document.createElement('div');root.className='ad-curl';root.setAttribute('aria-hidden','true');
+  Object.assign(root.style,{left:cardEl.offsetLeft+'px',top:cardEl.offsetTop+'px',width:w+'px',height:h+'px'});
+  const strips=[];let parent=root;
+  for(let i=0;i<n;i++){
+   const strip=document.createElement('div');strip.className='ad-curl-strip';
+   Object.assign(strip.style,{left:(i?sw:0)+'px',width:sw+'px',height:h+'px'});
+   const face=document.createElement('div');face.className='ad-curl-face';
+   const page=content.cloneNode(true);page.inert=true;page.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+   Object.assign(page.style,{position:'absolute',left:-(i*sw)+'px',top:0,width:w+'px',maxWidth:'none',height:h+'px',margin:0,boxShadow:'none',visibility:'visible'});
+   const shade=document.createElement('div');shade.className='ad-curl-shade';
+   const back=document.createElement('div');back.className='ad-curl-back';
+   if(i===n-1)back.style.borderRadius=face.style.borderRadius=`0 var(--radius-xl) var(--radius-xl) 0`;
+   if(i===0)back.style.borderRadius=face.style.borderRadius=`var(--radius-xl) 0 0 var(--radius-xl)`;
+   face.append(page,shade);strip.append(face,back);parent.append(strip);parent=strip;strips.push({strip,shade,back});
+  }
+  return {root,strips,content,
+   /* p: 0 flat, 1 turned over. Each strip's total angle runs 0 to -180; the outer strips lead, so the page curls. */
+   set(p){
+    const spread=.7,ease=v=>v<.5?2*v*v:1-Math.pow(-2*v+2,2)/2;let prev=0;
+    strips.forEach(({strip,shade,back},i)=>{
+     const edge=i/(n-1),local=Math.min(1,Math.max(0,p*(1+spread)-(1-edge)*spread)),angle=-180*ease(local);
+     strip.style.transform=`rotateY(${angle-prev}deg)`;prev=angle;
+     const light=Math.abs(Math.sin(angle*Math.PI/180));shade.style.opacity=(light*.22).toFixed(3);back.style.opacity=1;
+    });
+    root.style.opacity=p>.8?String((1-p)/.2):'1';
+   }};
+ }
+ function turnPage(item,x,from,to){
+  const order=tabs.map(([k])=>k),forward=order.indexOf(to)>order.indexOf(from),cardEl=item.querySelector('.ad-test-card');
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  item.querySelectorAll('.ad-curl').forEach(g=>{g._stop?.();g.remove()});cardEl.style.visibility='';
+  if(still||from===to){fill(item,x,to);return}
+  const snapshot=()=>{const c=cardEl.cloneNode(true);c.querySelector('.ad-card-panel').scrollTop=0;return c};
+  const old=snapshot(),oldScroll=cardEl.querySelector('.ad-card-panel').scrollTop;
+  fill(item,x,to);
+  const curl=curlPage(cardEl,forward?old:snapshot());
+  const offset=forward?oldScroll:0;curl.root.querySelectorAll('.ad-card-panel').forEach(p=>p.style.transform=`translateY(${-offset}px)`);
+  item.append(curl.root);
+  /* Going back, the old page stays put under the new page as it rolls in. */
+  let under=null;
+  if(!forward){under=old;under.classList.add('ad-curl-under');under.inert=true;under.setAttribute('aria-hidden','true');under.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+   Object.assign(under.style,{left:cardEl.offsetLeft+'px',top:cardEl.offsetTop+'px',width:cardEl.offsetWidth+'px',height:cardEl.offsetHeight+'px'});
+   item.insertBefore(under,curl.root);cardEl.style.visibility='hidden'}
+  const dur=700,start=performance.now();let raf;
+  const end=()=>{cancelAnimationFrame(raf);curl.root.remove();under?.remove();cardEl.style.visibility=''};
+  curl.root._stop=end;
+  const tick=now=>{const t=Math.min(1,(now-start)/dur);curl.set(forward?t:1-t);if(t<1)raf=requestAnimationFrame(tick);else end()};
+  curl.set(forward?0:1);raf=requestAnimationFrame(tick);
  }
  function syncDelivery(){
   time.value=m.settings?.limit||'5 minutes';
   const delivery=JSON.parse(localStorage.getItem('cogniaDeliverySessions')||'null');if(delivery){delivery.time=time.value;delivery.attempts=m.settings?.attempts==='2 attempts'?'2':m.settings?.attempts==='3 attempts'?'3':'1';localStorage.setItem('cogniaDeliverySessions',JSON.stringify(delivery))}
  }
- function openSetup(trigger,{initial,heading,submitLabel,showSettings,showAssessmentTitle,onSubmit}){
+ function openSetup(trigger,{initial,heading,submitLabel,showSettings,showAssessmentTitle,expandSettings,onDelete,onSubmit}){
   const api=window.capAssessmentSetup;if(!api)return;persist();let done=false;
   const setup=api.create({host:page.closest('.theme-assessments')||document.body,initial,heading,submitLabel,showSettings,showAssessmentTitle,
+   onDelete:onDelete&&(()=>{done=true;onDelete()}),
    onSubmit(details){done=true;onSubmit(details,api)},
-   onClose(){setup.remove();if(!done)(trigger.isConnected?trigger:host.querySelector('.ad-add-test'))?.focus()}});
-  setup.open(initial);
+   onClose(){setup.remove();if(!done)(trigger.isConnected?trigger:addBtn)?.focus()}});
+  setup.open(initial,{expandSettings});
  }
  const persist=()=>{
   m.settings=m.settings||{};
@@ -89,17 +194,64 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  function draw(){
   t=m.tests.find(x=>x.id===selected)||m.tests[0];
   side.remove();host.querySelector('.ad-settings-title')?.remove();
-  main.innerHTML=`<div class="ad-test-cards">${m.tests.map(card).join('')}<button type="button" class="ad-add-card ad-add-test" aria-haspopup="dialog">${plus}<span>Add another test</span></button></div>`
-;
+  /* 20 Nov: tests sit in a deck. The chosen test is the front card with its tabs; up to two others peek out
+     behind it (no tabs) and can be clicked. Under the card, chevrons either side of the test name and
+     "1 of 3" step through the tests. */
+  const at=Math.max(0,m.tests.indexOf(t)),count=m.tests.length,behind=[1,2].filter(k=>k<count).map(k=>m.tests[(at+k)%count]);
+  const chevron=d=>svg(`<path d="${d}"/>`);
+  main.innerHTML=`<div class="ad-test-stack ad-deck">${card(t).replace('<article',behind.map((x,n)=>`<button type="button" class="ad-deck-behind" style="--ad-depth:${n+1}" data-deck-show="${esc(x.id)}" aria-label="Show ${esc(x.title)}"></button>`).reverse().join('')+'<article')}`
+   +(count>1?`<nav class="ad-test-pager" aria-label="Tests in this assessment"><button type="button" class="btn btn-ghost btn-icon" data-deck-go="-1" aria-label="Previous test">${chevron('m15 18-6-6 6-6')}</button><span class="ad-test-pager-count" aria-live="polite" aria-label="Test ${at+1} of ${count}: ${esc(t.title)}">${at+1} of ${count}</span><button type="button" class="btn btn-ghost btn-icon" data-deck-go="1" aria-label="Next test">${chevron('m9 18 6-6-6-6')}</button></nav>`:'')+`</div>`;
+  /* Shuffle (20 Nov): the chosen card slides out from the fan to the left, lifts over the deck and settles in
+     front, while the old front card tips right and sinks into the fan. Fan positions match the CSS. */
+  const fanAt=d=>`translateX(${-32*d}px) rotate(${-5*d}deg)`;
+  const showTest=(id,dir)=>{if(id===t.id)return;
+   const oldId=t.id,depth={},oldCard=main.querySelector('.ad-test-card')?.cloneNode(true);main.querySelectorAll('[data-deck-show]').forEach(b=>depth[b.dataset.deckShow]=Number(b.style.getPropertyValue('--ad-depth')));
+   selected=id;m.active=id;save(m);draw();
+   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+   const front=main.querySelector('.ad-test-card'),tabsEl=main.querySelector('.ad-test-tabs'),sunk=main.querySelector(`[data-deck-show="${CSS.escape(oldId)}"]`);
+   if(!front?.animate)return;
+   const from=depth[id]||2,ease='cubic-bezier(.3,.7,.3,1)',timing={duration:650,easing:'linear'};
+   front.animate([
+    {transform:fanAt(from),zIndex:0,opacity:depth[id]?1:0,easing:ease},
+    {offset:.45,transform:`translateX(${-32*from-240}px) translateY(-16px) rotate(${-5*from-6}deg)`,zIndex:0,opacity:1,easing:ease},
+    {offset:.46,zIndex:20,easing:ease},
+    {transform:'none',zIndex:20}],timing);
+   /* The old front keeps its content while it sinks, then hands over to the plain card in the fan. */
+   const rest=sunk?getComputedStyle(sunk).transform:fanAt(2);
+   if(oldCard){
+    oldCard.classList.add('ad-deck-ghost');oldCard.inert=true;oldCard.setAttribute('aria-hidden','true');oldCard.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    Object.assign(oldCard.style,{position:'absolute',left:front.offsetLeft+'px',top:front.offsetTop+'px',width:front.offsetWidth+'px',height:front.offsetHeight+'px',margin:0,transformOrigin:'bottom center',pointerEvents:'none'});
+    front.before(oldCard);
+    oldCard.animate([
+     {transform:'none',zIndex:20,opacity:1,easing:ease},
+     {offset:.45,transform:'translateX(48px) translateY(10px) rotate(4deg)',zIndex:20,opacity:1,easing:ease},
+     {offset:.46,zIndex:0,easing:ease},
+     {offset:.8,opacity:1,easing:ease},
+     {transform:rest,zIndex:0,opacity:0}],timing).onfinish=()=>oldCard.remove();
+    sunk?.animate([{opacity:0},{opacity:0,offset:.8},{opacity:1}],{duration:650});
+   }
+   tabsEl?.animate([{opacity:0},{opacity:0,offset:.6},{opacity:1}],{duration:650});
+  };
+  main.querySelectorAll('[data-deck-show]').forEach(b=>b.onclick=()=>showTest(b.dataset.deckShow,1));
+  main.querySelectorAll('[data-deck-go]').forEach(b=>b.onclick=()=>{const d=Number(b.dataset.deckGo);showTest(m.tests[(at+d+count)%count].id,d);main.querySelector(`[data-deck-go="${d}"]`)?.focus()});
+  main.querySelectorAll('[data-view-tab]').forEach(b=>{
+   b.onclick=()=>{const x=m.tests.find(v=>v.id===b.dataset.testId),from=views[x.id]||'overview',to=b.dataset.viewTab;if(from===to)return;if(to==='preview'){persist();selected=x.id;m.active=x.id;save(m)}views[x.id]=to;turnPage(b.closest('.ad-test-item'),x,from,to);b.focus()};
+   b.onkeydown=e=>{if(!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const list=[...b.parentElement.querySelectorAll('[data-view-tab]')],n=(list.indexOf(b)+(e.key==='ArrowDown'?1:-1)+list.length)%list.length;list[n].click()};
+  });
   /* 18 Nov: the review confirmation moved to step 4/4 Finalize, so step 2 no longer asks for it. */
   reviewed.checked=true;reviewed.closest('label').hidden=true;
   syncDelivery();
 
-  main.querySelectorAll('[data-card-preview]').forEach(b=>b.onclick=()=>{persist();const x=m.tests.find(v=>v.id===b.dataset.cardPreview);selected=x.id;m.active=x.id;save(m);window.capLearnerPreview(x)});
+  /* After a full redraw, Items pages and Learner preview need their JS again. */
+  m.tests.forEach(x=>{const v=views[x.id],item=main.querySelector(`.ad-test-item[data-test="${CSS.escape(x.id)}"]`);if(item&&(v==='items'||v==='preview'))fill(item,x,v)});
   main.querySelectorAll('[data-edit-details]').forEach(b=>b.onclick=()=>{
-   const x=m.tests.find(v=>v.id===b.dataset.editDetails),d=detailsFor(x),first=m.tests.indexOf(x)===0;
+   const x=m.tests.find(v=>v.id===b.dataset.editDetails),d=detailsFor(x),first=m.tests.indexOf(x)===0,view=views[x.id]||'overview';
    selected=x.id;m.active=x.id;
-   openSetup(b,{heading:'Edit test details',submitLabel:'Save changes',showAssessmentTitle:true,
+   if(view==='items'){persist();save(m);location.href=x.page||'CAP-T05-Questions.dc.html';return}
+   /* Delete test (20 Nov): only offered when the assessment has another test, so it never ends up empty. */
+   const onDelete=m.tests.length>1?()=>{m.tests=m.tests.filter(v=>v!==x);delete views[x.id];delete previewState[x.id];delete itemPage[x.id];
+     if(m.active===x.id)m.active=m.tests[0].id;selected=m.active;persist();draw();main.querySelector('.ad-card-edit:not([hidden]),.ad-test-tab[aria-selected="true"]')?.focus()}:null;
+   openSetup(b,{heading:view==='settings'?'Edit settings':'Edit test details',submitLabel:'Save changes',showAssessmentTitle:true,expandSettings:view==='settings',onDelete,
     initial:{title:m.title,testName:x.title,grade:String(x.grade||'5'),subject:x.subject||'Mathematics',standard:(d.standards||[])[0]||x.standard||'',pathway:x.pathway,
      duration:minutesOf(d.duration)||'',description:d.description||'',resource:d.resource||'',notes:d.notes||'',assessmentSettings:m.settings},
     onSubmit(details,api){
@@ -113,7 +265,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
   });
   /* Add another test: the same setup modal names the new test (default "New test"); Continue adds it to this
      assessment and opens step 1/4 so its items can be added. It is the same modal as Create from scratch. */
-  main.querySelector('.ad-add-test').onclick=e=>openSetup(e.currentTarget,{
+  addBtn.onclick=e=>openSetup(e.currentTarget,{
    initial:{title:m.title,testName:'New test',grade:String(t.grade||'5'),subject:t.subject||'Mathematics',standard:t.standard||'',assessmentSettings:m.settings},
    onSubmit({assessmentSettings,...details},api){
     if(assessmentSettings)m.settings={...(m.settings||{}),...assessmentSettings};
@@ -170,16 +322,20 @@ window.capReferenceFinish=page=>{if(location.search.includes('stage=details')){c
 /* Learner preview (12 Nov): step 2's "Learner preview" plays the test the way a learner sees it in the
    student flow: progress segments, one question card at a time, A to D options with a tick, round
    previous and next arrows, and a finish card. Answers live only in this dialog and are never saved. */
-window.capLearnerPreview=(t)=>{
+window.capLearnerPreview=(t,{host,state,onClose}={})=>{
+ const inline=!!host;
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
- const icon={x:svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),prev:svg('<path d="m15 18-6-6 6-6"/>'),next:svg('<path d="m9 18 6-6-6-6"/>'),tick:svg('<path d="M20 6 9 17l-5-5"/>'),flag:svg('<path d="M20 6 9 17l-5-5"/>'),again:svg('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" />')};
- const qs=(t.questions||[]).filter(q=>q&&q.stem),n=qs.length,answers=qs.map(()=>null);
+ const icon={x:svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),prev:svg('<path d="m15 18-6-6 6-6"/>'),next:svg('<path d="m9 18 6-6-6-6"/>'),tick:svg('<path d="M20 6 9 17l-5-5"/>'),flag:svg('<path d="M20 6 9 17l-5-5"/>'),expand:svg('<path d="M15 3h6v6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/><path d="M9 21H3v-6"/>'),back:svg('<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'),fwd:svg('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'),again:svg('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" />')};
+ const qs=(t.questions||[]).filter(q=>q&&q.stem),n=qs.length;
+ /* state is shared between the in-card preview and its expanded full view, so expanding keeps the question and answers. */
+ const st=state||{at:0,answers:null};if(!Array.isArray(st.answers)||st.answers.length!==n){st.answers=qs.map(()=>null);st.at=0}
+ const answers=st.answers;
  const isChoice=q=>(q.options||[]).length>0;
  const isLong=q=>/extended/i.test(q.displayType||q.type||'');
- let at=0,dir=1;
- const dialog=document.createElement('dialog');
- dialog.className='lp-dialog theme-assessments';
+ let at=Math.min(st.at||0,n),dir=1;
+ const dialog=document.createElement(inline?'div':'dialog');
+ dialog.className=inline?'lp-inline':'lp-dialog theme-assessments';
  dialog.setAttribute('aria-label','Learner preview: '+(t.title||'Test'));
  const answered=()=>answers.filter(a=>a!==null&&a!=='').length;
  const card=(q,i)=>{
@@ -192,27 +348,35 @@ window.capLearnerPreview=(t)=>{
     :'<div class="lp-panel field"><label class="label" for="lp-answer">Your answer</label><input class="input" id="lp-answer" type="text" autocomplete="off" placeholder="Type your answer" value="'+esc(answers[i]||'')+'"></div>';
   return '<article class="lp-card lp-in-'+(dir>0?'next':'prev')+'" aria-roledescription="question" aria-label="Question '+(i+1)+' of '+n+'"><div class="lp-body"><p class="lp-num">Question '+(i+1)+'/'+n+'</p><div class="lp-head">'+passage+'<h2 class="lp-stem">'+esc(q.stem)+'</h2></div><div class="lp-ans">'+body+'</div></div></article>';
  };
- const endCard=()=>{const a=answered(),all=a===n;return '<article class="lp-card lp-end lp-in-next" aria-label="End of test"><div class="lp-body lp-end-body"><span class="lp-finish">'+icon.flag+'</span><div class="lp-end-copy"><h2 class="lp-stem">'+a+' of '+n+' answered</h2><p>'+(all?'Learners would submit their answers here.':'Learners are asked to go back to the questions they missed before they submit.')+' Nothing is saved in this preview.</p></div><div class="lp-end-actions"><button type="button" class="btn btn-lg" data-restart>'+icon.again+'Start again</button><button type="button" class="btn btn-ghost btn-lg" data-close>Close preview</button></div></div></article>'};
+ const endCard=()=>{const a=answered(),all=a===n;return '<article class="lp-card lp-end lp-in-next" aria-label="End of test"><div class="lp-body lp-end-body"><span class="lp-finish">'+icon.flag+'</span><div class="lp-end-copy"><h2 class="lp-stem">'+a+' of '+n+' answered</h2><p>'+(all?'Learners would submit their answers here.':'Learners are asked to go back to the questions they missed before they submit.')+' Nothing is saved in this preview.</p></div><div class="lp-end-actions"><button type="button" class="btn btn-lg" data-restart>'+icon.again+'Start again</button>'+(inline?'':'<button type="button" class="btn btn-ghost btn-lg" data-close>Close preview</button>')+'</div></div></article>'};
  const draw=()=>{
   const end=at===n,q=qs[at];
   const ready=!end&&answers[at]!==null&&answers[at]!=='';
-  dialog.innerHTML='<div class="lp-top"><div class="lp-segs" aria-hidden="true">'+qs.map((_,i)=>'<span class="lp-seg'+(i===at?' now':answers[i]!==null&&answers[i]!==''?' done':'')+'"></span>').join('')+'</div><span class="lp-count" role="status">'+answered()+'/'+n+'</span><button type="button" class="btn btn-ghost btn-icon btn-sm" data-close aria-label="Close learner preview">'+icon.x+'</button></div>'
+  dialog.innerHTML='<div class="lp-top"><div class="lp-segs" aria-hidden="true">'+qs.map((_,i)=>'<span class="lp-seg'+(i===at?' now':answers[i]!==null&&answers[i]!==''?' done':'')+'"></span>').join('')+'</div><span class="lp-count" role="status">'+answered()+'/'+n+'</span>'+(inline?'<button type="button" class="btn btn-ghost btn-icon btn-sm" data-expand aria-label="Expand learner preview" title="Expand">'+icon.expand+'</button>':'<button type="button" class="btn btn-ghost btn-icon btn-sm" data-close aria-label="Close learner preview">'+icon.x+'</button>')+'</div>'
    +'<div class="lp-stage"><span class="lp-behind lp-behind-2" aria-hidden="true"></span><span class="lp-behind lp-behind-1" aria-hidden="true"></span>'+(n?(end?endCard():card(q,at)):'<article class="lp-card"><div class="lp-body lp-end-body"><h2 class="lp-stem">No questions yet</h2><p>Add items in step 1 to preview them here.</p></div></article>')
-   +'<button type="button" class="lp-arrow prev'+(at===0?' hide':'')+'" data-go="-1" aria-label="Previous question">'+icon.prev+'</button>'
-   +'<button type="button" class="lp-arrow next'+(end||!n?' hide':'')+(ready?' ready':'')+'" data-go="1" aria-label="'+(at===n-1?'Finish':'Next question')+'">'+icon.next+'</button></div>';
+   +(inline
+    ?'<button type="button" class="btn btn-ghost lp-step prev'+(at===0||!n?' hide':'')+'" data-go="-1">'+icon.back+'Back</button>'
+     +'<button type="button" class="btn btn-ghost lp-step next'+(end||!n?' hide':'')+'" data-go="1">'+(at===n-1?'Finish':'Next')+icon.fwd+'</button></div>'
+    :'<button type="button" class="lp-arrow prev'+(at===0?' hide':'')+'" data-go="-1" aria-label="Previous question">'+icon.prev+'</button>'
+     +'<button type="button" class="lp-arrow next'+(end||!n?' hide':'')+(ready?' ready':'')+'" data-go="1" aria-label="'+(at===n-1?'Finish':'Next question')+'">'+icon.next+'</button></div>');
+  st.at=at;if(inline)fit();
   const field=dialog.querySelector('#lp-answer');
   if(field)field.addEventListener('input',()=>{answers[at]=field.value;const r=field.value.trim()!=='';dialog.querySelector('.lp-arrow.next')?.classList.toggle('ready',r);dialog.querySelector('.lp-count').textContent=answered()+'/'+n});
  };
- const go=d=>{const next=Math.max(0,Math.min(n,at+d));if(next===at)return;dir=d;at=next;draw();dialog.querySelector('.lp-arrow:not(.hide)')?.focus({preventScroll:true})};
- const close=()=>{dialog.close();dialog.remove()};
+ /* In the card the question is scaled down until it fits, so nothing scrolls. Expand shows it full size. */
+ function fit(){const body=dialog.querySelector('.lp-card .lp-body');if(!body||!dialog.isConnected)return;const parts=[...body.children];parts.forEach(e=>e.style.zoom='');
+  for(let i=0;i<3;i++){const need=body.scrollHeight,room=body.clientHeight;if(need<=room+1)break;const z=Math.max(.5,(parseFloat(parts[0].style.zoom)||1)*room/need);parts.forEach(e=>e.style.zoom=z.toFixed(3))}}
+ const go=d=>{const next=Math.max(0,Math.min(n,at+d));if(next===at)return;dir=d;at=next;draw();dialog.querySelector('.lp-arrow:not(.hide),.lp-step:not(.hide)')?.focus({preventScroll:true})};
+ const close=()=>{dialog.close();dialog.remove();onClose?.()};
  dialog.addEventListener('click',e=>{
   const opt=e.target.closest('[data-opt]');
   if(opt){answers[at]=+opt.dataset.opt;dialog.querySelectorAll('.lp-opt').forEach(b=>{const on=b===opt;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});dialog.querySelector('.lp-arrow.next')?.classList.add('ready');dialog.querySelector('.lp-count').textContent=answered()+'/'+n;return}
   const step=e.target.closest('[data-go]');if(step){go(+step.dataset.go);return}
   if(e.target.closest('[data-restart]')){answers.fill(null);dir=-1;at=0;draw();return}
+  if(e.target.closest('[data-expand]')){window.capLearnerPreview(t,{state:st,onClose:()=>{if(host.isConnected&&dialog.isConnected)window.capLearnerPreview(t,{host,state:st})}});return}
   if(e.target.closest('[data-close]'))close();
  });
  dialog.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1)});
  dialog.addEventListener('cancel',e=>{e.preventDefault();close()});
- draw();document.body.append(dialog);dialog.showModal();
+ if(inline){host.replaceChildren(dialog);draw();return}draw();document.body.append(dialog);dialog.showModal();
 };

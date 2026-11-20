@@ -17,7 +17,7 @@ The user authorized removing historical visual locks and bringing existing scree
 - Never reintroduce artificial ID selectors, visual `!important` declarations, inline font/colour locks or overrides of canonical tokens on individual screens.
 - Existing `!important` declarations are restricted to functional visibility/pointer safeguards and reduced-motion accessibility. Keep those safeguards when restyling.
 - New components should use semantic classes/tokens. Do not append another high-priority “fix” block to a flow file.
-- Run the cognia-design plugin check (`node <plugin>/skills/cognia-design/checks/check-project.cjs`, from the repo root) and `node scripts/check-design-system.cjs` before delivery.
+- Run the cognia-design plugin check (`node design-system/cognia/checks/check-project.cjs`, from the repo root) and `node scripts/check-design-system.cjs` before delivery.
 
 ## Admin type scale
 
@@ -44,9 +44,14 @@ The rules and the checker live in the plugin (`gshe-apps/cognia-design-plugin`),
 
 - `cognia-design.config.json`: where the screens and styles are, the admin type profile, and the header and footer selectors.
 - `cognia-design.baseline.json`: known legacy issues. The check fails on any new issue or any increase. When you fix issues, run the check with `--update-baseline` to lock the lower counts in. Never raise the baseline to make a change pass.
-- `design-system/cognia/`: a read-only copy of the plugin's rules for reference. CI fails if it differs from the plugin, so update it by copying from the plugin, never by editing it here.
+- `design-system/cognia/`: a read-only copy of the plugin (rules, assets and the checker). Never edit it, or `project/ds/cognia/`, by hand.
 
-GitHub runs the check against the latest plugin on every push and pull request, and the deploy to GitHub Pages waits for it to pass.
+Keeping in step with the plugin:
+
+- `node scripts/sync-design-system.cjs` copies the plugin into `design-system/cognia/` and `project/ds/cognia/` (components, script and tokens). It reads the local install in `.cognia-design-plugin/` (not committed) or a plugin folder passed as its argument. `--check` only reports what is out of date.
+- After syncing, run the check. Fix anything new; when counts drop, run it with `--update-baseline` so they can't creep back.
+- Each clone turns on the pre-commit check once with `git config core.hooksPath .githooks`. It runs the fast static check on any commit that touches the prototype.
+- GitHub runs the full check (rendered contrast and layout included) on every push and pull request, and the deploy to GitHub Pages waits for it to pass. GitHub has no access to the private plugin repo, so keeping the copy current is the sync step above: run it whenever the plugin is updated.
 
 ## Shared components (6 November 2026)
 

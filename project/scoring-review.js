@@ -15,7 +15,7 @@
  const responseFor = (id, answer) => ({id, ...learners[id], answer});
  const assessments = [
   {
-   id:'fractions-check', title:'Fractions check', classLabel:'Grade 5A', totalItems:4, icon:'divide',
+   id:'fractions-check', title:'Fractions check', classLabel:'Grade 5A', totalItems:4, icon:'divide', scoredEarlier:1,
    itemLabel:'Explain a fraction misconception',
    prompt:'A learner says 1/2 + 1/3 = 2/5. Explain the error and show the correct sum.',
    guide:'Use equal-sized parts: 1/2 = 3/6 and 1/3 = 2/6, so the sum is 5/6. Denominators are not added.',
@@ -27,7 +27,7 @@
    ],
   },
   {
-   id:'properties-of-shapes', title:'Properties of shapes', classLabel:'Grade 4B', totalItems:8, icon:'shapes',
+   id:'properties-of-shapes', title:'Properties of shapes', classLabel:'Grade 4B', totalItems:8, icon:'shapes', scoredEarlier:2,
    itemLabel:'Explain how squares and rectangles are related',
    prompt:'Explain why every square is a rectangle, using the properties of both shapes.',
    guide:'A rectangle has four right angles. A square has four right angles too, so it is a rectangle. A square also has four equal sides.',
@@ -38,7 +38,7 @@
    ],
   },
   {
-   id:'reading-comprehension', title:'Reading comprehension', classLabel:'Grade 6B', totalItems:3, icon:'book',
+   id:'reading-comprehension', title:'Reading comprehension', classLabel:'Grade 6B', totalItems:3, icon:'book', scoredEarlier:3,
    itemLabel:'Support an inference with evidence',
    prompt:'The hall was empty, but Maya left the lights on and set out six chairs. What does this suggest, and which detail supports your answer?',
    guide:'Maya is likely expecting people to arrive. The six chairs suggest that she is setting up for a group.',
@@ -66,6 +66,16 @@
   isScoreChange: event => isScoreChange(event, fractions),
   totalItems: fractions.totalItems,
   pendingCount: () => pending(fractions).length,
+ };
+ /* 20 Nov: every test with responses to score, for Overview, Scoring required by you. scoredEarlier stands for
+    responses scored before this prototype session, so each test shows real progress (1/4, 2/4, 3/4). */
+ window.capScoringQueue = {
+  tests: () => assessments.map(entry => {
+   const left = pending(entry).length;
+   const total = (entry.scoredEarlier || 0) + entry.responses.length;
+   return {id:entry.id, title:entry.title, classLabel:entry.classLabel, href:queueLink(entry), scored:total - left, total, left};
+  }).filter(test => test.left > 0),
+  isScoreChange: event => event.key === null || assessments.some(entry => event.key.startsWith(scorePrefixFor(entry))),
  };
 
  function mountQueue(list) {

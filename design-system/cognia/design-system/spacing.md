@@ -59,7 +59,8 @@ These values update automatically at each breakpoint. Do not override them.
 | Class | Use for |
 |---|---|
 | `shadow-sm` | Cards, subtle containers |
-| `shadow-md` | Dropdowns, tooltips, popovers |
+| `shadow-md` | Dropdowns, tooltips, popovers, a raised clickable card on hover |
+| `shadow-stack` | The top edge of each card in a Card stack (a soft upward shadow, `--shadow-stack`) |
 | `shadow-lg` | Modals, dialogs, drawers |
 | `shadow-xl` | Toasts |
 

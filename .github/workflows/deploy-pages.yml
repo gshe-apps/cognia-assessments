@@ -1,5 +1,5 @@
-# Publishes the wireframe prototype in project/ to GitHub Pages on every push to main
-# (the cognia-design plugin check is paused, see below).
+# Publishes the wireframe prototype in project/ to GitHub Pages on every push to main,
+# only after the cognia-design plugin check passes.
 # One-time setup: Settings > Pages > Build and deployment > Source: GitHub Actions.
 name: Deploy prototype to GitHub Pages
 
@@ -18,15 +18,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Paused 2 Nov 2026: the design check needs the COGNIA_DESIGN_PLUGIN_TOKEN secret, whose access to
-  # gshe-apps/cognia-design-plugin is waiting for organisation approval. Deploys go out without it for now.
-  # To turn the gate back on, restore the job below and add "needs: design-check" to the deploy job.
-  #
-  # design-check:
-  #   uses: ./.github/workflows/design-system-check.yml
-  #   secrets: inherit
+  # Runs from the plugin copy committed in design-system/cognia, so no token is needed.
+  design-check:
+    uses: ./.github/workflows/design-system-check.yml
 
   deploy:
+    needs: design-check
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -247,6 +247,8 @@ Cards group related content and actions into a single container.
 - Clickable cards use the 10% black overlay on hover and retain their default shadow treatment.
 - If the entire card is clickable, wrap it in a link — do not attach onClick to the card div.
 - Cards containing a graph must always use the ghost variant. No exceptions.
+- Raised clickable card (`a.card-link.card-link-raised`): shows `shadow-md` on hover in place of the overlay. Use it for tiles in a grid and for cards in a stack.
+- Card stack (`.card-stack`): clickable cards that overlap like a pile, each over the bottom of the one above (24px by default; set `--stack-overlap` from the spacing scale to cover more), with `--shadow-stack` (a soft upward shadow) marking each top edge. Keep the title and the main value in the visible part; the covered part holds secondary detail only. On hover or keyboard focus the card slides up by the overlap (transform, `duration-200`) to show what was covered, and any revealed actions appear.
 - The themed variant re-skins automatically when the product theme class changes.
 
 ```tsx
@@ -305,14 +307,14 @@ import { BarChart } from 'lucide-react'
 **Rules**
 - Use Lucide icons only, in every product and prototype. Never draw your own SVG icon, use another icon set, or use emoji or text symbols (such as →, ▲, ▼, ✓, ×) as icons. If Lucide has no fitting icon, ask the designer.
 - In HTML prototypes, paste the Lucide SVG unchanged: `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`, `stroke-width="2"`, round caps and joins, and `aria-hidden="true"` unless it is the only label.
-- Size an icon with `width` and `height` (or CSS), never by redrawing it. Never change the stroke width, in the markup or in CSS: every icon is 2.
-- Feather icons and SVGs exported from Figma look like Lucide but are not Lucide. Copy the icon from lucide.dev.
-- The design check matches every icon against `assets/lucide-icons.json`, the signatures of every Lucide icon, and fails on any icon that is not one of them.
+- Icons larger than 24px keep a 2px line, so they match the icons around them: use Lucide's absolute stroke width (`absoluteStrokeWidth` in code; in HTML set `stroke-width` to 48 divided by the size, so 1.5 at 32px).
 - Default icon colour is always `--muted-foreground`. Use `text-muted-foreground` on all icons unless a specific variant applies.
 - Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context.
 - Never hardcode a colour value for icons — always use a CSS variable.
 - Always pair icon-only controls with a tooltip.
 - Do not add a coloured background container to icons. The only permitted container background is `bg-white`, and only for the accent variant.
+- When the icon already sits on a white surface (a card), drop the container and colour the icon itself: `.icon-theme` in plain HTML, `text-[var(--accent-300)]` in code. A white box on a white card shows up as a patch when the card is hovered.
+- Status icons: an icon that marks a status (completed, needs review, failed, in progress) may use the status colour, `.icon-success`, `.icon-warning`, `.icon-destructive` or `.icon-info` (`text-success` and so on in code). Only next to text that states the same status, such as a "Results are in" heading, so colour is never the only cue.
 
 ---
 
@@ -443,7 +445,7 @@ Filter chips show the filters applied to a list, table or chart, and let the use
 
 **Cognia overlay**
 - Grey pill (`rounded-full bg-secondary`) on every surface, 32px high, no border, no shadow.
-- Label in Body Small (14px) regular, `--foreground`, then a remove button: Lucide `X` (14px) in a 24px round ghost button with `aria-label="Remove [label]"`.
+- Label in Body Small Strong (14px semibold), `--foreground`, then a remove button: Lucide `X` (14px) in a 24px round ghost button with `aria-label="Remove [label]"`.
 - 8px between chips; chips wrap onto new lines.
 
 **Rules**
@@ -454,7 +456,7 @@ Filter chips show the filters applied to a list, table or chart, and let the use
 
 ```tsx
 <div role="list" aria-label="Applied filters" className="flex flex-wrap gap-2">
-  <span role="listitem" className="inline-flex h-8 items-center gap-1 rounded-full bg-secondary pl-3 pr-1 text-body-small">
+  <span role="listitem" className="inline-flex h-8 items-center gap-1 rounded-full bg-secondary pl-3 pr-1 text-body-small font-semibold">
     Grade 5
     <Button variant="ghost" size="icon" className="size-6 rounded-full" aria-label="Remove Grade 5"><X className="size-3.5" /></Button>
   </span>
@@ -941,6 +943,7 @@ Skeletons show a placeholder while content is loading.
 
 **Rules**
 - Use a progress bar for processes with a known completion percentage.
+- Progress ring (`.progress-ring`): the same progress as a 40px ring, for a compact list row. shadcn has no ring, so this is a Cognia component: an SVG circle with a 3px stroke and round ends, drawn with `stroke-dasharray` so the line stays smooth at any size. The count sits inside in Body Small Strong ("3/4"). The arc uses the status colour for how far along it is: `--success` from 75%, `--warning` from 50%, `--destructive` below, on a `--secondary` track. Give it `role="img"` and an `aria-label` that says the count in words ("3 of 4 scored").
 - Use a spinner for processes with an unknown duration.
 - Always label the progress bar.
 
@@ -1239,6 +1242,11 @@ One box per character for one-time codes or session codes. Typing moves to the n
 ### Item
 
 A list row with media (icon or avatar), title, description and actions. Use for simple lists that are not tables. Variants: default, outline, muted. `<Item><ItemMedia /><ItemContent><ItemTitle /><ItemDescription /></ItemContent><ItemActions /></Item>`.
+
+- Icon media (`<ItemMedia variant="icon">`, `.item-media-icon`): a 40px tile in `--secondary` mixed 50% with `--card` (lighter than `bg-secondary`), 8px corners, behind a 24px Lucide icon in `--muted-foreground`. Use it when the icon stands for the row's object, such as a file.
+- Divided list (`.item-group-divided`, marked up with `role="list"` and `role="listitem"`): items with no surface of their own and a 1px `--border` line between them. This is the list exception to the no-grey-lines rule.
+- Revealed actions (`.item-actions-reveal`, in an Item or a clickable card): the action appears on hover or keyboard focus (opacity, `duration-200`), and always on touch screens. Use it only when the whole row is also a link to the same place, so the action is never the only way in.
+- Title and description are both Body Small (14px). Put context such as the class or grade in the description, not after a separator.
 
 ### Kbd
 

@@ -12,6 +12,8 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # deploy-pages@v4 looks up the uploaded site through the Actions API, which needs this.
+  actions: read
 
 concurrency:
   group: pages

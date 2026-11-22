@@ -19,7 +19,7 @@ for (const items of Object.values(window.capTeacherBankSamples)) {
 /* 17 Nov: one or more items for every item bank in the picker, so no bank is empty in Add your items.
    Cognia: Grade 4, 6 Maths and Grade 7, 8 ELA. My banks: Grade 4 warm-ups. Content specialist: Grade 7 and 8 reading. */
 window.capBankCoverageItems = [
- {id:'cov-g4-math-1', bank:'cognia', standard:'4.NF.B.3', dok:'1', stem:'Find the sum: 2/8 + 3/8.', options:['5/16','5/8','1/8','6/8'], correct:1},
+ {id:'cov-g4-math-1', bank:'cognia', standard:'4.NF.B.3', grades:[4,5], dok:'1', stem:'Find the sum: 2/8 + 3/8.', options:['5/16','5/8','1/8','6/8'], correct:1},
  {id:'cov-g4-math-2', bank:'cognia', standard:'4.NBT.B.5', dok:'1', stem:'Multiply: 23 × 4.', options:['82','92','27','96'], correct:1},
  {id:'cov-g5-ela-1', bank:'cognia', standard:'RI.5.1', dok:'2', stem:'The school added two bird feeders in March. By April, students had counted six new species. Which detail shows that students observed more kinds of birds?', options:['The school added feeders.','The feeders arrived in March.','Students counted six new species.','Students observed birds in April.'], correct:2},
  {id:'cov-g6-ela-1', bank:'cognia', standard:'RI.6.2', dok:'2', stem:'A town repaired its trail and added signs at each entrance. What is the central idea?', options:['The town improved the trail.','The signs are at the entrances.','The trail has an entrance.','Workers installed signs.'], correct:0},

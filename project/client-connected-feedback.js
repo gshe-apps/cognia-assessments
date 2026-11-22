@@ -9,20 +9,23 @@ document.addEventListener('DOMContentLoaded',()=>{
  const questionFilter={bank:'cognia',term:'',type:'All types',grade:'',subject:'',standard:'',dok:''};
  function filterQuestions(){
   const selectedType={'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[questionFilter.type]||questionFilter.type;
-  let count=0;
+  const standard=document.querySelector('[data-builder-standard]')?.value??questionFilter.standard;
+  const shownIds=new Set();
   for(const row of document.querySelectorAll('#libraryList .question-card')){
    const type=row.querySelector('.uc-bank-tags .tiny, .row .tiny')?.textContent||'';
    const stem=row.querySelector('h4')?.textContent.toLowerCase()||'';
    const {grade,subject}=window.capBuilderBankContext?.(row)||{};
-   const matches=(window.capBuilderBankMatch?window.capBuilderBankMatch(row):row.dataset.itemBank===questionFilter.bank)&&stem.includes(questionFilter.term)
+   const id=row.dataset.bankId;
+   const matches=!shownIds.has(id)&&(window.capBuilderBankMatch?window.capBuilderBankMatch(row):row.dataset.itemBank===questionFilter.bank)&&stem.includes(questionFilter.term)
     &&(selectedType==='All types'||type===selectedType)
     &&(!questionFilter.grade||questionFilter.grade===grade)
     &&(!questionFilter.subject||questionFilter.subject===subject)
-    &&(!questionFilter.standard||row.dataset.bankStandard===questionFilter.standard)
+    &&(!standard||row.dataset.bankStandard===standard)
     &&(!questionFilter.dok||'DOK '+row.dataset.bankDok===questionFilter.dok);
    row.hidden=!matches;
-   if(matches)count++;
+   if(matches)shownIds.add(id);
   }
+  const count=shownIds.size;
   const label=document.querySelector('.uc-bank-count');
   if(label)label.textContent=count+(count===1?' item':' items');
   const empty=document.querySelector('[data-bank-empty]');
@@ -30,7 +33,15 @@ document.addEventListener('DOMContentLoaded',()=>{
  }
  if(isQuestions)window.capFilterBuilderQuestions=filterQuestions;
  document.addEventListener('input',e=>{if(isQuestions&&e.target.id==='search'){questionFilter.term=e.target.value.toLowerCase();filterQuestions();}});
- document.addEventListener('change',e=>{const fields={bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'};if(isQuestions&&fields[e.target.id]){questionFilter[fields[e.target.id]]=e.target.value;filterQuestions();}if(isQuestions&&e.target.id==='typeFilter'){questionFilter.type=e.target.value;filterQuestions();}});
+ if(isQuestions)document.addEventListener('change',event=>{
+  const control=event.target;
+  const fields={bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok',typeFilter:'type'};
+  if(control.matches('[data-builder-standard]'))filterQuestions();
+  else if(fields[control.id]){
+   questionFilter[fields[control.id]]=control.value;
+   filterQuestions();
+  }
+ });
  if(isQuestions)document.addEventListener('click',e=>{
   const option=e.target.closest('[data-builder-bank]');
   if(!option)return;
@@ -275,6 +286,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const newTestIcon=svg('<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M9 15h6" /><path d="M12 18v-6" />');
   const chevron=svg('<path d="m9 18 6-6-6-6"/>');
   const check=svg('<path d="M20 6 9 17l-5-5" />');
+  const listIcon=svg('<path d="M3 5h.01" /><path d="M3 12h.01" /><path d="M3 19h.01" /><path d="M8 5h13" /><path d="M8 12h13" /><path d="M8 19h13" />');
   const subjectIcons={
    Mathematics:svg('<rect width="16" height="20" x="4" y="2" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" />'),
    English:svg('<path d="M12 5v16" /><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" />'),
@@ -305,8 +317,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     <p class="text-body-base text-muted-foreground">Choose a ready-to-use test for your assessment.</p>
    </header>
    <div class="al-layout">
-    <section class="al-browser" aria-labelledby="al-browse-title">
-     <h2 class="text-body-base font-semibold" id="al-browse-title">Ready-to-use tests <span id="form-count" role="status"></span></h2>
+    <section class="al-browser" aria-label="Ready-to-use tests">
      <div class="al-tools">
       <div class="search search-md" role="search">
        ${searchIcon.replace('<svg','<svg class="search-icon"')}
@@ -359,11 +370,36 @@ document.addEventListener('DOMContentLoaded',()=>{
       </div>
      </div>
     </header>
-    <div class="al-items">
-     ${items.map((item,index)=>{
+    ${items.length?`<div class="al-items">
+     <article class="card al-item-card" aria-labelledby="al-question-title">
+      <header class="card-header al-item-heading">
+       <h3 class="text-heading font-semibold" id="al-question-title" data-stem></h3>
+       <nav class="al-item-pager" aria-label="Question navigation">
+        <button class="btn btn-ghost btn-icon btn-sm" type="button" data-al-previous aria-label="Previous question">${chevronLeft}</button>
+        <span class="text-body-small font-semibold" data-al-position role="status"></span>
+        <button class="btn btn-ghost btn-icon btn-sm" type="button" data-al-next aria-label="Next question">${chevron}</button>
+       </nav>
+      </header>
+      <div class="card-content al-item-content"></div>
+      <footer class="card-footer al-item-footer"></footer>
+     </article>
+    </div>`:''}`;
+   if(items.length){
+    const title=panel.querySelector('#al-question-title');
+    const previous=panel.querySelector('[data-al-previous]');
+    const next=panel.querySelector('[data-al-next]');
+    const position=panel.querySelector('[data-al-position]');
+    const content=panel.querySelector('.al-item-content');
+    const footer=panel.querySelector('.al-item-footer');
+    let index=0;
+    const showItem=()=>{
+      const item=items[index];
       const standard=item.standard||form.standard;
-      const metadata=`${escape(formatOf(item))} worth ${pointCount(Number(item.marks||0))}`;
-      const options=item.options?.length?`
+      title.textContent=item.stem;
+      position.textContent=`${index+1} of ${items.length}`;
+      previous.setAttribute('aria-disabled',String(index===0));
+      next.setAttribute('aria-disabled',String(index===items.length-1));
+      content.innerHTML=item.options?.length?`
        <ul class="ib-opts" aria-label="Answer options">
         ${item.options.map((option,i)=>{
          const correct=(Array.isArray(item.correct)?item.correct:[item.correct]).includes(i);
@@ -373,21 +409,16 @@ document.addEventListener('DOMContentLoaded',()=>{
          </li>`;
         }).join('')}
        </ul>`:`<p class="text-body-small text-muted-foreground">${escape(item.sampleAnswer||answer(item))}</p>`;
-      return `<details class="card accordion-item al-item-card" name="library-items"${index===0?' open':''}>
-       <summary class="accordion-trigger"><span class="al-item-heading">
-        <span data-stem>${escape(item.stem)}</span>
-        <span class="al-item-summary-meta text-body-small text-muted-foreground font-normal">${metadata}</span>
-       </span></summary>
-       <div class="accordion-content al-item-content">
-        ${options}
-        <div class="al-item-footer">
-         ${standard?`<span class="badge badge-warning">Standard ${escape(standard)}</span>`:''}
-         <span class="text-body-small text-muted-foreground">${metadata}</span>
-        </div>
-       </div>
-      </details>`;
-     }).join('')}
-    </div>`;
+      footer.innerHTML=`${standard?`<span class="badge badge-warning">Standard ${escape(standard)}</span>`:''}
+       <div class="al-item-metadata">
+        <span class="badge badge-secondary">${listIcon}${escape(formatOf(item))}</span>
+        <span class="badge badge-secondary">${pointCount(Number(item.marks||0))}</span>
+       </div>`;
+    };
+    previous.onclick=()=>{if(index>0){index--;showItem();}};
+    next.onclick=()=>{if(index<items.length-1){index++;showItem();}};
+    showItem();
+   }
    mountLibraryDraftMenu(form.id,panel.querySelector('.al-use-test'));
   }
   function draw(){
@@ -400,7 +431,6 @@ document.addEventListener('DOMContentLoaded',()=>{
    else matches.sort((a,b)=>(usage[b.id]||0)-(usage[a.id]||0));
    const selected=matches.find(form=>form.id===libState.selected)||matches[0];
    libState.selected=selected?.id||null;
-   $('#form-count').textContent='('+matches.length+')';
    $('#form-results').innerHTML=matches.length?matches.map(form=>`
     <li><button class="item al-test" type="button" data-al-select="${escape(form.id)}" aria-controls="al-detail" aria-current="${form===selected}">
      <span class="item-media icon-accent">${subjectIcons[form.subject]||icon}</span>
@@ -474,7 +504,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   if(isQuestions){const hint=document.querySelector('.panelhead p');if(hint)hint.textContent='Start with existing Cognia items. Write or generate questions to fill gaps.';document.querySelectorAll('.selected-q').forEach((el,i)=>{el.querySelector('.client-item-state')?.remove();const t=m?.tests.find(t=>t.id===m.active),q=t?.questions?.[i];if(!q)return;const rec=records[t.id+'/'+q.id],badge=document.createElement('span');badge.className='client-item-state badge badge-'+(rec?.status==='approved'?'success':'secondary');badge.textContent=required(t,q)?`${rec?.status==='approved'?'Approved':'Review required'} (v${rec?.version||1})`:'Approved Cognia item';el.append(badge);});}
   if(isQuestions||isReview)document.querySelector('.assessment-test-list>.test-list-heading>a')?.remove();
-  if(isQuestions){const search=document.getElementById('search'),type=document.getElementById('typeFilter');if(search)search.value=questionFilter.term;if(type)type.value=questionFilter.type;for(const [id,key] of Object.entries({bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'})){const field=document.getElementById(id);if(field)field.value=questionFilter[key];}filterQuestions();}
+  if(isQuestions){const search=document.getElementById('search'),type=document.getElementById('typeFilter');if(search)search.value=questionFilter.term;if(type)type.value=questionFilter.type;for(const [id,key] of Object.entries({bankGrade:'grade',bankSubject:'subject',bankStandard:'standard',bankDok:'dok'})){const field=document.getElementById(id);if(field&&!field.hasAttribute('data-builder-standard'))field.value=questionFilter[key];}filterQuestions();}
   if(m?.active)document.querySelectorAll('.stepper a[href="CAP-T05-Questions.dc.html"],.actionbar a[href="CAP-T05-Questions.dc.html"]').forEach(a=>a.href=m.tests.find(t=>t.id===m.active)?.page||a.href);
   if(page==='CAP-T20-Interim.dc.html'){const content=document.querySelector('main');if(content)content.innerHTML='<div class="page"><div class="head"><div><h1>Interim Assessments</h1><p>Teachers administer assessments made available by their school or district. Interim creation is an administrator task.</p></div></div><p>No purchased interim catalogue has been configured in this local preview.</p><a class="btn ghost btn-ghost btn-lg" href="CAP-T01-Overview.dc.html">Back to classroom assessments <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg></a></div>';}
   if(isReview)document.getElementById('client-item-review')?.remove();

@@ -29,11 +29,6 @@
     badge.lastElementChild.textContent=dok;
     row.prepend(badge);
    }
-   if(row.dataset.bankStandard&&!tags.querySelector('.bank-row-standard')){
-    const standard=make('<span class="bank-row-standard text-body-small text-muted-foreground"></span>');
-    standard.textContent=row.dataset.bankStandard;
-    tags.append(standard);
-   }
   });
   const page=document.querySelector('main>.page'),methods=page?.querySelector('.qc-methods');if(!methods||page.querySelector('.uc-setup-intro'))return;
   observer.disconnect();page.classList.add('uc-page');document.body.classList.add('unified-create-screen');document.body.classList.remove('cap-monochrome');
@@ -61,6 +56,7 @@
   let settings=useClientSample?{...t,title:'New classroom test',standard:'5.NF.A.2'}:addedTest?{...t,testName:t.title,assessmentSettings:m.settings}:{...t,title:m.title||t.title,testName:t.title,assessmentSettings:m.settings};
   let ready=sessionStorage.getItem(readyKey)===signature(settings);
   let syncBankScope=()=>{};
+  let syncSetupFilters=()=>{};
   const setup=create({
    showAssessmentTitle:!addedTest,
    host:page.closest('.theme-assessments'),
@@ -79,6 +75,7 @@
    sessionStorage.setItem(readyKey,signature(addedTest?{...next,title:patch.title}:next));
    ready=true;syncGate();
    syncBankScope();
+   syncSetupFilters();
    inst.refreshQuestionBoard?.();
    if(next.pathway===libraryPath){location.href='CAP-T21-AssessmentLibrary.dc.html';return}
    const destination=itemPage(next);
@@ -137,61 +134,86 @@
   });
   library.querySelector('.approved-bank-heading')?.after(toolbar);if(!toolbar.isConnected)library.prepend(toolbar);
   const removeIcon=icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
-  const itemSummary=make('<div class="uc-item-summary"></div>');
+  const itemSummary=make('<div class="uc-item-summary" hidden><div class="chip-list uc-item-filter-chips" role="group" aria-label="Active filters"></div><button class="btn btn-ghost btn-sm" type="button" data-clear-item-filters>Clear all</button></div>');
+  let activeBankGrades=()=>[];
+  let removeBankGrades=()=>{};
+  let renderFilters=()=>{};
   // Bank selection filters the library without changing the items already in the test.
   const picker=window.capBankPicker;
   if(picker){
    const bankKey='cogniaBuilderBank:'+t.id;
    const banks=picker.builderCollections;
    const banksById=new Map(banks.map(bank=>[bank.id,bank]));
-   const cogniaBanks=banks.filter(bank=>bank.group==='cognia');
-   const gradeOf=bank=>bank.match[0].split(' ')[1];
-   const subjectOf=bank=>bank.match[0].endsWith(' ELA')?'ELA':'Mathematics';
-   const scopeKey=()=>settings.grade+':'+settings.subject;
-   const defaultBank=()=>cogniaBanks.find(bank=>gradeOf(bank)===String(settings.grade)
-    &&subjectOf(bank)===(settings.subject==='English'?'ELA':'Mathematics'))?.id||'';
-   const defaultSelection=()=>[defaultBank()].filter(Boolean);
+   const scopeKey=()=>`${settings.grade}:${settings.subject}`;
+   const defaultBank=()=>banks.find(bank=>bank.group==='cognia'&&bank.subject===settings.subject)?.id;
+   const defaultSelection=()=>[defaultBank()].filter(Boolean).map(id=>`${id}:${settings.grade}`);
    let setupScope=scopeKey();
    let selected=new Set(defaultSelection());
    try {
     const saved=JSON.parse(sessionStorage.getItem(bankKey));
-    if(saved?.scope===setupScope){
+    if(saved?.scope===setupScope&&Array.isArray(saved.grades)){
+     selected=new Set(saved.grades.filter(value=>{
+      const [bank,grade]=String(value).split(':');
+      return banksById.has(bank)&&/^[4-8]$/.test(grade);
+     }));
+    }else if(saved?.scope===setupScope||saved?.scope===settings.subject){
      const ids=Array.isArray(saved.ids)?saved.ids:saved.id===''?[]:[saved.id];
-     const valid=ids.filter(id=>banksById.has(id));
-     if(valid.length||!ids.length)selected=new Set(valid);
+     const valid=ids.map(id=>{
+      if(banksById.has(id))return id;
+      const oldBank=picker.banks.find(bank=>bank.id===id&&bank.match);
+      if(!oldBank)return;
+      const subject=oldBank.match[0].endsWith(' ELA')?'English':'Mathematics';
+      return banks.find(bank=>bank.group===oldBank.group&&bank.subject===subject)?.id;
+     }).filter(Boolean);
+     if(valid.length)selected=new Set(valid.map(id=>`${id}:${settings.grade}`));
     }
    } catch {}
 
    const rowGroups={cognia:'cognia',mine:'teacher',specialist:'specialist'};
+   const itemsById=new Map(inst.bankItems().map(item=>[item.id,item]));
    const itemContext=row=>{
     const standard=row.dataset.bankStandard||'';
     const match=standard.match(/^(?:([A-Z]+)\.)?(\d+)\./);
+    const item=itemsById.get(row.dataset.bankId);
+    const grade=match?.[2]||String(settings.grade);
     return {
-     grade:match?.[2]||String(settings.grade),
-     subject:match?(match[1]?'English':'Mathematics'):settings.subject
+     grade,
+     grades:item?.grades?.length?item.grades.map(String):[grade],
+     subject:item?.subject||(match?(match[1]?'English':'Mathematics'):settings.subject)
     };
    };
-   const matchesBank=(row,bank)=>{
-    if(row.dataset.itemBank!==rowGroups[bank.group])return false;
-    const {grade,subject}=itemContext(row);
-    const itemScope='Grade '+grade+(subject==='English'?' ELA':' Maths');
-    return bank.match.includes(itemScope);
+   const bankFor=(row,subject)=>banks.find(bank=>row.dataset.itemBank===rowGroups[bank.group]&&subject===bank.subject);
+   window.capBuilderBankMatch=row=>{
+    const {subject,grades}=itemContext(row);
+    const bank=bankFor(row,subject);
+    return bank&&grades.some(grade=>selected.has(`${bank.id}:${grade}`));
    };
-   const matchingBank=row=>[...selected].map(id=>banksById.get(id)).find(bank=>matchesBank(row,bank));
-   window.capBuilderBankMatch=row=>selected.size?Boolean(matchingBank(row)):row.dataset.itemBank==='cognia';
-   window.capBuilderBankContext=row=>({...itemContext(row),bank:matchingBank(row)?.name||picker.banks[0].name});
+   window.capBuilderBankContext=row=>{
+    const context=itemContext(row);
+    return {...context,bank:bankFor(row,context.subject)?.name};
+   };
 
    const dropdown=picker.createDropdown({
     banks,
     selected,
     canOpen:()=>ready,
-    countFor:bank=>[...library.querySelectorAll('#libraryList .question-card')].filter(row=>matchesBank(row,bank)).length,
     onChange:saveSelection,
    });
    function saveSelection(){
-    try{sessionStorage.setItem(bankKey,JSON.stringify({scope:setupScope,ids:[...selected]}));}catch {}
+    try{sessionStorage.setItem(bankKey,JSON.stringify({scope:setupScope,grades:[...selected]}));}catch {}
     window.capFilterBuilderQuestions?.();
+    renderFilters();
    }
+   activeBankGrades=()=>[...selected].map(key=>{
+    const [id,grade]=key.split(':');
+    return {key,label:`${dropdown.selectionLabel(id)}, Grade ${grade}`};
+   });
+   removeBankGrades=ids=>{
+    if(!ids.length)return;
+    ids.forEach(id=>selected.delete(id));
+    dropdown.refresh();
+    saveSelection();
+   };
    syncBankScope=()=>{
     if(setupScope===scopeKey())return;
     setupScope=scopeKey();
@@ -204,9 +226,8 @@
     if(event.target.closest('[data-qc-method]'))dropdown.close();
    });
    library.prepend(dropdown.field);
-   itemSummary.append(dropdown.selection);
   }
-  library.querySelector('#libraryList').after(make('<div class="empty-state" data-bank-empty role="status" hidden><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No items match</p><p>Try another search, or change the item banks or filters.</p></div>'));
+  library.querySelector('#libraryList').after(make('<div class="empty-state" data-bank-empty role="status" hidden><span class="empty-media" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><p class="empty-title">No items match</p><p data-bank-empty-hint></p></div>'));
   library.querySelector('#typeFilter')?.querySelectorAll('option').forEach(o=>{if(o.textContent==='Choice')o.textContent='Multiple choice';if(o.textContent==='Text entry')o.textContent='Short answer';if(o.textContent==='Extended text')o.textContent='Extended response'});
   const bankHeading=library.querySelector('.approved-bank-heading')||make('<div class="approved-bank-heading"><h2></h2></div>');
   bankHeading.querySelector('h2').textContent='Find and add items';
@@ -231,26 +252,16 @@
    filterFields.append(...filters.children);
    filters.remove();
   });
-  const gradeFilter=filterFields.querySelector('#bankGrade');
-  const subjectFilter=filterFields.querySelector('#bankSubject');
+  filterFields.querySelector('#bankGrade')?.closest('.select-wrap')?.remove();
+  filterFields.querySelector('#bankSubject')?.closest('.select-wrap')?.remove();
   const standardFilter=filterFields.querySelector('#bankStandard');
-  for(const field of [gradeFilter,subjectFilter]){
-   if(field)field.selectedIndex=0;
-  }
-  if(gradeFilter&&!Array.from(gradeFilter.options).some(option=>option.value==='7')){
-   gradeFilter.add(new Option('Grade 7','7'),gradeFilter.querySelector('[value="8"]'));
-  }
-  if(standardFilter){
-   const standards=[...new Set(inst.renderVals().bank.map(item=>item.standard).filter(Boolean))].sort();
-   standardFilter.replaceChildren(new Option('All standards',''),...standards.map(code=>new Option(code,code)));
-  }
-  const count=make('<p class="uc-bank-count text-body-small text-muted-foreground" role="status"></p>');
-  itemSummary.prepend(count);toolbar.prepend(itemSummary);
+  const bankField=library.querySelector('.uc-bank-field');
+  if(standardFilter)standardFilter.dataset.builderStandard='';
+  toolbar.prepend(itemSummary,make('<p class="uc-bank-count sr-only" role="status"></p>'));
   filterFields.prepend(searchBox);
   /* Only real filter controls in the popover: no empty select wraps (stray chevrons) or info badges. */
   filterFields.querySelectorAll('.select-wrap').forEach(wrap=>{if(!wrap.querySelector('select'))wrap.remove()});
   filterFields.querySelectorAll(':scope > .badge').forEach(badge=>badge.remove());
-  const bankField=library.querySelector('.uc-bank-field');
   (bankField||toolbar).append(extraFilters);
   if(bankField){
    const filterTrigger=extraFilters.querySelector('summary');
@@ -263,26 +274,99 @@
     extraFilters.open=false;
     filterTrigger.focus();
    });
-   const filterChips=make('<div class="chip-list uc-item-filter-chips" role="group" aria-label="Item filters" hidden></div>');
-   itemSummary.append(filterChips);
+   const filterChips=itemSummary.querySelector('.chip-list');
    const selects=[...filterFields.querySelectorAll('select')];
-   const defaults=new Map(selects.map(select=>[select,select.value]));
-   const renderFilters=()=>{
-    const active=selects.filter(select=>select.value&&select.value!==defaults.get(select));
-    filterChips.hidden=!active.length;
-    filterChips.innerHTML=active.map(select=>{
-     const label=select.selectedOptions[0].textContent;
-     return `<span class="chip">${esc(label)}<button class="chip-remove" type="button" data-remove-filter="${esc(select.id)}" aria-label="Remove filter: ${esc(label)}">${removeIcon}</button></span>`;
-    }).join('');
+   const panelFilters=()=>[
+    ...selects.filter(select=>select.value&&select.selectedIndex>0).map(select=>({control:select,key:select.id,label:select.selectedOptions[0].textContent})),
+    ...(search.value.trim()?[{control:search,key:search.id,label:`Search: ${search.value.trim()}`}]:[])
+   ];
+   const activeFilters=(panel=panelFilters())=>[
+    ...activeBankGrades(),
+    ...panel
+   ];
+   const fitFilterChips=()=>{
+    const available=filterChips.clientWidth;
+    if(!available)return;
+    const chips=[...filterChips.querySelectorAll('[data-filter-chip]')];
+    const overflow=filterChips.querySelector('[data-filter-overflow]');
+    if(!overflow)return;
+    const counter=overflow.querySelector('[aria-hidden]');
+    const description=overflow.querySelector('.sr-only');
+    chips.forEach(chip=>{chip.hidden=false;});
+    overflow.hidden=false;
+    counter.textContent=`+${chips.length}`;
+    const gap=parseFloat(getComputedStyle(filterChips).columnGap);
+    const widths=chips.map(chip=>chip.getBoundingClientRect().width);
+    const total=widths.reduce((sum,width)=>sum+width,0)+gap*(chips.length-1);
+    if(total<=available){
+     overflow.hidden=true;
+     return;
+    }
+    let used=overflow.getBoundingClientRect().width;
+    let visible=0;
+    for(const width of widths){
+     if(used+gap+width>available)break;
+     used+=gap+width;
+     visible++;
+    }
+    const extra=chips.slice(visible);
+    extra.forEach(chip=>{chip.hidden=true;});
+    const labels=extra.map(chip=>chip.title).join(', ');
+    counter.textContent=`+${extra.length}`;
+    overflow.title=labels;
+    description.textContent=`${extra.length} more active ${extra.length===1?'filter':'filters'}: ${labels}`;
    };
+   const filterResize=new ResizeObserver(fitFilterChips);
+   filterResize.observe(filterChips);
+   renderFilters=()=>{
+    const panel=panelFilters();
+    const active=activeFilters(panel);
+    const activeCount=panel.length;
+    itemSummary.hidden=!active.length;
+    library.querySelector('[data-bank-empty-hint]').textContent=active.some(filter=>!filter.control)?
+     'Try another search, or change the filters.':'Open an item bank and select a grade to see its items.';
+    filterTrigger.toggleAttribute('data-filters-active',activeCount>0);
+    filterTrigger.setAttribute('aria-label',activeCount?`Filters (${activeCount} active)`:'Filters');
+    filterChips.innerHTML=active.map(({key,label})=>
+     `<span class="chip" data-filter-chip title="${esc(label)}"><span class="uc-bank-chip-name">${esc(label)}</span><button class="chip-remove" type="button" data-remove-filter="${esc(key)}" aria-label="Remove filter: ${esc(label)}">${removeIcon}</button></span>`
+    ).join('')+(active.length?'<span class="chip" data-filter-overflow hidden><span aria-hidden="true"></span><span class="sr-only"></span></span>':'');
+    fitFilterChips();
+   };
+   let lastSetupScope;
+   syncSetupFilters=()=>{
+    const currentScope=JSON.stringify([settings.subject,settings.grade,settings.standard]);
+    if(lastSetupScope===currentScope)return;
+    lastSetupScope=currentScope;
+    if(standardFilter){
+     const standards=[...new Set([...inst.renderVals().bank.map(item=>item.standard),settings.standard].filter(Boolean))].sort();
+     standardFilter.replaceChildren(new Option('All standards',''),...standards.map(code=>new Option(code,code)));
+     standardFilter.value=settings.standard||'';
+    }
+    renderFilters();
+    window.capFilterBuilderQuestions?.();
+   };
+   syncSetupFilters();
    filterFields.addEventListener('change',renderFilters);
-   filterChips.addEventListener('click',event=>{
+   search.addEventListener('input',renderFilters);
+   itemSummary.addEventListener('click',event=>{
     const remove=event.target.closest('[data-remove-filter]');
-    if(!remove)return;
-    const select=selects.find(control=>control.id===remove.dataset.removeFilter);
-    select.selectedIndex=0;
-    select.dispatchEvent(new Event('change',{bubbles:true}));
-    (filterChips.querySelector('.chip-remove')||filterTrigger).focus();
+    const clear=event.target.closest('[data-clear-item-filters]');
+    if(!remove&&!clear)return;
+    const active=activeFilters();
+    const index=remove?active.findIndex(({key})=>key===remove.dataset.removeFilter):0;
+    const removals=clear?active:active.slice(index,index+1);
+    removeBankGrades(removals.filter(filter=>!filter.control).map(filter=>filter.key));
+    for(const {control} of removals.filter(filter=>filter.control)){
+     if(control===search){
+      search.value='';
+      search.dispatchEvent(new Event('input',{bubbles:true}));
+      continue;
+     }
+     else control.selectedIndex=0;
+     control.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    const remaining=filterChips.querySelectorAll('[data-filter-chip]:not([hidden]) .chip-remove');
+    (remaining[Math.min(index,remaining.length-1)]||filterTrigger).focus();
    });
   }
   window.capFilterBuilderQuestions?.();

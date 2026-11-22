@@ -21,13 +21,23 @@
   ];
   const collections=BANKS.filter(bank=>bank.match);
   const banksById=new Map(collections.map(bank=>[bank.id,bank]));
-  const builderCollections=collections.filter(bank=>!bank.libraryOnly);
+  const builderCollections = [
+    {id:'cognia-math', group:'cognia', name:'Mathematics', subject:'Mathematics'},
+    {id:'cognia-ela', group:'cognia', name:'English language arts', subject:'English'},
+    {id:'mine-math', group:'mine', name:'Mathematics', subject:'Mathematics'},
+    {id:'mine-ela', group:'mine', name:'English language arts', subject:'English'},
+    {id:'specialist-ela', group:'specialist', name:'English language arts', subject:'English'}
+  ];
   const gradeOf=bank=>bank.match[0].split(' ')[1];
   const subjectOf=bank=>bank.match[0].endsWith(' ELA')?'ELA':'Mathematics';
 
   function createDropdown({banks=collections,selected,countFor,onChange,canOpen=()=>true,libraryView=false}){
+   const optionsById=new Map(banks.map(bank=>[bank.id,bank]));
+   const selectionLabel=id=>{
+    const {name,group}=optionsById.get(id);
+    return libraryView?name:`${GROUPS.find(([key])=>key===group)[1]}: ${name}`;
+   };
    const cogniaBanks=banks.filter(bank=>bank.group==='cognia');
-   const grades=[...new Set(cogniaBanks.map(gradeOf))].sort((a,b)=>Number(a)-Number(b));
    const removeIcon=icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
    const chevron=icon('<path d="m6 9 6 6 6-6"/>');
    const right=icon('<path d="m9 18 6-6-6-6"/>');
@@ -37,17 +47,29 @@
    const addBankIcon=icon('<path d="M5 12h14" /><path d="M12 5v14" />');
    const removeBankIcon=icon('<path d="M5 12h14"/>');
    const searchIcon=icon('<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />');
-   const option=(bank,label)=>`
-    <button class="command-item" type="button" aria-pressed="false" data-bank-option="${esc(bank.id)}">
-     ${folder}<span class="uc-bank-option-label"><span class="font-semibold" data-bank-label>${esc(label)}</span><span class="text-body-small text-muted-foreground font-normal" data-bank-count aria-hidden="true"></span></span><span class="uc-bank-trailing"></span>
-    </button>`;
+   const option=(bank,label)=>{
+    const labelMarkup=`${folder}<span class="uc-bank-option-label"><span class="font-semibold" data-bank-label>${esc(label)}</span>${libraryView?'<span class="text-body-small text-muted-foreground font-normal" data-bank-count aria-hidden="true"></span>':''}</span>`;
+    return libraryView?`
+     <button class="command-item" type="button" aria-pressed="false" data-bank-option="${esc(bank.id)}" data-bank-entry="${esc(bank.id)}">
+      ${labelMarkup}<span class="uc-bank-trailing"></span>
+     </button>`:`
+     <details class="collapsible uc-bank-subject-folder" name="uc-bank-subjects" data-bank-entry="${esc(bank.id)}">
+      <summary class="collapsible-trigger command-item">${labelMarkup}<span class="uc-bank-trailing">${right}</span></summary>
+      <div class="field uc-bank-grades" role="group" aria-label="${esc(label)} grades">
+       ${['4','5','6','7','8'].map(grade=>`<label class="check text-body-small"><input type="checkbox" class="checkbox" data-bank-grade="${grade}" value="${esc(bank.id)}:${grade}">Grade ${grade}</label>`).join('')}
+      </div>
+     </details>`;
+   };
    const branch=(label,symbol,options,gradeFolder=false)=>`
     <details class="collapsible uc-bank-branch" data-bank-branch${gradeFolder?' name="uc-bank-grades"':''}>
      <summary class="collapsible-trigger command-item">${symbol}<span>${esc(label)}</span><span class="uc-bank-trailing">${right}</span></summary>
      <div class="uc-bank-children">${options.join('')}</div>
     </details>`;
-   const cogniaGrades=grades.map(grade=>branch('Grade '+grade,folder,cogniaBanks.filter(bank=>gradeOf(bank)===grade).map(bank=>option(bank,subjectOf(bank))),true)).join('');
-   const searchLabel=libraryView?'Search banks and folders':'Search item banks / collections';
+   const cogniaOptions=libraryView
+    ?[...new Set(cogniaBanks.map(gradeOf))].sort((a,b)=>Number(a)-Number(b)).map(grade=>
+     branch('Grade '+grade,folder,cogniaBanks.filter(bank=>gradeOf(bank)===grade).map(bank=>option(bank,subjectOf(bank))),true)).join('')
+    :branch('Cognia banks',folder,cogniaBanks.map(bank=>option(bank,bank.name)));
+   const searchLabel=libraryView?'Search banks and folders':'Search item banks';
    const field=element(`
     <div class="field uc-bank-field">
      <div class="uc-bank-picker command">
@@ -61,11 +83,8 @@
        <div class="command-list">
         ${libraryView?`<details class="collapsible command-group uc-cognia-banks" open>
          <summary class="collapsible-trigger command-item">${folder}<span class="font-semibold">Cognia banks</span><span class="uc-bank-trailing">${right}</span></summary>
-         <div class="uc-bank-children">${cogniaGrades}</div>
-        </details>`:`<div class="command-group uc-cognia-banks">
-         <div class="command-group-heading text-foreground">Cognia banks</div>
-         ${cogniaGrades}
-        </div>`}
+         <div class="uc-bank-children">${cogniaOptions}</div>
+        </details>`:`<div class="command-group uc-cognia-banks">${cogniaOptions}</div>`}
         ${GROUPS.filter(([group])=>group!=='cognia').map(([group,label])=>
          `<hr class="separator">${branch(label,group==='mine'?person:people,banks.filter(bank=>bank.group===group).map(bank=>option(bank,bank.name)))}`).join('')}
         <p class="command-empty" role="status" hidden>No item banks match.</p>
@@ -80,16 +99,19 @@
    const selection=element('<div class="chip-list uc-bank-selection" role="group" aria-label="Selected item banks"></div>');
    const branches=[...bankPopover.querySelectorAll('[data-bank-branch]')];
    const options=[...bankPopover.querySelectorAll('[data-bank-option]')];
+   const gradeOptions=[...bankPopover.querySelectorAll('[data-bank-grade]')];
    const updateBankCounts=()=>{
     for(const option of options){
-     const bank=banksById.get(option.dataset.bankOption);
+     const bank=optionsById.get(option.dataset.bankOption);
      const count=countFor(bank);
      option.querySelector('[data-bank-count]').textContent=`(${count})`;
      option.setAttribute('aria-label',`${bank.name}, ${count} ${count===1?'item':'items'}`);
     }
    };
    const openSelectedBranch=()=>{
-    const activeBranch=options.find(option=>selected.has(option.dataset.bankOption))?.closest('[data-bank-branch]');
+    const activeOption=libraryView?options.find(option=>selected.has(option.dataset.bankOption)):
+     gradeOptions.find(option=>selected.has(option.value))||gradeOptions[0];
+    const activeBranch=activeOption?.closest('[data-bank-branch]');
     branches.forEach(branch=>{branch.open=branch===activeBranch;});
    };
    const filterBanks=()=>{
@@ -98,11 +120,11 @@
     for(const branch of branches){
      const label=branch.querySelector('summary').textContent.trim();
      let branchMatches=false;
-     for(const option of branch.querySelectorAll('[data-bank-option]')){
-      const bank=banksById.get(option.dataset.bankOption);
-      const name=label+' '+bank.name+' '+option.querySelector('[data-bank-label]').textContent+(bank.group==='cognia'?' Cognia banks':'');
-      option.hidden=!terms.every(term=>name.toLowerCase().includes(term));
-      branchMatches||=!option.hidden;
+     for(const entry of branch.querySelectorAll('[data-bank-entry]')){
+      const bank=optionsById.get(entry.dataset.bankEntry);
+      const name=label+' '+bank.name+' '+entry.querySelector('[data-bank-label]').textContent+(bank.group==='cognia'?' Cognia banks':'');
+      entry.hidden=!terms.every(term=>name.toLowerCase().includes(term));
+      branchMatches||=!entry.hidden;
      }
      branch.hidden=!branchMatches;
      if(terms.length&&(!branchMatches||!branch.name))branch.open=branchMatches;
@@ -163,16 +185,21 @@
     if(!field.querySelector('.uc-bank-picker').contains(event.target)&&!bankPopover.hidden)setPickerOpen(false);
    });
    const renderSelection=()=>{
+    if(!libraryView){
+     gradeOptions.forEach(option=>{option.checked=selected.has(option.value);});
+     return;
+    }
     for(const option of options){
      const active=selected.has(option.dataset.bankOption);
      option.setAttribute('aria-pressed',String(active));
      option.title=active?'Remove bank':'Add bank';
      option.querySelector('.uc-bank-trailing').innerHTML=active?removeBankIcon:addBankIcon;
     }
-    selection.hidden=libraryView?selected.size<2:!selected.size;
-    selection.innerHTML=[...selected].map(id=>banksById.get(id)).map(bank=>`
-     <span class="chip" title="${esc(bank.name)}"><span class="uc-bank-chip-name">${esc(bank.name)}</span><button class="chip-remove" type="button" data-remove-bank="${esc(bank.id)}" aria-label="Remove bank: ${esc(bank.name)}">${removeIcon}</button></span>
-    `).join('');
+    selection.hidden=selected.size<2;
+    selection.innerHTML=[...selected].map(id=>{
+     const label=selectionLabel(id);
+     return `<span class="chip" title="${esc(label)}"><span class="uc-bank-chip-name">${esc(label)}</span><button class="chip-remove" type="button" data-remove-bank="${esc(id)}" aria-label="Remove bank: ${esc(label)}">${removeIcon}</button></span>`;
+    }).join('');
    };
    const updateSelection=()=>{
     renderSelection();
@@ -185,6 +212,13 @@
     if(!selected.delete(id))selected.add(id);
     updateSelection();
    });
+   bankPopover.addEventListener('change',event=>{
+    const option=event.target;
+    if(!option.matches('[data-bank-grade]'))return;
+    if(option.checked)selected.add(option.value);
+    else selected.delete(option.value);
+    onChange();
+   });
    selection.addEventListener('click',event=>{
     const remove=event.target.closest('[data-remove-bank]');
     if(!remove)return;
@@ -194,7 +228,7 @@
    });
    openSelectedBranch();
    renderSelection();
-   return {field,selection,close:()=>setPickerOpen(false),refresh:()=>{
+   return {field,selection,selectionLabel,close:()=>setPickerOpen(false),refresh:()=>{
     openSelectedBranch();
     renderSelection();
     if(!bankPopover.hidden)updateBankCounts();

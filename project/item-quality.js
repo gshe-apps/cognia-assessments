@@ -598,7 +598,7 @@
      ${opts ? `<div class="cie-option-list" role="list" aria-label="Answer options">${opts}</div>` : ''}
      ${q.explanation ? `<div class="field"><span class="label">Explanation</span><p class="text-body-small">${esc(q.explanation)}</p></div>` : ''}
      <div class="uc-ip-cards">
-      ${code ? `<button type="button" class="item item-muted uc-ip-card" data-ip-standard aria-label="Standard ${esc(code)}. View standard details"><span class="item-content"><span class="item-description">Standard</span><span class="item-title">${esc(code)}</span></span><span class="item-actions">${icon('chevronRight')}</span></button>` : ''}
+      ${code ? `<button type="button" class="item btn-ghost uc-ip-card" data-ip-standard aria-label="Standard ${esc(code)}. View standard details"><span class="item-content"><span class="item-description">Standard</span><span class="item-title"><span class="badge badge-secondary">${esc(code)}${icon('chevronRight')}</span></span></span></button>` : ''}
       ${card('DOK', 'DOK ' + dok)}
       ${card('Points', q.marks || 1)}
       ${card('Question type', type)}

@@ -52,8 +52,9 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
   <ul class="ib-items ib-preview-list" aria-label="Bank items">
    <sc-for list="{{ibItems}}" as="it" hint-placeholder-count="8"><li class="ib-row">
     <button type="button" class="item ib-preview-row" aria-current="{{it.cur}}" onClick="{{it.pick}}">
+     <span class="{{it.dokCls}}" aria-label="{{it.dokText}}"><span>DOK</span><span>{{it.dokLevel}}</span></span>
      <span class="item-content"><span class="text-body-base font-semibold ib-item-stem ib-preview-stem" data-stem>{{it.stem}}</span>
-      <span class="item-description cap-meta"><span class="badge badge-secondary">{{it.type}}</span><span class="badge badge-secondary">{{it.dokText}}</span><span class="badge badge-secondary">{{it.std}}</span></span></span>
+      <span class="item-description cap-meta text-body-small font-normal"><span>{{it.type}}</span><span>{{it.std}}</span></span></span>
      <span class="item-actions"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
     </button>
    </li></sc-for>
@@ -70,7 +71,9 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
   <article class="card ib-preview-card" aria-labelledby="ib-item-question">
    <div class="card-header ib-question-heading">
     <h3 id="ib-item-question" class="text-body-base font-semibold" data-stem>{{ibD.stem}}</h3>
+    <div class="ib-question-actions">
     <button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="Edit item" title="Edit item"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /><path d="m15 5 4 4" /></svg></button>
+    </div>
    </div>
    <div class="card-content ib-preview-body">
     <sc-if value="{{ibHasOpts}}" hint-placeholder-val="{{ true }}">
@@ -83,15 +86,12 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
      </ul>
     </sc-if>
     <sc-if value="{{ibNoOpts}}" hint-placeholder-val="{{ false }}"><div class="ib-sample"><p class="text-body-small font-semibold">Sample answer</p><p>{{ibD.sample}}</p></div></sc-if>
-    <div class="ib-preview-meta">
-     <span class="badge badge-warning">Standard {{ibD.std}}</span>
-     <span class="badge badge-secondary">{{ibD.type}}</span><span class="badge badge-secondary">{{ibD.dokText}}</span>
-    </div>
    </div>
-  </article>
-  <div class="card ib-support">
-   <div class="card-content ib-support-content">
-    <div class="tabs-list tabs-list-secondary ib-support-tabs" role="tablist" aria-label="Item information">
+  <div class="card-content ib-support">
+   <details class="collapsible ib-information-disclosure">
+    <summary class="collapsible-trigger ib-information-trigger">Additional information<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg></summary>
+   <div class="ib-support-content">
+    <div class="tabs-list ib-support-tabs" role="tablist" aria-label="Item information">
      <button type="button" class="tab" role="tab" id="ib-analysis-tab" aria-controls="ib-analysis-panel" aria-selected="true">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 17V9" /><path d="M18 17V5" /><path d="M3 3v16a2 2 0 0 0 2 2h16" /><path d="M8 17v-3" /></svg>Item analysis
      </button>
@@ -101,24 +101,31 @@ a{color:var(--foreground);}a:hover{color:var(--foreground);}
      <button type="button" class="tab" role="tab" id="ib-associated-tab" aria-controls="ib-associated-panel" aria-selected="false" tabindex="-1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>Associated assessments ({{ibAssoc.length}})</button>
     </div>
     <div role="tabpanel" id="ib-analysis-panel" aria-labelledby="ib-analysis-tab" tabindex="0">
-     <dl class="ib-analysis-details"><sc-for list="{{ibAnalysis}}" as="a"><div class="ib-analysis-row">
-      <dt class="text-body-small font-semibold">{{a.title}}</dt>
-      <dd class="text-body-small">{{a.body}}</dd>
+     <dl class="ib-analysis-details"><sc-for list="{{ibAnalysis}}" as="a"><div class="card ib-analysis-row">
+      <dt class="text-body-base font-semibold">{{a.title}}</dt>
+      <dd class="ib-analysis-body text-body-small">
+       <sc-if value="{{a.diagram}}"><img class="ib-area-image" src="assets/rectangle-area-dimensions.png" alt="Rectangle measuring 15 feet long and 8 feet wide"></sc-if>
+       <sc-if value="{{a.thinking}}"><div class="ib-analysis-highlight"><span class="item item-muted text-heading font-semibold">12</span><span class="item item-muted text-heading font-semibold">110</span></div></sc-if>
+       <sc-if value="{{a.equation}}"><div class="ib-analysis-highlight text-body-base font-semibold"><span>15 × 8 =</span><span class="item item-muted">120 ft²</span></div></sc-if>
+       <sc-if value="{{a.body}}"><p>{{a.body}}</p></sc-if>
+      </dd>
      </div></sc-for></dl>
     </div>
     <div role="tabpanel" id="ib-standards-panel" aria-labelledby="ib-standards-tab" tabindex="0" hidden>
-     <dl class="ib-standards-details"><sc-for list="{{ibStandards}}" as="field"><div class="item item-muted ib-standard-detail">
-      <dt class="item-description">{{field.label}}</dt><dd class="item-title">{{field.value}}</dd>
+     <dl class="ib-standards-details"><sc-for list="{{ibStandards}}" as="field"><div class="item ib-standard-detail">
+      <dt class="item-description">{{field.label}}</dt><dd class="item-title text-warning-value">{{field.value}}</dd>
      </div></sc-for></dl>
     </div>
   <section role="tabpanel" id="ib-associated-panel" aria-labelledby="ib-associated-tab" tabindex="0" hidden>
-   <ul class="ib-associated-list"><sc-for list="{{ibAssoc}}" as="s"><li><a class="item item-outline ib-associated-card" href="{{s.href}}">
-    <span class="item-media icon-accent"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg></span><span class="item-content"><span class="item-title">{{s.name}}</span><span class="item-description">{{s.sub}}</span></span>
+   <ul class="ib-associated-list"><sc-for list="{{ibAssoc}}" as="s"><li><a class="item ib-associated-card" href="{{s.href}}">
+    <span class="item-media item-media-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg></span><span class="item-content"><span class="item-title">{{s.name}}</span><span class="item-description">{{s.sub}}</span></span>
     <span class="item-actions"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg></span>
    </a></li></sc-for></ul>
   </section>
    </div>
+   </details>
   </div>
+  </article>
  </section>
 </sc-if>
 </div></main><footer class="hubfoot shell-footer"><div class="hubfootin"><p class="hubcopy">© 2026 Cognia, Inc. All rights reserved.</p><nav class="hubfootnav" aria-label="Footer"><button type="button" class="hublang" aria-haspopup="listbox" aria-label="Language: English">English<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg></button><a href="#">Help &amp; Support</a><a href="https://www.cognia.org">cognia.org</a></nav></div></footer></div>
@@ -236,7 +243,8 @@ class Component extends DCLogic {
       ibShowTable: wide && items.length > 0,
       ibShowDetail: !wide && !!sel,
       ibItems: items.map(it => ({
-        metadata: [it.type, dok(it), it.std].join(', '), dokText: dok(it),
+        metadata: [it.type, dok(it), it.std].join(', '), dokText: dok(it), dokLevel: dok(it).slice(4),
+        dokCls: 'badge ib-dok-badge badge-' + ({1:'success',2:'warning',3:'destructive',4:'destructive'}[dok(it).slice(4)] || 'secondary'),
         label: label(it), stem: it.stem, type: it.type, std: it.std, rate: it.rate, status: it.status, edited: it.edited,
         statusCls: statusCls(it.status), rateCls: rateCls(it.rate),
         rowCls: 'ib-gr row-link' + (sel && sel.id === it.id ? ' is-sel' : ''),
@@ -251,13 +259,19 @@ class Component extends DCLogic {
       const depth = dok(sel).slice(4);
       const depthLabels = { 1:'Recall & reproduction', 2:'Skill / concept', 3:'Strategic thinking', 4:'Extended thinking' };
       v.ibD = { stem:sel.stem, std:sel.std, metadata:[dok(sel),sel.type].join(', '), dokText:dok(sel), type:sel.type, edited:sel.edited,
+        rateCls:sel.rate >= 50 ? 'text-success-value' : 'text-destructive-value',
+        dokCls:'badge badge-' + ({1:'success',2:'warning',3:'destructive',4:'destructive'}[depth] || 'secondary'),
         status:sel.status, rate:sel.rate, sample:sel.sample||'' };
       v.ibHasOpts = !!sel.opts; v.ibNoOpts = !sel.opts;
       v.ibOpts = (sel.opts || []).map((text, i) => {
         const correct = (sel.correct || []).includes(i);
         return { letter: letters[i], text, correct, cls: correct ? 'ib-opt is-correct' : 'ib-opt' };
       });
-      v.ibAnalysis = [
+      v.ibAnalysis = sel.id === 'i1' ? [
+        {title:'What the item checks',diagram:true,body:'Multiply length by width to find the area of a rectangle.'},
+        {title:'Learner thinking',thinking:true,body:'Learners choosing 12 or 110 may confuse area with perimeter, or add the sides instead of multiplying.'},
+        {title:'Answer rationale',equation:true,body:'Multiply the length by the width. The garden covers 120 square feet.'},
+      ] : [
         {title:'What the item checks',body:explanation || requirements},
         {title:'Learner thinking',body:sel.why},
         {title:'Answer rationale',body:sel.rationale},

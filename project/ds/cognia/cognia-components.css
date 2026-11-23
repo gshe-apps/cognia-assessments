@@ -364,19 +364,21 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
   outline: 3px solid var(--destructive);
 }
 
-.select { appearance: none; padding-right: var(--space-10); cursor: pointer; }
-.select-wrap { position: relative; display: block; }
-.select-wrap::after {
-  content: "";
-  position: absolute;
-  right: var(--space-4);
-  top: calc(50% - 6px);
-  width: 8px; height: 8px;
-  border-right: 2px solid var(--muted-foreground);
-  border-bottom: 2px solid var(--muted-foreground);
-  transform: rotate(45deg);
-  pointer-events: none;
+/* Select (components.md, Select). The field is a native <select class="select">; assets/components.js
+   opens the Dropdown menu list (.select-menu) in place of the browser's own list. The chevron is
+   Lucide chevron-down in --muted-foreground. .select-wrap is no longer needed but still allowed. */
+.select {
+  appearance: none;
+  padding-right: var(--space-10);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233E3E4B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  background-size: 16px 16px;
 }
+.dark .select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F9F9F9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
+.select:disabled { opacity: 0.5; cursor: not-allowed; }
+.select-wrap { position: relative; display: block; }
 
 /* ------------------------------------------------------------
    Search input (components.md, Search input)
@@ -507,6 +509,10 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .checkbox:checked { background-color: var(--primary); }
 .checkbox:checked::before { opacity: 1; }
 .checkbox:disabled { opacity: 0.5; cursor: not-allowed; }
+/* Check circle (components.md, Checkbox): a round checkbox for picking rows in a list (learners for a session).
+   20px; unticked is a silver (--ring) outlined circle, ticked is a solid --primary circle with the same check. */
+.checkbox.checkbox-circle { width: 20px; height: 20px; border-color: var(--ring); border-radius: var(--rounded-full); }
+.checkbox.checkbox-circle:checked { border-color: var(--primary); }
 
 /* Switch: <button class="switch" role="switch" aria-checked="false"> */
 .switch {
@@ -871,6 +877,17 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .menu-item.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
 .menu-item.is-destructive svg { color: inherit; }
 .menu-separator { height: 1px; margin: var(--space-1) 0; background-color: var(--border); }
+.menu-label { padding: var(--space-2); font-size: var(--text-body-small); font-weight: 600; color: var(--muted-foreground); }
+.menu-item[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+/* Selected item: options in a Select list, and radio or checkbox items in a menu. The item is
+   semibold with a Lucide check on the right; every item keeps room for the check so widths don't jump. */
+.menu-item:is([role="option"], [role="menuitemradio"], [role="menuitemcheckbox"]) { position: relative; padding-right: var(--space-8); }
+.menu-item:is([aria-selected="true"], [aria-checked="true"]) { font-weight: 600; }
+.menu-item svg.menu-item-check { position: absolute; right: var(--space-2); top: calc(50% - 8px); color: inherit; }
+/* The list a Select opens (assets/components.js places it under the field, or above when there is no room). */
+.select-menu { position: fixed; z-index: 50; margin: 0; inset: auto; border: 0; max-width: min(480px, calc(100vw - 16px)); overflow-y: auto; overscroll-behavior: contain; }
+.select-menu .menu-item { white-space: normal; }
+.select-menu[data-pointer] .menu-item:focus-visible { outline: none; background-color: transparent; }
 
 /* ------------------------------------------------------------
    Tooltip (components.md, Tooltip). Shows on hover and keyboard focus.
@@ -1177,6 +1194,7 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
    Choosing an item writes its text into the trigger (assets/components.js). */
 .combobox-trigger { justify-content: space-between; min-width: 240px; font-weight: 400; }
 .combobox > .popover { padding: 0; min-width: 100%; }
+.combobox .command-item[aria-selected="true"] { font-weight: 600; }
 .combobox .command-item[aria-selected="true"]::after { content: ""; margin-left: auto; width: 8px; height: 4px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); }
 
 /* Context Menu: right click (or Shift+F10) on [data-context-menu] opens the .menu

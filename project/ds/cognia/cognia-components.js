@@ -54,6 +54,14 @@
    Backspace on an empty slot moves back, and pasting fills every slot.
 
    Resizable: drag a .resizable-handle, or use the arrow keys on it.
+
+   Select (components.md, Select): <select class="select"> with <option>s.
+   - Every single-choice select opens the Dropdown menu list (.select-menu)
+     instead of the browser's list, by mouse, touch, Enter, Space or arrows.
+   - The chosen option is semibold with a check on the right. The
+     placeholder option (disabled, empty value) is not listed.
+   - Choosing an item sets the select's value and fires input and change,
+     so the screen's own listeners run. data-native keeps the browser's list.
    ============================================================ */
 (() => {
   if (window.cogniaComponents) return;
@@ -341,6 +349,215 @@
       default:
     }
   });
+
+  /* ------------------------------------------------------------
+     Select (components.md, Select). Every single-choice <select> opens
+     the Dropdown menu list instead of the browser's own list. The native
+     select stays in the page as the field, so its value, form submission,
+     labels and change listeners all keep working. Add data-native to a
+     select to keep the browser's list.
+     ------------------------------------------------------------ */
+  const CHECK = '<svg class="menu-item-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+  const usesList = (el) => el instanceof HTMLSelectElement && !el.multiple && el.size <= 1 && !el.disabled && !el.hasAttribute('data-native');
+  let current = null; // { select, list }
+  let typed = '';
+  let typedAt = 0;
+  let listCount = 0;
+
+  const optionsOf = (list) => [...list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')];
+
+  const placeList = () => {
+    if (!current) return;
+    const { select, list } = current;
+    if (!select.isConnected || !list.isConnected) { closeList(); return; }
+    const r = select.getBoundingClientRect();
+    const gap = 4;
+    const below = window.innerHeight - r.bottom - gap - 8;
+    const above = r.top - gap - 8;
+    list.style.minWidth = r.width + 'px';
+    list.style.maxHeight = '';
+    const natural = Math.min(list.scrollHeight, 320);
+    const up = natural > below && above > below;
+    list.style.maxHeight = Math.max(96, Math.min(320, up ? above : below)) + 'px';
+    list.style.left = Math.max(8, Math.min(r.left, window.innerWidth - list.offsetWidth - 8)) + 'px';
+    list.style.top = (up ? r.top - gap - list.offsetHeight : r.bottom + gap) + 'px';
+  };
+  const onViewport = (event) => {
+    if (current && event.target instanceof Node && current.list.contains(event.target)) return;
+    placeList();
+  };
+
+  function closeList(returnFocus) {
+    if (!current) return;
+    const { select, list } = current;
+    current = null;
+    try { if (list.matches(':popover-open')) list.hidePopover(); } catch {}
+    list.remove();
+    select.setAttribute('aria-expanded', 'false');
+    window.removeEventListener('resize', onViewport);
+    document.removeEventListener('scroll', onViewport, true);
+    if (returnFocus && select.isConnected) select.focus({ preventScroll: true });
+  }
+
+  const choose = (item) => {
+    if (!current || item.matches('[aria-disabled="true"]')) return;
+    const { select } = current;
+    const index = Number(item.dataset.index);
+    closeList(true);
+    if (select.selectedIndex === index) return;
+    select.selectedIndex = index;
+    select.dispatchEvent(new Event('input', { bubbles: true }));
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  const openList = (select, byPointer) => {
+    closeList();
+    closeAll();
+    const list = document.createElement('div');
+    listCount += 1;
+    list.id = 'cognia-select-list-' + listCount;
+    list.className = 'menu select-menu';
+    list.setAttribute('role', 'listbox');
+    // Opened by mouse or touch: no focus ring until a key is pressed, as in shadcn.
+    if (byPointer) list.dataset.pointer = '';
+    const label = select.labels && select.labels[0];
+    if (label) {
+      if (!label.id) label.id = list.id + '-label';
+      list.setAttribute('aria-labelledby', label.id);
+    } else if (select.getAttribute('aria-label')) {
+      list.setAttribute('aria-label', select.getAttribute('aria-label'));
+    }
+    const addOption = (option, parent) => {
+      // The placeholder ("Select an option") is not a choice.
+      if (option.hidden || (option.disabled && option.value === '')) return;
+      const item = document.createElement('div');
+      item.className = 'menu-item';
+      item.setAttribute('role', 'option');
+      item.tabIndex = -1;
+      item.dataset.index = String(option.index);
+      item.textContent = option.label || option.textContent.trim();
+      const selected = option.index === select.selectedIndex;
+      item.setAttribute('aria-selected', String(selected));
+      if (selected) item.insertAdjacentHTML('beforeend', CHECK);
+      if (option.disabled) item.setAttribute('aria-disabled', 'true');
+      parent.append(item);
+    };
+    [...select.children].forEach((child) => {
+      if (child instanceof HTMLOptGroupElement) {
+        const group = document.createElement('div');
+        group.setAttribute('role', 'group');
+        const heading = document.createElement('div');
+        heading.className = 'menu-label';
+        heading.id = list.id + '-group-' + list.children.length;
+        heading.textContent = child.label;
+        group.setAttribute('aria-labelledby', heading.id);
+        group.append(heading);
+        [...child.children].forEach((option) => addOption(option, group));
+        list.append(group);
+      } else if (child instanceof HTMLOptionElement) {
+        addOption(child, list);
+      }
+    });
+    if (!optionsOf(list).length) return;
+    // The top layer keeps the list above modal dialogs and outside any clipping.
+    if (typeof list.showPopover === 'function') list.setAttribute('popover', 'manual');
+    // Inside an open modal dialog the list must live in the dialog, or the dialog makes it unclickable.
+    (select.closest('dialog[open]') || document.body).append(list);
+    try { list.showPopover(); } catch {}
+    current = { select, list };
+    select.setAttribute('aria-haspopup', 'listbox');
+    select.setAttribute('aria-expanded', 'true');
+    select.setAttribute('aria-controls', list.id);
+    placeList();
+    window.addEventListener('resize', onViewport);
+    document.addEventListener('scroll', onViewport, true);
+    const target = list.querySelector('[role="option"][aria-selected="true"]:not([aria-disabled="true"])') || optionsOf(list)[0];
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ block: 'nearest' });
+  };
+
+  // Mouse: stop the browser's list and open ours. Touch: the same on tap, but not after a scroll.
+  let touchMoved = false;
+  document.addEventListener('mousedown', (event) => {
+    if (current && !current.list.contains(event.target) && event.target !== current.select) closeList();
+    if (event.button !== 0 || !usesList(event.target)) return;
+    event.preventDefault();
+    const select = event.target;
+    if (current && current.select === select) { closeList(true); return; }
+    select.focus({ preventScroll: true });
+    openList(select, true);
+  }, true);
+  document.addEventListener('touchstart', () => { touchMoved = false; }, { capture: true, passive: true });
+  document.addEventListener('touchmove', () => { touchMoved = true; }, { capture: true, passive: true });
+  document.addEventListener('touchend', (event) => {
+    if (!usesList(event.target)) return;
+    event.preventDefault();
+    if (touchMoved) return;
+    const select = event.target;
+    if (current && current.select === select) { closeList(true); return; }
+    select.focus({ preventScroll: true });
+    openList(select, true);
+  }, { capture: true, passive: false });
+
+  document.addEventListener('click', (event) => {
+    if (!current || !(event.target instanceof Element)) return;
+    const item = event.target.closest('.select-menu [role="option"]');
+    if (item && current.list.contains(item)) choose(item);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!(event.target instanceof Element)) return;
+    // On the field: open with Enter, Space, the arrows or Alt+Down, as shadcn's Select does.
+    if (!current && usesList(event.target)) {
+      const opens = ['Enter', ' ', 'ArrowDown', 'ArrowUp', 'F4'].includes(event.key);
+      if (opens && !event.ctrlKey && !event.metaKey) {
+        event.preventDefault();
+        openList(event.target);
+      }
+      return;
+    }
+    if (!current || !current.list.contains(event.target)) return;
+    delete current.list.dataset.pointer;
+    const items = optionsOf(current.list);
+    const index = items.indexOf(document.activeElement);
+    const focusAt = (i) => {
+      event.preventDefault();
+      const item = items[Math.max(0, Math.min(items.length - 1, i))];
+      if (item) { item.focus({ preventScroll: true }); item.scrollIntoView({ block: 'nearest' }); }
+    };
+    switch (event.key) {
+      case 'ArrowDown': focusAt(index + 1); break;
+      case 'ArrowUp': focusAt(index - 1); break;
+      case 'Home': focusAt(0); break;
+      case 'End': focusAt(items.length - 1); break;
+      case 'PageDown': focusAt(index + 8); break;
+      case 'PageUp': focusAt(index - 8); break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        if (index >= 0) choose(items[index]);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        event.stopPropagation();
+        closeList(true);
+        break;
+      case 'Tab':
+        closeList(true);
+        break;
+      default:
+        // Type to jump to the first item starting with the typed letters.
+        if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+          const now = Date.now();
+          typed = (now - typedAt > 600 ? '' : typed) + event.key.toLowerCase();
+          typedAt = now;
+          const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(typed));
+          if (match) focusAt(items.indexOf(match));
+        }
+    }
+  }, true);
+
+  window.addEventListener('pagehide', () => closeList());
 
   window.addEventListener('pageshow', () => {
     closeAll();

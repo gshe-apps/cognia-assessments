@@ -469,25 +469,49 @@ Filter chips show the filters applied to a list, table or chart, and let the use
 
 ### Select
 
-Selects let users choose one option from a dropdown list.
+Selects let users choose one option from a list. Every field that opens a list when clicked is a Select, and every Select opens the same list: the Dropdown Menu surface.
+
+**Cognia overlay**
+- Trigger: an input field (Input field rules: no border, filled to suit its surface) showing the chosen value, with a 16px Lucide `ChevronDown` on the right in `--muted-foreground`.
+- List: the Dropdown Menu surface (`bg-popover`, 8px corners, `shadow-md`, 4px padding, no border), at least as wide as the trigger, 4px below it (above it when there is no room), at most 320px tall, then it scrolls.
+- Items: Body Small (14px) regular, 8px padding, 8px corners; hover shows the hover overlay.
+- Selected item: when the list opens with an option already chosen, that item is semibold (`font-semibold`) with a 16px Lucide `Check` on the right, in the item's text colour. Every item keeps room for the check (`pr-8`) so the list doesn't shift.
+- Groups: a 14px semibold `--muted-foreground` label above each group (`SelectLabel`).
+- Opening the list moves focus to the selected item. Arrow keys, Home, End and typing a letter move through it; Enter or Space chooses; Escape closes and returns to the field.
 
 **Rules**
-- Use a select when there are 5 or more options. For 4 or fewer, consider radio buttons.
-- The select trigger is an input field, so it follows the Input field rules: no border, filled to suit its surface.
-- Always include a default placeholder: "Select an option".
+- Use a select when there are 5 or more options. For 4 or fewer, consider radio buttons or a tab picker.
+- Never show the browser's own list: plain HTML gets the Cognia list from `assets/components.js`.
+- Always include a default placeholder: "Select an option". The placeholder is not an item in the list.
 - If the list exceeds 20 items, use a searchable combobox instead.
+- A menu of actions (Edit, Duplicate, Delete) is a Dropdown Menu, not a Select.
 
 ```tsx
 <Select>
   <SelectTrigger>
     <SelectValue placeholder="Select a product area" />
   </SelectTrigger>
-  <SelectContent>
+  <SelectContent position="popper">
     <SelectItem value="assessments">Assessments</SelectItem>
     <SelectItem value="learning">Learning</SelectItem>
     <SelectItem value="surveys">Observations & Surveys</SelectItem>
   </SelectContent>
 </Select>
+```
+
+In code, keep shadcn's `SelectItem` and move its `ItemIndicator` (the check) to the right (`absolute right-2`), and add `data-[state=checked]:font-semibold` to the item.
+
+Plain HTML: a native select with the `select` class. Load a copy of `assets/components.js`, which opens the Cognia list in place of the browser's, marks the chosen option, and fires the select's own `input` and `change` events, so screen scripts read `select.value` as usual.
+
+```html
+<div class="field">
+  <label class="label" for="grade">Grade</label>
+  <select class="select" id="grade">
+    <option value="" disabled selected>Select an option</option>
+    <option>Grade 6</option>
+    <option>Grade 7</option>
+  </select>
+</div>
 ```
 
 ---
@@ -500,6 +524,7 @@ Checkboxes let users select one or more options.
 - Use checkboxes for multi-select. Use a switch for a single on/off toggle.
 - Always pair a checkbox with a visible label to its right.
 - Checkboxes are 16px with 4px corners (`rounded-sm`) both unticked and ticked. Unticked: `bg-[var(--primary-foreground)]` with a 1px `border-primary`. Ticked: solid `bg-primary` with a `--primary-foreground` Lucide `Check`.
+- Check circle (`.checkbox.checkbox-circle`): a 20px round checkbox for picking rows in a list, such as learners for a session. It sits at the right end of the row, and the whole row toggles it. Unticked: a silver outline (`border-ring`, 3:1 against white). Ticked: the same solid `bg-primary` and check as the checkbox. Use the square checkbox everywhere else.
 - In grouped selection lists, align the group checkbox and its row checkboxes on the same vertical line unless the reference explicitly specifies an offset. Use a shared checkbox column or spacing based on the actual width of preceding controls, gaps, and row padding. Verify alignment in the rendered layout, including when groups expand and rows wrap.
 
 ```tsx
@@ -834,6 +859,7 @@ Dropdown menus reveal a list of actions related to a trigger element.
 - A trigger that opens a menu shows a chevron and does nothing else. If the button also needs a default action of its own, that is a split button, which is not documented yet: ask the designer.
 - Items may lead with a 16px icon. Items that go to another page are links (`<a>`); items that act on the page are buttons.
 - Place destructive actions at the bottom, separated from other actions.
+- A menu that shows a current choice (sort order, view) marks it like a Select item: semibold with a Lucide `Check` on the right (`role="menuitemradio" aria-checked="true"`, with `svg.menu-item-check`).
 - Keep labels in verb + noun format: "Edit record", "Delete record".
 
 ```tsx
@@ -1176,7 +1202,7 @@ Shows and hides one block of content under a trigger. For several stacked sectio
 
 ### Combobox
 
-A select with a search box, for lists longer than 20 items (see Select). Built from Popover + Command; the trigger is an outline button showing the chosen value with Lucide `ChevronsUpDown`, and the chosen item shows a check.
+A select with a search box, for lists longer than 20 items (see Select). Built from Popover + Command; the trigger is an outline button showing the chosen value with Lucide `ChevronsUpDown`, and the chosen item is semibold with a check on the right, as in Select.
 
 ### Command
 
@@ -1258,7 +1284,7 @@ A row of menus, as in a desktop app (File, Edit, View). Rarely needed in Cognia 
 
 ### Native Select
 
-The browser's own select, styled as an input field. Use where a custom Select is not needed (plain HTML prototypes always use it: `.select-wrap > select.select`).
+Not used on its own: the browser's list is replaced by the Cognia list (see Select). Add `data-native` to a select only where the browser's list is genuinely needed, and ask the designer first.
 
 ### Navigation Menu
 

@@ -106,7 +106,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    }
   }
   restore(id,null,stepTwo?'CAP-T06-Review.dc.html?stage=details':null,navigate);}
- window.capRestoreWork=restore;window.capOpenSaved=openSaved;window.capStartLibraryForm=id=>startForm(id);
+ window.capRestoreWork=restore;window.capOpenSaved=openSaved;window.capStartLibraryForm=(id,options)=>startForm(id,null,options);
+ window.capPreserveAssessment=preserveCurrent;
 
  if(page==='CAP-T03-Assessments.dc.html'){
   const query=new URLSearchParams(location.search);
@@ -141,8 +142,10 @@ document.addEventListener('DOMContentLoaded',()=>{
    }
   }
  }
- function startForm(id,draftId){
-  const form=forms.find(f=>f.id===id);if(!form)return false;
+ function startForm(id,draftId,options={}){
+  const form=forms.find(f=>f.id===id)
+   ||(options.directAssignment&&(window.cogniaAssessmentTemplates||[]).find(f=>f.id===id));
+  if(!form)return false;
   const draft=draftId&&archive().find(entry=>entry.id===draftId&&entry.status==='draft'&&entry.model?.tests?.length);
   if(draftId&&!draft)return false;
   const current=model(),sameDraft=Boolean(draft&&current&&modelId(current)===draft.id);
@@ -152,7 +155,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   const test={id:'library-'+Date.now(),title:form.title,grade:form.grade,subject:form.subject,standard:form.standard,
    page:form.page,libraryForm:form.id,state:{chosen:questions.map(q=>q.id),written:{},edits:{}},questions};
   const assessment=draft?JSON.parse(JSON.stringify(sameDraft?current:draft.model)):
-   {title:form.title,active:test.id,tests:[],origin:'library'};
+   {title:options.title||form.title,active:test.id,tests:[],origin:'library'};
+  if(options.directAssignment)assessment.directLibraryAssignment=true;
+  if(!draft&&options.assessmentSettings){
+   assessment.settings=options.assessmentSettings;
+   for(const key of ['description','resource','notes'])test[key]=options[key]||'';
+  }
   assessment.tests.push(test);
   put('cogniaAssessmentTestsV1',assessment);
   if(delivery)put('cogniaDeliverySessions',delivery);else localStorage.removeItem('cogniaDeliverySessions');
@@ -165,7 +173,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    if(window.capAssessmentSetup)sessionStorage.setItem('capCreateConfirmed:'+test.id,window.capAssessmentSetup.signature(test));
    sessionStorage.setItem('capLibraryReturn',/CAP-T0[5-9]-|CAP-T10-/.test(page)?'CAP-T21-AssessmentLibrary.dc.html':page);
   }catch{}
-  location.href='CAP-T06-Review.dc.html?stage=details';
+  location.href=options.directAssignment?'CAP-T08-AudienceDelivery.dc.html':'CAP-T06-Review.dc.html?stage=details';
   return true;
  }
  function mountLibraryDraftMenu(formId,dropdown){
@@ -313,7 +321,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const pairs=values=>values.map(value=>[value,value]);
   root.innerHTML=`
    <header class="al-page-heading">
-    <h1 class="text-heading font-semibold">Classroom test library</h1>
+    <h1 class="text-heading font-semibold">Tests</h1>
     <p class="text-body-base text-muted-foreground">Choose a ready-to-use test for your assessment.</p>
    </header>
    <div class="al-layout">

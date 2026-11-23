@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(window.ResizeObserver)new ResizeObserver(()=>page.style.setProperty('--tf-bar-height',bottom.offsetHeight+'px')).observe(bottom);
   /* One look for the actions on every step: ghost secondary actions, one solid primary, plain labels. */
   const tidy=()=>{bottom.querySelectorAll('.tf-original-actions :is(a,button).btn').forEach(el=>{
+   if(el.hasAttribute('data-tf-draft'))return; /* Save as draft keeps its outline, and its check once saved (23 Nov). */
    if(el.textContent.trim()&&!el.dataset.tfBack)el.querySelectorAll('svg').forEach(svg=>svg.remove());
    if(el.textContent.trim()==='Save draft')el.textContent='Save as draft';
    if(!el.classList.contains('solid')&&(!el.classList.contains('btn-ghost')||el.classList.contains('btn-outline'))){el.classList.remove('btn-outline');el.classList.add('btn-ghost')}
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   button.title=saved?'Click to unsave this draft':'';
  }
  function draftButton(){
-  const button=document.createElement('button');button.type='button';button.className='btn btn-outline btn-lg tf-hero-draft';button.dataset.tfDraft='';
+  const button=document.createElement('button');button.type='button';button.className='btn btn-outline btn-lg tf-bar-draft';button.dataset.tfDraft='';
   button.addEventListener('click',()=>{const saved=button.getAttribute('aria-pressed')!=='true';setSaved(saved);paintDraft(button,saved)});
   return button;
  }
@@ -138,10 +139,14 @@ document.addEventListener('DOMContentLoaded',()=>{
    const label=step<4?'Continue':'Create';
    bar.querySelectorAll('.solid').forEach(b=>{if(b.textContent.trim()!==label)b.textContent=label});
   }
-  if(step<=2){
-   const hero=document.querySelector('.tf-page .tf-hero');if(!hero)return;
-   let draft=hero.querySelector(':scope>[data-tf-draft]');
-   if(!draft){draft=draftButton();hero.append(draft)}
+  /* 23 Nov: Save as draft sits in the floating bar on every step, between Back and Continue, as an outline
+     button. It turns green once saved, and each step starts unsaved again (the saved draft records its step). */
+  const next=bar?.querySelector('.actionbar .solid, .solid');
+  if(next){
+   document.querySelectorAll('.tf-page .tf-hero > [data-tf-draft]').forEach(old=>old.remove());
+   let draft=bar.querySelector('[data-tf-draft]');
+   if(!draft)draft=draftButton();
+   if(next.previousElementSibling!==draft)next.before(draft);
    paintDraft(draft,isSaved());
   }
  }

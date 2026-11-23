@@ -43,10 +43,10 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  /* Header actions sit left of Save as draft (teacher-flow-upgrade.js appends that button to the hero). */
  const tools=node('<div class="ad-hero-actions" role="group" aria-label="Assessment actions"><button type="button" class="btn ghost btn-ghost btn-lg rj-bank-reuse" data-bank title="Save this assessment for reuse">Bank for reuse</button></div>');
  hero.append(tools);
- /* 20 Nov: Add another test is an outline button at the far right of the header; Save as draft (added to the
-    hero by teacher-flow-upgrade.js) becomes a ghost button beside it. */
+ /* 20 Nov: Add another test is an outline button at the far right of the header. (Save as draft moved to the
+    floating bar on 23 Nov, see teacher-flow-upgrade.js.) */
  const addBtn=node('<button type="button" class="btn btn-outline btn-lg ad-add-test" aria-haspopup="dialog">Add another test</button>');
- const placeAdd=()=>{const draft=hero.querySelector('.tf-hero-draft');if(draft){draft.classList.replace('btn-outline','btn-ghost');if(draft.nextElementSibling!==addBtn)draft.after(addBtn)}else if(!addBtn.isConnected)hero.append(addBtn)};
+ const placeAdd=()=>{if(!addBtn.isConnected)hero.append(addBtn)};
  placeAdd();new MutationObserver(placeAdd).observe(hero,{childList:true});
 
  const host=node('<section class="ad-layout"><div class="ad-main"></div><div class="ad-settings"></div></section>');

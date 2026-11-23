@@ -70,10 +70,10 @@
         <input class="input" id="cap-test-name" maxlength="90" required aria-describedby="cap-test-name-error">
         <p class="field-error" id="cap-test-name-error" hidden>Enter a test name.</p>
        </div>
-       <div class="field"><label class="label" for="uc-subject">Subject <span class="field-error" aria-hidden="true">*</span></label><span class="select-wrap"><select class="select" id="uc-subject" required></select></span></div>
+       <div class="field"><span class="label" id="uc-subject-label">Subject <span class="field-error" aria-hidden="true">*</span></span><div class="multiselect" id="uc-subject" data-placeholder="Select an option"><button type="button" class="select multiselect-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="uc-subject-label uc-subject-value" aria-describedby="uc-subject-error"><span class="multiselect-value" id="uc-subject-value"></span></button><div class="menu select-menu multiselect-list" role="group" aria-labelledby="uc-subject-label" data-options hidden></div></div><p class="field-error" id="uc-subject-error" hidden>Choose at least one subject.</p></div>
       </div>
       <div class="cap-setup-columns">
-       <div class="field"><label class="label" for="uc-grade">Grade level <span class="field-error" aria-hidden="true">*</span></label><span class="select-wrap"><select class="select" id="uc-grade" required>${grades.map(g=>`<option value="${esc(g)}">Grade ${esc(g)}</option>`).join('')}</select></span></div>
+       <div class="field"><span class="label" id="uc-grade-label">Grade level <span class="field-error" aria-hidden="true">*</span></span><div class="multiselect" id="uc-grade" data-placeholder="Select an option"><button type="button" class="select multiselect-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="uc-grade-label uc-grade-value" aria-describedby="uc-grade-error"><span class="multiselect-value" id="uc-grade-value"></span></button><div class="menu select-menu multiselect-list" role="group" aria-labelledby="uc-grade-label" data-options hidden></div></div><p class="field-error" id="uc-grade-error" hidden>Choose at least one grade level.</p></div>
        <div class="field">
         <label class="label" for="uc-pathway">Pathway</label>
         <span class="select-wrap"><select class="select" id="uc-pathway"><option>${college}</option><option>${libraryPath}</option><option value="${statePath}" disabled>${futureStatePath}</option></select></span>
@@ -131,7 +131,12 @@
   </dialog>`);
   host.append(modal);
   const find=(selector)=>modal.querySelector(selector);
-  const panel=find('form'), title=find('#uc-title'), subject=find('#uc-subject'), grade=find('#uc-grade'), pathway=find('#uc-pathway');
+  const panel=find('form'), title=find('#uc-title'), subjectBox=find('#uc-subject'), gradeBox=find('#uc-grade'), pathway=find('#uc-pathway');
+  /* Grade level and Subject are multi-selects (23 Nov): several grades and subjects per test. The first of each is
+     still saved as grade and subject, for the screens that show one; the full lists are grades and subjects. */
+  const ticked=box=>[...box.querySelectorAll('[data-options] input:checked')].map(input=>input.value);
+  const setOptions=(box,options,chosen)=>{box.querySelector('[data-options]').innerHTML=options.map(([value,text])=>`<label class="menu-item"><input class="checkbox" type="checkbox" value="${esc(value)}" ${chosen.includes(value)?'checked':''}>${esc(text)}</label>`).join('')};
+  setOptions(gradeBox,grades.map(g=>[g,'Grade '+g]),[]);
   const description=find('#cap-description'), resource=find('#cap-resource'), notes=find('#cap-notes');
   const testName=find('#cap-test-name'), testNameField=find('[data-test-name-field]');
   const settingsDisclosure=find('.cap-settings-disclosure');
@@ -146,12 +151,15 @@
   const preview=find('.cap-standard-preview'), standardTitle=find('#cap-standard-title');
   let standard='', alabamaContract=true, savedDuration='';
   const label=s=>s.code+' - '+s.title;
-  const selectedStandard=()=>standards.find(s=>s.code===standard&&s.subject===subject.value);
-  function updateSubjects(preferred){
-   const subjects=[...new Set(standards.filter(s=>s.grade===grade.value).map(s=>s.subject))];
-   if(!subjects.length)subjects.push(preferred||'Mathematics');
-   subject.replaceChildren(...subjects.map(name=>new Option(name)));
-   if(subjects.includes(preferred))subject.value=preferred;
+  const selectedStandard=()=>standards.find(s=>s.code===standard&&ticked(subjectBox).includes(s.subject));
+  /* Subjects offered are those of the ticked grades (every subject when no grade is ticked); ticked subjects
+     that are still offered stay ticked. */
+  function updateSubjects(preferred=ticked(subjectBox)){
+   const chosenGrades=ticked(gradeBox);
+   const subjects=[...new Set(standards.filter(s=>!chosenGrades.length||chosenGrades.includes(s.grade)).map(s=>s.subject))];
+   preferred.forEach(name=>{if(name&&!subjects.includes(name))subjects.push(name)});
+   if(!subjects.length)subjects.push('Mathematics');
+   setOptions(subjectBox,subjects.map(name=>[name,name]),preferred.filter(name=>subjects.includes(name)));
   }
   function renderPreview(){
    const selected=selectedStandard();
@@ -171,7 +179,8 @@
     </div>`:p(`Grade ${esc(selected.grade)} ${esc(selected.title)}`);
   }
   function renderStandards(){
-   const available=standards.filter(s=>s.subject===subject.value&&s.grade===grade.value);
+   const chosenGrades=ticked(gradeBox),chosenSubjects=ticked(subjectBox);
+   const available=standards.filter(s=>chosenSubjects.includes(s.subject)&&chosenGrades.includes(s.grade));
    standardSelect.replaceChildren(new Option('Select a standard',''),...available.map(s=>new Option(label(s),s.code)));
    standardSelect.value=standard;
   }
@@ -180,11 +189,14 @@
    modal.setAttribute('aria-labelledby',name==='form'?'cap-setup-title':'cap-standard-title');
    (name==='form'?aboutStandard:standardTitle).focus();
   }
-  const scope=()=>({title:title.value.trim(),grade:grade.value,subject:subject.value,standard,pathway:pathway.value});
+  const scope=()=>{const grades=ticked(gradeBox),subjects=ticked(subjectBox);return {title:title.value.trim(),grade:grades[0]||'',subject:subjects[0]||'',grades,subjects,standard,pathway:pathway.value}};
   function open(settings,{expandSettings=false}={}){
    showHelp(false);
    settingsDisclosure.open=expandSettings;
-   title.value=settings.title;grade.value=settings.grade;updateSubjects(settings.subject);
+   title.value=settings.title;
+   const openGrades=(settings.grades?.length?settings.grades:[settings.grade]).filter(Boolean).map(String);
+   setOptions(gradeBox,[...new Set([...grades,...openGrades])].sort((a,b)=>Number(a)-Number(b)).map(g=>[g,'Grade '+g]),openGrades);
+   updateSubjects((settings.subjects?.length?settings.subjects:[settings.subject]).filter(Boolean));
    alabamaContract=settings.alabamaContract??true;
    const stateOption=pathway.options[2];
    const hasSavedStatePath=alabamaContract&&settings.pathway===statePath;
@@ -199,7 +211,7 @@
    modal.querySelectorAll('[name="cap-results"]').forEach(r=>r.checked=r.value===chosen.results);
    syncCalc();
    standard=settings.standard||'';renderStandards();renderPreview();
-   for(const [input,error] of [[testName,'#cap-test-name-error'],[title,'#cap-title-error']]){
+   for(const [input,error] of [[testName,'#cap-test-name-error'],[title,'#cap-title-error'],[gradeBox.firstElementChild,'#uc-grade-error'],[subjectBox.firstElementChild,'#uc-subject-error']]){
     input.removeAttribute('aria-invalid');find(error).hidden=true;
    }
    formView.hidden=false;standardView.hidden=true;modal.setAttribute('aria-labelledby','cap-setup-title');
@@ -230,16 +242,18 @@
   });
   standardSelect.onchange=()=>{standard=standardSelect.value;renderPreview()};
   function changeScope(){
-   if(!standards.some(s=>s.code===standard&&s.grade===grade.value&&s.subject===subject.value))standard='';
+   const chosenGrades=ticked(gradeBox),chosenSubjects=ticked(subjectBox);
+   if(!standards.some(s=>s.code===standard&&chosenGrades.includes(s.grade)&&chosenSubjects.includes(s.subject)))standard='';
    renderStandards();renderPreview();
   }
-  grade.onchange=()=>{updateSubjects(subject.value);changeScope()};
-  subject.onchange=changeScope;
+  const clearError=(box,error)=>{if(ticked(box).length){box.firstElementChild.removeAttribute('aria-invalid');find(error).hidden=true}};
+  gradeBox.addEventListener('change',()=>{updateSubjects();changeScope();clearError(gradeBox,'#uc-grade-error')});
+  subjectBox.addEventListener('change',()=>{changeScope();clearError(subjectBox,'#uc-subject-error')});
   panel.onsubmit=event=>{
    event.preventDefault();
    const next=scope();
    let invalid;
-   for(const [input,error,valid] of [[testName,'#cap-test-name-error',testNameField.hidden||Boolean(testName.value.trim())],[title,'#cap-title-error',Boolean(next.title)]]){
+   for(const [input,error,valid] of [[testName,'#cap-test-name-error',testNameField.hidden||Boolean(testName.value.trim())],[title,'#cap-title-error',Boolean(next.title)],[gradeBox.firstElementChild,'#uc-grade-error',next.grades.length>0],[subjectBox.firstElementChild,'#uc-subject-error',next.subjects.length>0]]){
     input.setAttribute('aria-invalid',String(!valid));find(error).hidden=valid;
     if(!valid&&!invalid)invalid=input;
    }

@@ -888,6 +888,14 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .select-menu { position: fixed; z-index: 50; margin: 0; inset: auto; border: 0; max-width: min(480px, calc(100vw - 16px)); overflow-y: auto; overscroll-behavior: contain; }
 .select-menu .menu-item { white-space: normal; }
 .select-menu[data-pointer] .menu-item:focus-visible { outline: none; background-color: transparent; }
+/* Multi-select (components.md, Multi-select): a Select field whose list has a checkbox on each item.
+   The field lists the chosen labels; ticked items are semibold, as in the Select list. */
+.multiselect { position: relative; display: block; }
+.multiselect-trigger { display: flex; align-items: center; text-align: left; }
+.multiselect-value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.multiselect-value[data-empty] { color: var(--muted-foreground); }
+.multiselect-list .menu-item { gap: var(--space-3); }
+.multiselect-list .menu-item:has(.checkbox:checked) { font-weight: 600; }
 
 /* ------------------------------------------------------------
    Tooltip (components.md, Tooltip). Shows on hover and keyboard focus.

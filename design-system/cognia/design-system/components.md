@@ -516,6 +516,35 @@ Plain HTML: a native select with the `select` class. Load a copy of `assets/comp
 
 ---
 
+### Multi-select
+
+A field for choosing several options from a list, such as grade levels or subjects.
+
+**Cognia overlay**
+- Field: the same as the Select trigger (an input field with a Lucide `ChevronDown`), showing the chosen labels separated by commas, or the placeholder "Select an option" in `--muted-foreground`. Long lists of choices end in an ellipsis.
+- List: the Dropdown Menu surface, as in Select. Each item has a square Checkbox on the left and its label; ticked items are semibold. The list stays open while ticking, and closes on Escape, Tab or a click outside.
+
+**Rules**
+- Use a multi-select when several options can apply and there are 5 or more. For 4 or fewer, show the checkboxes directly.
+- Never separate the chosen labels with a dot or "|": use commas.
+
+Plain HTML (load a copy of `assets/components.js`):
+
+```html
+<div class="field">
+  <span class="label" id="grade-label">Grade level</span>
+  <div class="multiselect" data-placeholder="Select an option">
+    <button type="button" class="select multiselect-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="grade-label"><span class="multiselect-value"></span></button>
+    <div class="menu select-menu multiselect-list" role="group" aria-labelledby="grade-label" hidden>
+      <label class="menu-item"><input class="checkbox" type="checkbox" name="grade" value="5">Grade 5</label>
+      <label class="menu-item"><input class="checkbox" type="checkbox" name="grade" value="6">Grade 6</label>
+    </div>
+  </div>
+</div>
+```
+
+---
+
 ### Checkbox
 
 Checkboxes let users select one or more options.

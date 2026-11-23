@@ -1,4 +1,8 @@
 /* Reference-led teacher journey; keeps the prototype's existing data and validation. */
+window.capAssessmentProgressRing=(step,total=5)=>{
+ const r=22,c=2*Math.PI*r,done=(c*step/total).toFixed(2);
+ return `<div class="tf-progress" role="img" aria-label="Step ${step} of ${total}"><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle class="tf-progress-track" cx="24" cy="24" r="${r}" fill="none" stroke-width="3"/><circle class="tf-progress-value" cx="24" cy="24" r="${r}" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${done} ${c.toFixed(2)}" transform="rotate(-90 24 24)"/></svg><span class="text-body-base font-semibold" aria-hidden="true">${step}/${total}</span></div>`;
+};
 window.capRenderAssessmentProgress=(progress,current,attributes)=>{
  const steps=[['Setup','check'],['Create','layers'],['Review','search'],['Assign','users'],['Finalize','flag']];
  progress.classList.add('cap-assessment-progress');
@@ -11,6 +15,7 @@ window.capRenderAssessmentProgress=(progress,current,attributes)=>{
 document.addEventListener('DOMContentLoaded',()=>{
  const file=location.pathname.split('/').pop(),setup=file==='CAP-T04-Setup.dc.html',questions=/^CAP-T05-/.test(file),review=file==='CAP-T06-Review.dc.html',details=review&&new URLSearchParams(location.search).get('stage')==='details',assign=file==='CAP-T08-AudienceDelivery.dc.html',confirm=file==='CAP-T09-ConfirmAssignment.dc.html';
  if(!setup&&!questions&&!review&&!assign&&!confirm)return;
+ if(setup&&new URLSearchParams(location.search).has('create'))return;
  const key='cogniaAssessmentTestsV1',esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const read=(k,f={})=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}},model=()=>read(key,{tests:[]}),active=m=>m.tests.find(t=>t.id===m.active)||m.tests[0],save=m=>localStorage.setItem(key,JSON.stringify(m));
  const icon=(name='file')=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+({file:'<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" />',book:'<path d="M12 5v16" /><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" />',spark:'<path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" />',pen:'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /><path d="m15 5 4 4" />',clock:'<circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />'}[name]||'')+'</svg>';
@@ -24,10 +29,11 @@ document.addEventListener('DOMContentLoaded',()=>{
    'href="CAP-T04-Setup.dc.html"','href="CAP-T05-Questions.dc.html"'
   ]);
  }
- /* Floating bar progress (Figma): four steps after setup. Setup is the details dialog, not a step here. */
- function stepNow(){const steps=['Create','Review','Assign','Finalize'];const n=confirm?4:assign?3:review?2:1;return {n,total:steps.length,label:steps[n-1]}}
- function progressRing(){const {n,total}=stepNow(),r=22,c=2*Math.PI*r,done=(c*n/total).toFixed(2);return `<div class="tf-progress" role="img" aria-label="Step ${n} of ${total}"><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle class="tf-progress-track" cx="24" cy="24" r="${r}" fill="none" stroke-width="3"/><circle class="tf-progress-value" cx="24" cy="24" r="${r}" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${done} ${c.toFixed(2)}" transform="rotate(-90 24 24)"/></svg><span class="text-body-base font-semibold" aria-hidden="true">${n}/${total}</span></div>`}
- function footer(page){const bar=page.querySelector('.actionbar');if(!bar)return;const m=model(),t=active(m)||{},count=m.tests.reduce((n,t)=>n+(t.questions?.length||0),0);const bottom=node(`<div class="tf-bottom card card-themed" role="region" aria-label="Assessment progress and actions">${progressRing()}<div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">${esc(stepNow().label)}</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div></div><div class="tf-original-actions"></div></div>`);
+ function footer(page){const bar=page.querySelector('.actionbar');if(!bar)return;const m=model(),t=active(m)||{};
+  const step=confirm?5:assign?4:review?3:questions?2:1;
+  const label=['Test setup','Add items','Review','Assign','Finalize'][step-1];
+  const ring=m.directLibraryAssignment?'':window.capAssessmentProgressRing(step);
+  const bottom=node(`<div class="tf-bottom card card-themed" role="region" aria-label="Assessment progress and actions">${ring}<div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">${label}</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div></div><div class="tf-original-actions"></div></div>`);
   const actions=bottom.querySelector('.tf-original-actions');actions.append(bar);page.append(bottom);
   /* The bar now shows progress, so the stepper at the top right is hidden on every step. */
   page.querySelectorAll('.tf-hero :is(.tf-steps, .cap-assessment-progress, .ra-journey)').forEach(el=>{el.hidden=true;el.style.display='none'});
@@ -103,7 +109,12 @@ document.addEventListener('DOMContentLoaded',()=>{
  const itemsPage=()=>{const m=readJSON(key,{});return (m.tests?.find(t=>t.id===m.active)||m.tests?.[0])?.page||'CAP-T05-Questions.dc.html'};
  const fromItem=new URLSearchParams(location.search).get('fromItem');
  const itemReturn=/^i\d+$/.test(fromItem||'')?'CAP-T12-QuestionLibrary.dc.html?item='+encodeURIComponent(fromItem):null;
- const previous=()=>itemReturn||(step===2?itemsPage():step===3?'CAP-T06-Review.dc.html?stage=details':'CAP-T08-AudienceDelivery.dc.html');
+ const previous=()=>{
+  if(itemReturn)return itemReturn;
+  if(step===2)return itemsPage();
+  if(step===3)return readJSON(key,{}).directLibraryAssignment?'CAP-T04-Setup.dc.html?create=library':'CAP-T06-Review.dc.html?stage=details';
+  return 'CAP-T08-AudienceDelivery.dc.html';
+ };
  /* Same entry shape as the draft archive used by the Assessments list (client-connected-feedback.js). */
  const draftId=m=>m?.tests?.length?'assessment-'+m.tests.map(t=>t.id).join('-'):null;
  function isSaved(){const id=draftId(readJSON(key,null));if(!id)return false;const entry=readJSON(archiveKey,[]).find(e=>e.id===id&&e.status==='draft');return !!entry&&(entry.step||1)===step&&JSON.stringify(entry.model)===stored(key)}

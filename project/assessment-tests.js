@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const storageKey='cogniaAssessmentTestsV1',page=location.pathname.split('/').pop();
+ if(page==='CAP-T04-Setup.dc.html'&&new URLSearchParams(location.search).has('create'))return;
  const isQuestions=/CAP-T05-/.test(page),isSetup=page==='CAP-T04-Setup.dc.html',isReview=page==='CAP-T06-Review.dc.html';
  let model;try{model=JSON.parse(localStorage.getItem(storageKey));}catch{}
  if(!model?.tests?.length)model={title:'Fractions check',active:'test-1',tests:[{id:'test-1',title:'Fractions check',grade:'5',subject:'Mathematics',standard:'5.NF.A.1',page:'CAP-T05-Questions.dc.html',state:null,questions:null}]};

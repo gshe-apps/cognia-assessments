@@ -1,5 +1,6 @@
 /* Existing setup URLs enter the unified Create workspace. No additional workflow. */
 (() => {
+ if(new URLSearchParams(location.search).has('create'))return;
  let m;try{m=JSON.parse(localStorage.getItem('cogniaAssessmentTestsV1'))}catch{}
  if(!m?.tests?.length)sessionStorage.setItem('capSetupUseClientSample','true');
  if(new URLSearchParams(location.search).has('additionalTest')&&m?.tests?.length){

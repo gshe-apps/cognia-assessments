@@ -6457,3 +6457,71 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 
 .ib-area-image { display:block; width:100%; height:auto; align-self:center; }
 
+/* ------------------------------------------------------------
+   Assign learners, Option B: session first (assign-session-first.js, Figma CAP 1815:15378).
+   A prototype option: remove this block with the script if Option A is chosen.
+   ------------------------------------------------------------ */
+.assign-b { display: grid; grid-template-columns: 350px minmax(0, 650px); justify-content: center; align-items: start; gap: var(--space-4); }
+.assign-b-toolbar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+/* The test picker replaces the "Tests in this assessment" section, which another script may add back. */
+.assign-b-page .assessment-test-list { display: none; }
+.assign-b-sessions { display: flex; flex-direction: column; gap: var(--space-8); }
+.assign-b-session { gap: 0; padding: 0; overflow: hidden; }
+.assign-b-session-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 72px; padding: var(--space-4) var(--space-3); background-color: var(--accent-400); color: var(--primary-foreground); }
+/* The flow's older :where(.cognia-screen .field) margin would double the gaps here. */
+.assign-b-session-head, .assign-b-session-body > *, .assign-b-session-body .field { margin: 0; }
+.assign-b-session-body { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4) var(--space-3); }
+.assign-b-times { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.assign-b-settings { border-bottom: 0; }
+.assign-b-settings-content { display: flex; flex-direction: column; gap: var(--space-4); }
+.assign-b-session-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* Other sessions: the Classes screen folders (.cl-stack), with the session name on the back folder. */
+.assign-b :is(.cl-class-title, .cl-stack-full) { font-size: var(--text-body-base); font-weight: 600; line-height: 1.3; }
+.assign-b-learners { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.assign-b-results { display: flex; flex-direction: column; gap: var(--space-2); }
+.assign-b-count { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.assign-b-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-radius: var(--radius-xl); background-color: var(--card); overflow: hidden; }
+.assign-b-row { min-height: 72px; padding: var(--space-3); border-radius: 0; cursor: pointer; }
+.assign-b-row:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.assign-b-row .item-content { cursor: pointer; }
+.assign-b-row .item-title { font-size: var(--text-body-base); }
+.assign-b-empty { margin: var(--space-4); }
+/* Review supports: Option A's icon grid with 8px gaps; its own card class keeps the ticked checkbox the plugin's primary. */
+.assign-b-support-dialog [data-support-options] { gap: var(--space-2); }
+.assign-b-support-choice { position: relative; min-height: 0; padding: var(--space-4); justify-content: space-between; gap: var(--space-2); cursor: pointer; }
+.assign-b-support-choice:has(:checked) { background-color: var(--accent-100); }
+.assign-b-support-choice .checkbox { position: absolute; top: var(--space-3); right: var(--space-3); }
+.assign-b-support-choice > .icon { width: var(--space-6); height: var(--space-6); }
+@media (max-width: 1023px) {
+  .assign-b { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ------------------------------------------------------------
+   Prototype options switch (prototype-options.js). EPI-USE branded on purpose, so it never reads
+   as part of the Cognia product: EPI-USE navy and red, square corners, the EPI-USE logo.
+   ------------------------------------------------------------ */
+.proto-options { --epi-blue: #001844; --epi-red: #CE181E; position: fixed; left: var(--space-6); bottom: var(--space-6); z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); font-family: var(--font-sans); color: var(--epi-blue); }
+.proto-options-trigger { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; padding: var(--space-2) var(--space-3); border: 0; border-left: 4px solid var(--epi-red); border-radius: 0; background: var(--card); color: var(--epi-blue); box-shadow: var(--shadow-lg); text-align: left; cursor: pointer; }
+.proto-options-trigger:hover { background-image: linear-gradient(color-mix(in srgb, var(--epi-blue) 6%, transparent), color-mix(in srgb, var(--epi-blue) 6%, transparent)); }
+.proto-options-trigger:focus-visible, .proto-options-close:focus-visible, .proto-options-choice:has(input:focus-visible) { outline: 3px solid var(--epi-blue); outline-offset: 2px; }
+.proto-options-trigger > svg { width: 16px; height: 16px; flex: none; transition: transform var(--duration); }
+.proto-options-trigger[aria-expanded="true"] > svg { transform: rotate(180deg); }
+.proto-options-logo { display: block; height: 20px; width: auto; }
+.proto-options-label { padding-left: var(--space-3); border-left: 1px solid color-mix(in srgb, var(--epi-blue) 20%, transparent); font-size: var(--text-body-small); font-weight: 600; }
+.proto-options-panel { width: 340px; padding: var(--space-6); border-top: 4px solid var(--epi-red); border-radius: 0; background: var(--card); box-shadow: var(--shadow-lg); }
+.proto-options-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+.proto-options-close { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--epi-blue); cursor: pointer; }
+.proto-options-close:hover { background: var(--secondary); }
+.proto-options-close svg { width: 20px; height: 20px; }
+.proto-options-title { font-size: var(--text-body-base); font-weight: 600; }
+.proto-options-subtitle { margin-top: var(--space-1); font-size: var(--text-body-small); color: var(--muted-foreground); }
+.proto-options-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-4) 0 0; padding: 0; border: 0; }
+.proto-options-choice { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--border); border-radius: 0; font-size: var(--text-body-small); cursor: pointer; }
+.proto-options-choice:hover { border-color: var(--epi-blue); }
+.proto-options-choice:has(input:checked) { border-color: var(--epi-blue); background: color-mix(in srgb, var(--epi-blue) 6%, var(--card)); }
+.proto-options-choice input { margin: 0; accent-color: var(--epi-blue); }
+.proto-options-choice > span { display: flex; flex-direction: column; gap: var(--space-1); }
+.proto-options-choice strong { font-weight: 600; color: var(--epi-blue); }
+.proto-options-choice > span > span { color: var(--muted-foreground); }
+.proto-options-note { margin-top: var(--space-4); font-size: var(--text-body-small); color: var(--muted-foreground); }
+@media print { .proto-options { display: none; } }

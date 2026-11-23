@@ -32,7 +32,11 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
  function questionPreview(q){
   const type=q.displayType||({'Choice':'Multiple choice','Text entry':'Short answer','Extended text':'Extended response'}[q.type]||q.type);
   const dok=(q.dok||q.difficulty)&&(window.capItemQuality?.dokOf(q)||q.dok);
-  return `<div class="qc-item-badges">${type?`<span class="qc-item-type text-body-small text-muted-foreground">${esc(type)}</span>`:''}${dok?`<span class="badge badge-${({'1':'success','2':'warning','3':'destructive'})[dok]||'secondary'}">DOK ${esc(dok)}</span>`:''}</div><p class="qc-stem text-body-base" title="${esc(q.stem)}">${esc(q.stem)}</p>`;
+  /* 23 Nov: an added item reads like its row in the item list: DOK block, semibold question, type and standard below. */
+  const tone=({'1':'success','2':'warning','3':'destructive'})[dok]||'secondary';
+  const standard=q.standard||(inst.renderVals?.().bank||[]).find(item=>item.id===q.id)?.standard;
+  const meta=[type,standard].filter(Boolean).map(value=>`<span>${esc(value)}</span>`).join('');
+  return `${dok?`<span class="bank-row-difficulty badge badge-${tone}"><span>DOK</span> <span>${esc(dok)}</span></span>`:''}<div class="qc-item-text"><p class="qc-stem text-body-base font-semibold" title="${esc(q.stem)}">${esc(q.stem)}</p>${meta?`<p class="qc-item-meta text-body-small text-muted-foreground">${meta}</p>`:''}</div>`;
  }
  function updateQuestions(chosen){inst.setState({chosen});inst.update()}
  let displayedIds=new Set(getQuestions().map(q=>q.id));

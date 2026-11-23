@@ -61,3 +61,16 @@ Open [the CAP role picker](http://127.0.0.1:4174/) to explore the four roles, or
 Open http://127.0.0.1:4174/CAP-T01-Overview.dc.html for the teacher flow or http://127.0.0.1:4174/STU2-SignIn.dc.html for the student flow (Option 2; Option 1 was retired in November 2026). Progress is stored locally in the browser. The account menu switches Basic / Classroom+; AI drafting uses labelled sample content, not an external AI service.
 
 This branch includes the updated teacher and student screens, multiple tests, delivery sessions, draft and banked assessment navigation, consistent progress bars, and subtle hover effects. Newer administrator screen content from main is preserved.
+
+## Reviewing changes before they reach the prototype
+
+`main` is protected: changes go in through a pull request that the other designer approves. Every pull request into `main` gets an automatic comment with before and after screenshots of each screen that looks different (`.github/workflows/pr-screenshots.yml`). Before is `main` today; after is `main` with the pull request merged. The screenshots show each screen as it first loads, so mention any dialog, tab or hover state to check in the pull request description.
+
+To see the same report on your own machine before opening a pull request:
+
+```sh
+npm i --no-save playwright pixelmatch@5.3.0 pngjs@7 && npx playwright install chromium
+git fetch origin
+node scripts/screenshot-review.cjs
+open .review-screenshots/report.html
+```

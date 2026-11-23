@@ -48,8 +48,8 @@
     }
   ],
   "shell": {
-    "header": "header",
-    "footer": "footer",
+    "header": "header:not(.card-header)",
+    "footer": "footer:not(.card-footer)",
     "page": ".wf",
     "footerText": [
       "Cognia, Inc. All rights reserved.",

@@ -1,0 +1,125 @@
+# Posts before and after screenshots on every pull request into main, so changes can be
+# reviewed visually before they reach the prototype link.
+#
+# Before is main as it is now. After is main with the pull request merged.
+# Only screens that look different are shown. The images are kept on the review-screenshots
+# branch (nothing else uses it) and removed when the pull request is merged or closed.
+# The script is scripts/screenshot-review.cjs, which also runs locally.
+name: Before and after screenshots
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: screenshots-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  PR: ${{ github.event.pull_request.number }}
+  IMAGES_BRANCH: review-screenshots
+
+jobs:
+  screenshots:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main with this pull request merged
+        uses: actions/checkout@v4
+        with:
+          path: after
+
+      - name: Check out main as it is now
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: before
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install headless browser
+        working-directory: after
+        run: npm i --no-save playwright pixelmatch@5.3.0 pngjs@7 && npx playwright install --with-deps chromium
+
+      - name: Take and compare screenshots
+        id: shots
+        run: >
+          node after/scripts/screenshot-review.cjs
+          --base before/project
+          --head after/project
+          --out shots
+          --url-prefix "https://github.com/${{ github.repository }}/raw/${{ env.IMAGES_BRANCH }}/pr-${{ env.PR }}/${{ github.sha }}"
+
+      - name: Keep the full report as a download
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-pr-${{ env.PR }}
+          path: shots
+          retention-days: 14
+
+      - name: Publish the changed screenshots
+        if: steps.shots.outputs.changed != '0'
+        working-directory: after
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          if git fetch --depth 1 origin "$IMAGES_BRANCH"; then
+            git worktree add --detach ../images FETCH_HEAD
+          else
+            git worktree add --detach ../images
+            git -C ../images checkout -q --orphan images
+            git -C ../images rm -rfq .
+          fi
+          cd ../images
+          rm -rf "pr-$PR"
+          mkdir -p "pr-$PR/$GITHUB_SHA"
+          cp ../shots/publish/*.png "pr-$PR/$GITHUB_SHA/"
+          git add -A
+          git commit -qm "Screenshots for pull request #$PR"
+          # Another pull request may have published at the same moment: rebase and try again.
+          for attempt in 1 2 3; do
+            git push -q origin "HEAD:refs/heads/$IMAGES_BRANCH" && exit 0
+            git fetch -q --depth 1 origin "$IMAGES_BRANCH" && git rebase -q FETCH_HEAD
+          done
+          exit 1
+
+      - name: Post or update the pull request comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = require('fs').readFileSync('shots/comment.md', 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const existing = comments.find(c => c.body && c.body.includes('<!-- cap-screenshots -->'));
+            if (existing) await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
+
+  clean-up:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the screenshots branch
+        id: images
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.IMAGES_BRANCH }}
+
+      - name: Remove this pull request's screenshots
+        if: steps.images.outcome == 'success'
+        run: |
+          [ -d "pr-$PR" ] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git rm -rq "pr-$PR"
+          git commit -qm "Remove screenshots for closed pull request #$PR"
+          git push -q origin "HEAD:refs/heads/$IMAGES_BRANCH"

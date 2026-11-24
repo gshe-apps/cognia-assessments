@@ -28,7 +28,8 @@
     // Profile photos for some learners, as on the Classes screen; everyone else shows initials.
     const photos = { 'Aiden Brooks': 'learner-jack-alfredo.png', 'Chloe Martin': 'learner-maria-gonzalez.png', 'Emma Lewis': 'learner-kathrine-benedict.png' };
     const students = classes.flatMap((c) => c.students.map((name, i) => ({ id: c.id + ':' + i, name, classId: c.id, support: c.id === '5a' && [1, 4].includes(i) })));
-    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    const schedule = window.capAssignmentSchedule;
+    const firstDate = schedule.earliestDate();
 
     let tests;
     try { tests = JSON.parse(localStorage.getItem('cogniaAssessmentTestsV1'))?.tests; } catch {}
@@ -40,7 +41,7 @@
       const firstClass = students.filter((s) => s.classId === '5a').map((s) => s.id);
       data = {
         allocationVersion: 1, classId: '5a', classIds: ['5a'], recipients: firstClass,
-        sessions: [{ id: 'session-1', name: 'Session 1', opens: today + 'T09:00', due: today + 'T15:00', customRecipients: true, recipients: firstClass }],
+        sessions: [{ id: 'session-1', name: 'Session 1', opens: firstDate + 'T09:00', due: firstDate + 'T15:00', customRecipients: true, recipients: firstClass }],
         attempts: '1', time: 'None', accommodations: false,
       };
     }
@@ -152,7 +153,7 @@
           <div class="assign-b-session-head"><span class="text-body-base font-semibold" data-head-name>${esc(s.name || 'Unnamed session')}</span><span class="badge ${count ? 'badge-secondary' : 'badge-warning'}">${count ? learnerCount(count) + ' assigned' : 'No learners yet'}</span></div>
           <div class="assign-b-session-body">
             <label class="field"><span class="label">Name</span><input class="input" data-field="name" required maxlength="80" value="${esc(s.name)}"></label>
-            <label class="field"><span class="label">Date</span><input class="input" type="date" data-field="date" required value="${esc(s.opens.slice(0, 10))}" ${disabled}></label>
+            <label class="field"><span class="label">Date</span><input class="input" type="date" data-field="date" required min="${schedule.earliestDate()}" value="${esc(s.opens.slice(0, 10))}" ${disabled}></label>
             <div class="assign-b-times">
               <label class="field"><span class="label">Start time</span><input class="input" type="time" data-field="start" required value="${esc(s.opens.slice(11, 16))}" ${disabled}></label>
               <label class="field"><span class="label">End time</span><input class="input" type="time" data-field="end" required value="${esc(s.due.slice(11, 16))}" ${disabled}></label>
@@ -393,9 +394,11 @@
       let message = '';
       const empty = data.sessions.find((s) => !s.recipients.length);
       const incomplete = data.sessions.find((s) => !s.name.trim() || (!s.noLimit && (!s.opens || !s.due || s.due <= s.opens)));
-      const problem = empty || incomplete;
+      const missed = schedule.missedCutoff(data.sessions);
+      const problem = empty || incomplete || missed;
       if (empty) message = `Tick at least one learner for ${empty.name || 'each session'} in ${testTitle(empty.testId)}, or remove that session.`;
       else if (incomplete) message = `Complete the name of ${incomplete.name || 'each session'} in ${testTitle(incomplete.testId)} and set an end time after its start time.`;
+      else if (missed) message = schedule.cutoffMessage;
       const error = host.querySelector('[data-error]');
       if (problem) {
         event.preventDefault();

@@ -3,6 +3,41 @@ window.capAssessmentProgressRing=(step,total=5)=>{
  const r=22,c=2*Math.PI*r,done=(c*step/total).toFixed(2);
  return `<div class="tf-progress" role="img" aria-label="Step ${step} of ${total}"><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle class="tf-progress-track" cx="24" cy="24" r="${r}" fill="none" stroke-width="3"/><circle class="tf-progress-value" cx="24" cy="24" r="${r}" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${done} ${c.toFixed(2)}" transform="rotate(-90 24 24)"/></svg><span class="text-body-base font-semibold" aria-hidden="true">${step}/${total}</span></div>`;
 };
+window.capPlaceAssessmentBack=(title,back)=>{
+ if(!title||!back)return;
+ let row=title.closest('.cap-assessment-title-row');
+ if(!row){
+  row=document.createElement('div');
+  row.className='cap-assessment-title-row';
+  title.before(row);
+  row.append(title);
+ }
+ row.prepend(back);
+};
+window.capEnableAssessmentTitleEdit=(bar,onRename)=>{
+ const summary=bar.querySelector('[data-tf-summary-title]');
+ summary.insertAdjacentHTML('afterend',`<button class="btn btn-ghost btn-icon btn-sm" type="button" aria-label="Rename assessment" title="Rename assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button><input class="input" type="text" aria-label="Assessment title" maxlength="90" hidden>`);
+ const edit=summary.nextElementSibling,input=edit.nextElementSibling;
+ function finish(commit){
+  if(input.hidden)return;
+  const title=input.value.trim();
+  input.hidden=true;summary.hidden=false;edit.hidden=false;
+  if(commit&&title&&title!==summary.textContent){
+   onRename(title);
+   summary.textContent=title;
+  }
+ }
+ edit.addEventListener('click',()=>{
+  input.value=summary.textContent;
+  summary.hidden=true;edit.hidden=true;input.hidden=false;
+  input.focus();input.select();
+ });
+ input.addEventListener('blur',()=>finish(true));
+ input.addEventListener('keydown',event=>{
+  if(event.key!=='Enter'&&event.key!=='Escape')return;
+  event.preventDefault();finish(event.key==='Enter');edit.focus();
+ });
+};
 window.capRenderAssessmentProgress=(progress,current,attributes)=>{
  const steps=[['Setup','check'],['Create','layers'],['Review','search'],['Assign','users'],['Finalize','flag']];
  progress.classList.add('cap-assessment-progress');
@@ -33,7 +68,21 @@ document.addEventListener('DOMContentLoaded',()=>{
   const step=confirm?5:assign?4:review?3:questions?2:1;
   const label=['Test setup','Add items','Review','Assign','Finalize'][step-1];
   const ring=m.directLibraryAssignment?'':window.capAssessmentProgressRing(step);
-  const bottom=node(`<div class="tf-bottom card card-themed" role="region" aria-label="Assessment progress and actions">${ring}<div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">${label}</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span><span class="tf-draft badge badge-secondary">Draft</span></div></div><div class="tf-original-actions"></div></div>`);
+  const bottom=node(`<div class="tf-bottom tf-workflow-bar card card-themed" role="region" aria-label="Assessment progress and actions">${ring}<div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">${label}</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title>${esc(m.title||t.title||'New assessment')}</span></div></div><div class="tf-original-actions"></div></div>`);
+  window.capEnableAssessmentTitleEdit(bottom,title=>{
+   const current=model(),first=current.tests[0],signature=window.capAssessmentSetup?.signature;
+   if(first&&signature){
+    const key='capCreateConfirmed:'+first.id;
+    if(sessionStorage.getItem(key)===signature({...first,title:current.title||first.title})){
+     sessionStorage.setItem(key,signature({...first,title}));
+    }
+   }
+   window.capUpdateAssessmentScope({},title);
+   page.querySelector('.ad-layout')?.rjRename?.(title);
+   const titleField=page.querySelector('#tf-assessment-name');
+   if(titleField)titleField.value=title;
+   page.dispatchEvent(new CustomEvent('cap:assessment-title-changed',{detail:title}));
+  });
   const actions=bottom.querySelector('.tf-original-actions');actions.append(bar);page.append(bottom);
   /* The bar now shows progress, so the stepper at the top right is hidden on every step. */
   page.querySelectorAll('.tf-hero :is(.tf-steps, .cap-assessment-progress, .ra-journey)').forEach(el=>{el.hidden=true;el.style.display='none'});
@@ -41,8 +90,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(window.ResizeObserver)new ResizeObserver(()=>page.style.setProperty('--tf-bar-height',bottom.offsetHeight+'px')).observe(bottom);
   /* One look for the actions on every step: ghost secondary actions, one solid primary, plain labels. */
   const tidy=()=>{bottom.querySelectorAll('.tf-original-actions :is(a,button).btn').forEach(el=>{
-   if(el.hasAttribute('data-tf-draft'))return; /* Save as draft keeps its outline, and its check once saved (23 Nov). */
-   if(el.textContent.trim()&&!el.dataset.tfBack)el.querySelectorAll('svg').forEach(svg=>svg.remove());
+   if(el.hasAttribute('data-tf-draft'))return;
+   if(el.textContent.trim())el.querySelectorAll('svg:not([data-tf-continue-icon])').forEach(svg=>svg.remove());
    if(el.textContent.trim()==='Save draft')el.textContent='Save as draft';
    if(!el.classList.contains('solid')&&(!el.classList.contains('btn-ghost')||el.classList.contains('btn-outline'))){el.classList.remove('btn-outline');el.classList.add('btn-ghost')}
    if(!el.classList.contains('btn-lg'))el.classList.add('btn-lg');
@@ -93,10 +142,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  observer=new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;decorate()})});decorate();
 });
 
-/* Floating bar, 10 Nov: plain "Back" (arrow + word, goes to the previous screen), plain "Continue" and
-   "Create" on the last step. Save as draft leaves the bar and sits top right of the page on steps 1 and 2.
-   It is a toggle: click to save (turns into a green "Draft saved" button with a check), click again to unsave.
-   The saved state is read from the draft archive, so it shows as unsaved again once the assessment changes. */
+/* The draft toggle reflects the saved step and assessment data in the draft archive. */
 (()=>{
  const file=location.pathname.split('/').pop();
  const step=/^CAP-T05-/.test(file)?1:file==='CAP-T06-Review.dc.html'?2:file==='CAP-T08-AudienceDelivery.dc.html'?3:file==='CAP-T09-ConfirmAssignment.dc.html'?4:0;
@@ -104,6 +150,8 @@ document.addEventListener('DOMContentLoaded',()=>{
  const key='cogniaAssessmentTestsV1',archiveKey='cogniaAssessmentArchiveV1',workKey='cogniaAssessmentWork';
  const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
  const arrowLeft=svg('<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'),check=svg('<path d="M20 6 9 17l-5-5"/>');
+ const saveIcon=svg('<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/>');
+ const continueIcon=svg('<path d="M5 12h14m-7-7 7 7-7 7"/>').replace('<svg','<svg data-tf-continue-icon');
  const stored=k=>{try{return localStorage.getItem(k)||''}catch{return ''}};
  const readJSON=(k,f)=>{try{return JSON.parse(stored(k))??f}catch{return f}};
  const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
@@ -128,12 +176,14 @@ document.addEventListener('DOMContentLoaded',()=>{
  function paintDraft(button,saved){
   if(button.getAttribute('aria-pressed')===String(saved))return;
   button.setAttribute('aria-pressed',String(saved));
-  button.classList.toggle('btn-outline',!saved);button.classList.toggle('tf-draft-saved',saved);
-  button.innerHTML=saved?check+'Draft saved':'Save as draft';
-  button.title=saved?'Click to unsave this draft':'';
+  button.classList.toggle('tf-draft-saved',saved);
+  button.innerHTML=saved?check:saveIcon;
+  button.nextElementSibling.textContent=saved?'Draft saved. Select again to remove it.':'Save this assessment as a draft';
  }
  function draftButton(){
-  const button=document.createElement('button');button.type='button';button.className='btn btn-outline btn-lg tf-bar-draft';button.dataset.tfDraft='';
+  const wrap=document.createElement('span');wrap.className='tooltip-wrap';
+  wrap.innerHTML='<button class="btn btn-ghost btn-icon btn-lg tf-bar-draft" type="button" data-tf-draft aria-label="Save draft" aria-describedby="tf-draft-tooltip"></button><span class="tooltip" id="tf-draft-tooltip" role="tooltip"></span>';
+  const button=wrap.firstElementChild;
   button.addEventListener('click',()=>{const saved=button.getAttribute('aria-pressed')!=='true';setSaved(saved);paintDraft(button,saved)});
   return button;
  }
@@ -141,23 +191,30 @@ document.addEventListener('DOMContentLoaded',()=>{
   const bar=document.querySelector('.tf-bottom');
   if(bar){
    bar.querySelectorAll('a[href="CAP-T07-DraftSaved.dc.html"]').forEach(a=>a.remove());
-   if(step>1||itemReturn)bar.querySelectorAll('a:not(.solid)').forEach(a=>{
-    if(!a.dataset.tfBack&&!/^back\b/i.test(a.textContent.trim()))return;
-    const href=previous();
-    if(a.dataset.tfBack&&a.getAttribute('href')===href&&a.querySelector('svg')&&a.textContent.trim()==='Back')return;
-    a.dataset.tfBack='1';a.href=href;a.removeAttribute('title');a.removeAttribute('aria-label');a.innerHTML=arrowLeft+'Back';
-   });
+   if(step>1&&new URLSearchParams(location.search).get('view')!=='assigned'){
+    const page=bar.closest('.tf-page'),title=page?.querySelector('.tf-hero h1');
+    const back=[...bar.querySelectorAll('a:not(.solid)')].find(link=>/^(back\b|edit delivery$)/i.test(link.textContent.trim()));
+    if(title&&back){
+     back.href=previous();
+     back.className='btn btn-ghost btn-icon';
+     back.setAttribute('aria-label','Back');
+     back.title='Back';
+     back.innerHTML=arrowLeft;
+     window.capPlaceAssessmentBack(title,back);
+    }
+   }
    const label=step<4?'Continue':'Create';
-   bar.querySelectorAll('.solid').forEach(b=>{if(b.textContent.trim()!==label)b.textContent=label});
+   bar.querySelectorAll('.solid').forEach(b=>{
+    const hasArrow=Boolean(b.querySelector('[data-tf-continue-icon]'));
+    if(b.textContent.trim()!==label||hasArrow!==(step<4))b.innerHTML=label+(step<4?continueIcon:'');
+   });
   }
-  /* 23 Nov: Save as draft sits in the floating bar on every step, between Back and Continue, as an outline
-     button. It turns green once saved, and each step starts unsaved again (the saved draft records its step). */
   const next=bar?.querySelector('.actionbar .solid, .solid');
   if(next){
    document.querySelectorAll('.tf-page .tf-hero > [data-tf-draft]').forEach(old=>old.remove());
    let draft=bar.querySelector('[data-tf-draft]');
    if(!draft)draft=draftButton();
-   if(next.previousElementSibling!==draft)next.before(draft);
+   if(next.previousElementSibling!==draft.parentElement)next.before(draft.parentElement);
    paintDraft(draft,isSaved());
   }
  }

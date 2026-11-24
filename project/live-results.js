@@ -329,7 +329,10 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     mountResultMenu();
-    if (event) apply(); else live.watch(onData);
+    if (event) {
+      apply();
+      window.capOverviewAttention?.open('result:'+event.id);
+    } else live.watch(onData);
     const root = document.querySelector('x-dc');
     // Re-apply after each Canvas redraw (menus, role switcher).
     if (root) new MutationObserver(() => {

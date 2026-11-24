@@ -21,7 +21,8 @@
   limit:['Time limit',[['None','No limit'],['5 minutes','5 min'],['10 minutes','10 min'],['15 minutes','15 min'],['20 minutes','20 min']]]
  };
  const resultOptions=['After submission','After all sessions close','Do not show'];
- function create({host, initial, onSubmit, onClose, onDelete, heading, submitLabel, showSettings=true, showAssessmentTitle=false, allowLibrary=false, asPage=false}) {
+ function create({host, initial, onSubmit, onClose, onDelete, heading, submitLabel, showSettings=true, showAssessmentTitle=false, allowLibrary=false, asPage=false, onName, onBack}) {
+  const entryModal=asPage&&Boolean(onName);
   /* Assessment title shows when the first test of a new assessment is created and whenever a test is edited. */
   const forms=window.cogniaAssessmentForms||[];
   const libraryForms=asPage?[...forms,...(window.cogniaAssessmentTemplates||[])]:forms;
@@ -46,8 +47,8 @@
   };
   const choice=key=>{const [label,options]=settingGroups[key];return `<div class="field" role="group" aria-labelledby="cap-set-${key}"><p class="label" id="cap-set-${key}">${label}</p><div class="button-group button-group-segmented">${options.map(([value,text])=>`<button type="button" class="btn btn-ghost btn-sm" data-set="${key}" data-value="${esc(value)}" aria-pressed="false">${esc(text)}</button>`).join('')}</div></div>`};
   const closeButton=()=>`<button class="btn btn-ghost btn-icon dialog-close" type="button" data-close-setup aria-label="Close setup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>`;
-  const tag=asPage?'div':'dialog';
-  const modal=make(`<${tag} class="${asPage?'cap-setup-page':'dialog cap-setup-modal'}" aria-labelledby="cap-setup-title">
+  const tag=asPage&&!entryModal?'div':'dialog';
+  const modal=make(`<${tag} class="${asPage?entryModal?'dialog cap-setup-page cap-create-entry-dialog':'cap-setup-page':'dialog cap-setup-modal'}" aria-labelledby="cap-setup-title">
    <section class="cap-setup-view" data-setup-view="form">
     <div class="cap-setup-heading dialog-header">
      <div class="cap-setup-title-row">
@@ -133,7 +134,7 @@
     </form>
     <div class="cap-setup-buttons dialog-footer">
      ${onDelete?'<button class="btn btn-outline btn-lg is-destructive cap-setup-delete" type="button" data-delete-setup>Delete test</button>':''}
-     <button class="btn btn-ghost btn-lg" type="button" data-close-setup>Cancel</button>
+     ${entryModal?'':'<button class="btn btn-ghost btn-lg" type="button" data-close-setup>Cancel</button>'}
      <button class="btn btn-lg" type="submit" form="uc-assessment-details" data-submit-setup>${esc(submitLabel||'Continue')}</button>
     </div>
    </section>
@@ -154,14 +155,15 @@
    const documentIcon=icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h6"/>');
    const assessment=make(`<section class="cap-entry-name" aria-labelledby="cap-assessment-details-title" data-entry-title>
     <div class="cap-entry-name-heading">
-     <span class="icon-accent cap-entry-name-icon" aria-hidden="true">${documentIcon}${icon('<path d="M4 2v5m7 3 4-4m0 11h5"/>')}</span>
+     ${entryModal?`<span class="cap-entry-name-art" aria-hidden="true">${documentIcon}<span class="cap-entry-name-rays"></span></span>`:''}
      <h2 class="text-subheading font-semibold" id="cap-assessment-details-title">Name your assessment</h2>
     </div>
    </section>`);
    titleField.classList.remove('cap-assessment-title');
    titleField.querySelector('label').className='sr-only';
-   titleField.querySelector('input').placeholder='Enter an assessment title';
-   assessment.append(titleField,make(`<button class="btn btn-lg" type="submit">Next: Test details ${icon('<path d="M5 12h14m-7-7 7 7-7 7"/>')}</button>`));
+   titleField.querySelector('input').placeholder=entryModal?'Give your assessment a clear and descriptive title':'Enter an assessment title';
+   assessment.append(titleField);
+   if(!entryModal)assessment.append(make(`<button class="btn btn-lg" type="submit">Next: Test details ${icon('<path d="M5 12h14m-7-7 7 7-7 7"/>')}</button>`));
    const test=make('<section class="card" aria-labelledby="cap-test-details-title"><div class="card-content cap-setup-page-group"></div></section>');
    const scratch=form.querySelector('#cap-source-scratch-panel');
    const sourceSwitcher=form.querySelector('.cap-setup-source-tabs');
@@ -184,13 +186,13 @@
    libraryCards.setAttribute('aria-label','Ready-to-use assessments');
    const topics={
     fractions:{symbol:icon('<path d="M5 8h6M8 5v6m5 5h6m-6 4h6"/>'),description:'Check understanding of adding and subtracting fractions.'},
-    algebra:{symbol:icon('<path d="M5 7h2c2 0 3 10 5 10h2M5 17h2c2 0 3-10 5-10h2M16 10h6m-6 4h6"/>'),description:'Practise expressions and simple equations.'},
-    reading:{symbol:subjectIcon,description:'Check comprehension and use of evidence from a text.'},
-    shapes:{symbol:icon('<path d="M3 17 10 4l7 13Z"/><circle cx="17" cy="16" r="5"/>'),description:'Identify shapes, angles and their properties.'},
-    measurement:{symbol:gradeIcon},
-    'data-graphics':{symbol:icon('<path d="M9 3h6M10 3v7L5.2 18.7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.3-2.3L14 10V3M8 15h8"/>')},
-    'ratio-proportion':{symbol:icon('<path d="m19 5-14 14"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>')},
-    'word-problems':{symbol:librarySubjectIcons.Mathematics}
+    algebra:{tone:'info',symbol:icon('<path d="M5 7h2c2 0 3 10 5 10h2M5 17h2c2 0 3-10 5-10h2M16 10h6m-6 4h6"/>'),description:'Practise expressions and simple equations.'},
+    reading:{tone:'green',symbol:subjectIcon,description:'Check comprehension and use of evidence from a text.'},
+    shapes:{tone:'amber',symbol:icon('<path d="M3 17 10 4l7 13Z"/><circle cx="17" cy="16" r="5"/>'),description:'Identify shapes, angles and their properties.'},
+    measurement:{tone:'teal',symbol:gradeIcon},
+    'data-graphics':{tone:'indigo',symbol:icon('<path d="M9 3h6M10 3v7L5.2 18.7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.3-2.3L14 10V3M8 15h8"/>')},
+    'ratio-proportion':{tone:'rose',symbol:icon('<path d="m19 5-14 14"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>')},
+    'word-problems':{tone:'slate',symbol:librarySubjectIcons.Mathematics}
    };
    libraryCards.innerHTML=libraryForms.map(form=>{
     const topic=topics[form.id];
@@ -198,8 +200,10 @@
     const metadata=`${form.subject}, Grade ${form.grade}`;
     const searchText=[form.title,metadata,form.standard,description].join(' ').toLowerCase();
     return `<label class="cap-setup-library-choice" data-library-search="${esc(searchText)}" data-subject="${esc(form.subject)}" data-grade="${esc(form.grade)}">
+     <span class="cap-entry-library-stack" aria-hidden="true"></span>
      <span class="card cap-entry-library-paper">
-      <span class="cap-entry-library-icon">${(topic?.symbol||layersIcon).replace('<svg','<svg class="icon icon-theme"')}</span>
+      <span class="cap-entry-library-icon${entryModal?' icon-accent':''}" data-tone="${topic?.tone||'accent'}">${(topic?.symbol||layersIcon).replace('<svg','<svg class="icon icon-theme"')}</span>
+      ${entryModal?`<span class="badge cap-entry-library-check" aria-hidden="true">${icon('<path d="m5 12 4 4L19 6"/>')}</span>`:''}
       <span class="item-content">
        <span class="text-body-base font-semibold" id="cap-library-name-${esc(form.id)}">${esc(form.title)}</span>
        ${description?`<span class="item-description">${esc(description)}</span>`:''}
@@ -214,8 +218,8 @@
    scratch.querySelector('h3').remove();
    const settingsIcon=icon('<path d="M4 7h5m4 0h7M4 17h9m4 0h3"/><circle cx="11" cy="7" r="2"/><circle cx="15" cy="17" r="2"/>');
    const iconTile=(symbol,tone='neutral')=>`<span class="item-media icon-accent cap-test-setup-icon" data-tone="${tone}">${symbol}</span>`;
-   const sectionHeading=(id,label,description,symbol)=>`<div class="cap-test-setup-heading">${iconTile(symbol)}<div><h2 class="text-subheading font-semibold" id="${id}">${label}</h2><p class="text-body-small text-muted-foreground">${description}</p></div></div>`;
-   const testHeading=make(sectionHeading('cap-test-details-title','Details','Set up the test information.',documentIcon));
+   const sectionHeading=(id,label,symbol)=>`<div class="cap-test-setup-heading">${iconTile(symbol)}<h2 class="text-subheading font-semibold" id="${id}">${label}</h2></div>`;
+   const testHeading=make(sectionHeading('cap-test-details-title','Details',documentIcon));
    const testFields=make('<div class="cap-setup-page-group"></div>');
    const nameField=scratch.querySelector('[data-test-name-field]');
    const subjectField=scratch.querySelector('#uc-subject').closest('.field');
@@ -239,9 +243,9 @@
    test.firstElementChild.append(testHeading,testFields);
    scratch.replaceChildren();
    scratch.className='cap-setup-page-group';
-   const settings=make(`<section class="card" aria-labelledby="cap-page-settings-title"><div class="card-content cap-setup-page-group">${sectionHeading('cap-page-settings-title','Settings','Choose how learners take the test.',settingsIcon)}</div></section>`);
+   const settings=make(`<section class="card" aria-labelledby="cap-page-settings-title"><div class="card-content cap-setup-page-group">${sectionHeading('cap-page-settings-title','Settings',settingsIcon)}</div></section>`);
    const settingSelect=(key,options)=>`<select class="select" id="cap-page-${key}" data-page-setting="${key}">${options.map(([value,text])=>`<option value="${esc(value)}">${esc(text)}</option>`).join('')}</select>`;
-   const settingTile=(key,label,options,symbol,tone)=>`<div class="item item-outline cap-page-setting-tile">
+   const settingTile=(key,label,options,symbol,tone)=>`<div class="item cap-page-setting-tile">
     ${iconTile(symbol,tone)}
     <div class="item-content"><label class="label" for="cap-page-${key}">${label}</label><span class="item-description" data-setting-value aria-hidden="true"></span></div>
     ${icon('<path d="m6 9 6 6 6-6"/>')}
@@ -289,16 +293,22 @@
    </dialog>`);
    helpDialog.querySelector('.dialog-body').append(steps);
    modal.querySelector('#cap-setup-help').replaceWith(helpDialog);
-   form.after(make(`<div class="tf-bottom card card-themed" role="region" aria-label="Assessment progress and actions" data-entry-progress hidden>
+   if(!entryModal)form.after(make(`<div class="tf-bottom tf-workflow-bar card card-themed" role="region" aria-label="Assessment progress and actions" data-entry-progress hidden>
     ${window.capAssessmentProgressRing(1)}
-    <div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">Test setup</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title></span><span class="badge badge-secondary">Draft</span></div></div>
+    <div class="tf-bottom-copy"><p class="tf-bottom-step text-body-small">Test setup</p><div class="tf-bottom-title"><span class="text-body-base font-semibold" data-tf-summary-title></span></div></div>
     <div class="tf-original-actions">
-     <button class="btn btn-ghost btn-lg" type="button" data-entry-back>${icon('<path d="m12 19-7-7 7-7M19 12H5"/>')}Back</button>
      <button class="btn btn-lg" type="submit" form="uc-assessment-details">Continue: Add items ${icon('<path d="M5 12h14m-7-7 7 7-7 7"/>')}</button>
     </div>
    </div>`));
    const pageHeading=make('<header class="cap-setup-page-heading"><div><h1 class="text-heading font-semibold" id="cap-setup-page-title" tabindex="-1">Create assessment</h1><p class="text-body-small text-muted-foreground">Start a new assessment or choose a ready-made one from the library.</p></div></header>');
-   pageHeading.append(modal.querySelector('[data-setup-help]'));
+   if(entryModal){
+    pageHeading.append(make(closeButton()));
+    pageHeading.classList.add('dialog-header');
+   }else{
+    const back=make(`<button class="btn btn-ghost btn-icon" type="button" data-entry-back aria-label="Back to assessment setup" title="Back to assessment setup" hidden>${icon('<path d="m12 19-7-7 7-7M19 12H5"/>')}</button>`);
+    window.capPlaceAssessmentBack(pageHeading.querySelector('h1'),back);
+    pageHeading.append(modal.querySelector('[data-setup-help]'));
+   }
    modal.querySelector('.cap-setup-heading').replaceWith(pageHeading);
    modal.setAttribute('aria-labelledby','cap-setup-page-title');
    modal.querySelector('[data-setup-view="standard"] [data-close-setup]').remove();
@@ -308,6 +318,7 @@
   host.append(modal);
   const find=(selector)=>modal.querySelector(selector);
   const panel=find('form'), title=find('#uc-title'), subjectBox=find('#uc-subject'), gradeBox=find('#uc-grade'), pathway=find('#uc-pathway');
+  if(asPage&&!entryModal)window.capEnableAssessmentTitleEdit(find('[data-entry-progress]'),value=>{title.value=value;});
   /* Grade level and Subject are multi-selects (23 Nov): several grades and subjects per test. The first of each is
      still saved as grade and subject, for the screens that show one; the full lists are grades and subjects. */
   const ticked=box=>[...box.querySelectorAll('[data-options] input:checked')].map(input=>input.value);
@@ -342,19 +353,22 @@
     ?'Add the test details and choose settings for how learners take the test.'
     :'Start a new assessment or choose a ready-made one from the library.';
    const progress=find('[data-entry-progress]');
-   progress.hidden=!showTestDetails;
+   const back=find('[data-entry-back]');
+   if(back)back.hidden=!showTestDetails;
+   if(progress)progress.hidden=!showTestDetails;
    if(showTestDetails)progress.querySelector('[data-tf-summary-title]').textContent=title.value.trim();
    modal.classList.toggle('tf-page',showTestDetails);
    const actions=find('.cap-setup-buttons');
-   actions.hidden=source==='scratch';
+   actions.hidden=!entryModal&&source==='scratch';
    actions.classList.toggle('cap-entry-library-actions',source==='library');
    submitButton.disabled=source==='library'&&!find('[name="cap-library-test"]:checked');
   }
-  if(asPage&&window.ResizeObserver){
+  if(asPage&&!entryModal&&window.ResizeObserver){
    const progress=find('[data-entry-progress]');
    new ResizeObserver(()=>modal.style.setProperty('--tf-bar-height',progress.offsetHeight+'px')).observe(progress);
   }
-  if(asPage)find('[data-entry-back]').onclick=()=>{
+  if(asPage&&!entryModal)find('[data-entry-back]').onclick=()=>{
+   if(onBack)return onBack(title.value.trim());
    showTestDetails=false;
    renderEntryStage();
    title.focus();
@@ -365,7 +379,8 @@
    find('#cap-source-scratch-panel').hidden=source!=='scratch';
    find('#cap-source-library-panel').hidden=source!=='library';
    if(settingsDisclosure)settingsDisclosure.hidden=source==='library';
-   submitButton.textContent=source==='library'?(asPage?'Use assessment':'Use this test'):submitLabel||'Continue';
+   submitButton.textContent=source==='library'?(asPage?'Use assessment':'Use this test'):entryModal?'Next: Test details':submitLabel||'Continue';
+   if(entryModal&&source==='scratch')submitButton.insertAdjacentHTML('beforeend',icon('<path d="M5 12h14m-7-7 7 7-7 7"/>'));
    renderEntryStage();
   }
   sourceTabs.forEach(tab=>{
@@ -387,7 +402,11 @@
     row.hidden=!row.dataset.librarySearch.includes(query)
      || Boolean(subjectFilter&&subjectFilter!==row.dataset.subject)
      || Boolean(gradeFilter&&gradeFilter!==row.dataset.grade);
-    if(asPage&&row.hidden)row.querySelector('input').checked=false;
+    if(asPage&&row.hidden&&row.querySelector('input').checked){
+     row.querySelector('input').checked=false;
+     row.querySelector('.card').classList.remove('card-selected');
+     row.removeAttribute('aria-current');
+    }
    }
    find('[data-library-no-results]').hidden=rows.some(row=>!row.hidden);
    renderEntryStage();
@@ -408,7 +427,7 @@
    help.hidden=!expanded;
    helpButton.setAttribute('aria-expanded',String(expanded));
   }
-  if(asPage){
+  if(asPage&&!entryModal){
    helpButton.removeAttribute('aria-expanded');
    helpButton.setAttribute('aria-haspopup','dialog');
    helpButton.onclick=()=>showHelp(true);
@@ -419,7 +438,7 @@
     if(event.clientX<left||event.clientX>right||event.clientY<top||event.clientY>bottom)help.close();
    });
    help.addEventListener('close',()=>helpButton.focus());
-  }else helpButton.onclick=()=>showHelp(help.hidden);
+  }else if(!asPage)helpButton.onclick=()=>showHelp(help.hidden);
   const standardSelect=find('#cap-standard-select'), aboutStandard=find('[data-about-standard]');
   const formView=find('[data-setup-view="form"]'), standardView=find('[data-setup-view="standard"]');
   const preview=find('.cap-standard-preview'), standardTitle=find('#cap-standard-title');
@@ -467,12 +486,12 @@
    const grades=ticked(gradeBox),subjects=ticked(subjectBox);
    return {title:title.value.trim(),grade:grades[0]||'',subject:subjects[0]||'',grades,subjects,standard,pathway:pathway.value};
   };
-  function open(settings,{expandSettings=false,initialSource='scratch'}={}){
-   showTestDetails=false;
-   if(allowLibrary)setSource(initialSource);
+  function open(settings,{expandSettings=false,initialSource='scratch',entryTitle='',startWithDetails=false}={}){
+   showTestDetails=startWithDetails;
    showHelp(false);
    if(settingsDisclosure)settingsDisclosure.open=expandSettings;
-   title.value=asPage?'':settings.title;
+   title.value=asPage?entryTitle:settings.title;
+   if(allowLibrary)setSource(initialSource);
    const openGrades=(settings.grades?.length?settings.grades:[settings.grade]).filter(Boolean).map(String);
    setOptions(gradeBox,[...new Set([...grades,...openGrades])].sort((a,b)=>Number(a)-Number(b)).map(g=>[g,'Grade '+g]),openGrades);
    updateSubjects((settings.subjects?.length?settings.subjects:[settings.subject]).filter(Boolean));
@@ -503,11 +522,12 @@
     input.removeAttribute('aria-invalid');find(error).hidden=true;
    }
    formView.hidden=false;standardView.hidden=true;modal.setAttribute('aria-labelledby',asPage?'cap-setup-page-title':'cap-setup-title');
-   if(!asPage&&!modal.open)modal.showModal();
+   if((!asPage||entryModal)&&!modal.open)modal.showModal();
+   if(startWithDetails)find('#cap-setup-page-title').focus();
    /* Opened from a Settings view: Quick settings start expanded and scrolled into view. */
    if(expandSettings)requestAnimationFrame(()=>settingsDisclosure.scrollIntoView({block:'start',behavior:'smooth'}));
   }
-  modal.querySelectorAll('[data-close-setup]').forEach(button=>button.onclick=()=>asPage?onClose?.():modal.close());
+  modal.querySelectorAll('[data-close-setup]').forEach(button=>button.onclick=()=>asPage&&!entryModal?onClose?.():modal.close());
   modal.querySelectorAll('[data-back-setup]').forEach(button=>button.onclick=()=>showView('form'));
   aboutStandard.onclick=()=>showView('standard');
   /* A calculator choice (Basic, Scientific, Graphing) only shows when Calculator allowed is Yes. */
@@ -570,6 +590,7 @@
    if(asPage&&source==='scratch'&&!showTestDetails){
     title.setAttribute('aria-invalid',String(!next.title));find('#cap-title-error').hidden=Boolean(next.title);
     if(!next.title){title.focus();return;}
+    if(entryModal){onName(next.title);return;}
     showTestDetails=true;
     renderEntryStage();
     find('#cap-setup-page-title').focus();

@@ -9,10 +9,11 @@ window.capReferenceAssign = page => {
  const students = classes.flatMap(c => c.students.map((name,i) => ({id:c.id+':'+i,name,classId:c.id,support:c.id==='5a'&&[1,4].includes(i)})));
  let stored;
  try { stored = JSON.parse(localStorage.getItem(key)); } catch {}
- const today = new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const schedule = window.capAssignmentSchedule;
+ const firstDate = schedule.earliestDate();
  const data = stored && Array.isArray(stored.sessions) && stored.sessions.length ? stored : {
   allocationVersion:1,classId:'5a',classIds:['5a','5b'],recipients:students.filter(s=>s.classId==='5a').map(s=>s.id),
-  sessions:[{id:'session-1',name:'Session 1',opens:today+'T09:00',due:today+'T15:00',customRecipients:true,recipients:students.filter(s=>s.classId==='5a').map(s=>s.id)}],
+  sessions:[{id:'session-1',name:'Session 1',opens:firstDate+'T09:00',due:firstDate+'T15:00',customRecipients:true,recipients:students.filter(s=>s.classId==='5a').map(s=>s.id)}],
   attempts:'1',time:'None',accommodations:false
  };
  if (data.allocationVersion !== 1) {
@@ -323,7 +324,7 @@ window.capReferenceAssign = page => {
    </h3>
    ${sessionActions(s)}${iconControl(`data-collapse-session="${esc(s.id)}" aria-expanded="${openSessionId === s.id}" aria-controls="body-${esc(s.id)}"`,(openSessionId !== s.id?'Expand':'Collapse')+' '+s.name,openSessionId !== s.id?'right':'down')}
   </div><p class="field-error allocation-name-error" id="${errorId}" ${missing?'':'hidden'}>${sessionNameWarning}</p><div id="body-${esc(s.id)}" ${openSessionId !== s.id?'hidden':''}>
-   <div class="allocation-fields allocation-schedule"><label class="field"><span class="label">Date *</span><input class="input" type="date" required data-field="date" value="${esc(s.opens.slice(0,10))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">Start time *</span><input class="input" type="time" required data-field="start" value="${esc(s.opens.slice(11,16))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">End time *</span><input class="input" type="time" required data-field="end" value="${esc(s.due.slice(11,16))}" ${s.noLimit?'disabled':''}></label></div>
+   <div class="allocation-fields allocation-schedule"><label class="field"><span class="label">Date *</span><input class="input" type="date" required min="${schedule.earliestDate()}" data-field="date" value="${esc(s.opens.slice(0,10))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">Start time *</span><input class="input" type="time" required data-field="start" value="${esc(s.opens.slice(11,16))}" ${s.noLimit?'disabled':''}></label><label class="field"><span class="label">End time *</span><input class="input" type="time" required data-field="end" value="${esc(s.due.slice(11,16))}" ${s.noLimit?'disabled':''}></label></div>
    <div class="allocation-session-foot text-body-small"><span>Assigned to:</span><div data-assigned>${assignedPills(s)}</div></div><details class="accordion-item allocation-settings" ${settingsExpanded.has(s.id)?'open':''}><summary class="accordion-trigger"><span>Access settings and instructions</span><svg class="allocation-settings-indicator icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path class="allocation-settings-plus" d="M12 5v14"/></svg></summary><div class="accordion-content allocation-settings-content">${i===0?`<div class="allocation-fields allocation-policy-fields"><label class="field"><span class="label">Attempts</span><select class="select" id="attempts">${['1','2','3'].map(v=>`<option ${data.attempts===v?'selected':''}>${v}</option>`).join('')}</select></label><label class="field"><span class="label">Time limit</span><select class="select" id="deliveryTime">${['None','5 minutes','10 minutes','15 minutes','20 minutes'].map(v=>`<option ${data.time===v?'selected':''}>${v}</option>`).join('')}</select></label></div>`:''}<label class="allocation-check"><input class="checkbox" type="checkbox" data-anytime ${s.noLimit?'checked':''}>Available at any time</label><label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" data-instructions rows="2">${esc(s.instructions||'')}</textarea></label></div></details></div></section>`;
   }).join('');
  }
@@ -477,6 +478,7 @@ window.capReferenceAssign = page => {
   else if(data.recipients.some(id=>!data.sessions.some(s=>s.recipients.includes(id))))message='Assign every selected student to a session.';
   else if(data.sessions.some(s=>!s.recipients.length))message='Assign at least one student to each session, or remove the unused session.';
   else if(data.sessions.some(s=>!s.name.trim()||(!s.noLimit&&(!s.opens||!s.due||s.due<=s.opens))))message='Complete each session name and set an end time after its start time.';
+  else if(schedule.missedCutoff(data.sessions))message=schedule.cutoffMessage;
   const error=host.querySelector('[data-allocation-error]');error.textContent=message;error.hidden=!message;
   if(message){event.preventDefault();dismissReviewToast();error.focus();}
   else if(needsReview()&&!reviewCheckbox.checked){

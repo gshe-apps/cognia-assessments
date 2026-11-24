@@ -4,20 +4,44 @@
 (() => {
   const svg = (path) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + path + '</svg>';
   const setupUrl = 'CAP-T04-Setup.dc.html?create=';
+  const overviewUrl = 'CAP-T01-Overview.dc.html';
+  const overviewTitleKey = 'capOverviewAssessmentTitle';
+  const assessmentKey = 'cogniaAssessmentTestsV1';
   const initialSetup = {title:'Fall 2026',grade:'5',subject:'Mathematics',standard:'5.NF.A.2'};
 
-  function continueSetup({assessmentSettings,...details}){
+  function readAssessment(){
+    try{return JSON.parse(localStorage.getItem(assessmentKey));}catch{return null;}
+  }
+
+  function continueSetup({assessmentSettings,...details},editingId){
     const {itemPage,libraryPath,signature}=window.capAssessmentSetup;
     if(details.libraryForm){
       window.capStartLibraryForm(details.libraryForm,{title:details.title,assessmentSettings,description:details.description,resource:details.resource,notes:details.notes,directAssignment:details.assignLibrary});
       return;
     }
-    const id='test-'+Date.now();
     const page=itemPage(details);
+    if(editingId){
+      const model=readAssessment();
+      const test=model?.tests?.find(test=>test.id===editingId);
+      if(!test)return;
+      if(test.page!==page&&test.state){
+        test.state.written={...test.state.written,...Object.fromEntries((test.questions||[]).map(question=>[question.id,question]))};
+      }
+      Object.assign(test,details,{title:details.testName||test.title,page});
+      model.title=details.title;
+      model.active=test.id;
+      model.settings={...model.settings,...assessmentSettings};
+      localStorage.setItem(assessmentKey,JSON.stringify(model));
+      const setupTitle=model.tests[0]===test?model.title:test.title;
+      sessionStorage.setItem('capCreateConfirmed:'+test.id,signature({...details,title:setupTitle}));
+      location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':page;
+      return;
+    }
+    const id='test-'+Date.now();
     const test={id,...details,title:details.testName||'New test',page,state:{chosen:[],written:{},edits:{}},questions:[]};
     const model={title:details.title,active:id,tests:[test],settings:assessmentSettings,origin:'builder'};
     window.capPreserveAssessment?.();
-    localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));
+    localStorage.setItem(assessmentKey,JSON.stringify(model));
     localStorage.removeItem('cogniaDeliverySessions');
     sessionStorage.setItem('capCreateConfirmed:'+id,signature(details));
     location.href=details.pathway===libraryPath?'CAP-T21-AssessmentLibrary.dc.html':page;
@@ -29,15 +53,47 @@
     if(!params.has('create'))return;
     const main=document.querySelector('main');
     if(!main)return;
+    const fromOverview=params.get('from')==='overview';
+    const model=params.get('create')==='edit'?readAssessment():null;
+    const test=model?.tests?.find(test=>test.id===model.active)||model?.tests?.[0];
+    const initial=test?{...test,testName:test.title,assessmentSettings:model.settings}:initialSetup;
+    const entryTitle=test?model.title||test.title:params.get('create')==='details'?sessionStorage.getItem(overviewTitleKey)||'':'';
     main.className='main ws-frame cap-create-main';
     main.replaceChildren();
     const setup=window.capAssessmentSetup.create({
-      host:main,initial:initialSetup,showAssessmentTitle:true,allowLibrary:true,asPage:true,
-      onSubmit:continueSetup,
-      onClose:()=>location.assign(params.get('from')==='overview'?'CAP-T01-Overview.dc.html':'CAP-T03-Assessments.dc.html')
+      host:main,initial,showAssessmentTitle:true,allowLibrary:true,asPage:true,
+      onSubmit(details){
+        if(fromOverview&&entryTitle)sessionStorage.removeItem(overviewTitleKey);
+        continueSetup(details,test?.id);
+      },
+      ...(fromOverview&&entryTitle?{onBack:title=>{
+        sessionStorage.setItem(overviewTitleKey,title);
+        location.assign(overviewUrl+'?create=assessment');
+      }}:{}),
+      onClose:()=>location.assign(fromOverview?overviewUrl:'CAP-T03-Assessments.dc.html')
     });
-    setup.open(initialSetup,{initialSource:params.get('create')==='library'?'library':'scratch'});
+    setup.open(initial,{initialSource:params.get('create')==='library'?'library':'scratch',entryTitle,startWithDetails:Boolean(test||entryTitle)});
   });
+
+  function openOverviewEntry(trigger,entryTitle=''){
+    const setup=window.capAssessmentSetup.create({
+      host:trigger.closest('.theme-assessments')||document.body,
+      initial:initialSetup,showAssessmentTitle:true,allowLibrary:true,asPage:true,
+      onName(title){
+        sessionStorage.setItem(overviewTitleKey,title);
+        location.assign(setupUrl+'details&from=overview');
+      },
+      onSubmit(details){
+        sessionStorage.removeItem(overviewTitleKey);
+        continueSetup(details);
+      },
+      onClose(){
+        setup.remove();
+        trigger.focus();
+      }
+    });
+    setup.open(initialSetup,{entryTitle});
+  }
 
   /* options.onClose(submitted) replaces the default focus return, e.g. to reopen a previous modal. */
   window.capOpenNewAssessment = (trigger, options = {}) => {
@@ -141,7 +197,15 @@
     const host = root.querySelector('[data-assessment-create-menu]');
     if (!host || host.firstElementChild) return;
     if(location.pathname.endsWith('/CAP-T01-Overview.dc.html')){
-      host.innerHTML=`<a class="btn btn-lg" href="${setupUrl}scratch&from=overview">Create assessment</a>`;
+      host.innerHTML='<button class="btn btn-lg" type="button" aria-haspopup="dialog">Create assessment</button>';
+      const trigger=host.firstElementChild;
+      trigger.onclick=()=>openOverviewEntry(trigger);
+      const url=new URL(location.href);
+      if(url.searchParams.get('create')==='assessment'){
+        url.searchParams.delete('create');
+        history.replaceState(history.state,'',url);
+        openOverviewEntry(trigger,sessionStorage.getItem(overviewTitleKey)||'');
+      }
       return;
     }
 

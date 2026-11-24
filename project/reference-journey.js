@@ -190,6 +190,11 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
   page.querySelector('[data-tf-summary-title]')?.replaceChildren(document.createTextNode(m.title));
  };
  host.rjPersist=persist;
+ host.rjRename=title=>{
+  m.title=title;
+  persist();
+  main.querySelectorAll('.ad-card-kicker').forEach(label=>{label.textContent=title;});
+ };
 
  function draw(){
   t=m.tests.find(x=>x.id===selected)||m.tests[0];

@@ -86,7 +86,7 @@
    }
    }
   });
-  const openSetup=()=>setup.open(settings);
+  const openSetup=()=>setup.open(addedTest?settings:{...settings,title:read()?.title||settings.title});
   hero.querySelector('[data-uc-details]').onclick=e=>{e.preventDefault();openSetup()};
   const notice=make('<p class="uc-gate-notice" role="status">Complete test details to add items.</p>');methods.before(notice);
   function syncGate(){
@@ -370,17 +370,15 @@
    });
   }
   window.capFilterBuilderQuestions?.();
-  /* Back sits in the floating bar next to Continue (as on the other steps) and reopens the setup modal. */
-  const back=make('<button class="btn btn-ghost btn-lg uc-items-back" type="button" data-tf-back="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back</button>');
+  const back=make(`<a class="btn btn-ghost btn-icon uc-items-back" href="CAP-T04-Setup.dc.html?create=edit" aria-label="Back to test setup" title="Back to test setup">${icon('<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>')}</a>`);
   page.querySelector('.tf-bottom .tf-original-actions')?.before(make('<p class="uc-review-status sr-only" role="status" hidden></p>'));
   inst.refreshQuestionBoard?.();
-  page.querySelector('.tf-bottom .solid')?.before(back);
+  window.capPlaceAssessmentBack(hero.querySelector('h1'),back);
   const actionBar=page.querySelector('.tf-bottom');
   if(actionBar){
    const barSize=new ResizeObserver(()=>page.style.setProperty('--uc-action-bar-height',actionBar.offsetHeight+'px'));
    barSize.observe(actionBar);
   }
-  back.onclick=()=>hero.querySelector('[data-uc-details]').click();
   page.querySelectorAll('.tf-bottom a').forEach(a=>{if(a.getAttribute('href')==='CAP-T04-Setup.dc.html'){a.href='CAP-T03-Assessments.dc.html';a.textContent='Back to tests'}});
   page.addEventListener('click',e=>{const a=e.target.closest('a');if(a&&/CAP-T0[67]-/.test(a.getAttribute('href')||'')){if(!syncGate()){e.preventDefault();e.stopImmediatePropagation();openSetup()}}},true);
   observe();

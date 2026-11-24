@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded',()=>{
  const audience=()=>`<div class="af-audience-grid"><div>${icons.users}<span><small>Class</small><b>${className}</b></span></div><div>${icons.users}<span><small>Students</small><b>${students} students</b></span></div>${sessions.map((s,i)=>`<div>${icons.calendar}<span><small>${sessions.length===1?'Session':'Session '+(i+1)}</small><b>${s.noLimit?'Any time':dates(s.opens)}</b></span></div><div>${icons.clock}<span><small>${sessions.length===1?'Time':'Time '+(i+1)}</small><b>${s.noLimit?'No time limit':esc(s.opens?.slice(11,16))+'–'+esc(s.due?.slice(11,16))}</b></span></div>${d.allocationVersion===1?`<div><span><small>Assigned to ${esc(s.name)}</small><b>${(s.recipients||[]).length} students</b><span>${(s.recipients||[]).map(id=>esc(studentName(id))).join(', ')}</span></span></div>`:''}`).join('')}</div>`;
  const studentCount=count=>count+' student'+(count===1?'':'s');
  const page=document.querySelector('main>.page');if(!page)return;page.classList.add('af-page');document.body.classList.add('af-body');
+ page.addEventListener('cap:assessment-title-changed',event=>{
+  m.title=event.detail;
+  page.querySelectorAll('.af-card-eyebrow').forEach(label=>{label.textContent=m.title;});
+ });
  if(confirm){page.classList.add('af-confirm');const hero=page.querySelector('.tf-hero');if(hero){hero.querySelector('h1').textContent='Review and confirm';hero.querySelector('p')?.remove();const progress=page.querySelector('.tf-steps');if(progress){window.capRenderAssessmentProgress(progress,4,[
   'href="CAP-T04-Setup.dc.html"','href="CAP-T05-Questions.dc.html"',
   'href="CAP-T06-Review.dc.html?stage=details"','href="CAP-T08-AudienceDelivery.dc.html"'
@@ -137,6 +141,19 @@ document.addEventListener('DOMContentLoaded',()=>{
   page.closest('.cap-root').append(dialog);
   dialog.showModal();
  }
+
+ // Reject an expired draft before the assignment persistence listeners run.
+ document.addEventListener('click',event=>{
+  if(!event.target.closest('.af-confirm a[href="CAP-T10-Scheduled.dc.html"]'))return;
+  const schedule=window.capAssignmentSchedule;
+  if(!schedule.missedCutoff(read('cogniaDeliverySessions',d).sessions||[]))return;
+  event.preventDefault();
+  if(error){
+   error.textContent=schedule.cutoffMessage;
+   error.tabIndex=-1;
+   error.focus();
+  }
+ },true);
 
  // Run after the recipient validator and the assignment persistence listeners.
  window.addEventListener('click',event=>{

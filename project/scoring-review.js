@@ -71,9 +71,10 @@
     responses scored before this prototype session, so each test shows real progress (1/4, 2/4, 3/4). */
  window.capScoringQueue = {
   tests: () => assessments.map(entry => {
-   const left = pending(entry).length;
+   const responseIds = pending(entry).map(response => response.id);
+   const left = responseIds.length;
    const total = (entry.scoredEarlier || 0) + entry.responses.length;
-   return {id:entry.id, title:entry.title, classLabel:entry.classLabel, href:queueLink(entry), scored:total - left, total, left};
+   return {id:entry.id, title:entry.title, classLabel:entry.classLabel, href:queueLink(entry), scored:total - left, total, left,responseIds};
   }).filter(test => test.left > 0),
   isScoreChange: event => event.key === null || assessments.some(entry => event.key.startsWith(scorePrefixFor(entry))),
  };
@@ -144,6 +145,7 @@
   form.querySelector('[data-scoring-reasoning]').textContent = assessment.reasoning;
   form.querySelector('[data-scoring-accuracy]').textContent = assessment.accuracy;
   document.querySelector('[data-scoring-back]').href = queueLink(assessment);
+  window.capOverviewAttention?.open('score:'+assessment.id+':'+response.id);
   if (remaining.length === 1) submit.firstChild.textContent = 'Save & finish ';
 
   form.addEventListener('submit', event => {

@@ -46,7 +46,10 @@
    type:'Formative', status:'pending', learnerCount:24, questions:[question(id+'-1',stem,options,0)]});
  }
  const addDays = (date, count) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + count);
- const today = new Date(2026, 10, 18); // Reference date for the prototype scenario.
+ const schoolDate = new Intl.DateTimeFormat('en-CA', {
+  timeZone:'Africa/Johannesburg', year:'numeric', month:'2-digit', day:'2-digit'
+ });
+ const today = new Date(schoolDate.format(new Date())+'T00:00:00');
  const weekStart = addDays(today, -((today.getDay() + 6) % 7));
  const date = event => addDays(weekStart, event.day);
  const subject = 'Mathematics';

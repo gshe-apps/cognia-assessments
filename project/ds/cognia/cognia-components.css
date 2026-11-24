@@ -246,6 +246,8 @@
 .btn-destructive { background-color: var(--destructive); color: var(--primary-foreground); }
 .btn-outline.is-destructive,
 .btn-ghost.is-destructive { color: color-mix(in srgb, var(--destructive) 80%, var(--foreground)); }
+/* The icon follows the red label, including icon-only destructive buttons (an .icon is otherwise muted). */
+:is(.btn-outline, .btn-ghost).is-destructive :is(svg, .icon) { color: inherit; }
 
 .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
@@ -261,7 +263,9 @@
    Card (components.md, Card)
    .card          default
    .card-ghost    graph cards and subtle grouping
-   .card-themed   product-accented, selected or highlighted
+   .card-themed   product-accented or highlighted
+   .card-selected a card the user has picked (also set by a checked checkbox or radio
+                  that is a direct child, or aria-selected / aria-pressed / aria-checked)
    a.card-link    clickable card (wrap the card in a link)
    ------------------------------------------------------------ */
 .card {
@@ -285,6 +289,14 @@
 
 .card-themed { background-color: var(--accent-100); color: var(--foreground); }
 .card-themed .card-description { color: var(--foreground); }
+
+/* Selected card: --accent-100 fill. Never a border, outline or ring to show selection. */
+.card-selected,
+.card:has(> :is(.checkbox, .radio):checked),
+.card:is([aria-selected="true"], [aria-pressed="true"], [aria-checked="true"]),
+:is([aria-selected="true"], [aria-pressed="true"], [aria-checked="true"]) > .card { background-color: var(--accent-100); color: var(--foreground); }
+.card-selected .card-description,
+.card:has(> :is(.checkbox, .radio):checked) .card-description { color: var(--foreground); }
 
 a.card-link { display: block; color: inherit; text-decoration: none; border-radius: var(--radius-xl); }
 a.card-link > .card { height: 100%; cursor: pointer; background-image: linear-gradient(var(--hover-fade), var(--hover-fade)); transition: --hover-fade var(--duration); }

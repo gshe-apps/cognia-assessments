@@ -171,7 +171,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - Only one solid button per page section. Never two side by side.
 - Buttons use `--primary` across all product themes — they do not re-skin per theme.
 - Destructive is a state applied to any variant, not a separate button type. On a ghost or outline button the label and icon are red: use `--destructive` mixed 80% with `--foreground` (`text-[color-mix(in_srgb,var(--destructive)_80%,var(--foreground))]`) so a 16px label meets 4.5:1 on both the page and card surfaces. The hover stays the variant's usual hover.
-- Labels are always sentence case. Maximum two words.
+- Labels are always sentence case and at most three words ("Save supports", "Show 5 banks", "Yes, continue"). A count or number counts as a word. Never put a sentence or a confirmation statement on a button: say it in the dialog title or description, and keep the button to a short verb phrase.
 - Never show a hover state on a disabled button.
 - Icons can appear on the left, right, or both sides of the label.
 - Primary (solid) CTAs must always be active — never disable them preemptively. Show inline validation errors on click for missing required fields instead of disabling the button.
@@ -238,10 +238,12 @@ Cards group related content and actions into a single container.
 | Default | `rounded-xl` | Standard content grouping |
 | Ghost | `bg-transparent py-0 rounded-none` + `px-0` on CardHeader and CardContent | Always used for graph cards, subtle grouping |
 | Themed | `rounded-xl` + `style={{ backgroundColor: 'var(--accent-100)' }}` | Explicitly requested product-accented surfaces |
+| Selected | `rounded-xl bg-[var(--accent-100)]` (plain HTML `.card-selected`) | A card the user has picked: selectable option cards, chosen plans, chosen item banks |
 
 **Rules**
 - Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Tables share it (see Table). Every other component keeps 8px (`rounded-lg`).
-- Cards never have a border, in any variant or state, including selected and highlighted, and no project stylesheet may add one. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border or ring. Keep the default card surface for selection or emphasis unless the user explicitly requests the themed treatment.
+- Cards never have a border, in any variant or state, including selected and highlighted, and no project stylesheet may add one. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border, outline or ring. Keep the default card surface for emphasis unless the user explicitly requests the themed treatment.
+- Selected cards fill with `--accent-100`, never a primary border, outline or ring. This applies to every card the user can pick (option cards with a checkbox or radio, single or multi select). The fill re-skins with the product theme. Keep the checkbox or radio visible so the state is not shown by colour alone, and keep the hover treatment on selected cards. In plain HTML, `.card-selected` sets it, and `components.css` applies it automatically when the card's direct child checkbox or radio is checked, or when the card (or its wrapping link or label) has `aria-selected`, `aria-pressed` or `aria-checked="true"`. Keyboard focus still shows the 2px `--ring` focus outline.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
 - Clickable cards use the 10% black overlay on hover and retain their default shadow treatment.

@@ -183,31 +183,27 @@
    const libraryCards=libraryPanel.querySelector('[role="radiogroup"]');
    libraryCards.setAttribute('aria-label','Ready-to-use assessments');
    const topics={
-    fractions:{tone:'purple',symbol:icon('<path d="M5 8h6M8 5v6m5 5h6m-6 4h6"/>'),description:'Check understanding of adding and subtracting fractions.'},
-    algebra:{tone:'blue',symbol:icon('<path d="M5 7h2c2 0 3 10 5 10h2M5 17h2c2 0 3-10 5-10h2M16 10h6m-6 4h6"/>'),description:'Practise expressions and simple equations.'},
-    reading:{tone:'green',symbol:subjectIcon,description:'Check comprehension and use of evidence from a text.'},
-    shapes:{tone:'warm',symbol:icon('<path d="M3 17 10 4l7 13Z"/><circle cx="17" cy="16" r="5"/>'),description:'Identify shapes, angles and their properties.'},
-    measurement:{tone:'teal',symbol:gradeIcon},
-    'data-graphics':{tone:'violet',symbol:icon('<path d="M9 3h6M10 3v7L5.2 18.7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.3-2.3L14 10V3M8 15h8"/>')},
-    'ratio-proportion':{tone:'rose',symbol:icon('<path d="m19 5-14 14"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>')},
-    'word-problems':{tone:'indigo',symbol:librarySubjectIcons.Mathematics}
+    fractions:{symbol:icon('<path d="M5 8h6M8 5v6m5 5h6m-6 4h6"/>'),description:'Check understanding of adding and subtracting fractions.'},
+    algebra:{symbol:icon('<path d="M5 7h2c2 0 3 10 5 10h2M5 17h2c2 0 3-10 5-10h2M16 10h6m-6 4h6"/>'),description:'Practise expressions and simple equations.'},
+    reading:{symbol:subjectIcon,description:'Check comprehension and use of evidence from a text.'},
+    shapes:{symbol:icon('<path d="M3 17 10 4l7 13Z"/><circle cx="17" cy="16" r="5"/>'),description:'Identify shapes, angles and their properties.'},
+    measurement:{symbol:gradeIcon},
+    'data-graphics':{symbol:icon('<path d="M9 3h6M10 3v7L5.2 18.7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.3-2.3L14 10V3M8 15h8"/>')},
+    'ratio-proportion':{symbol:icon('<path d="m19 5-14 14"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>')},
+    'word-problems':{symbol:librarySubjectIcons.Mathematics}
    };
    libraryCards.innerHTML=libraryForms.map(form=>{
     const topic=topics[form.id];
     const description=form.description||topic?.description;
     const metadata=`${form.subject}, Grade ${form.grade}`;
     const searchText=[form.title,metadata,form.standard,description].join(' ').toLowerCase();
-    return `<label class="cap-setup-library-choice" data-tone="${topic?.tone||'purple'}" data-library-search="${esc(searchText)}" data-subject="${esc(form.subject)}" data-grade="${esc(form.grade)}">
-     <span class="cap-entry-library-stack" aria-hidden="true"></span>
+    return `<label class="cap-setup-library-choice" data-library-search="${esc(searchText)}" data-subject="${esc(form.subject)}" data-grade="${esc(form.grade)}">
      <span class="card cap-entry-library-paper">
-      <span class="item-media icon-accent cap-entry-library-icon">${topic?.symbol||layersIcon}</span>
+      <span class="cap-entry-library-icon">${(topic?.symbol||layersIcon).replace('<svg','<svg class="icon icon-theme"')}</span>
       <span class="item-content">
-       <span class="text-subheading font-bold" id="cap-library-name-${esc(form.id)}">${esc(form.title)}</span>
+       <span class="text-body-base font-semibold" id="cap-library-name-${esc(form.id)}">${esc(form.title)}</span>
        ${description?`<span class="item-description">${esc(description)}</span>`:''}
-       <span class="cap-entry-library-meta font-semibold text-muted-foreground">
-        <span>${subjectIcon}${esc(form.subject)}</span>
-        <span>${gradeIcon}Grade ${esc(form.grade)}</span>
-       </span>
+       <span class="cap-entry-library-meta"><span class="badge badge-secondary">${esc(form.subject)}</span><span class="badge badge-secondary">Grade ${esc(form.grade)}</span></span>
       </span>
      </span>
      <input class="radio" type="radio" name="cap-library-test" value="${esc(form.id)}" aria-labelledby="cap-library-name-${esc(form.id)}">
@@ -399,7 +395,7 @@
   librarySearch?.addEventListener('input',filterLibrary);
   modal.querySelectorAll('[data-library-filter]').forEach(filter=>filter.addEventListener('change',filterLibrary));
   modal.querySelectorAll('[name="cap-library-test"]').forEach(input=>input.onchange=()=>{
-   modal.querySelectorAll('.cap-setup-library-choice').forEach(row=>row.setAttribute('aria-current',String(row.querySelector('input').checked)));
+   modal.querySelectorAll('.cap-setup-library-choice').forEach(row=>{const on=row.querySelector('input').checked;row.setAttribute('aria-current',String(on));row.querySelector('.card')?.classList.toggle('card-selected',on);});
    find('[data-library-error]').hidden=true;
    renderEntryStage();
   });

@@ -71,6 +71,8 @@
     const learnerCount = (n) => n + (n === 1 ? ' learner' : ' learners');
     const testTitle = (id = testId) => tests.find((t) => t.id === id).title;
     const when = (s) => s.noLimit ? 'Available at any time' : new Date(s.opens).toLocaleString('en-US', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    // 24 Nov: stacked session cards read "Nov 24, 09:00 - 09:30".
+    const range = (s) => s.noLimit ? 'Available at any time' : `${new Date(s.opens).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${s.opens.slice(11, 16)} - ${s.due.slice(11, 16)}`;
     const ICON = {
       plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
       search: '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
@@ -115,12 +117,9 @@
           <div class="assign-b-count"><p class="text-body-base" data-count></p><button type="button" class="btn btn-ghost btn-sm" data-select-all></button></div>
           <ul class="assign-b-list" data-list aria-label="Learners"></ul>
         </div>
-        <label class="allocation-check text-body-small" data-review hidden><input class="checkbox" type="checkbox" name="accommodations">I’ve checked accommodations and recipient access.</label>
         <p class="alert alert-destructive" data-error role="alert" tabindex="-1" hidden></p>
         <p class="sr-only" role="status" aria-live="polite" data-live></p>
       </section>`;
-    const reviewCheckbox = host.querySelector('[name=accommodations]');
-    reviewCheckbox.checked = Boolean(data.accommodations);
     const announce = (message) => { host.querySelector('[data-live]').textContent = message; };
     const needsReview = () => data.recipients.some((id) => hasSupports(students.find((s) => s.id === id)));
 
@@ -129,7 +128,6 @@
       data.recipients = [...new Set(data.sessions.flatMap((s) => s.recipients))];
       data.classIds = classes.map((c) => c.id).filter((id) => id === classId || data.recipients.some((r) => r.startsWith(id + ':')));
       data.classId = data.classIds[0] || '5a';
-      host.querySelector('[data-review]').hidden = !needsReview();
       localStorage.setItem(key, JSON.stringify(data));
     }
 
@@ -144,10 +142,10 @@
       const disabled = s.noLimit ? 'disabled' : '';
       const others = testSessions().filter((x) => x !== s);
       host.querySelector('[data-sessions]').innerHTML = `
-        ${others.length ? `<div class="cl-stack assign-b-stack" role="group" aria-label="Other sessions for ${esc(testTitle())}">
-          ${others.map((o) => `<button type="button" class="cl-stack-item" data-activate="${esc(o.id)}" aria-label="Open ${esc(o.name || 'Unnamed session')}, ${learnerCount(o.recipients.length)} assigned">
-            <span class="cl-stack-tab"><span class="cl-stack-name"><span class="cl-stack-code">${esc(when(o))}</span><span class="cl-class-title">${esc(o.name || 'Unnamed session')}</span></span><span class="badge ${o.recipients.length ? 'badge-secondary' : 'badge-warning'}" aria-hidden="true">${o.recipients.length ? learnerCount(o.recipients.length) : 'No learners yet'}</span></span>
-            <span class="cl-stack-body" aria-hidden="true"><span class="cl-stack-full">${esc(o.name || 'Unnamed session')}</span></span>
+        ${others.length ? `<div class="assign-b-stack" role="group" aria-label="Other sessions for ${esc(testTitle())}">
+          ${others.map((o) => `<button type="button" class="card assign-b-stack-item" data-activate="${esc(o.id)}" aria-label="Open ${esc(o.name || 'Unnamed session')}, ${learnerCount(o.recipients.length)} assigned">
+            <span class="assign-b-stack-text"><span class="text-body-base font-semibold">${esc(o.name || 'Unnamed session')}</span><span class="text-body-small text-muted-foreground">${esc(range(o))}</span></span>
+            <span class="badge ${o.recipients.length ? 'badge-secondary' : 'badge-warning'}" aria-hidden="true">${o.recipients.length ? learnerCount(o.recipients.length) + ' assigned' : 'No learners yet'}</span>
           </button>`).join('')}
         </div>` : ''}
         <section class="card assign-b-session" data-session="${esc(s.id)}" aria-label="${esc(s.name || 'Unnamed session')}, ${esc(testTitle())}">
@@ -171,8 +169,8 @@
               </div>
             </details>
             <div class="assign-b-session-actions">
-              <button type="button" class="btn btn-ghost btn-sm" data-duplicate="${esc(s.id)}">${icon('copy')}Duplicate session</button>
-              ${i > 0 ? `<button type="button" class="btn btn-ghost btn-sm" data-remove="${esc(s.id)}">${icon('trash')}Remove session</button>` : ''}
+              <span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-duplicate="${esc(s.id)}" aria-label="Duplicate ${esc(s.name || 'session')}">${icon('copy')}</button><span class="tooltip" role="tooltip">Duplicate session</span></span>
+              ${i > 0 ? `<span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm is-destructive" data-remove="${esc(s.id)}" aria-label="Delete ${esc(s.name || 'session')}">${icon('trash')}</button><span class="tooltip" role="tooltip">Delete session</span></span>` : ''}
             </div>
           </div>
         </section>
@@ -204,9 +202,9 @@
         const avatar = photos[s.name] ? `<span class="avatar avatar-lg" aria-hidden="true"><img src="assets/avatars/${photos[s.name]}" alt=""></span>` : `<span class="avatar avatar-lg" aria-hidden="true">${initials(s.name)}</span>`;
         return `<li class="item assign-b-row" data-row="${s.id}">
           ${avatar}
-          <label class="item-content" for="${inputId}"><span class="item-title">${esc(s.name)}</span><span class="item-description">${esc(className.replace('Grade ', ''))}</span></label>
+          <label class="item-content" for="${inputId}"><span class="item-title">${esc(s.name)}${supportsFor(s.id).length ? ` <span class="badge badge-warning">${supportsFor(s.id).length} ${supportsFor(s.id).length === 1 ? 'support' : 'supports'}</span>` : ''}</span><span class="item-description">${esc(className.replace('Grade ', ''))}</span></label>
           <span class="item-actions">
-            <span class="item-actions-reveal"><button type="button" class="btn btn-ghost btn-sm" data-supports="${s.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(s.name)}${hasSupports(s) ? ', supports set' : ''}">Review supports</button></span>
+            <span class="item-actions-reveal"><button type="button" class="btn btn-ghost btn-sm" data-supports="${s.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(s.name)}${hasSupports(s) ? ', supports set' : ''}">${supportsFor(s.id).length ? `Review ${supportsFor(s.id).length} ${supportsFor(s.id).length === 1 ? 'support' : 'supports'}` : 'Review supports'}</button></span>
             <input class="checkbox checkbox-circle" type="checkbox" id="${inputId}" data-learner="${s.id}" ${checked ? 'checked' : ''}>
           </span></li>`;
       }).join('');
@@ -241,6 +239,21 @@
       announce(`${active().name} added to ${testTitle()}. Tick the learners who take it.`);
     }
 
+    // 24 Nov: switching sessions shuffles the cards smoothly. Each card is measured before and after the
+    // redraw, then slides from its old place to its new one (skipped when the learner prefers less motion).
+    function shuffle(redraw) {
+      const cards = () => [...host.querySelectorAll('[data-sessions] [data-activate], [data-sessions] [data-session]')];
+      const key = (el) => el.dataset.activate || el.dataset.session;
+      const before = new Map(cards().map((el) => [key(el), el.getBoundingClientRect().top]));
+      redraw();
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      cards().forEach((el) => {
+        const top = before.get(key(el));
+        if (top === undefined) return;
+        const dy = top - el.getBoundingClientRect().top;
+        if (dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }], { duration: 300, easing: 'cubic-bezier(.2, 0, 0, 1)' });
+      });
+    }
     host.addEventListener('click', (event) => {
       const b = event.target.closest('button');
       if (!b) return;
@@ -254,7 +267,7 @@
       }
       if (b.dataset.activate) {
         activeByTest[testId] = b.dataset.activate;
-        update();
+        shuffle(update);
         host.querySelector('[data-field="name"]')?.focus();
         return;
       }
@@ -295,7 +308,6 @@
     host.addEventListener('change', (event) => {
       const el = event.target;
       if (el.dataset.learner) { setLearner(el.dataset.learner, el.checked); save(); drawSessions(); drawLearners(); host.querySelector(`[data-learner="${el.dataset.learner}"]`)?.focus(); return; }
-      if (el.name === 'accommodations') { data.accommodations = el.checked; save(); return; }
       if (el.id === 'attempts' || el.id === 'deliveryTime') { data.attempts = host.querySelector('#attempts').value; data.time = host.querySelector('#deliveryTime').value; save(); return; }
       if (el.hasAttribute('data-anytime')) { active().noLimit = el.checked; settingsOpen.add(active().id); update(); }
     });
@@ -341,7 +353,7 @@
     dialog.setAttribute('aria-labelledby', 'assign-b-support-title');
     dialog.innerHTML = `<form class="cap-setup-view">
       <div class="cap-setup-heading dialog-header">
-        <div class="allocation-support-heading-copy"><h2 class="dialog-title" id="assign-b-support-title" tabindex="-1">Review supports</h2><p class="dialog-description">Select the supports for this learner.</p></div>
+        <div class="allocation-support-heading-copy"><h2 class="dialog-title" id="assign-b-support-title" tabindex="-1">Review supports</h2></div>
         <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel aria-label="Close review supports">${icon('x')}</button>
       </div>
       <div class="cap-setup-fields">
@@ -356,7 +368,7 @@
       supportLearner = learner;
       dialog.querySelector('#assign-b-support-title').textContent = 'Review supports for ' + learner.name;
       const chosen = supportsFor(learner.id);
-      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].map((o) => `<label class="card assign-b-support-choice"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><input class="checkbox" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}><span class="text-body-base font-semibold">${esc(o)}</span></label>`).join('');
+      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].map((o) => `<label class="card assign-b-support-choice"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}><span class="text-body-base font-semibold">${esc(o)}</span></label>`).join('');
       dialog.querySelector('[name=remember]').checked = Object.hasOwn(remembered, learner.id);
       dialog.showModal();
     }
@@ -370,7 +382,6 @@
       else delete remembered[supportLearner.id];
       localStorage.setItem('cogniaLearnerSupports', JSON.stringify(remembered));
       data.accommodations = false;
-      reviewCheckbox.checked = false;
       update();
       dialog.close();
       announce('Learner supports saved for ' + supportLearner.name + '.');
@@ -397,13 +408,36 @@
         return;
       }
       error.hidden = true;
-      if (needsReview() && !reviewCheckbox.checked) {
+      // 24 Nov: when assigned learners have supports, a modal asks the teacher to confirm before moving on.
+      if (needsReview() && !data.accommodations) {
         event.preventDefault();
-        reviewCheckbox.setAttribute('aria-invalid', 'true');
-        reviewCheckbox.focus();
+        confirmNext = event.target.closest('a').getAttribute('href');
+        confirmDialog.showModal();
         return;
       }
       save();
+    });
+    let confirmNext = '';
+    const confirmDialog = document.createElement('dialog');
+    confirmDialog.className = 'dialog assign-b-confirm';
+    confirmDialog.setAttribute('aria-labelledby', 'assign-b-confirm-title');
+    confirmDialog.setAttribute('aria-describedby', 'assign-b-confirm-text');
+    confirmDialog.innerHTML = `<div class="dialog-header">
+        <h2 class="dialog-title" id="assign-b-confirm-title">Have you checked supports and recipient access?</h2>
+        <button class="btn btn-ghost btn-icon dialog-close" type="button" data-confirm-cancel aria-label="Close">${icon('x')}</button>
+        <p class="dialog-description" id="assign-b-confirm-text">Some learners in these sessions have supports. Check their supports and who can access each session before you continue.</p>
+      </div>
+      <div class="dialog-footer">
+        <button class="btn btn-ghost btn-lg" type="button" data-confirm-cancel>Go back</button>
+        <button class="btn btn-lg" type="button" data-confirm-ok>Yes, continue</button>
+      </div>`;
+    page.append(confirmDialog);
+    confirmDialog.querySelectorAll('[data-confirm-cancel]').forEach((b) => b.addEventListener('click', () => confirmDialog.close()));
+    confirmDialog.querySelector('[data-confirm-ok]').addEventListener('click', () => {
+      data.accommodations = true;
+      save();
+      confirmDialog.close();
+      location.href = confirmNext;
     });
 
     update();

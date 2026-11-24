@@ -4,7 +4,9 @@
 //
 //   node scripts/sync-design-system.cjs [path-to-plugin]
 //
-// The plugin path defaults to .cognia-design-plugin (the local install, not committed).
+// With no path, it uses the plugin source: $COGNIA_PLUGIN_PATH, else ~/cognia-design-plugin. Exits 2 if
+// neither is there. It never falls back to an installed copy (such as .cognia-design-plugin), which can be
+// older than the source and would roll the copies back.
 // It updates:
 //   design-system/cognia/                      copy of skills/cognia-design, checker included
 //   project/ds/cognia/cognia-components.css    assets/components.css
@@ -19,7 +21,10 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
-const pluginRoot = path.resolve(root, args.find(a => !a.startsWith('--')) || '.cognia-design-plugin');
+const hasPlugin = (p) => fs.existsSync(path.join(p, 'skills', 'cognia-design', 'SKILL.md'));
+const defaultPlugin = [process.env.COGNIA_PLUGIN_PATH, path.join(require('node:os').homedir(), 'cognia-design-plugin')]
+  .filter(Boolean).find(hasPlugin) || path.join(require('node:os').homedir(), 'cognia-design-plugin');
+const pluginRoot = path.resolve(root, args.find(a => !a.startsWith('--')) || defaultPlugin);
 const skill = path.join(pluginRoot, 'skills', 'cognia-design');
 
 if (!fs.existsSync(path.join(skill, 'SKILL.md'))) {

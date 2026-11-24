@@ -1,7 +1,8 @@
 (() => {
  function ready() {
   const root = document.querySelector('.od-dashboard');
-  if (!root || root.querySelector('.od-desk')) return;
+  if (!root || root.dataset.overviewReady) return;
+  root.dataset.overviewReady = 'true';
   window.capMountAssessmentCreateMenu(root);
 
   // Lucide SVG paths, with color inherited from the Cognia icon class.
@@ -58,11 +59,8 @@
   heading.append(title);
 
   const calendar = root.querySelector('.od-calendar');
-  const priorities = root.querySelector('.od-folder-grid');
-  const layout = document.createElement('div');
-  layout.className = 'od-overview-layout';
-  hero.after(layout);
-  layout.append(calendar, priorities);
+  calendar.removeAttribute('aria-labelledby');
+  calendar.setAttribute('aria-label', 'Assessment calendar');
 
   calendar.innerHTML = `
    <div class="od-week-toolbar">
@@ -79,73 +77,6 @@
    <div class="od-week-viewport"><div class="od-week-grid" data-overview-days></div></div>`;
 
   const esc = text => String(text ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const results = data.results;
-  priorities.classList.add('od-desk');
-  priorities.innerHTML = `
-   <header class="od-priorities-intro"><h2 class="text-body-small font-normal">Today’s priorities</h2></header>
-   <div class="od-desk-cards">
-   <section class="od-desk-group" aria-labelledby="od-scoring-title" data-scoring-required>
-    <div class="od-desk-group-head">
-     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-scoring-title">${icon('circleAlert','warning')}Scoring required by you<span class="badge badge-secondary" data-scoring-count></span></h3>
-    </div>
-    <div class="card-stack" data-scoring-list></div>
-   </section>
-   <section class="od-desk-group" aria-labelledby="od-results-title" data-results-ready>
-    <div class="od-desk-group-head">
-     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-results-title">${icon('check','success')}Results are in</h3>
-     <a class="btn btn-ghost btn-sm" href="CAP-T03-Assessments.dc.html?view=completed" aria-label="View all results">View all${icon('arrowUpRight')}</a>
-    </div>
-    <ul class="od-desk-results" data-results-list></ul>
-   </section>
-   <section class="od-desk-group" aria-labelledby="od-drafts-title" data-overview-draft-stack>
-    <div class="od-desk-group-head">
-     <h3 class="od-desk-group-title text-body-base font-semibold" id="od-drafts-title">${icon('circleDashed')}Drafts<span class="badge badge-secondary" data-draft-count></span></h3>
-     <a class="btn btn-ghost btn-sm" href="CAP-T03-Assessments.dc.html?view=drafts" aria-label="View all drafts">View all${icon('arrowUpRight')}</a>
-    </div>
-    <div class="item-group item-group-divided" data-draft-list></div>
-   </section>
-   </div>`;
-  window.capUpdateOverviewDraftStack();
-
-  // Scoring required by you: every test with responses still to score, each opening its own tab of the scoring queue.
-  const scoringCard = priorities.querySelector('[data-scoring-required]');
-  const scoringList = scoringCard.querySelector('[data-scoring-list]');
-  const ringTone = share => share >= .75 ? 'success' : share >= .5 ? 'warning' : 'destructive';
-  function drawScoring() {
-   const tests = window.capScoringQueue.tests();
-   scoringCard.hidden = !tests.length;
-   scoringCard.querySelector('[data-scoring-count]').textContent = tests.length;
-   // Title, class 4px below it, then Score (on hover) on the left; the ring on the right. The next card covers the
-   // lower part of this one until it slides up on hover.
-   scoringList.innerHTML = tests.map(test => `<a class="card-link card-link-raised" href="${esc(test.href)}" aria-label="Score ${esc(test.title)}, ${esc(test.classLabel)}, ${test.scored} of ${test.total} scored"><div class="card od-desk-score">
-     <span class="item-content"><span class="item-title">${esc(test.title)}</span><span class="item-description">${esc(test.classLabel)}</span>
-      <span class="item-actions item-actions-reveal"><span class="btn btn-ghost btn-sm">Score${icon('right')}</span></span></span>
-     <span class="progress-ring progress-ring-${ringTone(test.scored / test.total)}" style="--value:${Math.round(test.scored / test.total * 100)}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="progress-ring-track" cx="20" cy="20" r="18" pathLength="100"/><circle class="progress-ring-indicator" cx="20" cy="20" r="18" pathLength="100"/></svg><span class="progress-ring-label" aria-hidden="true">${test.scored}/${test.total}</span></span>
-    </div></a>`).join('');
-  }
-  drawScoring();
-  window.addEventListener('pageshow', drawScoring);
-  window.addEventListener('storage', event => {
-   if (window.capScoringQueue.isScoreChange(event)) drawScoring();
-  });
-
-  // Results are in: completed assessments whose results have not been reviewed yet, newest first.
-  const readyCard = priorities.querySelector('[data-results-ready]');
-  const resultsList = readyCard.querySelector('[data-results-list]');
-  function drawResultsReady() {
-   const pending = results.entries.filter(event => !results.isReviewed(event)).sort((a,b) => b.day - a.day || b.start - a.start);
-   readyCard.hidden = !pending.length;
-   resultsList.innerHTML = pending.slice(0, 2).map(event => `<li><a class="card-link card-link-raised" href="${esc(results.href(event))}"><div class="card od-desk-result">
-     <span class="od-desk-result-media">${icon('fileCheck','theme').replace('stroke-width="2"','stroke-width="1.5"')}<span class="badge badge-success">Ready</span></span>
-     <span class="item-content"><span class="item-title">${esc(event.title)}</span><span class="item-description">${esc(event.classLabel)}</span></span>
-    </div></a></li>`).join('');
-  }
-  window.addEventListener('pageshow', drawResultsReady);
-  window.addEventListener('storage', event => {
-   if (!event.key || results.entries.some(entry => results.reviewKey(entry) === event.key)) drawResultsReady();
-  });
-  drawResultsReady();
-
   const firstHour = 8;
   const endHour = 16;
   const percentOfDay = minute => (minute - firstHour * 60) / ((endHour - firstHour) * 60) * 100;

@@ -6725,10 +6725,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 
 /* Choose an item bank (item-filters.js, 23 Nov): the left side shows these cards until a bank is chosen,
    then the search, filters and items. */
-.uc-page .library.uc-choosing-bank :is(.uc-filter-bar, .uc-filter-applied, .uc-bank-toolbar, #libraryList, [data-bank-empty]) { display: none; }
-.uc-page .library:not(.uc-choosing-bank) .uc-bank-choice { display: none; }
-.uc-page .uc-bank-choice { display: flex; flex-direction: column; gap: var(--space-3); }
-.uc-page .uc-bank-choice-header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
 .uc-page .uc-bank-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .uc-page .uc-bank-option { display: block; min-width: 0; cursor: pointer; border-radius: var(--radius-xl); }
 .uc-page .uc-bank-card { flex-direction: row; align-items: flex-start; gap: var(--space-3); height: 100%; padding: var(--space-4); transition: box-shadow var(--duration); }
@@ -6738,7 +6734,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-page .uc-bank-card-text { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: var(--space-1); min-width: 0; }
 .uc-page .uc-bank-card-text > .badge { margin-top: var(--space-1); }
 .uc-page .uc-bank-card > .checkbox { flex: none; }
-.uc-page .uc-bank-choice-actions { display: flex; justify-content: flex-end; }
 @media (max-width: 639px) { .uc-page .uc-bank-cards { grid-template-columns: minmax(0, 1fr); } }
 .uc-page .library:focus { outline: none; }
 @keyframes uc-reveal { from { opacity: 0; transform: translateY(var(--space-2)); } }
@@ -6746,23 +6741,18 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-page .library .uc-filter-applied.uc-reveal { animation-delay: calc(var(--duration) / 4); }
 .uc-page .library #libraryList.uc-reveal { animation-delay: calc(var(--duration) / 2); }
 @media (prefers-reduced-motion: reduce) { .uc-page .library .uc-reveal { animation: none; } }
-.uc-page .uc-bank-choice h2 { margin: 0; font-size: var(--text-body-base); font-weight: 600; line-height: 1.5; }
 
 /* 24 Nov: step 2, choosing item banks. While no items are added, the "Build your test" empty state is hidden,
    the bank chooser takes the full width and the three bank cards sit in one row. */
-.uc-page:not(.uc-locked) .buildergrid:has(.library.uc-choosing-bank:not([hidden])):has(.qc-test-empty) { grid-template-columns: minmax(0, 1fr); }
-.uc-page:not(.uc-locked) .buildergrid:has(.library.uc-choosing-bank:not([hidden])) > div:has(.qc-test-empty) { display: none; }
 .uc-page .uc-bank-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .uc-page [data-picked-count]:empty { display: none; }
 @media (max-width: 767px) { .uc-page .uc-bank-cards { grid-template-columns: minmax(0, 1fr); } }
 
 /* 24 Nov: step 2 group cards: bank count badge under the description. */
-.uc-page .uc-bank-choice { gap: var(--space-4); }
 .uc-page .uc-bank-badges { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-1); }
 
 /* 24 Nov: group cards are sized as if five fit in a row, so three cards take three fifths of the width.
    Show banks sits bottom left, under the first card. Icons use the theme accent, no tile. */
-@media (min-width: 1000px) { .uc-page:not(.uc-locked) .buildergrid:has(.qc-test-empty) .uc-bank-choice { max-inline-size: calc(60% - var(--space-3) * 2 / 5); } }
 .uc-page .uc-bank-card-icon { display: flex; flex: none; }
 .uc-page .uc-bank-card-icon .icon { width: var(--space-6); height: var(--space-6); }
 
@@ -6815,9 +6805,85 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .assign-b-confirm { inline-size: min(36rem, calc(100% - var(--space-8))); }
 
 /* 24 Nov (2): Show banks sits on the left. */
-.uc-page .uc-bank-choice-actions { justify-content: flex-start; }
 /* Selected test details tab: 8px corners all round. */
 @media (min-width: 768px) { .rj-details .ad-test-tab[aria-selected="true"] { border-radius: var(--radius); } }
 /* Option B: space above "Available at any time" in Access and instructions. */
 .assign-b-settings-content { padding-block-start: var(--space-3); }
 .assign-b-row .item-title .badge { margin-inline-start: var(--space-2); vertical-align: middle; }
+
+/* Educator Overview: My calendar and Results overview tabs (24 Nov 2026). The calendar is full width; the priorities column
+   was removed. Results overview breaks down the Home "at or above benchmark" figure. */
+:where(:root:has(.od-overview)) .od-overview-tabs { justify-self: start; }
+:where(:root:has(.od-overview)) .od-overview-panel { display: grid; gap: var(--space-8); min-width: 0; }
+:where(:root:has(.od-overview)) .od-overview-panel[hidden] { display: none; }
+:where(:root:has(.od-overview)) .od-results :is(h2, p) { margin: 0; }
+:where(:root:has(.od-overview)) .od-res-snap { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--space-8); align-items: start; }
+:where(:root:has(.od-overview)) .od-res-trend { display: grid; gap: var(--space-6); min-width: 0; }
+:where(:root:has(.od-overview)) .od-res-head,
+:where(:root:has(.od-overview)) .od-res-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+:where(:root:has(.od-overview)) .od-res-head { align-items: center; justify-content: flex-start; }
+:where(:root:has(.od-overview)) .od-res-section-head h2 { display: flex; align-items: center; gap: var(--space-2); }
+:where(:root:has(.od-overview)) .od-res-section-head > div:first-child,
+:where(:root:has(.od-overview)) .od-res-head > div { display: grid; gap: var(--space-1); }
+
+:where(:root:has(.od-overview)) .od-res-legend .chart-swatch { --swatch: var(--chart-1); }
+:where(:root:has(.od-overview)) .od-res-bench-key { width: var(--space-4); border-top: 2px dashed var(--muted-foreground); }
+
+
+:where(:root:has(.od-overview)) .od-res-section { display: grid; gap: var(--space-4); min-width: 0; scroll-margin-top: var(--space-6); }
+:where(:root:has(.od-overview)) .od-res-section:focus { outline: none; }
+
+/* Tables */
+:where(:root:has(.od-overview)) .od-res-link { color: var(--foreground); text-decoration: none; }
+:where(:root:has(.od-overview)) .od-res-th { display: inline-flex; align-items: center; gap: var(--space-1); }
+:where(:root:has(.od-overview)) .od-res-info + .tooltip { left: auto; right: 0; transform: none; }
+
+@media (max-width: 1023px) {
+  :where(:root:has(.od-overview)) .od-res-snap { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+}
+
+/* Hero status under the greeting */
+:where(:root:has(.od-overview)) .od-hero > div:has(> .od-hero-status) { display: grid; gap: var(--space-2); }
+:where(:root:has(.od-overview)) .od-hero-status { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin: 0; }
+
+/* How we get to 48%: vertical bars in --accent-200, a dashed benchmark line, the overall result last.
+   Learner counts and percentages show in a tooltip on hover and keyboard focus. */
+:where(:root:has(.od-overview)) .od-res-vchart { --plot: 240px; min-height: 0; }
+:where(:root:has(.od-overview)) .od-res-cols { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--space-3); padding-top: var(--space-6); }
+:where(:root:has(.od-overview)) .od-res-bench-line { position: absolute; z-index: 10; left: 0; right: 0; top: calc(var(--space-6) + var(--plot) / 2); border-top: 2px dashed var(--muted-foreground); pointer-events: none; }
+:where(:root:has(.od-overview)) .od-res-bench-line > span { position: absolute; right: 0; bottom: var(--space-1); }
+:where(:root:has(.od-overview)) .od-res-col { display: grid; justify-items: center; gap: var(--space-2); min-width: 0; }
+:where(:root:has(.od-overview)) .od-res-vbar { position: relative; display: flex; align-items: flex-end; width: 100%; height: var(--plot); padding: 0; border: 0; border-radius: var(--radius) var(--radius) 0 0; background: transparent; cursor: pointer; justify-content: center; padding-inline: var(--space-4); transition: background-color var(--duration); }
+:where(:root:has(.od-overview)) span.od-res-vbar { cursor: default; }
+:where(:root:has(.od-overview)) .od-res-vfill { width: 100%; max-width: calc(2 * var(--space-20)); height: var(--value); border-radius: 0; background-color: var(--accent-200); }
+/* Like eleot: the bar keeps its colour; a grey band behind the column shows hover (light) and selected (darker). */
+:where(:root:has(.od-overview)) .od-res-vbar:hover { background-color: var(--secondary); }
+:where(:root:has(.od-overview)) .od-res-vbar[aria-pressed="true"] { background-color: color-mix(in srgb, var(--foreground) 15%, var(--background)); }
+:where(:root:has(.od-overview)) .od-res-vbar:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+:where(:root:has(.od-overview)) .od-res-name { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
+:where(:root:has(.od-overview)) .od-res-tip { position: absolute; z-index: 30; left: 50%; bottom: calc(var(--value) + var(--space-2)); display: grid; gap: var(--space-1); width: max-content; max-width: 200px; transform: translateX(-50%); text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--duration), visibility var(--duration); }
+:where(:root:has(.od-overview)) .od-res-vbar:is(:hover, :focus-visible) .od-res-tip { opacity: 1; visibility: visible; }
+:where(:root:has(.od-overview)) .od-res-col:last-child .od-res-tip { left: auto; right: 0; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:has(.od-overview)) :is(.od-res-vbar, .od-res-tip) { transition: none; }
+}
+
+/* Group picker: the shared select, sized to its content. */
+:where(:root:has(.od-overview)) .od-res-group { width: auto; min-width: 160px; }
+
+/* This week panel (Figma CAP 2031:20155): 12px padding, tinted status rows 8px apart. */
+:where(:root:has(.od-overview)) .od-res-summary { display: grid; gap: var(--space-3); padding: var(--space-3); }
+:where(:root:has(.od-overview)) .od-res-stats { display: grid; gap: var(--space-2); }
+:where(:root:has(.od-overview)) .od-res-stat { display: flex; align-items: center; gap: var(--space-2); width: 100%; padding: var(--space-2); border: 0; border-radius: var(--radius); font: inherit; font-size: var(--text-body-small); color: var(--foreground); text-align: left; cursor: pointer; }
+:where(:root:has(.od-overview)) .od-res-stat.is-destructive { background-color: var(--destructive-light); }
+:where(:root:has(.od-overview)) .od-res-stat.is-success { background-color: var(--success-light); }
+:where(:root:has(.od-overview)) .od-res-stat:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+:where(:root:has(.od-overview)) .od-res-stat-icon { display: inline-flex; align-items: center; justify-content: center; width: var(--space-8); height: var(--space-8); flex: none; }
+:where(:root:has(.od-overview)) .od-res-stat-icon svg { width: var(--space-6); height: var(--space-6); }
+:where(:root:has(.od-overview)) .od-res-stat-text { display: grid; }
+
+/* Choose a group modal (24 Nov 2026): the three group cards stacked, Continue bottom right. */
+.uc-page .uc-bank-dialog .uc-bank-cards { grid-template-columns: minmax(0, 1fr); }
+:where(:root:has(.od-overview)) .od-res-section-head > div.od-res-title { display: flex; align-items: center; gap: var(--space-2); }

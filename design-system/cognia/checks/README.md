@@ -31,7 +31,7 @@
 | Header with no background, border or shadow, and a 2px `--brand-coral` underline on the selected item | `components.md`, Navigation shell |
 | Footer with no background, a top border and the standard items | `components.md`, Footer |
 | Page on `--background` | `components.md`, Navigation shell |
-| Cards have no border | `components.md`, Card |
+| Cards have no border or outline (selected cards use the `--accent-100` fill) | `components.md`, Card |
 | No grey lines between content: no separator, `<hr>` or one-sided border outside a list, the shell and form controls (exempt things like a timeline's "now" line with `lineExempt`) | `DESIGN.md`, Global rules |
 | No dot, bullet or pipe between pieces of content on one line | `DESIGN.md`, Global rules |
 

@@ -35,7 +35,8 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
   /* 23 Nov: an added item reads like its row in the item list: DOK block, semibold question, type and standard below. */
   const tone=({'1':'success','2':'warning','3':'destructive'})[dok]||'secondary';
   const standard=q.standard||(inst.renderVals?.().bank||[]).find(item=>item.id===q.id)?.standard;
-  const meta=[type,standard].filter(Boolean).map(value=>`<span>${esc(value)}</span>`).join('');
+  /* 24 Nov: items written in Create manually carry a Manual badge; their edit button shows on hover. */
+  const meta=[type,standard].filter(Boolean).map(value=>`<span>${esc(value)}</span>`).join('')+(isManual(q)?'<span class="badge badge-secondary">Manual</span>':'');
   return `${dok?`<span class="bank-row-difficulty badge badge-${tone}"><span>DOK</span> <span>${esc(dok)}</span></span>`:''}<div class="qc-item-text"><p class="qc-stem text-body-base font-semibold" title="${esc(q.stem)}">${esc(q.stem)}</p>${meta?`<p class="qc-item-meta text-body-small text-muted-foreground">${meta}</p>`:''}</div>`;
  }
  function updateQuestions(chosen){inst.setState({chosen});inst.update()}

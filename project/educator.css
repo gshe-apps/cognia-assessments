@@ -6503,8 +6503,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .assessment-library-card-meta > :first-child { flex:1; min-width:0; }
 .assessment-library-card-meta > :not(:first-child) { flex:none; }
 /* Keep the assessment shown in the preview highlighted when the pointer moves away. */
-.assessment-library-card:is([aria-current="true"], :hover, :focus-visible) { background-color:var(--accent-400); background-image:none; color:var(--primary-foreground); }
-.assessment-library-card:is([aria-current="true"], :hover, :focus-visible) :is(.item-description, .item-actions .icon) { color:var(--primary-foreground); }
+.assessment-library-card[aria-current="true"] { background-color:var(--accent-100); }
 
 .assessments-page-heading { display:grid; gap:var(--space-1); margin-block-end:var(--space-2); }
 
@@ -6570,90 +6569,22 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
  }
 }
 .cap-setup-page .cap-setup-source-tabs { margin:0; flex-wrap:wrap; }
-.cap-setup-page .cap-setup-source-tabs .tab { min-block-size:var(--space-12); padding-inline:var(--space-6); gap:var(--space-3); border-color:transparent; background-color:var(--card); }
-.cap-setup-page .cap-setup-source-tabs .tab svg { inline-size:var(--space-6); block-size:var(--space-6); }
-.cap-setup-page .cap-setup-source-tabs .tab[aria-selected="true"] { background-color:var(--accent-400); color:var(--primary-foreground); }
 .cap-entry-library-tools { display:grid; grid-template-columns:minmax(0,1fr) repeat(2,minmax(0,12rem)); align-items:center; gap:var(--space-4); }
 .cap-setup-page .cap-setup-library-list { grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--space-8) var(--space-6); padding-block-start:var(--space-3); }
 .cap-entry-library-filter { --filter-icon-size:var(--space-4); }
 .cap-entry-library-filter > svg { position:absolute; inline-size:var(--filter-icon-size); block-size:var(--filter-icon-size); inset-inline-start:var(--space-4); inset-block-start:50%; transform:translateY(-50%); pointer-events:none; }
 .cap-entry-library-filter > .select { padding-inline-start:calc(var(--space-4) + var(--filter-icon-size) + var(--space-3)); }
-.cap-setup-page .cap-setup-library-choice {
- --cap-paper-tint:var(--accent-100);
- --cap-paper-ink:var(--accent-400);
- --cap-paper-fold:var(--space-10);
- position:relative;
- isolation:isolate;
- display:grid;
- min-width:0;
- padding:0;
- border-radius:var(--radius-xl);
-}
-.cap-setup-page .cap-setup-library-choice[data-tone="blue"] { --cap-paper-tint:var(--info-light); --cap-paper-ink:var(--info); }
-.cap-setup-page .cap-setup-library-choice[data-tone="green"] { --cap-paper-tint:var(--success-light); --cap-paper-ink:var(--success); }
-.cap-setup-page .cap-setup-library-choice[data-tone="warm"] { --cap-paper-tint:var(--warning-light); --cap-paper-ink:var(--warning); }
-.cap-setup-page .cap-setup-library-choice[data-tone="teal"] { --cap-paper-tint:color-mix(in srgb, var(--info-light), var(--success-light)); --cap-paper-ink:color-mix(in srgb, var(--info), var(--success)); }
-.cap-setup-page .cap-setup-library-choice[data-tone="violet"] { --cap-paper-ink:var(--ai-accent); }
-.cap-setup-page .cap-setup-library-choice[data-tone="rose"] { --cap-paper-tint:var(--destructive-light); --cap-paper-ink:var(--destructive); }
-.cap-setup-page .cap-setup-library-choice[data-tone="indigo"] { --cap-paper-ink:color-mix(in srgb, var(--accent-400), var(--info)); }
-.cap-entry-library-stack { position:absolute; inset:0; pointer-events:none; }
-.cap-entry-library-stack::before,
-.cap-entry-library-stack::after {
- content:"";
- position:absolute;
- inset:calc(-1 * var(--space-2)) var(--cap-paper-fold) var(--space-6) 0;
- border:1px solid var(--border);
- border-radius:var(--radius-xl);
- background-color:var(--card);
- box-shadow:var(--shadow-md);
- transform:translateX(calc(-1 * var(--space-2))) rotate(1.5deg);
- pointer-events:none;
-}
-.cap-entry-library-stack::after {
- inset-block-start:calc(-1 * var(--space-1));
- inset-block-end:var(--space-4);
- box-shadow:var(--shadow-sm);
- transform:translateX(calc(-1 * var(--space-1))) rotate(0.75deg);
-}
-.cap-entry-library-paper {
- position:relative;
- gap:var(--space-2);
- min-block-size:calc(var(--space-24) + var(--space-24) + var(--space-6));
- padding:var(--space-4) var(--space-6) var(--space-6);
- border:1px solid var(--border);
- clip-path:polygon(0 0,calc(100% - var(--cap-paper-fold)) 0,100% var(--cap-paper-fold),100% 100%,0 100%);
-}
-.cap-entry-library-paper::after {
- content:"";
- position:absolute;
- inset-block-start:0;
- inset-inline-end:0;
- inline-size:var(--cap-paper-fold);
- block-size:var(--cap-paper-fold);
- border-end-start-radius:var(--radius);
- background-color:var(--secondary);
- box-shadow:var(--shadow-sm);
- pointer-events:none;
-}
+/* 24 Nov: library cards follow the plugin Card: no border, no paper stack, raised hover (shadow-md),
+   the accent icon with no tile, subject and grade as badges, selected is .card-selected (--accent-100). */
+.cap-setup-page .cap-setup-library-choice { position:relative; display:grid; min-width:0; padding:0; border-radius:var(--radius-xl); cursor:pointer; }
+.cap-entry-library-paper { flex-direction:column; gap:var(--space-3); height:100%; padding:var(--space-6); transition:box-shadow var(--duration); }
+.cap-setup-page .cap-setup-library-choice:hover > .cap-entry-library-paper { box-shadow:var(--shadow-md); }
 .cap-entry-library-paper .item-content { gap:var(--space-1); }
-.cap-entry-library-meta { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-1) var(--space-3); margin-block-start:auto; padding-block-start:var(--space-3); font-size:var(--text-body-small); }
-.cap-entry-library-meta > span { display:inline-flex; align-items:center; gap:var(--space-1); }
-.cap-entry-library-meta > span + span { border-inline-start:1px solid var(--border); padding-inline-start:var(--space-3); }
+.cap-entry-library-icon { display:flex; }
+.cap-entry-library-icon .icon { inline-size:var(--space-6); block-size:var(--space-6); }
+.cap-entry-library-meta { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-block-start:auto; padding-block-start:var(--space-3); }
 .cap-setup-page .cap-setup-library-choice > .radio { position:absolute; inset-block-start:var(--space-4); inset-inline-end:var(--space-4); opacity:0; }
-.cap-setup-page .cap-entry-library-icon { align-self:flex-start; align-items:center; justify-content:center; inline-size:calc(var(--space-12) + var(--space-3)); aspect-ratio:1; background-color:var(--cap-paper-tint); }
-.cap-setup-page .cap-entry-library-icon svg { inline-size:var(--space-8); block-size:var(--space-8); stroke:var(--cap-paper-ink); }
-.cap-setup-page .cap-setup-library-choice:has(.radio:checked) .cap-entry-library-paper { background-color:var(--accent-400); border-color:var(--accent-400); color:var(--primary-foreground); }
-.cap-setup-page .cap-setup-library-choice:has(.radio:checked) .cap-entry-library-paper::after { background-color:color-mix(in srgb, var(--cap-paper-tint) 85%, var(--cap-paper-ink)); }
-.cap-setup-page .cap-setup-library-choice:has(.radio:checked) :is(.item-description,.cap-entry-library-meta) { color:var(--primary-foreground); }
 .cap-setup-page .cap-setup-library-choice:has(.radio:focus-visible) { outline:2px solid var(--ring); outline-offset:2px; }
-@media (hover:hover) and (prefers-reduced-motion:no-preference) {
- .cap-entry-library-stack::before,
- .cap-entry-library-stack::after,
- .cap-entry-library-paper { transition:transform var(--duration) ease-out; }
- .cap-setup-library-choice:hover .cap-entry-library-stack::before { transform:translate(calc(-1 * var(--space-3)),calc(-1 * var(--space-2))) rotate(2.5deg); }
- .cap-setup-library-choice:hover .cap-entry-library-stack::after { transform:translate(calc(-1 * var(--space-2)),calc(-1 * var(--space-1))) rotate(1.5deg); }
- .cap-setup-page .cap-setup-library-choice:hover > .cap-entry-library-paper { transform:translateY(calc(-1 * var(--space-1))); }
-}
 .cap-setup-page .cap-entry-library-actions { justify-content:space-between; }
 @media (max-width: 1200px) {
  .cap-setup-page .cap-setup-library-list { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -6802,7 +6733,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-page .uc-bank-option { display: block; min-width: 0; cursor: pointer; border-radius: var(--radius-xl); }
 .uc-page .uc-bank-card { flex-direction: row; align-items: flex-start; gap: var(--space-3); height: 100%; padding: var(--space-4); transition: box-shadow var(--duration); }
 .uc-page .uc-bank-option:hover .uc-bank-card { box-shadow: var(--shadow-md); }
-.uc-page .uc-bank-card:has(.checkbox:checked) { outline: 1px solid var(--primary); outline-offset: -1px; }
 .uc-page .uc-bank-card:has(.checkbox:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
 .uc-page .uc-bank-card .checkbox:focus-visible { outline: none; }
 .uc-page .uc-bank-card-text { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: var(--space-1); min-width: 0; }
@@ -6817,3 +6747,77 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-page .library #libraryList.uc-reveal { animation-delay: calc(var(--duration) / 2); }
 @media (prefers-reduced-motion: reduce) { .uc-page .library .uc-reveal { animation: none; } }
 .uc-page .uc-bank-choice h2 { margin: 0; font-size: var(--text-body-base); font-weight: 600; line-height: 1.5; }
+
+/* 24 Nov: step 2, choosing item banks. While no items are added, the "Build your test" empty state is hidden,
+   the bank chooser takes the full width and the three bank cards sit in one row. */
+.uc-page:not(.uc-locked) .buildergrid:has(.library.uc-choosing-bank:not([hidden])):has(.qc-test-empty) { grid-template-columns: minmax(0, 1fr); }
+.uc-page:not(.uc-locked) .buildergrid:has(.library.uc-choosing-bank:not([hidden])) > div:has(.qc-test-empty) { display: none; }
+.uc-page .uc-bank-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.uc-page [data-picked-count]:empty { display: none; }
+@media (max-width: 767px) { .uc-page .uc-bank-cards { grid-template-columns: minmax(0, 1fr); } }
+
+/* 24 Nov: step 2 group cards: bank count badge under the description. */
+.uc-page .uc-bank-choice { gap: var(--space-4); }
+.uc-page .uc-bank-badges { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-1); }
+
+/* 24 Nov: group cards are sized as if five fit in a row, so three cards take three fifths of the width.
+   Show banks sits bottom left, under the first card. Icons use the theme accent, no tile. */
+@media (min-width: 1000px) { .uc-page:not(.uc-locked) .buildergrid:has(.qc-test-empty) .uc-bank-choice { max-inline-size: calc(60% - var(--space-3) * 2 / 5); } }
+.uc-page .uc-bank-card-icon { display: flex; flex: none; }
+.uc-page .uc-bank-card-icon .icon { width: var(--space-6); height: var(--space-6); }
+
+/* 24 Nov: on added items, the edit button (manual items only) appears on hover or keyboard focus. */
+.uc-page .qc-preview-card [data-edit-item] { opacity: 0; transition: opacity var(--duration); }
+.uc-page .qc-preview-card:is(:hover, :focus-within) [data-edit-item] { opacity: 1; }
+.uc-page .qc-item-meta { align-items: center; }
+
+/* 24 Nov: Filters modal values are full-width rows with more space between them. The whole row is the label,
+   so clicking anywhere on it ticks the value; hover uses the shared 10% overlay. */
+.uc-filters-options { gap: var(--space-1); }
+.uc-filters-option { inline-size: 100%; padding: var(--space-3); border-radius: var(--radius); cursor: pointer; transition: background-color var(--duration); }
+.uc-filters-option:hover { background-color: var(--hover-overlay); }
+
+/* 24 Nov: the selected side tab tucks 8px over the card's right edge, so it reads as part of that card.
+   Its text stays where the other tabs' text is. */
+@media (min-width: 768px) {
+ .rj-details .ad-test-tab[aria-selected="true"] { position: relative; z-index: 10; margin-inline-start: calc(-1 * var(--space-2)); padding-inline-start: calc(var(--space-3) + var(--space-2)); }
+}
+
+/* 24 Nov: Option B sessions. Other sessions sit above the open one as overlapping cards (name, time and
+   learner count); each card tucks 24px under the next, and the open session overlaps the last one. */
+.assign-b-sessions { gap: 0; }
+.assign-b-stack { display: flex; flex-direction: column; }
+.assign-b-stack-item { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; gap: var(--space-3); inline-size: 100%; padding: var(--space-4) var(--space-4) calc(var(--space-4) + var(--space-6)); border: 0; box-shadow: var(--shadow-stack); text-align: start; font: inherit; color: inherit; cursor: pointer; transition: transform var(--duration); }
+.assign-b-stack-item + .assign-b-stack-item { margin-block-start: calc(-1 * var(--space-6)); }
+.assign-b-stack-item:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+.assign-b-stack-item:focus-visible { position: relative; z-index: 20; outline: 2px solid var(--ring); outline-offset: 2px; }
+.assign-b-stack-text { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.assign-b-stack + .assign-b-session { position: relative; z-index: 10; margin-block-start: calc(-1 * var(--space-6)); box-shadow: var(--shadow-stack); }
+@media (prefers-reduced-motion: no-preference) { .assign-b-stack-item:hover { transform: translateY(calc(-1 * var(--space-1))); } }
+
+/* Access and instructions: the trigger row gets the shared hover overlay with 8px corners, like other accordions. */
+.assign-b-settings > .accordion-trigger { margin-inline: calc(-1 * var(--space-2)); padding-inline: var(--space-2); border-radius: var(--radius); background-color: transparent; transition: background-color var(--duration); }
+.assign-b-settings > .accordion-trigger:hover { background-color: transparent; background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
+
+/* Duplicate and Delete are small icon buttons, bottom right of the session card. */
+.assign-b-session-actions { justify-content: flex-end; gap: var(--space-1); }
+
+/* Review supports: three roomy columns; each support is a row with its accent icon, name and a round checkbox. */
+.allocation-support-dialog.assign-b-support-dialog [data-support-options] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.assign-b-support-choice { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-3); padding: var(--space-4); }
+.assign-b-support-choice .checkbox { position: static; margin-inline-start: auto; order: 3; }
+.assign-b-support-choice > .text-body-base { order: 2; }
+@media (max-width: 767px) { .allocation-support-dialog.assign-b-support-dialog [data-support-options] { grid-template-columns: minmax(0, 1fr); } }
+/* The session card no longer clips its content, so the Duplicate and Delete tooltips can show; the head keeps the round top corners. */
+.assign-b-session { overflow: visible; }
+.assign-b-session-head { border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+/* Continue confirmation for learners with supports: wide enough for the full button label. */
+.assign-b-confirm { inline-size: min(36rem, calc(100% - var(--space-8))); }
+
+/* 24 Nov (2): Show banks sits on the left. */
+.uc-page .uc-bank-choice-actions { justify-content: flex-start; }
+/* Selected test details tab: 8px corners all round. */
+@media (min-width: 768px) { .rj-details .ad-test-tab[aria-selected="true"] { border-radius: var(--radius); } }
+/* Option B: space above "Available at any time" in Access and instructions. */
+.assign-b-settings-content { padding-block-start: var(--space-3); }
+.assign-b-row .item-title .badge { margin-inline-start: var(--space-2); vertical-align: middle; }

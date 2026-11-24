@@ -1,0 +1,12 @@
+#!/bin/sh
+# Used by post-merge and post-checkout: after a pull, merge or branch switch, refresh the
+# cognia-design plugin copies in this repo if the plugin on this computer is newer.
+# Does nothing on computers without the plugin. Never blocks anything.
+root=$(git rev-parse --show-toplevel) && cd "$root" || exit 0
+command -v node >/dev/null 2>&1 || exit 0
+node scripts/sync-design-system.cjs --check >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+  out=$(node scripts/sync-design-system.cjs 2>&1) || exit 0
+  echo "cognia-design: $(echo "$out" | tail -n 1 | sed 's/ Now run the plugin check\.//') Commit the updated copies with your next change."
+fi
+exit 0

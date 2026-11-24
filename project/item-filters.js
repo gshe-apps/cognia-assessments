@@ -1,5 +1,6 @@
-/* Add your items (CAP-T05-*), 23 Nov: the left side starts with three item bank cards. Choosing one shows the
-   search, the filters (with that bank applied) and the items; with no bank applied, the cards show again.
+/* Add your items (CAP-T05-*), 24 Nov: the left side starts with three group cards, each counting its banks.
+   Choosing groups shows the search, the filters (with those groups applied) and the items; with no group
+   applied, the group cards show again.
    The search bar only searches the item list, and the filter icon
    opens a Filters modal (item bank, grade, subject, DOK, standards, type). Applied filters show as chips
    under the search. This replaces the item bank picker and the filter popover built by combined-create.js;
@@ -81,59 +82,59 @@
     toolbar.before(bar, chips);
     const filterButton = bar.querySelector('.uc-filter-button');
 
-    // Item bank cards: what the teacher sees first, until a bank is chosen.
-    const BANK_CARDS = [
-      { value: 'cognia', icon: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>', text: 'Ready-made items from Cognia, aligned to standards.' },
-      { value: 'teacher', icon: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>', text: 'Items you have written or saved.' },
-      { value: 'specialist', icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>', text: 'Items shared by your content specialists.' },
+    // 24 Nov: the teacher first chooses a group (Cognia, My banks, Content specialist). Each card counts the
+    // banks in it, and the chosen groups open the item list with them applied as the Item bank filter.
+    const GROUP_CARDS = [
+      { value: 'cognia', icon: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>', text: 'Ready-made banks from Cognia, aligned to standards.' },
+      { value: 'teacher', icon: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>', text: 'Banks you have created or saved.' },
+      { value: 'specialist', icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>', text: 'Banks shared by your content specialists.' },
     ];
+    // Sample item banks (teacher-bank-samples.js): five Grade 5 Mathematics banks holding 50 items.
+    const ITEM_BANKS = window.capItemBanks || [];
+    const banksIn = (group) => ITEM_BANKS.filter((b) => b.group === group);
     const choice = document.createElement('section');
     choice.className = 'uc-bank-choice';
     choice.setAttribute('aria-labelledby', 'uc-bank-choice-title');
     bar.before(choice);
-    // Several banks can be ticked; "Show items" then opens the list with those banks as filters.
-    let picked = [];
-    const itemsText = (n) => `${n} ${n === 1 ? 'item' : 'items'}`;
-    function bankTotal(values) {
-      const all = rows().map((row) => ({ id: row.dataset.bankId, values: valuesOf(row) }));
-      return new Set(all.filter((r) => r.values.bank.some((b) => values.includes(b)) && matches(r.values, applied, 'bank')).map((r) => r.id)).size;
-    }
-    function drawShow() {
-      const show = choice.querySelector('[data-show-items]');
-      show.disabled = !picked.length;
-      show.textContent = picked.length ? `Show ${itemsText(bankTotal(picked))}` : 'Show items';
-      choice.querySelector('[data-picked-count]').textContent = picked.length ? `${picked.length} selected` : 'Select one or more';
-    }
+    let pickedGroups = [];
+    const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function drawCards() {
-      // Each card counts the items it will show: the bank with the other filters as they are.
-      choice.innerHTML = `<div class="uc-bank-choice-header"><h2 class="text-body-base font-semibold" id="uc-bank-choice-title">Choose item banks</h2><span class="text-body-small text-muted-foreground" data-picked-count aria-live="polite"></span></div>
-        <div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${BANK_CARDS.map((card) => {
-          const n = bankTotal([card.value]);
+      choice.innerHTML = `<div class="uc-bank-choice-header"><h2 class="text-body-base font-semibold" id="uc-bank-choice-title">Choose a group</h2><span class="text-body-small text-muted-foreground" data-picked-count aria-live="polite"></span></div>
+        <div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
+          const n = banksIn(card.value).length;
           return `<label class="uc-bank-option"><span class="card uc-bank-card">
-            <span class="item-media item-media-icon">${icon(card.icon)}</span>
-            <span class="uc-bank-card-text"><span class="text-body-base font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span><span class="badge badge-secondary">${itemsText(n)}</span></span>
-            <input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-bank ${picked.includes(card.value) ? 'checked' : ''} aria-describedby="uc-bank-desc-${card.value}"><span class="sr-only" id="uc-bank-desc-${card.value}">${itemsText(n)}</span>
+            <span class="uc-bank-card-icon">${icon(card.icon).replace('<svg', '<svg class="icon icon-theme"')}</span>
+            <span class="uc-bank-card-text"><span class="text-body-base font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span><span class="uc-bank-badges"><span class="badge badge-secondary">${plural(n, 'bank')}</span></span></span>
+            <input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span>
           </span></label>`;
         }).join('')}</div>
-        <div class="uc-bank-choice-actions"><button type="button" class="btn btn-lg" data-show-items disabled>Show items</button></div>`;
+        <div class="uc-bank-choice-actions"><button type="button" class="btn btn-lg" data-show-items>Show banks</button></div>`;
       drawShow();
     }
+    function drawShow() {
+      const n = pickedGroups.reduce((sum, g) => sum + banksIn(g).length, 0);
+      const show = choice.querySelector('[data-show-items]');
+      show.disabled = !pickedGroups.length;
+      show.textContent = pickedGroups.length ? `Show ${plural(n, 'bank')}` : 'Show banks';
+      choice.querySelector('[data-picked-count]').textContent = pickedGroups.length ? `${pickedGroups.length} selected` : '';
+    }
     choice.addEventListener('change', (event) => {
-      const box = event.target.closest('[data-pick-bank]');
+      const box = event.target.closest('[data-pick-group]');
       if (!box) return;
-      picked = BANK_CARDS.map((c) => c.value).filter((v) => (v === box.value ? box.checked : picked.includes(v)));
+      pickedGroups = GROUP_CARDS.map((c) => c.value).filter((v) => (v === box.value ? box.checked : pickedGroups.includes(v)));
       drawShow();
     });
+    // The chosen groups go straight to the item list as the Item bank filter.
     choice.addEventListener('click', (event) => {
-      if (!event.target.closest('[data-show-items]') || !picked.length) return;
-      applied.bank = [...picked];
-      picked = [];
+      if (!event.target.closest('[data-show-items]') || !pickedGroups.length) return;
+      applied.bank = [...pickedGroups];
+      pickedGroups = [];
       run();
       // Keep keyboard users in place without putting the cursor in the search box.
       library.tabIndex = -1;
       library.focus({ preventScroll: true });
     });
-    const firstBank = () => choice.querySelector('[data-pick-bank]');
+    const firstBank = () => choice.querySelector('[data-pick-group]');
 
     function run() {
       const choosing = !applied.bank.length;

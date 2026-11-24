@@ -17,10 +17,9 @@ fi
 
 fail=0
 
-# If the local plugin install is there, make sure the copies in this repo are current.
-if [ -d .cognia-design-plugin/skills/cognia-design ]; then
-  node scripts/sync-design-system.cjs --check || fail=1
-fi
+# If the plugin is on this computer, make sure the copies in this repo are current (exit 2: no plugin here).
+node scripts/sync-design-system.cjs --check >/dev/null 2>&1
+if [ $? -eq 1 ]; then node scripts/sync-design-system.cjs --check; fail=1; fi
 
 node design-system/cognia/checks/check-project.cjs --static-only || fail=1
 node scripts/check-design-system.cjs >/dev/null || { node scripts/check-design-system.cjs; fail=1; }

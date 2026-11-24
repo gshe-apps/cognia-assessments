@@ -393,7 +393,7 @@ async function renderedChecks(R) {
         if (!visible(el) || (exempt && el.closest(exempt))) continue;
         const cs = getComputedStyle(el);
         const sides = ['Top', 'Right', 'Bottom', 'Left'].filter(sd => parseFloat(cs['border' + sd + 'Width']) > 0 && cs['border' + sd + 'Style'] !== 'none' && rgba(cs['border' + sd + 'Color'])[3] > 0.05);
-        if (el.classList.contains('card') || el.dataset.slot === 'card') { if (sides.length) layout.push(['render.card-border', label2(el) + ' ' + sides.join('/')]); continue; }
+        if (el.classList.contains('card') || el.dataset.slot === 'card') { const outlined = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && rgba(cs.outlineColor)[3] > 0.05 && !el.matches(':focus-visible'); if (sides.length || outlined) layout.push(['render.card-border', label2(el) + ' ' + sides.concat(outlined ? ['outline'] : []).join('/')]); continue; }
         if (el.closest(CONTROLS) || el.closest(LISTS)) continue;
         const sep = el.tagName === 'HR' || el.classList.contains('separator') || el.getAttribute('role') === 'separator';
         if (sep || (sides.length && sides.length < 4)) layout.push(['render.divider-line', label2(el) + (sep ? ' separator' : ' border ' + sides.join('/'))]);

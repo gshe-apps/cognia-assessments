@@ -1,0 +1,4 @@
+#!/bin/sh
+# After switching branches (not single-file checkouts): keep the plugin copies current.
+[ "$3" = "1" ] || exit 0
+exec "$(dirname "$0")/sync-plugin"

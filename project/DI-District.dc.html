@@ -22,7 +22,7 @@ a{color:var(--foreground)}a:hover{color:var(--foreground)}
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
 html body .theme-assessments .top{grid-template-columns:1fr auto}
 html body .theme-assessments .top .topr{justify-self:end;margin-left:auto}
-.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
+.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:400 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
 .wf{min-height:100vh;display:flex;flex-direction:column}
 
 .sg-pg{flex:1;font-family:var(--font-sans);color:var(--foreground);font-size:var(--text-body-small);line-height:var(--lh-base);padding:var(--space-4) var(--space-16) var(--space-12)}
@@ -104,7 +104,7 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 .sg-week b{font-weight:var(--weight-semibold);display:block}
 .sg-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3)}
 .sg-legend li{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-body-small)}
-.sg-sw{width:14px;height:14px;border-radius:2px}
+.sg-sw{width:14px;height:14px;border-radius:4px}
 .sg-sw.sg-e{background:color-mix(in srgb,var(--primary) 70%,var(--card))}
 .sg-sw.sg-m{background:color-mix(in srgb,var(--primary) 30%,var(--card))}
 .sg-sw.sg-h{background:color-mix(in srgb,var(--primary) 12%,var(--card))}
@@ -128,10 +128,10 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 .sg-focus .sg-chart polygon.sg-hl.sg-n.sg-t{fill:color-mix(in srgb,var(--destructive) 55%,var(--card))}
 .sg-focus .sg-chart polygon.sg-hl.sg-n.sg-l{fill:color-mix(in srgb,var(--destructive) 85%,var(--foreground))}
 .sg-focus .sg-chart polygon.sg-hl.sg-n.sg-r{fill:color-mix(in srgb,var(--destructive) 70%,var(--card))}
-.sg-chart polygon{transition:fill .3s ease}
+.sg-chart polygon{transition:fill 200ms ease}
 @media (prefers-reduced-motion:reduce){.sg-chart polygon{transition:none}}
-.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{width:max-content;opacity:0;transform:translateY(6px);pointer-events:none;white-space:nowrap;transition:opacity .35s cubic-bezier(.22,.61,.36,1),transform .35s cubic-bezier(.22,.61,.36,1)}
-.sg-stage:has(.sg-bar:hover) .sg-tip.sg-tip-bar,.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{transition-delay:.06s}
+.sg-tip.sg-tip-bar,.sg-tip.sg-tip-hl{width:max-content;opacity:0;transform:translateY(6px);pointer-events:none;white-space:nowrap;transition:opacity 200ms ease,transform 200ms ease}
+.sg-stage:has(.sg-bar:hover) .sg-tip.sg-tip-bar,.sg-stage:has(.sg-hl:hover) .sg-tip.sg-tip-hl{transition-delay:0s}
 .sg-badge.sg-warn{background:var(--warning-light);color:var(--warning)}
 .sg-pg:not(.sg-focus) .sg-bar{cursor:default}
 .sg-pg:not(.sg-focus) .sg-bar:hover .sg-g.sg-t{fill:color-mix(in srgb,var(--success) 62%,var(--card))}
@@ -169,7 +169,7 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 @media (prefers-reduced-motion:reduce){.sg-tip.sg-tip-hl{transition:none}}
 .sg-focus-card{display:flex;flex-direction:column;gap:var(--space-4)}
 .sg-focus-card p{margin:0;font-size:var(--text-body-base);line-height:var(--lh-base)}
-.sg-schools{position:absolute;left:0;right:0;bottom:0;z-index:2}
+.sg-schools{position:absolute;left:0;right:0;bottom:0;z-index:10}
 .sg-pg.sg-focus{position:relative}
 .sg-focus .sg-main{position:static}
 .sg-focus .sg-schools{left:var(--space-16);right:var(--space-16);bottom:var(--space-6);max-width:1320px;margin:0 auto}
@@ -186,7 +186,7 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 .sg-avatar{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--secondary);color:var(--secondary-foreground);font-size:var(--text-body-small);font-weight:var(--weight-semibold)}
 .sg-avatar.sg-schic{width:44px;height:44px;background:var(--secondary);color:var(--foreground)}
 
-.sg-btn{transition:background-color .18s ease}
+.sg-btn{transition:background-color 200ms ease}
 @media (hover:hover){.sg-btn:hover{background:color-mix(in srgb,var(--primary) 78%,var(--card))}}
 .sg-btn:active{background:var(--primary)}
 .sg-btn:focus-visible{outline:2px solid var(--ring);outline-offset:3px}
@@ -194,9 +194,9 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 
 /* School cards open All schools */
 .sg-school-list > li{display:flex}
-a.sg-school{flex:1;color:var(--foreground);text-decoration:none;transition:background-color .18s ease}
+a.sg-school{flex:1;color:var(--foreground);text-decoration:none;transition:background-color 200ms ease}
 a.sg-school:hover{background:var(--card);box-shadow:var(--shadow-lg)}
-a.sg-school{transition:background-color .18s ease,box-shadow .18s ease}
+a.sg-school{transition:background-color 200ms ease,box-shadow 200ms ease}
 a.sg-school:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
 
 .sg-barlink{cursor:pointer}

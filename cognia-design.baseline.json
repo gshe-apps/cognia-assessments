@@ -5,194 +5,123 @@
   "project/admin.css": {
    "colour.accent-text": 13,
    "type.raw-size": 18,
-   "z-index.off-scale": 17,
-   "motion.duration": 13,
    "logo.restyled": 1,
    "colour.hardcoded": 3,
    "colour.opacity-on-text": 1,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 5,
-   "motion.easing": 1,
-   "radius.off-scale": 1,
    "shadow.not-a-token": 3
   },
   "project/educator.css": {
-   "motion.duration": 36,
-   "z-index.off-scale": 52,
-   "type.weight": 38,
    "spacing.off-scale": 3,
+   "motion.duration": 2,
    "shadow.not-a-token": 31,
-   "motion.easing": 6,
-   "motion.layout-property": 2,
    "colour.opacity-on-text": 1,
+   "z-index.off-scale": 16,
    "colour.accent-text": 12,
    "colour.status-text-outside-badge": 7,
    "colour.surface-token-as-text": 5,
-   "radius.off-scale": 85,
    "colour.hardcoded": 89
   },
   "project/stu2.css": {
-   "z-index.off-scale": 2,
    "shadow.not-a-token": 1,
    "colour.accent-text": 4,
-   "motion.duration": 16,
-   "motion.easing": 4,
-   "radius.off-scale": 1,
-   "motion.delay": 1
+   "motion.duration": 2
   },
   "project/CAP-T05-Algebra.dc.html": {
-   "z-index.off-scale": 2,
    "spacing.off-scale": 1
   },
   "project/CAP-T05-Questions.dc.html": {
-   "z-index.off-scale": 2,
    "spacing.off-scale": 1
   },
   "project/CAP-T05-Reading.dc.html": {
-   "z-index.off-scale": 2,
    "spacing.off-scale": 1
   },
   "project/CAP-T07-DraftSaved.dc.html": {
    "spacing.off-scale": 2
   },
   "project/DI-District.dc.html": {
-   "type.weight": 1,
    "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1,
-   "spacing.off-scale": 3,
-   "motion.duration": 5,
-   "motion.easing": 1,
-   "motion.delay": 1,
-   "z-index.off-scale": 1
+   "spacing.off-scale": 3
   },
   "project/DI-School.dc.html": {
-   "type.weight": 1,
    "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1,
-   "spacing.off-scale": 3,
-   "motion.duration": 5,
-   "motion.easing": 1,
-   "motion.delay": 1,
-   "z-index.off-scale": 1
+   "spacing.off-scale": 3
   },
   "project/District-Home.dc.html": {
-   "type.weight": 1,
    "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1,
-   "spacing.off-scale": 1,
-   "motion.duration": 5,
-   "motion.easing": 1,
-   "motion.delay": 1,
-   "z-index.off-scale": 1
+   "spacing.off-scale": 1
   },
   "project/MOD-Interim.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
-   "z-index.off-scale": 2,
    "render.contrast": 9
   },
   "project/PA-Interim.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
-   "z-index.off-scale": 2,
    "render.contrast": 10
   },
   "project/PA-Overview.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 2,
-   "motion.duration": 5,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
-   "z-index.off-scale": 2,
-   "motion.easing": 1,
-   "motion.layout-property": 1,
-   "motion.delay": 1,
    "colour.hardcoded": 1
   },
   "project/PA1-Home.dc.html": {
-   "type.weight": 1,
    "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
-   "radius.off-scale": 1,
-   "spacing.off-scale": 1,
-   "motion.duration": 5,
-   "motion.easing": 1,
-   "motion.delay": 1,
-   "z-index.off-scale": 1
+   "spacing.off-scale": 1
   },
   "project/PA2-Grades.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 3,
-   "motion.duration": 9,
    "colour.status-text-outside-badge": 8,
-   "z-index.off-scale": 1,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "radius.off-scale": 1,
-   "motion.easing": 3,
+   "motion.duration": 2,
    "colour.hardcoded": 2,
    "render.contrast": 17
   },
   "project/PA2-Subgroups.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 3,
-   "motion.duration": 11,
    "colour.status-text-outside-badge": 10,
-   "z-index.off-scale": 1,
    "colour.surface-token-as-text": 4,
-   "radius.off-scale": 2,
    "shadow.not-a-token": 3,
-   "motion.easing": 3,
+   "motion.duration": 4,
    "colour.hardcoded": 2
   },
   "project/SA2-Hub.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 2,
-   "motion.duration": 5,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
-   "z-index.off-scale": 2,
-   "motion.easing": 1,
-   "motion.layout-property": 1,
-   "motion.delay": 1,
    "colour.hardcoded": 1
   },
   "project/SA2-Schools.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 3,
-   "motion.duration": 9,
    "colour.status-text-outside-badge": 8,
-   "z-index.off-scale": 1,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "radius.off-scale": 1,
-   "motion.easing": 3,
+   "motion.duration": 2,
    "colour.hardcoded": 2,
    "render.contrast": 14
   },
   "project/SA2-Subgroups.dc.html": {
-   "type.weight": 4,
    "logo.restyled": 1,
    "colour.accent-text": 3,
-   "motion.duration": 11,
    "colour.status-text-outside-badge": 10,
-   "z-index.off-scale": 1,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "radius.off-scale": 1,
-   "motion.easing": 3,
+   "motion.duration": 4,
    "colour.hardcoded": 2
   },
   "project/STU2-SignIn.dc.html": {

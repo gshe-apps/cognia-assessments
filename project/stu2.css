@@ -22,7 +22,7 @@
 .stu2-scene[data-ready] { opacity: 1; }
 .stu2-veil { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: color-mix(in srgb, var(--background) 45%, transparent); }
 .stu2-solid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--background); }
-.stu2-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 1; }
+.stu2-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 10; }
 
 
 
@@ -139,18 +139,18 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 
 /* Trophy celebration (CSS only) */
 .trophy-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px; background: color-mix(in srgb, var(--background) 90%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: stu2-fade 200ms ease-out both; }
-.trophy { position: relative; width: 160px; height: 160px; border-radius: var(--rounded-full); background: var(--accent-100); display: flex; align-items: center; justify-content: center; animation: stu2-pop 700ms cubic-bezier(.34,1.56,.64,1) both; }
+.trophy { position: relative; width: 160px; height: 160px; border-radius: var(--rounded-full); background: var(--accent-100); display: flex; align-items: center; justify-content: center; animation: stu2-pop 200ms ease both; }
 .trophy svg { width: 88px; height: 88px; color: var(--accent-400); }
-.confetti { position: absolute; width: 10px; height: 6px; border-radius: 2px; top: 50%; left: 50%; animation: stu2-burst 1400ms ease-out both; }
+.confetti { position: absolute; width: 10px; height: 6px; border-radius: 4px; top: 50%; left: 50%; animation: stu2-burst 200ms ease-out both; }
 @keyframes stu2-pop { 0% { transform: scale(0) rotate(-20deg); } 100% { transform: scale(1) rotate(0); } }
 @keyframes stu2-burst { 0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(540deg); opacity: 0; } }
-.rise-late { animation: stu2-rise 200ms ease-out 400ms both; }
+.rise-late { animation: stu2-rise 200ms ease-out both; }
 @media (prefers-reduced-motion: reduce) { .trophy, .confetti, .rise-late, .enter { animation: none; } .confetti { display: none; } }
 
 /* Landing carousel: one card in front, the next one peeking in */
 .carousel { --cw: 334px; position: relative; }
 .track { display: flex; align-items: flex-end; gap: 12px; padding-left: 16px; touch-action: pan-y; transform: translateX(calc(var(--dx, 0px) - var(--k, 0) * (var(--cw) + 12px))); }
-.track .tcard { flex: 0 0 var(--cw); width: var(--cw); height: 336px; transition: transform 450ms cubic-bezier(.22,.61,.36,1), opacity 450ms ease-out; -webkit-user-drag: none; }
+.track .tcard { flex: 0 0 var(--cw); width: var(--cw); height: 336px; transition: transform 200ms ease, opacity 200ms ease-out; -webkit-user-drag: none; }
 .track .tcard > :last-child { margin-top: auto; }
 .ctitle { display: flex; flex-direction: column; gap: 4px; }
 .cbottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
@@ -172,7 +172,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .hdot-btn .hdot.on { width: 24px; }
 
 /* Room views crossfade with a slow forward drift, like walking to the next spot */
-.room { opacity: 0; transform: scale(1.12) translateX(48px); transition: opacity 600ms ease-out, transform 1200ms cubic-bezier(.22,.61,.36,1); }
+.room { opacity: 0; transform: scale(1.12) translateX(48px); transition: opacity 200ms ease-out, transform 200ms ease; }
 .room.behind { transform: scale(1.12) translateX(-48px); }
 .room.on { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .room, .track .tcard { transition: opacity 200ms; } .room { transform: none; } }
@@ -206,7 +206,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 @container stu2 (min-width: 1200px) {
   .nav-arrow, .deck-arrow { display: inline-flex; }
   .nav-arrow { margin: 0 12px; }
-  .deck-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6; }
+  .deck-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; }
   .nav-arrow.hide, .deck-arrow.hide { visibility: hidden; }
   /* Once the current question has an answer, the next arrow fills with accent-300 and a white chevron. */
   .deck-arrow.next.ready { background: var(--accent-300); border-color: var(--accent-300); color: var(--primary-foreground); }
@@ -222,25 +222,25 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 /* 3D paper planes in light blues: folded wings and keel in CSS 3D, banking and moving
    nearer and further. They fly in a layer three frames wide that slides with the
    landing cards, so planes enter and leave the screen as you swipe. CSS only. */
-.planes { position: absolute; top: 0; left: 0; width: 300%; height: 100%; pointer-events: none; transform: translateX(calc(var(--k, 0) * -100cqw + var(--dx, 0px) * .8)); transition: transform 1400ms cubic-bezier(.22,.61,.36,1); }
+.planes { position: absolute; top: 0; left: 0; width: 300%; height: 100%; pointer-events: none; transform: translateX(calc(var(--k, 0) * -100cqw + var(--dx, 0px) * .8)); transition: transform 200ms ease; }
 .plane { position: absolute; top: 0; left: 0; width: var(--pw); height: calc(var(--pw) * .62); offset-rotate: auto; perspective: 260px; animation: stu2-fly 30s linear infinite; filter: drop-shadow(0 14px 8px rgba(0, 0, 18, 0.10)); }
 .pm { position: absolute; inset: 0; transform-style: preserve-3d; animation: stu2-bank 3.2s ease-in-out infinite alternate; }
 .pm i { position: absolute; left: 0; width: 100%; height: 50%; backface-visibility: visible; }
 .pm .w1 { top: 0; background: color-mix(in srgb, var(--accent-100) 70%, var(--card)); clip-path: polygon(100% 100%, 0 0, 10% 100%); transform-origin: 50% 100%; transform: rotateX(-58deg); }
 .pm .w2 { top: 50%; background: var(--accent-100); clip-path: polygon(100% 0, 0 100%, 10% 0); transform-origin: 50% 0; transform: rotateX(58deg); }
 .pm .k { top: 50%; height: 34%; background: color-mix(in srgb, var(--accent-100) 55%, var(--accent-200)); clip-path: polygon(100% 0, 0 0, 4% 100%); transform-origin: 50% 0; transform: rotateX(-90deg); }
-.plane.p2 .pm { animation-duration: 2.6s; animation-delay: -1s; }
-.plane.p3 .pm { animation-duration: 4s; animation-delay: -2s; }
-.plane.p4 .pm { animation-duration: 3.6s; animation-delay: -.5s; }
-.plane.p5 .pm { animation-duration: 2.9s; animation-delay: -1.6s; }
+.plane.p2 .pm { animation-duration: 200ms; animation-delay: -1s; }
+.plane.p3 .pm { animation-duration: 200ms; animation-delay: -2s; }
+.plane.p4 .pm { animation-duration: 200ms; animation-delay: -.5s; }
+.plane.p5 .pm { animation-duration: 200ms; animation-delay: -1.6s; }
 @keyframes stu2-fly { from { offset-distance: 0%; } to { offset-distance: 100%; } }
 @keyframes stu2-bank { 0% { transform: rotateX(-34deg) rotateY(10deg) scale(.8); } 100% { transform: rotateX(30deg) rotateY(-12deg) scale(1.2); } }
 @media (prefers-reduced-motion: reduce) { .plane, .pm { animation: none; } .plane { offset-distance: 30%; } .planes { transition: none; } }
-.plane.p1 { offset-path: path('M -140 260 C 300 110, 820 120, 1310 240 S 900 470, 600 380 S 100 300, -140 260'); animation-duration: 40s; animation-delay: 0s; --pw: 84px; }
-.plane.p2 { offset-path: path('M 1310 170 C 1000 70, 620 210, 300 140 S -120 90, -140 210 S 420 370, 800 300 S 1200 250, 1310 170'); animation-duration: 44s; animation-delay: -15s; --pw: 64px; }
-.plane.p3 { offset-path: path('M 195 90 C 520 110, 700 400, 420 430 S -10 270, 195 90'); animation-duration: 22s; animation-delay: -8s; --pw: 100px; }
-.plane.p4 { offset-path: path('M 700 120 C 900 60, 1110 210, 980 330 S 600 300, 700 120'); animation-duration: 19s; animation-delay: -4s; --pw: 70px; }
-.plane.p5 { offset-path: path('M 1000 390 C 1160 300, 1110 120, 900 150 S 820 430, 1000 390'); animation-duration: 17s; animation-delay: -11s; --pw: 90px; }
+.plane.p1 { offset-path: path('M -140 260 C 300 110, 820 120, 1310 240 S 900 470, 600 380 S 100 300, -140 260'); animation-duration: 200ms; animation-delay: 0s; --pw: 84px; }
+.plane.p2 { offset-path: path('M 1310 170 C 1000 70, 620 210, 300 140 S -120 90, -140 210 S 420 370, 800 300 S 1200 250, 1310 170'); animation-duration: 200ms; animation-delay: -15s; --pw: 64px; }
+.plane.p3 { offset-path: path('M 195 90 C 520 110, 700 400, 420 430 S -10 270, 195 90'); animation-duration: 200ms; animation-delay: -8s; --pw: 100px; }
+.plane.p4 { offset-path: path('M 700 120 C 900 60, 1110 210, 980 330 S 600 300, 700 120'); animation-duration: 200ms; animation-delay: -4s; --pw: 70px; }
+.plane.p5 { offset-path: path('M 1000 390 C 1160 300, 1110 120, 900 150 S 820 430, 1000 390'); animation-duration: 200ms; animation-delay: -11s; --pw: 90px; }
 @container stu2 (min-width: 768px) {
   .plane.p1 { offset-path: path('M -299 368 C 642 156, 1754 170, 2801 340 S 1925 665, 1283 538 S 214 424, -299 368'); --pw: 109px; }
   .plane.p2 { offset-path: path('M 2801 240 C 2138 99, 1326 297, 642 198 S -257 127, -299 297 S 898 523, 1711 424 S 2566 354, 2801 240'); --pw: 83px; }

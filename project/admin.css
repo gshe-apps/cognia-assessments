@@ -228,15 +228,9 @@
 /* ============================================================
    RESPONSIVE LAYOUT (controlled by the design team)
    ============================================================ */
-@media (max-width: 767px) {
 
-}
-@media (min-width: 768px) and (max-width: 1279px) {
 
-}
-@media (min-width: 1280px) {
 
-}
 
 /* ============================================================
    DARK MODE
@@ -1695,7 +1689,7 @@ html body :is(.student-symbol,.assessment-reference-arrow,.assessment-reference-
  body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.manage-library>a,.draftcard,.journey-links>a,.appt:not(.appdis):not(.applocked)){transition:box-shadow var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),background-color var(--interaction-duration) var(--interaction-easing);}
  body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.draftcard,.journey-links>a):hover{box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 10%,transparent);border-color:var(--accent-200,#8690d3);}
  body .manage-folder:has(a:hover),body .reference-draft-row:has(a:hover),body .assessment-test-item:has(button:not(:disabled):hover){box-shadow:none;transition:box-shadow var(--interaction-duration) var(--interaction-easing);}
- body .manage-folder:has(a:hover) .manage-folder-outline path{stroke:var(--accent-200,#8690d3);transition:stroke var(--interaction-duration) var(--interaction-easing);}
+ 
  body :is(a.btn,button.btn):not(:disabled):not([aria-disabled=true]):hover{filter:none;box-shadow:none;}
  body :is(a.btn,button.btn):not(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain,.p,.primary,.solid,.primary-cta-hover):not(:disabled):not([aria-disabled=true]):hover{background-color:color-mix(in srgb,var(--foreground,#000012) 14%,var(--card,#fff));}
  /* Ghost and icon-only buttons: background change only on hover, no shadow */
@@ -2362,9 +2356,6 @@ html body.student-friendly .sj-root .sj-question-content h1{font-size:calc(30px 
    visibility preserves occupied space; no content or controls are removed. */
 html body :is(.reference-hero-image,.manage-hero-image,.assessment-reference-hero-image,.ac-art-photo,.ac-art-visual){visibility:hidden!important;}
 html body :is(.tf-hero:after,.ac-hero:before,.af-success:before,.sj-hero-art){background-image:none;}
-html body .tf-hero::after,
-html body .ac-hero::before,
-html body .af-success::before,
 html body .sj-hero-art{background-image:none;}
 /* Overview entry cards fit their content after decorative imagery removal. */
 html body .cap-root .ef-start-grid .reference-folder{min-height:0;height:auto;}
@@ -2398,7 +2389,7 @@ html body .assessment-catalogue .ac-use{min-height:48px;padding:12px 16px;backgr
 html body .assessment-catalogue .ac-draft-footer .btn{background:var(--secondary);color:var(--secondary-foreground);}
 html body .assessment-catalogue .ac-draft-meta{padding:16px 0;border-color:var(--border);}
 html body .assessment-catalogue :is(.ac-status,.ac-draft-total){font-size:var(--text-body-small);line-height:1.5;border-radius:var(--rounded-full);background:var(--secondary);color:var(--secondary-foreground);}
-html body .assessment-catalogue .ac-draft-outline path{fill:var(--card);stroke:var(--border);}
+
 @media(max-width:700px){html body .assessment-catalogue .ac-tabs{max-width:100%;overflow-x:auto;}html body .assessment-catalogue .ac-tabs button{flex:1 0 auto;}html body .assessment-catalogue .ac-library-grid{grid-template-columns:1fr;}}
 @media(prefers-reduced-motion:reduce){html body .assessment-catalogue *{transition:none!important;}}
 /* Draft-card CTAs match the primary action treatment. */

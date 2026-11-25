@@ -92,30 +92,32 @@
     // Sample item banks (teacher-bank-samples.js): five Grade 5 Mathematics banks holding 50 items.
     const ITEM_BANKS = window.capItemBanks || [];
     const banksIn = (group) => ITEM_BANKS.filter((b) => b.group === group);
-    const choice = document.createElement('section');
-    choice.className = 'uc-bank-choice';
+    // 24 Nov (later): the group cards open in a modal on arriving at Add your items, with one Continue button.
+    // Closing it without a choice shows every item; the Item bank filter can still be set from Filters.
+    const choice = document.createElement('dialog');
+    choice.className = 'dialog uc-bank-choice uc-bank-dialog';
     choice.setAttribute('aria-labelledby', 'uc-bank-choice-title');
-    bar.before(choice);
+    page.append(choice);
+    let groupDone = false;
     let pickedGroups = [];
     const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function drawCards() {
-      choice.innerHTML = `<div class="uc-bank-choice-header"><h2 class="text-body-base font-semibold" id="uc-bank-choice-title">Choose a group</h2><span class="text-body-small text-muted-foreground" data-picked-count aria-live="polite"></span></div>
-        <div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
+      choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" aria-label="Close">${icon(X)}</button><p class="dialog-description">Pick one or more groups of item banks. <span data-picked-count aria-live="polite"></span></p></div>
+        <div class="dialog-body"><div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
           const n = banksIn(card.value).length;
           return `<label class="uc-bank-option"><span class="card uc-bank-card">
             <span class="uc-bank-card-icon">${icon(card.icon).replace('<svg', '<svg class="icon icon-theme"')}</span>
             <span class="uc-bank-card-text"><span class="text-body-base font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span><span class="uc-bank-badges"><span class="badge badge-secondary">${plural(n, 'bank')}</span></span></span>
             <input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span>
           </span></label>`;
-        }).join('')}</div>
-        <div class="uc-bank-choice-actions"><button type="button" class="btn btn-lg" data-show-items>Show banks</button></div>`;
+        }).join('')}</div></div>
+        <div class="dialog-footer"><button type="button" class="btn btn-lg" data-show-items>Continue</button></div>`;
       drawShow();
     }
     function drawShow() {
       const n = pickedGroups.reduce((sum, g) => sum + banksIn(g).length, 0);
       const show = choice.querySelector('[data-show-items]');
       show.disabled = !pickedGroups.length;
-      show.textContent = pickedGroups.length ? `Show ${plural(n, 'bank')}` : 'Show banks';
       choice.querySelector('[data-picked-count]').textContent = pickedGroups.length ? `${pickedGroups.length} selected` : '';
     }
     choice.addEventListener('change', (event) => {
@@ -126,26 +128,36 @@
     });
     // The chosen groups go straight to the item list as the Item bank filter.
     choice.addEventListener('click', (event) => {
+      if (event.target.closest('.dialog-close')) { choice.close(); return; }
       if (!event.target.closest('[data-show-items]') || !pickedGroups.length) return;
       applied.bank = [...pickedGroups];
       pickedGroups = [];
+      groupDone = true;
+      choice.close();
       run();
       // Keep keyboard users in place without putting the cursor in the search box.
       library.tabIndex = -1;
       library.focus({ preventScroll: true });
     });
-    const firstBank = () => choice.querySelector('[data-pick-group]');
+    // Closing without Continue (X or Escape) shows every item.
+    choice.addEventListener('close', () => {
+      if (!groupDone) { groupDone = true; pickedGroups = []; run(); }
+      // Keep keyboard users in place without opening the Filters tooltip or the search box.
+      library.tabIndex = -1;
+      library.focus({ preventScroll: true });
+    });
+    function openGroups() {
+      if (groupDone || applied.bank.length || choice.open) return;
+      if (library.closest('[hidden]') || page.classList.contains('uc-locked') || document.querySelector('dialog[open]')) return;
+      drawCards();
+      choice.showModal();
+    }
+    new MutationObserver(openGroups).observe(library, { attributes: true, attributeFilter: ['hidden'] });
+    new MutationObserver(openGroups).observe(page, { attributes: true, attributeFilter: ['class'] });
+    document.addEventListener('close', () => setTimeout(openGroups), true);
 
     function run() {
-      const choosing = !applied.bank.length;
-      library.classList.toggle('uc-choosing-bank', choosing);
-      if (choosing) drawCards();
-      // When the view switches between the bank cards and the item list, the view that appears eases in.
-      const switched = library.dataset.ucView !== (choosing ? 'banks' : 'items');
-      library.dataset.ucView = choosing ? 'banks' : 'items';
-      if (switched) for (const el of [choice, bar, chips, library.querySelector('#libraryList')]) { el?.classList.remove('uc-reveal'); }
-      if (switched) void library.offsetWidth;
-      if (switched) (choosing ? [choice] : [bar, chips, library.querySelector('#libraryList')]).forEach((el) => el?.classList.add('uc-reveal'));
+      setTimeout(openGroups);
       window.capBuilderBankMatch = (row) => matches(valuesOf(row), applied);
       window.capFilterBuilderQuestions?.();
       const hint = library.querySelector('[data-bank-empty-hint]');
@@ -165,11 +177,10 @@
         applied[remove.dataset.remove] = applied[remove.dataset.remove].filter((v) => v !== remove.dataset.value);
         run();
         const left = chips.querySelectorAll('[data-remove]');
-        if (!applied.bank.length) firstBank()?.focus();
-        else (left[Math.min(index, left.length - 1)] || filterButton).focus();
+        (left[Math.min(index, left.length - 1)] || filterButton).focus();
         return;
       }
-      if (event.target.closest('[data-clear-filters]')) { applied = empty(); run(); firstBank()?.focus(); }
+      if (event.target.closest('[data-clear-filters]')) { applied = empty(); run(); filterButton.focus(); }
     });
 
     // Filters modal: filters on the left, the chosen filter's values (with item counts) on the right.
@@ -236,7 +247,7 @@
         option.querySelector('.uc-filters-count').textContent = countText(countFor(all, option.querySelector('input').value));
       });
     });
-    dialog.addEventListener('close', () => (applied.bank.length ? filterButton : firstBank())?.focus());
+    dialog.addEventListener('close', () => filterButton.focus());
 
     // When the test details change (grades, subjects, standard), the filters start again from them.
     document.addEventListener('close', (event) => {

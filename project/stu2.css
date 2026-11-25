@@ -229,18 +229,18 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .pm .w1 { top: 0; background: color-mix(in srgb, var(--accent-100) 70%, var(--card)); clip-path: polygon(100% 100%, 0 0, 10% 100%); transform-origin: 50% 100%; transform: rotateX(-58deg); }
 .pm .w2 { top: 50%; background: var(--accent-100); clip-path: polygon(100% 0, 0 100%, 10% 0); transform-origin: 50% 0; transform: rotateX(58deg); }
 .pm .k { top: 50%; height: 34%; background: color-mix(in srgb, var(--accent-100) 55%, var(--accent-200)); clip-path: polygon(100% 0, 0 0, 4% 100%); transform-origin: 50% 0; transform: rotateX(-90deg); }
-.plane.p2 .pm { animation-duration: 200ms; animation-delay: -1s; }
-.plane.p3 .pm { animation-duration: 200ms; animation-delay: -2s; }
-.plane.p4 .pm { animation-duration: 200ms; animation-delay: -.5s; }
-.plane.p5 .pm { animation-duration: 200ms; animation-delay: -1.6s; }
+.plane.p2 .pm { animation-duration: 2.6s; animation-iteration-count: infinite; animation-delay: -1s; }
+.plane.p3 .pm { animation-duration: 4s; animation-iteration-count: infinite; animation-delay: -2s; }
+.plane.p4 .pm { animation-duration: 3.6s; animation-iteration-count: infinite; animation-delay: -.5s; }
+.plane.p5 .pm { animation-duration: 2.9s; animation-iteration-count: infinite; animation-delay: -1.6s; }
 @keyframes stu2-fly { from { offset-distance: 0%; } to { offset-distance: 100%; } }
 @keyframes stu2-bank { 0% { transform: rotateX(-34deg) rotateY(10deg) scale(.8); } 100% { transform: rotateX(30deg) rotateY(-12deg) scale(1.2); } }
 @media (prefers-reduced-motion: reduce) { .plane, .pm { animation: none; } .plane { offset-distance: 30%; } .planes { transition: none; } }
-.plane.p1 { offset-path: path('M -140 260 C 300 110, 820 120, 1310 240 S 900 470, 600 380 S 100 300, -140 260'); animation-duration: 200ms; animation-delay: 0s; --pw: 84px; }
-.plane.p2 { offset-path: path('M 1310 170 C 1000 70, 620 210, 300 140 S -120 90, -140 210 S 420 370, 800 300 S 1200 250, 1310 170'); animation-duration: 200ms; animation-delay: -15s; --pw: 64px; }
-.plane.p3 { offset-path: path('M 195 90 C 520 110, 700 400, 420 430 S -10 270, 195 90'); animation-duration: 200ms; animation-delay: -8s; --pw: 100px; }
-.plane.p4 { offset-path: path('M 700 120 C 900 60, 1110 210, 980 330 S 600 300, 700 120'); animation-duration: 200ms; animation-delay: -4s; --pw: 70px; }
-.plane.p5 { offset-path: path('M 1000 390 C 1160 300, 1110 120, 900 150 S 820 430, 1000 390'); animation-duration: 200ms; animation-delay: -11s; --pw: 90px; }
+.plane.p1 { offset-path: path('M -140 260 C 300 110, 820 120, 1310 240 S 900 470, 600 380 S 100 300, -140 260'); animation-duration: 40s; animation-iteration-count: infinite; animation-delay: 0s; --pw: 84px; }
+.plane.p2 { offset-path: path('M 1310 170 C 1000 70, 620 210, 300 140 S -120 90, -140 210 S 420 370, 800 300 S 1200 250, 1310 170'); animation-duration: 44s; animation-iteration-count: infinite; animation-delay: -15s; --pw: 64px; }
+.plane.p3 { offset-path: path('M 195 90 C 520 110, 700 400, 420 430 S -10 270, 195 90'); animation-duration: 22s; animation-iteration-count: infinite; animation-delay: -8s; --pw: 100px; }
+.plane.p4 { offset-path: path('M 700 120 C 900 60, 1110 210, 980 330 S 600 300, 700 120'); animation-duration: 19s; animation-iteration-count: infinite; animation-delay: -4s; --pw: 70px; }
+.plane.p5 { offset-path: path('M 1000 390 C 1160 300, 1110 120, 900 150 S 820 430, 1000 390'); animation-duration: 17s; animation-iteration-count: infinite; animation-delay: -11s; --pw: 90px; }
 @container stu2 (min-width: 768px) {
   .plane.p1 { offset-path: path('M -299 368 C 642 156, 1754 170, 2801 340 S 1925 665, 1283 538 S 214 424, -299 368'); --pw: 109px; }
   .plane.p2 { offset-path: path('M 2801 240 C 2138 99, 1326 297, 642 198 S -257 127, -299 297 S 898 523, 1711 424 S 2566 354, 2801 240'); --pw: 83px; }

@@ -17,7 +17,7 @@
 | No shadow on inputs, selects, textareas or buttons (focus rings from `--ring` excepted) | `components.md`, Input field, Button |
 | No border on input fields, search fields or select triggers | `components.md`, Input field |
 | No border on a selector that styles a card (`.card`, `.*-card`) | `components.md`, Card |
-| Transitions 200ms, no custom delays or easing, no animating layout properties | `motion.md` |
+| Transitions 200ms, no custom delays or easing, no animating layout properties (decorative infinite loops are exempt) | `motion.md` |
 | z-index on the documented scale | `z-index.md` |
 | Logos are the plugin's files, unchanged, and never restyled | `components.md`, Logo |
 | No inline font or colour styles | `DESIGN.md`, global rules |

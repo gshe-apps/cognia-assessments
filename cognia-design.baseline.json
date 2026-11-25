@@ -14,7 +14,6 @@
   },
   "project/educator.css": {
    "spacing.off-scale": 3,
-   "motion.duration": 2,
    "shadow.not-a-token": 31,
    "colour.opacity-on-text": 1,
    "z-index.off-scale": 16,
@@ -25,8 +24,7 @@
   },
   "project/stu2.css": {
    "shadow.not-a-token": 1,
-   "colour.accent-text": 4,
-   "motion.duration": 2
+   "colour.accent-text": 4
   },
   "project/CAP-T05-Algebra.dc.html": {
    "spacing.off-scale": 1
@@ -85,7 +83,6 @@
    "colour.status-text-outside-badge": 8,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "motion.duration": 2,
    "colour.hardcoded": 2,
    "render.contrast": 17
   },
@@ -95,7 +92,6 @@
    "colour.status-text-outside-badge": 10,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "motion.duration": 4,
    "colour.hardcoded": 2
   },
   "project/SA2-Hub.dc.html": {
@@ -111,7 +107,6 @@
    "colour.status-text-outside-badge": 8,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "motion.duration": 2,
    "colour.hardcoded": 2,
    "render.contrast": 14
   },
@@ -121,7 +116,6 @@
    "colour.status-text-outside-badge": 10,
    "colour.surface-token-as-text": 4,
    "shadow.not-a-token": 3,
-   "motion.duration": 4,
    "colour.hardcoded": 2
   },
   "project/STU2-SignIn.dc.html": {

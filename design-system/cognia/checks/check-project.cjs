@@ -215,7 +215,9 @@ function checkDeclaration(file, selector, prop, value, R, opts = {}) {
     // Cards never have a border, in any state.
     if (BORDER_WIDTH_PROPS.test(prop) && hasVisibleBorder(value) && parts.some(c => CARD_RE.test(c))) add(file, 'border.on-card', where);
   }
-  if (/^(?:transition|transition-duration|animation|animation-duration)$/.test(prop)) {
+  // motion.md, Exception: Ambient loops. A decorative animation that repeats forever sets its own duration and easing.
+  const ambientLoop = /^animation/.test(prop) && /\binfinite\b/.test(prop === 'animation' ? value : (opts.block || ''));
+  if (/^(?:transition|transition-duration|animation|animation-duration)$/.test(prop) && !ambientLoop) {
     const ms = t => { const m = t.match(/^(\d*\.?\d+)(ms|s)$/); return m ? (m[2] === 's' ? +m[1] * 1000 : +m[1]) : null; };
     for (const part of value.split(',')) {
       const times = part.trim().split(/\s+/).map(ms).filter(t => t !== null);

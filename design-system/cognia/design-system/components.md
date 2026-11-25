@@ -178,6 +178,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - Solid buttons and the profile button use `--primary-hover`. Outline, ghost, and destructive buttons use the same 10% black overlay over their own resting surfaces.
 - Outline buttons use `border-primary` for their border — never `border-border` or any other border token.
 - Buttons never have a shadow, in any variant or state (resting, hover, active, focus) and including FABs. Use `shadow-none`. Hover feedback comes from the background change only. The focus ring (`--ring`) is a focus state, not a shadow, and stays.
+- On a dark or accent-coloured surface (a session card header on `--accent-400`, say), ghost and icon buttons are white: the surface's `--primary-foreground`. Their hover is the same 10% overlay in white, `--hover-overlay-inverse`, so it lightens instead of darkening, and the focus ring is white. In plain HTML put `.on-dark` on the surface; in React add `text-primary-foreground hover:bg-[var(--hover-overlay-inverse)]` to the ghost button.
 
 ```tsx
 <Button>Save changes</Button>
@@ -488,6 +489,11 @@ Selects let users choose one option from a list. Every field that opens a list w
 - If the list exceeds 20 items, use a searchable combobox instead.
 - A menu of actions (Edit, Duplicate, Delete) is a Dropdown Menu, not a Select.
 
+**Inline select**
+- Use `.select.select-inline` when the choice is part of a heading or sentence, such as "Overview of results by [Class]". It works like a filter: the heading reads as one line and the select switches the view.
+- A white pill: fully rounded (`--rounded-full`), white background on every surface (including inside a card), no border, a 16px chevron down on the right, and the font of the text around it, so in a heading it is the heading's size and weight.
+- Hover shows the hover overlay. Give it a visually hidden label that describes the choice, such as "Group results by".
+
 ```tsx
 <Select>
   <SelectTrigger>
@@ -696,6 +702,27 @@ For short confirmations: one title, one sentence and two actions, such as "Ready
 ```
 
 **Plain HTML**: add `.dialog-sm` to the dialog, for example `<dialog class="dialog dialog-sm">` or `<dialog class="dialog dialog-success dialog-sm">`.
+
+**Lists in a dialog**
+
+For a list of things to choose from inside a modal (supports, groups, options).
+
+- The list is a white card on the dialog's grey background, inside the dialog's normal padding: `--card` background, no border, 12px corners (`--radius-xl`). No side bleed.
+- Rows are white with no gap between them. A selected row fills the whole row from edge to edge.
+- Rows are at least 48px tall: icon (24px, optional), then the label, then the checkbox or radio pushed to the right.
+- A 1px `--border` line between rows, never after the last. A selected row is `--accent-100`, and two selected rows next to each other join into one block with no line between them.
+- Hover is the shared 10% overlay (`--hover-overlay`).
+- Sort the rows in a sensible order, A to Z unless there is a better one.
+- Put the list in `.dialog-body`. The body scrolls when the screen is too short (`max-height: calc(100dvh - 280px)`), with a thin scrollbar in an 8px gutter to the right of the card, never inside it. Keep the list short enough not to scroll on a normal laptop screen.
+
+**Plain HTML**: `.dialog-list` on the `<ul>`, `.dialog-list-item` on the `<label>` in each `<li>`. Row padding is `--space-3` by `--space-4`. Markup order is icon, label, then the checkbox, so the label sits next to the icon and the checkbox is on the far right.
+
+```html
+<ul class="dialog-list" aria-label="Learner supports">
+  <li><label class="dialog-list-item"><svg class="icon"><!-- Lucide --></svg><span>Calculator</span><input class="checkbox checkbox-circle" type="checkbox"></label></li>
+  <li><label class="dialog-list-item"><svg class="icon"><!-- Lucide --></svg><span>Extended time</span><input class="checkbox checkbox-circle" type="checkbox" checked></label></li>
+</ul>
+```
 
 ---
 
@@ -1202,12 +1229,12 @@ Joins related buttons into one control, for example a split button or "Previous 
 
 **Segmented picker (settings in a form)**
 - Use for an either/or setting inside a form: Item order (As created / Shuffle), Calculator allowed? (Yes / No). Two or three options, one or two words each. Settings with more values (Attempts, Time limit) use secondary chips (see Tabs).
-- One fully round transparent track (`rounded-full bg-transparent`) with a 1px `--border` outline and 1px `--border` dividers between segments. Segments are ghost buttons at the default 40px height, label 14px semibold.
+- One transparent track with 8px corners (`rounded-lg bg-transparent`, like every other button) with a 1px `--border` outline and 1px `--border` dividers between segments. Segments are ghost buttons at the default 40px height, label 14px semibold.
 - The selected segment is `bg-secondary text-secondary-foreground`; unselected segments have no fill. Never solid primary.
 - `role="group"` with an `aria-label` naming the setting, and `aria-pressed` on each button.
 
 ```tsx
-<ButtonGroup aria-label="Item order" className="overflow-hidden rounded-full border border-border bg-transparent">
+<ButtonGroup aria-label="Item order" className="overflow-hidden rounded-lg border border-border bg-transparent">
   <Button variant="ghost" aria-pressed={asCreated} className="rounded-none aria-pressed:bg-secondary">As created</Button>
   <Button variant="ghost" aria-pressed={!asCreated} className="rounded-none border-l border-border aria-pressed:bg-secondary">Shuffle</Button>
 </ButtonGroup>

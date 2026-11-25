@@ -13,6 +13,10 @@
 | Padding, margin and gap on the 8 point scale | `spacing.md` |
 | Border radius 8px or full | `spacing.md` |
 | Shadows only from the shadow tokens | `spacing.md` |
+| Bold (700) only with a title size, in CSS and in `font-bold` classes in screens and scripts (`scripts` in the config) | `typography.md`, Type scale |
+| No shadow on inputs, selects, textareas or buttons (focus rings from `--ring` excepted) | `components.md`, Input field, Button |
+| No border on input fields, search fields or select triggers | `components.md`, Input field |
+| No border on a selector that styles a card (`.card`, `.*-card`) | `components.md`, Card |
 | Transitions 200ms, no custom delays or easing, no animating layout properties | `motion.md` |
 | z-index on the documented scale | `z-index.md` |
 | Logos are the plugin's files, unchanged, and never restyled | `components.md`, Logo |
@@ -26,12 +30,14 @@
 | Rule | From |
 |---|---|
 | Text sizes on the type scale (or the project's profile), at most 3 sizes and 3 weights | `typography.md`, Limits per screen |
+| Each weight only at the sizes the type scale gives it: 700 only on titles, 600 only on Heading and the Strong rows (the header shell follows its own spec) | `typography.md`, Type scale |
+| No shadow on any field, select trigger or button, and no border on any field, including the wrapper that draws a search field or input group | `components.md`, Input field, Button |
 | Open Sans | `typography.md` |
 | WCAG AA contrast: 4.5:1, or 3:1 for 18px+ or 14px+ bold | `accessibility.md` |
 | Header with no background, border or shadow, and a 2px `--brand-coral` underline on the selected item | `components.md`, Navigation shell |
 | Footer with no background, a top border and the standard items | `components.md`, Footer |
 | Page on `--background` | `components.md`, Navigation shell |
-| Cards have no border or outline (selected cards use the `--accent-100` fill) | `components.md`, Card |
+| Cards have no border or outline (selected cards use the `--accent-100` fill). This includes anything that looks like a card whatever its class: a rounded box (not a pill) at least 120 by 56px with a border on all four sides | `components.md`, Card |
 | No grey lines between content: no separator, `<hr>` or one-sided border outside a list, the shell and form controls (exempt things like a timeline's "now" line with `lineExempt`) | `DESIGN.md`, Global rules |
 | No dot, bullet or pipe between pieces of content on one line | `DESIGN.md`, Global rules |
 
@@ -82,4 +88,4 @@ node <plugin>/skills/cognia-design/checks/check-project.cjs
 
 It fails on any new issue, or any increase in a known one. When issues are fixed it says so: run `--update-baseline` to lock the lower count in. Never raise the baseline to make a change pass; fix the change instead.
 
-`--static-only` skips the rendered checks when Playwright is not available.
+`--static-only` skips the rendered checks when Playwright is not available. It misses anything only visible on the rendered page, such as a border on a tile with its own class name or a shadow on a search field's wrapper, so run the full check before sharing a screen.

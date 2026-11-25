@@ -14,6 +14,7 @@
   .ref-section { display: flex; flex-direction: column; gap: var(--space-6); }
   .ref-intro { display: flex; flex-direction: column; gap: var(--space-2); }
   .ref-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+  .ref-dark-surface { justify-content: space-between; padding: var(--space-4); border-radius: var(--radius-xl); background-color: var(--accent-400); color: var(--primary-foreground); }
   .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6); }
   .ref-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); }
   .ref-stack { display: flex; flex-direction: column; gap: var(--space-4); }
@@ -106,6 +107,11 @@
         <button class="btn btn-xs">Extra small</button>
         <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon" aria-label="Settings"><svg><use href="#i-settings"/></svg></button><span class="tooltip" role="tooltip">Settings</span></span>
         <span class="tooltip-wrap"><button class="btn btn-outline btn-icon btn-sm" aria-label="More actions"><svg><use href="#i-more"/></svg></button><span class="tooltip" role="tooltip">More actions</span></span>
+      </div>
+      <p class="text-body-small text-muted-foreground">On a dark or accent surface, put <code>.on-dark</code> on the surface: ghost buttons turn white and hover with <code>--hover-overlay-inverse</code>.</p>
+      <div class="ref-row ref-dark-surface on-dark">
+        <span class="text-body-base font-semibold">Session 1</span>
+        <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon btn-sm" aria-label="Session actions"><svg><use href="#i-more"/></svg></button><span class="tooltip" role="tooltip">Session actions</span></span>
       </div>
     </div>
   </section>
@@ -268,6 +274,7 @@
       <button class="btn btn-outline btn-lg" data-open="demo-success-dialog">Finish</button>
       <button class="btn btn-outline btn-lg" data-open="demo-sheet">Open filters</button>
       <button class="btn btn-outline btn-lg" data-open="demo-drawer">Open drawer</button>
+      <button class="btn btn-outline btn-lg" data-open="demo-list-dialog">Choose supports</button>
       <span class="tooltip-wrap"><button class="btn btn-ghost btn-icon btn-lg" aria-label="About scoring"><svg><use href="#i-info"/></svg></button><span class="tooltip" role="tooltip">Scores are averaged across every submitted response in this window.</span></span>
       <div class="dropdown">
         <button type="button" class="btn btn-outline btn-lg" id="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu">Actions<svg aria-hidden="true"><use href="#i-down"/></svg></button>
@@ -539,6 +546,18 @@
 <dialog class="dialog" role="alertdialog" id="demo-alert-dialog" aria-labelledby="adlg-title" aria-describedby="adlg-desc">
   <div class="dialog-header"><h2 class="dialog-title" id="adlg-title">Unpublish this assessment?</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description" id="adlg-desc">Learners will no longer see it. The backdrop does not close this one.</p></div>
   <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Unpublish</button></div>
+</dialog>
+
+<dialog class="dialog" id="demo-list-dialog" aria-labelledby="ldlg-title">
+  <div class="dialog-header"><h2 class="dialog-title" id="ldlg-title">Review supports</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><p class="dialog-description">A list in a dialog: a white card, full-width rows, no gaps, selected rows join up.</p></div>
+  <div class="dialog-body"><ul class="dialog-list" aria-label="Supports">
+    <li><label class="dialog-list-item"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="text-body-base font-semibold">Calculator</span><input class="checkbox checkbox-circle" type="checkbox"></label></li>
+    <li><label class="dialog-list-item"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="text-body-base font-semibold">Extended time</span><input class="checkbox checkbox-circle" type="checkbox" checked></label></li>
+    <li><label class="dialog-list-item"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="text-body-base font-semibold">High contrast</span><input class="checkbox checkbox-circle" type="checkbox" checked></label></li>
+    <li><label class="dialog-list-item"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="text-body-base font-semibold">Read aloud</span><input class="checkbox checkbox-circle" type="checkbox"></label></li>
+    <li><label class="dialog-list-item"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span class="text-body-base font-semibold">Text-to-speech</span><input class="checkbox checkbox-circle" type="checkbox"></label></li>
+  </ul></div>
+  <div class="dialog-footer"><button class="btn btn-ghost btn-lg" data-close>Cancel</button><button class="btn btn-lg" data-close>Save supports</button></div>
 </dialog>
 
 <dialog class="dialog sheet" id="demo-sheet" aria-labelledby="sheet-title" aria-describedby="sheet-desc">

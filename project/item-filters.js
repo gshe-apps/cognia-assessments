@@ -97,12 +97,16 @@
     const choice = document.createElement('dialog');
     choice.className = 'dialog uc-bank-choice uc-bank-dialog';
     choice.setAttribute('aria-labelledby', 'uc-bank-choice-title');
+    // 25 Nov: a group is required, so there is no close button, and Escape or a backdrop click does nothing
+    // (role="alertdialog" stops the plugin's backdrop close).
+    choice.setAttribute('role', 'alertdialog');
+    choice.addEventListener('cancel', (event) => event.preventDefault());
     page.append(choice);
     let groupDone = false;
     let pickedGroups = [];
     const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function drawCards() {
-      choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" aria-label="Close">${icon(X)}</button><p class="dialog-description">Pick one or more groups of item banks. <span data-picked-count aria-live="polite"></span></p></div>
+      choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><p class="dialog-description">Pick one or more groups of item banks. <span data-picked-count aria-live="polite"></span></p></div>
         <div class="dialog-body"><div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
           const n = banksIn(card.value).length;
           return `<label class="uc-bank-option"><span class="card uc-bank-card">
@@ -128,7 +132,6 @@
     });
     // The chosen groups go straight to the item list as the Item bank filter.
     choice.addEventListener('click', (event) => {
-      if (event.target.closest('.dialog-close')) { choice.close(); return; }
       if (!event.target.closest('[data-show-items]') || !pickedGroups.length) return;
       applied.bank = [...pickedGroups];
       pickedGroups = [];
@@ -150,7 +153,11 @@
       if (groupDone || applied.bank.length || choice.open) return;
       if (library.closest('[hidden]') || page.classList.contains('uc-locked') || document.querySelector('dialog[open]')) return;
       drawCards();
+      // 25 Nov: open with focus on the dialog itself, not the first card, so no card shows a focus ring on open.
+      // Tab still moves straight to the first card's checkbox.
+      choice.tabIndex = -1;
       choice.showModal();
+      choice.focus({ preventScroll: true, focusVisible: false });
     }
     new MutationObserver(openGroups).observe(library, { attributes: true, attributeFilter: ['hidden'] });
     new MutationObserver(openGroups).observe(page, { attributes: true, attributeFilter: ['class'] });

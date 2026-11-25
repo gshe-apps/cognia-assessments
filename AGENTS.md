@@ -6,6 +6,23 @@ For all CAP UI work, read and follow `design-system/cognia/SKILL.md` and the fil
 
 The user authorized removing historical visual locks and bringing existing screens into the design system. Do not treat an earlier approval of colour, typography, card styling, header backgrounds or CSS as a reason to retain a conflicting visual rule. Preserve approved navigation destinations, step order, interactions, validation, data, persistence and permissions. Do not publish or push without explicit user approval.
 
+## Before you start and before you finish (every session, every agent)
+
+These steps are not optional, whoever or whatever is making the change (Claude, Codex or a person).
+
+1. At the start of a session, turn on the repo's checks for this clone: `git config core.hooksPath .githooks`. Run it even if you think it is already on.
+2. Before finishing any change to a screen, stylesheet or screen script, run the full check from the repo root: `node design-system/cognia/checks/check-project.cjs` (install Playwright once with `npm i --no-save playwright && npx playwright install chromium`), then `node scripts/check-design-system.cjs`. Fix every new issue. Do not hand back work that fails.
+3. Never use `--no-verify`, never skip the hooks, and never raise `cognia-design.baseline.json`.
+
+The check reads the rules from the plugin. The ones most often broken:
+
+- Bold (700, `font-bold`) is only for the title sizes (48px and 72px). Headings use 600 (`font-semibold`), and so do Body Strong and Body Small Strong.
+- Any boxed area of content (a tile, panel, prompt box, summary, list item with a surface) is a `card` with `card-content`, or a documented variant (`card-ghost`, `card-selected`). Do not invent a class that draws its own surface. Your own classes are for layout only: position, size, grid and spacing. They never set a background, border, radius or shadow.
+- Cards never have a border or outline, in any state, whatever their class name. Selected cards use the `--accent-100` fill.
+- If a screen needs a surface the shared classes do not have, stop and ask the designer to add it to the plugin. Do not build it locally.
+- Inputs, search fields and select triggers have no border and no shadow. Buttons have no shadow.
+- No dot, bullet or pipe between pieces of content on one line.
+
 ## CSS ownership
 
 - `project/ds/cognia/tokens.css` is the upstream Cognia token copy for the plain-HTML runtime, with only the Tailwind build import omitted. Refresh it from the plugin; do not tune its token values manually.
@@ -50,7 +67,7 @@ Keeping in step with the plugin:
 
 - `node scripts/sync-design-system.cjs` copies the plugin into `design-system/cognia/` and `project/ds/cognia/` (components, script and tokens). It reads the local install in `.cognia-design-plugin/` (not committed) or a plugin folder passed as its argument. `--check` only reports what is out of date.
 - After syncing, run the check. Fix anything new; when counts drop, run it with `--update-baseline` so they can't creep back.
-- Each clone turns on the pre-commit check once with `git config core.hooksPath .githooks`. It runs the fast static check on any commit that touches the prototype.
+- Each clone turns on the hooks once with `git config core.hooksPath .githooks`. The pre-commit hook runs the fast static check on any commit that touches the prototype. The pre-push hook runs the full check, rendered layout included, and stops the push if anything new fails.
 - GitHub runs the full check (rendered contrast and layout included) on every push and pull request, and the deploy to GitHub Pages waits for it to pass. GitHub has no access to the private plugin repo, so keeping the copy current is the sync step above: run it whenever the plugin is updated.
 
 ## Shared components (6 November 2026)

@@ -39,6 +39,9 @@ function readRules() {
   const scaleRows = [...section(typo, '## Type scale').matchAll(/^\|[^|]+\|\s*`[^`]+`\s*\|\s*(\d+)px\s*\|\s*(\d+)\s*\|/gm)];
   const typeSizes = need([...new Set(scaleRows.map(m => +m[1]))], 'type scale sizes');
   const weights = need([...new Set(scaleRows.map(m => +m[2]))], 'type scale weights');
+  // Each weight belongs to particular sizes: 700 only on the two title sizes, 600 on Heading and the Strong rows.
+  const pairs = new Set(scaleRows.map(m => m[1] + '/' + m[2]));
+  const titleSizes = [...new Set(scaleRows.filter(m => +m[2] >= 700).map(m => +m[1]))];
   const maxSizes = +(typo.match(/maximum of \*\*(\d+) font sizes/) || [])[1] || null;
   const maxWeights = +(typo.match(/maximum of \*\*(\d+) font weights/) || [])[1] || null;
 
@@ -58,7 +61,7 @@ function readRules() {
   const tokens = new Set([...globals.matchAll(/(--[a-z0-9-]+)\s*:/g)].map(m => m[1]));
 
   return {
-    typeSizes, weights, maxSizes, maxWeights,
+    typeSizes, weights, pairs, titleSizes, maxSizes, maxWeights,
     space: new Set(space), radius: new Set(radius), shadows: new Set(shadows), responsiveVars,
     z: new Set(z), durations: new Set(durations), statusText, tokens,
     accentVars: /--accent-(?:\d00)/.test(themes),
@@ -121,6 +124,18 @@ const ACCENT_AS_TEXT = /var\(\s*--accent-\d00\s*\)/;
 const SPACING_PROPS = /^(?:padding|margin|gap|row-gap|column-gap)(?:-(?:top|right|bottom|left|inline|block)(?:-(?:start|end))?)?$/;
 const LAYOUT_ANIM = /\b(?:width|height|top|left|right|bottom|margin|padding|inset)\b/;
 
+// Placement rules (components.md: Input field, Button, Card; typography.md: Type scale).
+// They look at what a selector styles, not only at which value it uses.
+const topLevel = selector => { const out = []; let depth = 0, cur = ''; for (const ch of selector) { if (ch === '(') depth++; if (ch === ')') depth--; if (ch === ',' && !depth) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; };
+const compounds = selector => topLevel(selector).map(s => s.replace(/:not\([^)]*\)/g, '').trim().split(/\s*[\s>+~]\s*/).pop() || '');
+const CONTROL_RE = /(?:^|[^\w-])(?:input|select|textarea|button)(?![\w-])|\.(?:input|search-input|select|select-trigger|textarea|btn)(?![\w-])/;
+const FIELD_RE = /(?:^|[^\w-])(?:input|select|textarea)(?![\w-])|\.(?:input|search-input|select|select-trigger|textarea)(?![\w-])/;
+const NOT_FIELD_RE = /checkbox|radio|switch|range|\[type=["']?(?:color|file)/;
+const CARD_RE = /\.(?:[\w-]*-)?card(?![\w-])/;
+const BORDER_WIDTH_PROPS = /^border(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?(?:-width)?$/;
+const hasVisibleBorder = v => !/^(?:0|0px|none|hidden|inherit|initial|unset)$/i.test(v) && !/transparent/i.test(v) && !/(?:^|\s)none(?:\s|$)/.test(v) && (lengths(v).some(n => n > 0) || /\b(?:thin|medium|thick)\b/.test(v));
+const TITLE_SIZE_RE = R => new RegExp('font(?:-size)?\\s*:[^;]*(?:var\\(--text-title-[a-z]+\\)|\\b(?:' + R.titleSizes.join('|') + ')px\\b)');
+
 const px = (n, unit) => unit === 'rem' ? n * 16 : n;
 const lengths = v => [...v.replace(/var\([^)]*\)/g, '').matchAll(/(-?\d*\.?\d+)(px|rem)\b/g)].map(m => Math.abs(px(+m[1], m[2])));
 
@@ -166,6 +181,8 @@ function checkDeclaration(file, selector, prop, value, R, opts = {}) {
   if (prop === 'font-weight') {
     const w = /^\d+$/.test(value) ? +value : { normal: 400, bold: 700 }[value];
     if (w && !R.weights.includes(w)) add(file, 'type.weight', where);
+    // Bold (700) is only for the title sizes. Everything smaller uses 600 (font-semibold) at most.
+    if (w >= 700 && !opts.chart && !opts.pluginCopy && !/^\.font-bold$/.test(selector) && !TITLE_SIZE_RE(R).test(opts.block || '')) add(file, 'type.bold-below-title', where);
   }
   if (opts.profile && opts.profile.forbidTokens) {
     for (const t of opts.profile.forbidTokens) if (value.includes(`var(${t})`)) add(file, 'type.not-in-profile', `${where} (${opts.profile.name})`);
@@ -187,6 +204,16 @@ function checkDeclaration(file, selector, prop, value, R, opts = {}) {
       // Focus rings built from tokens (0 0 0 3px var(--ring)) are documented as focus states.
       if (!/var\(--ring\)/.test(value)) add(file, 'shadow.not-a-token', where);
     }
+  }
+  if (!opts.chart && !opts.pluginCopy && selector !== 'style attribute') {
+    const parts = compounds(selector);
+    // Controls have no shadow. Focus rings built from --ring are the focus state, not a shadow.
+    if (prop === 'box-shadow' && !/^(?:none|inherit|initial|unset)$/.test(value) && !/var\(--ring\)/.test(value)
+      && parts.some((c, i) => CONTROL_RE.test(c) && !CARD_RE.test(c) && !/:focus/.test(topLevel(selector)[i] || ''))) add(file, 'shadow.on-control', where);
+    // Input fields, search fields and select triggers have no border: the fill shows the field.
+    if (BORDER_WIDTH_PROPS.test(prop) && hasVisibleBorder(value) && parts.some(c => FIELD_RE.test(c) && !NOT_FIELD_RE.test(c))) add(file, 'border.on-field', where);
+    // Cards never have a border, in any state.
+    if (BORDER_WIDTH_PROPS.test(prop) && hasVisibleBorder(value) && parts.some(c => CARD_RE.test(c))) add(file, 'border.on-card', where);
   }
   if (/^(?:transition|transition-duration|animation|animation-duration)$/.test(prop)) {
     const ms = t => { const m = t.match(/^(\d*\.?\d+)(ms|s)$/); return m ? (m[2] === 's' ? +m[1] * 1000 : +m[1]) : null; };
@@ -215,13 +242,14 @@ function checkCss(file, css, R, opts = {}) {
     const chart = (config.chartSelectors || []).some(s => selector.includes(s));
     for (const d of m[2].split(';')) {
       const i = d.indexOf(':');
-      if (i > 0) checkDeclaration(file, selector, d.slice(0, i), d.slice(i + 1), R, { ...opts, logo, chart });
+      if (i > 0) checkDeclaration(file, selector, d.slice(0, i), d.slice(i + 1), R, { ...opts, logo, chart, block: m[2] });
     }
   }
 }
 
 function sourceChecks(R) {
-  for (const f of styles) checkCss(f, read(f), R);
+  // The components copy is the plugin's own file (checked below for being unchanged), so placement rules skip it.
+  for (const f of styles) checkCss(f, read(f), R, { pluginCopy: f === config.componentsCopy });
   for (const f of screens) {
     const html = read(f);
     const profile = profileFor(f, html);
@@ -235,8 +263,16 @@ function sourceChecks(R) {
         if (/^(?:font|font-size|font-weight|font-family|color|background|background-color)$/.test(prop) && !d.includes('{{')) {
           add(f, 'inline.type-or-colour', `style="${d.trim().slice(0, 60)}"`);
         }
-        checkDeclaration(f, 'style attribute', prop, d.slice(i + 1), R, { profile });
+        checkDeclaration(f, 'style attribute', prop, d.slice(i + 1), R, { profile, block: m[1] });
       }
+    }
+  }
+  // Tailwind-style classes in markup, including markup that scripts build: font-bold only with a title size.
+  const scripts = (config.scripts || []).flatMap(glob).filter(f => !matches(f, config.exclude));
+  for (const f of [...screens, ...scripts]) {
+    for (const m of read(f).matchAll(/class(?:Name)?=["'`]([^"'`]*)["'`]/g)) {
+      const cls = m[1].split(/\s+/);
+      if (cls.includes('font-bold') && !cls.some(c => /^text-title-/.test(c))) add(f, 'type.bold-below-title', `class="${m[1].trim().slice(0, 60)}"`);
     }
   }
   // Logos: project copies must be the plugin's files, unchanged.
@@ -315,7 +351,7 @@ async function renderedChecks(R) {
       };
       const visible = el => { const b = el.getBoundingClientRect(); const cs = getComputedStyle(el); return b.width > 1 && b.height > 1 && cs.visibility !== 'hidden' && +cs.opacity > 0; };
 
-      const sizes = {}, weights = {}, fonts = new Set(), contrast = [];
+      const sizes = {}, weights = {}, pairs = {}, fonts = new Set(), contrast = [];
       for (const el of document.body.querySelectorAll('*')) {
         if (!(el instanceof Element) || !visible(el)) continue;
         if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) continue;
@@ -328,6 +364,7 @@ async function renderedChecks(R) {
         const k = Math.round(size * 2) / 2;
         (sizes[k] = sizes[k] || []).push(label);
         (weights[cs.fontWeight] = weights[cs.fontWeight] || []).push(label);
+        if (!svg && !(shell.header && el.closest(shell.header))) (pairs[k + '/' + cs.fontWeight] = pairs[k + '/' + cs.fontWeight] || []).push(label);
         fonts.add(cs.fontFamily.split(',')[0].replace(/["']/g, '').trim());
         if (!svg && !el.closest('button:disabled,[aria-disabled="true"],input:disabled')) {
           const bg = bgOf(el);
@@ -398,13 +435,47 @@ async function renderedChecks(R) {
         const sep = el.tagName === 'HR' || el.classList.contains('separator') || el.getAttribute('role') === 'separator';
         if (sep || (sides.length && sides.length < 4)) layout.push(['render.divider-line', label2(el) + (sep ? ' separator' : ' border ' + sides.join('/'))]);
       }
+      // Controls: no shadow, and text fields no border. A wrapper that is the field's visible box
+      // (a search field with its icon, an input group) counts as the field.
+      const FIELDS = 'input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=hidden]),textarea,select,.input,.search-input,.select,.select-trigger';
+      const SHADOWLESS = FIELDS + ',button,.btn,[role=combobox]';
+      const boxOf = ctl => {
+        const out = [ctl]; const h = ctl.getBoundingClientRect().height;
+        for (let e = ctl.parentElement, n = 0; e && n < 2; e = e.parentElement, n++) { if (e.getBoundingClientRect().height <= h + 8 && e.querySelectorAll(FIELDS).length === 1) out.push(e); else break; }
+        return out;
+      };
+      const seen = new Set();
+      for (const ctl of document.body.querySelectorAll(SHADOWLESS)) {
+        if (!visible(ctl) || (exempt && ctl.closest(exempt)) || ctl.closest('svg')) continue;
+        const field = ctl.matches(FIELDS);
+        for (const el of field ? boxOf(ctl) : [ctl]) {
+          if (seen.has(el)) continue; seen.add(el);
+          const cs = getComputedStyle(el);
+          if (cs.boxShadow !== 'none' && !el.matches(':focus,:focus-within')) layout.push(['render.control-shadow', label2(el) + ' ' + cs.boxShadow.slice(0, 40)]);
+          if (field) {
+            const sides = ['Top', 'Right', 'Bottom', 'Left'].filter(sd => parseFloat(cs['border' + sd + 'Width']) > 0 && cs['border' + sd + 'Style'] !== 'none' && rgba(cs['border' + sd + 'Color'])[3] > 0.05);
+            if (sides.length && !el.matches(':focus')) layout.push(['render.control-border', label2(el) + ' ' + sides.join('/')]);
+          }
+        }
+      }
+      // Anything that looks like a card, whatever its class: a box with a border on all four sides,
+      // rounded but not a pill, big enough to hold content. Controls, lists, dialogs and toggle tracks are left out.
+      for (const el of document.body.querySelectorAll('*')) {
+        if (el.classList.contains('card') || el.dataset.slot === 'card' || seen.has(el)) continue;
+        if (!visible(el) || (exempt && el.closest(exempt)) || el.closest(CONTROLS) || el.closest('svg,table,[role=table],[role=grid],[role=dialog],dialog,[role=group],[role=radiogroup]')) continue;
+        const cs = getComputedStyle(el); const b = el.getBoundingClientRect();
+        if (b.width < 120 || b.height < 56) continue;
+        const sides = ['Top', 'Right', 'Bottom', 'Left'].filter(sd => parseFloat(cs['border' + sd + 'Width']) > 0 && /solid|double/.test(cs['border' + sd + 'Style']) && rgba(cs['border' + sd + 'Color'])[3] > 0.05);
+        const radius = parseFloat(cs.borderTopLeftRadius) || 0;
+        if (sides.length === 4 && radius >= 6 && radius < b.height / 2 - 1 && el.textContent.trim()) layout.push(['render.card-border', label2(el) + ' (card-like box)']);
+      }
       const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (let n; (n = walk.nextNode());) {
         const p = n.parentElement;
         if (!/(^|\s)[·•|](\s|$)/.test(n.textContent) || !p || !visible(p) || p.closest('script,style,code,pre,svg') || hiddenSelectors.some(s => p.closest(s))) continue;
         layout.push(['render.inline-separator', label2(p.closest(':not(span)') || p)]);
       }
-      return { sizes, weights, fonts: [...fonts], contrast, shellIssues, layout };
+      return { sizes, weights, pairs, fonts: [...fonts], contrast, shellIssues, layout };
     }, { shell, hiddenSelectors: config.ignoreTextIn || [], lineExempt: config.lineExempt || [] });
 
     const ks = Object.keys(r.sizes).map(Number);
@@ -418,6 +489,12 @@ async function renderedChecks(R) {
     const ws = Object.keys(r.weights);
     if (R.maxWeights && ws.length > R.maxWeights) add(f, 'render.too-many-weights', `${ws.join('/')} (max ${R.maxWeights})`);
     for (const w of ws) if (!R.weights.includes(+w)) add(f, 'render.weight-off-scale', `${w}, e.g. ${r.weights[w][0]}`);
+    // Each weight only at the sizes the type scale gives it (bold only on titles).
+    for (const [pair, labels] of Object.entries(r.pairs)) {
+      const [s, w] = pair.split('/').map(Number);
+      const hit = allowed.find(a => Math.abs(a - s) <= 0.6);
+      if (hit !== undefined && R.weights.includes(w) && !R.pairs.has(hit + '/' + w)) add(f, 'render.weight-size', `${w} at ${hit}px, e.g. ${[...new Set(labels)].slice(0, 2).join(', ')}`);
+    }
     for (const fam of r.fonts) if (!/open sans/i.test(fam)) add(f, 'render.font', fam);
     for (const c of r.contrast) add(f, 'render.contrast', c);
     for (const [rule, d] of r.shellIssues) add(f, rule, d);

@@ -80,6 +80,7 @@
       x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
       copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
       trash: '<path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      moreVertical: '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
       users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>',
     };
     const icon = (name) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name]}</svg>`;
@@ -149,7 +150,12 @@
           </button>`).join('')}
         </div>` : ''}
         <section class="card assign-b-session" data-session="${esc(s.id)}" aria-label="${esc(s.name || 'Unnamed session')}, ${esc(testTitle())}">
-          <div class="assign-b-session-head"><span class="text-body-base font-semibold" data-head-name>${esc(s.name || 'Unnamed session')}</span><span class="badge ${count ? 'badge-secondary' : 'badge-warning'}">${count ? learnerCount(count) + ' assigned' : 'No learners yet'}</span></div>
+          <div class="assign-b-session-head on-dark"><span class="text-body-base font-semibold" data-head-name>${esc(s.name || 'Unnamed session')}</span><span class="assign-b-session-tools"><span class="badge ${count ? 'badge-secondary' : 'badge-warning'}">${count ? learnerCount(count) + ' assigned' : 'No learners yet'}</span>
+            <div class="dropdown dropdown-end"><button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="Actions for ${esc(s.name || 'session')}" aria-haspopup="menu" aria-expanded="false" aria-controls="assign-b-menu-${esc(s.id)}">${icon('moreVertical')}</button>
+              <div class="menu" role="menu" id="assign-b-menu-${esc(s.id)}" aria-label="Actions for ${esc(s.name || 'session')}" hidden>
+                <button type="button" class="menu-item" role="menuitem" tabindex="-1" data-duplicate="${esc(s.id)}">${icon('copy')}Duplicate</button>
+                ${i > 0 ? `<button type="button" class="menu-item is-destructive" role="menuitem" tabindex="-1" data-remove="${esc(s.id)}">${icon('trash')}Delete</button>` : ''}
+              </div></div></span></div>
           <div class="assign-b-session-body">
             <label class="field"><span class="label">Name</span><input class="input" data-field="name" required maxlength="80" value="${esc(s.name)}"></label>
             <label class="field"><span class="label">Date</span><input class="input" type="date" data-field="date" required value="${esc(s.opens.slice(0, 10))}" ${disabled}></label>
@@ -168,10 +174,6 @@
                 <label class="field"><span class="label">Session instructions</span><textarea class="textarea" maxlength="500" rows="2" data-instructions>${esc(s.instructions || '')}</textarea></label>
               </div>
             </details>
-            <div class="assign-b-session-actions">
-              <span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm" data-duplicate="${esc(s.id)}" aria-label="Duplicate ${esc(s.name || 'session')}">${icon('copy')}</button><span class="tooltip" role="tooltip">Duplicate session</span></span>
-              ${i > 0 ? `<span class="tooltip-wrap"><button type="button" class="btn btn-ghost btn-icon btn-sm is-destructive" data-remove="${esc(s.id)}" aria-label="Delete ${esc(s.name || 'session')}">${icon('trash')}</button><span class="tooltip" role="tooltip">Delete session</span></span>` : ''}
-            </div>
           </div>
         </section>
 `;
@@ -204,7 +206,7 @@
           ${avatar}
           <label class="item-content" for="${inputId}"><span class="item-title">${esc(s.name)}${supportsFor(s.id).length ? ` <span class="badge badge-warning">${supportsFor(s.id).length} ${supportsFor(s.id).length === 1 ? 'support' : 'supports'}</span>` : ''}</span><span class="item-description">${esc(className.replace('Grade ', ''))}</span></label>
           <span class="item-actions">
-            <span class="item-actions-reveal"><button type="button" class="btn btn-ghost btn-sm" data-supports="${s.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(s.name)}${hasSupports(s) ? ', supports set' : ''}">${supportsFor(s.id).length ? `Review ${supportsFor(s.id).length} ${supportsFor(s.id).length === 1 ? 'support' : 'supports'}` : 'Review supports'}</button></span>
+            <span class="item-actions-reveal"><button type="button" class="btn btn-ghost btn-sm" data-supports="${s.id}" aria-haspopup="dialog" aria-label="Review supports for ${esc(s.name)}${hasSupports(s) ? ', supports set' : ''}">Review supports</button></span>
             <input class="checkbox checkbox-circle" type="checkbox" id="${inputId}" data-learner="${s.id}" ${checked ? 'checked' : ''}>
           </span></li>`;
       }).join('');
@@ -332,7 +334,7 @@
       if (event.target.matches('.assign-b-settings')) event.target.open ? settingsOpen.add(active().id) : settingsOpen.delete(active().id);
     }, true);
 
-    // Review supports: the same dialog as Option A, opened from the button that shows on row hover or focus.
+    // Review supports: opened from the button that shows on row hover or focus. 25 Nov: supports are an A to Z list.
     const supportOptions = ['Language support', 'Read aloud', 'Visual model', 'Step-by-step hint', 'Extension', 'Text-to-speech', 'Zoom / Magnifier', 'Extended time', 'High contrast', 'Color overlay', 'Braille (BRF)', 'Calculator'];
     const supportPaths = [
   '<path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />',
@@ -349,17 +351,18 @@
   '<rect width="16" height="20" x="4" y="2" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" />'
     ];
     const dialog = document.createElement('dialog');
-    dialog.className = 'dialog cap-setup-modal allocation-support-dialog assign-b-support-dialog';
+    dialog.className = 'dialog assign-b-support-dialog';
     dialog.setAttribute('aria-labelledby', 'assign-b-support-title');
-    dialog.innerHTML = `<form class="cap-setup-view">
-      <div class="cap-setup-heading dialog-header">
-        <div class="allocation-support-heading-copy"><h2 class="dialog-title" id="assign-b-support-title" tabindex="-1">Review supports</h2></div>
+    // 25 Nov: built from the plugin's dialog parts, with the list as a .dialog-list in a .dialog-body.
+    dialog.innerHTML = `<form class="assign-b-support-form">
+      <div class="dialog-header">
+        <h2 class="dialog-title" id="assign-b-support-title" tabindex="-1">Review supports</h2>
         <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel aria-label="Close review supports">${icon('x')}</button>
       </div>
-      <div class="cap-setup-fields">
-        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><div class="cap-setup-columns" data-support-options></div></fieldset></div>
-      <div class="cap-setup-buttons dialog-footer">
-        <label class="check text-body-small cap-setup-optional"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
+      <div class="dialog-body">
+        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><ul class="dialog-list" data-support-options></ul></fieldset></div>
+      <div class="dialog-footer">
+        <label class="check assign-b-support-remember"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
         <button class="btn btn-ghost btn-lg" type="button" data-cancel>Cancel</button><button class="btn btn-lg" type="submit">Save supports</button>
       </div></form>`;
     page.append(dialog);
@@ -368,7 +371,7 @@
       supportLearner = learner;
       dialog.querySelector('#assign-b-support-title').textContent = 'Review supports for ' + learner.name;
       const chosen = supportsFor(learner.id);
-      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].map((o) => `<label class="card assign-b-support-choice"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}><span class="text-body-base font-semibold">${esc(o)}</span></label>`).join('');
+      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].sort((a, b) => a.localeCompare(b)).map((o) => `<li><label class="dialog-list-item"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><span class="text-body-base font-semibold">${esc(o)}</span><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}></label></li>`).join('');
       dialog.querySelector('[name=remember]').checked = Object.hasOwn(remembered, learner.id);
       dialog.showModal();
     }
@@ -420,12 +423,12 @@
     let confirmNext = '';
     const confirmDialog = document.createElement('dialog');
     confirmDialog.className = 'dialog assign-b-confirm';
+    confirmDialog.setAttribute('role', 'alertdialog');
     confirmDialog.setAttribute('aria-labelledby', 'assign-b-confirm-title');
     confirmDialog.setAttribute('aria-describedby', 'assign-b-confirm-text');
     confirmDialog.innerHTML = `<div class="dialog-header">
-        <h2 class="dialog-title" id="assign-b-confirm-title">Have you checked supports and recipient access?</h2>
-        <button class="btn btn-ghost btn-icon dialog-close" type="button" data-confirm-cancel aria-label="Close">${icon('x')}</button>
-        <p class="dialog-description" id="assign-b-confirm-text">Some learners in these sessions have supports. Check their supports and who can access each session before you continue.</p>
+        <h2 class="dialog-title" id="assign-b-confirm-title">Have you checked supports?</h2>
+        <p class="dialog-description" id="assign-b-confirm-text">Some learners you assigned have supports. Check them before you continue.</p>
       </div>
       <div class="dialog-footer">
         <button class="btn btn-ghost btn-lg" type="button" data-confirm-cancel>Go back</button>

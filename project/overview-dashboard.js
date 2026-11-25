@@ -70,8 +70,8 @@
      ${weekButton(1,'right','Next week')}
     </div>
     <div class="button-group button-group-segmented od-week-view" role="group" aria-label="Calendar view">
-     <button type="button" class="btn btn-ghost" aria-pressed="true" data-calendar-view="week">Week</button>
-     <button type="button" class="btn btn-ghost" aria-pressed="false" data-calendar-view="month">Month</button>
+     <button type="button" class="btn btn-ghost btn-sm" aria-pressed="true" data-calendar-view="week">Week</button>
+     <button type="button" class="btn btn-ghost btn-sm" aria-pressed="false" data-calendar-view="month">Month</button>
     </div>
    </div>
    <div class="od-week-viewport"><div class="od-week-grid" data-overview-days></div></div>`;

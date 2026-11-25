@@ -22,29 +22,29 @@ a{color:var(--foreground)}a:hover{color:var(--foreground)}
 .wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:var(--text-body-small);line-height:1.45}
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
 .logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:500 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
-.navl{display:flex;gap:20px;flex-wrap:wrap;flex:1}
-.navl a{text-decoration:none;color:var(--foreground);padding:6px 0;border-bottom:2px solid transparent}
+.navl{display:flex;gap:24px;flex-wrap:wrap;flex:1}
+.navl a{text-decoration:none;color:var(--foreground);padding:8px 0;border-bottom:2px solid transparent}
 .navl a.on{color:var(--foreground);font-weight:600;border-bottom-color:var(--border)}
-.role{font:500 var(--text-body-small) var(--font-sans);border:1.5px solid var(--ring);border-radius:var(--radius-full);padding:4px 10px;color:var(--foreground)}
-.main{max-width:1384px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px}
+.role{font:500 var(--text-body-small) var(--font-sans);border:1.5px solid var(--ring);border-radius:var(--radius-full);padding:4px 8px;color:var(--foreground)}
+.main{max-width:1384px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:24px}
 .crumb{font:var(--text-body-small) var(--font-sans);color:var(--foreground)}
-h1{margin:0;font-size:26px;font-weight:600}
+h1{margin:0;font-size:var(--text-heading);font-weight:600}
 h2{margin:0;font-size:var(--text-body-base);font-weight:600}
 p{margin:0}
 .sub{color:var(--foreground)}
 .card{background:var(--card);border:0;border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px}
-.n{font:600 28px var(--font-sans)}
+.n{font:600 var(--text-heading) var(--font-sans)}
 .lbl{font-size:var(--text-body-small);color:var(--foreground);text-transform:uppercase;letter-spacing:.04em}
 .ph{background:var(--secondary);border-radius:var(--radius)}
 .ln{height:10px;background:var(--secondary);border-radius:var(--radius)}
 .cond{background:var(--warning-light)}
 .ai{border:1.5px dashed var(--accent-300);background:var(--accent-100)}
-.tag{display:inline-block;font:500 var(--text-body-small) var(--font-sans);padding:2px 6px;border-radius:var(--radius);border:1px solid var(--ring);color:var(--foreground);text-transform:uppercase;white-space:nowrap}
+.tag{display:inline-block;font:500 var(--text-body-small) var(--font-sans);padding:1px 8px;border-radius:var(--radius);border:1px solid var(--ring);color:var(--foreground);text-transform:uppercase;white-space:nowrap}
 .tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
 .tag.a{border-color:var(--accent-300);color:var(--accent-400);background:var(--accent-100)}
-.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:var(--radius);border:1.5px solid var(--primary);background:var(--card);color:var(--foreground);font:500 var(--text-body-small) var(--font-sans);text-decoration:none;cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:var(--radius);border:1.5px solid var(--primary);background:var(--card);color:var(--foreground);font:500 var(--text-body-small) var(--font-sans);text-decoration:none;cursor:pointer}
 .btn.p{background:var(--primary);color:var(--primary-foreground)}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .sp{justify-content:space-between}
@@ -53,9 +53,9 @@ p{margin:0}
 .tile:hover{border-color:var(--border)}
 .tile.primary{border:2px solid var(--primary)}
 .icon{width:36px;height:36px;border-radius:var(--radius);background:var(--secondary)}
-ul.li{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+ul.li{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:8px}
 .navl{align-items:center}
-.navl .cond{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:var(--radius);background:var(--warning-light);color:var(--foreground)}
+.navl .cond{display:inline-flex;align-items:center;gap:8px;padding:1px 8px;border-radius:var(--radius);background:var(--warning-light);color:var(--foreground)}
 .tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
 /* No outline on school cards or the summary list: white fill on the page background is enough */
 html body .theme-assessments .schcard,html body .theme-assessments .sumlist{border:0}
@@ -140,7 +140,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .ilitx .ilpill{margin-top:var(--space-1)}
 .ilmut{color:color-mix(in srgb,var(--muted-foreground) 65%,var(--card))}
 .ilsub{margin:0;font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
-.ilpill{align-self:flex-start;display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-3);border-radius:var(--radius-full);background:var(--secondary);color:var(--foreground);font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans);white-space:nowrap}
+.ilpill{align-self:flex-start;display:inline-flex;align-items:center;gap:var(--space-1);padding:1px var(--space-3);border-radius:var(--radius-full);background:var(--secondary);color:var(--foreground);font:var(--weight-semibold) var(--text-body-small)/var(--lh-base) var(--font-sans);white-space:nowrap}
 .ilpill.ok{background:var(--success-light);color:var(--success)}
 .ilpill.open{background:var(--card);color:var(--foreground)}
 .ilname{font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);color:var(--foreground)}
@@ -173,7 +173,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .ilfld{display:flex;flex-direction:column;gap:var(--space-2);font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
 .ilselw{position:relative;display:block}
 .ilselc{position:absolute;right:var(--space-4);top:50%;width:18px;height:18px;transform:translateY(-50%);pointer-events:none;color:var(--foreground)}
-.ilsel{-webkit-appearance:none;appearance:none;width:100%;min-height:40px;padding:0 calc(var(--space-4) + 26px) 0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius);background:var(--card);color:var(--foreground);font:var(--weight-regular) var(--text-body-small) var(--font-sans)}
+.ilsel{-webkit-appearance:none;appearance:none;width:100%;min-height:40px;padding:0 calc(var(--space-4) + 24px) 0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius);background:var(--card);color:var(--foreground);font:var(--weight-regular) var(--text-body-small) var(--font-sans)}
 .ilschhd{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .ilschl{display:flex;flex-direction:column;background:var(--card);border-radius:var(--radius);max-height:280px;overflow:auto}
 .ilsch{display:flex;align-items:center;gap:var(--space-3);width:100%;min-height:44px;padding:0 var(--space-3);border:0;border-bottom:1px solid var(--border);background:var(--card);color:var(--foreground);text-align:left;font:var(--weight-regular) var(--text-body-small) var(--font-sans);cursor:pointer}
@@ -194,7 +194,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .illnk{color:var(--foreground);font-weight:var(--weight-semibold);text-decoration:none}.illnk:hover{text-decoration:underline}
 /* Assign dialog: interims as separate cards; locked ones stay white but muted */
 .ilpick{gap:var(--space-2);background:transparent;border-radius:0;overflow:visible}
-.ildlg .ilpick{overflow:auto;padding:3px}
+.ildlg .ilpick{overflow:auto;padding:4px}
 .ilpk,.ilpk:last-child{min-height:72px;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
 .ilpk:hover{background:color-mix(in srgb,var(--secondary) 55%,var(--card))}
 .ilpk[aria-disabled="true"]:hover,.ilpk[data-locked="true"],.ilpk[data-locked="true"]:hover{background:var(--card)}
@@ -203,7 +203,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .sumrow:hover .sumch,.sumrow:focus-within .sumch{opacity:1}
 @media (prefers-reduced-motion:reduce){.sumrow .sumch{transition:none}}
 .sumhd:has(.sumbadge){grid-template-areas:"lbl val ch" "sub sub ch" "bdg bdg ch"}
-.sumbadge{grid-area:bdg;justify-self:start;display:inline-flex;align-items:center;gap:var(--space-1);margin:var(--space-2) 0 0;padding:2px var(--space-2);border-radius:var(--radius-full);background:var(--destructive-light);color:var(--destructive);font:var(--weight-semibold) var(--text-body-small)/1.4 var(--font-sans)}
+.sumbadge{grid-area:bdg;justify-self:start;display:inline-flex;align-items:center;gap:var(--space-1);margin:var(--space-2) 0 0;padding:1px var(--space-2);border-radius:var(--radius-full);background:var(--destructive-light);color:var(--destructive);font:var(--weight-semibold) var(--text-body-small)/1.4 var(--font-sans)}
 
 /* Assign dialog: interims as one list, items split by a grey line, no borders */
 .ilpick{gap:0;background:var(--card);border-radius:12px;overflow:hidden}
@@ -230,7 +230,7 @@ html body .theme-assessments .bubsec{display:flex;flex-direction:column;gap:var(
 .svtip .svtb{margin-bottom:var(--space-2)}
 .svrow{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-4)}
 .svrow b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
-.svnote{margin-top:2px}
+.svnote{margin-top:1px}
 
 /* Trend tooltip: hugs its content, rows spaced apart */
 .svtip{width:fit-content;min-width:220px;max-width:100%;margin:0 auto}
@@ -254,7 +254,7 @@ html body .theme-assessments .sumhd.sumstatic,html body .theme-assessments .sumh
 .ildlg .ilchosen{background:color-mix(in srgb,var(--card) 50%,transparent)}
 
 /* Compact Top five cards */
-.bubcard{padding:var(--space-2) var(--space-2) var(--space-3);gap:2px}
+.bubcard{padding:var(--space-2) var(--space-2) var(--space-3);gap:1px}
 .bubsvg{width:112px;height:112px;margin-bottom:var(--space-1)}
 .bubval{font-size:26px}
 html body .theme-assessments .bubsec{gap:var(--space-2)}

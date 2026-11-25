@@ -74,6 +74,7 @@
   /* Utility overlays */
   --backdrop-overlay: rgba(0, 0, 18, 0.3);
   --hover-overlay: rgba(0, 0, 0, 0.10);
+  --hover-overlay-inverse: rgba(255, 255, 255, 0.10); /* the same 10% hover, in white, for ghost buttons on dark surfaces (.on-dark) */
   --ai-accent: #4F5CBE;
   --primary-hover: color-mix(in srgb, var(--primary) 90%, black); /* solid button and solid icon button hover */
   --input-background: var(--background);
@@ -166,6 +167,7 @@
   /* Utility overlays */
   --backdrop-overlay: rgba(0, 0, 18, 0.3);
   --hover-overlay: rgba(0, 0, 0, 0.10);
+  --hover-overlay-inverse: rgba(255, 255, 255, 0.10); /* the same 10% hover, in white, for ghost buttons on dark surfaces (.on-dark) */
   --ai-accent: #4F5CBE;
   --primary-hover: color-mix(in srgb, var(--primary) 90%, black); /* solid button and solid icon button hover */
   --input-background: rgba(0, 0, 0, 0.3);

@@ -1,11 +1,11 @@
 {
- "plugin": "1.25.0",
+ "plugin": "unknown",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/admin.css": {
-   "type.raw-size": 118,
    "type.off-scale-size": 24,
    "colour.accent-text": 13,
+   "type.raw-size": 18,
    "spacing.off-scale": 103,
    "z-index.off-scale": 17,
    "motion.duration": 13,
@@ -16,16 +16,15 @@
    "colour.surface-token-as-text": 5,
    "motion.easing": 1,
    "radius.off-scale": 1,
-   "shadow.not-a-token": 5
+   "shadow.not-a-token": 3
   },
   "project/educator.css": {
-   "type.raw-size": 191,
    "motion.duration": 36,
    "type.off-scale-size": 565,
-   "type.weight": 41,
    "z-index.off-scale": 52,
    "spacing.off-scale": 1110,
-   "shadow.not-a-token": 35,
+   "type.weight": 38,
+   "shadow.not-a-token": 31,
    "motion.easing": 6,
    "motion.layout-property": 2,
    "colour.opacity-on-text": 1,
@@ -33,8 +32,7 @@
    "colour.status-text-outside-badge": 7,
    "colour.surface-token-as-text": 5,
    "radius.off-scale": 85,
-   "colour.hardcoded": 576,
-   "type.font-family": 104
+   "colour.hardcoded": 89
   },
   "project/stu2.css": {
    "z-index.off-scale": 2,
@@ -61,11 +59,7 @@
   "project/CAP-T07-DraftSaved.dc.html": {
    "spacing.off-scale": 2
   },
-  "project/CAP-T16-Insights.dc.html": {
-   "spacing.off-scale": 3
-  },
   "project/DI-District.dc.html": {
-   "type.raw-size": 1,
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 5,
@@ -77,7 +71,6 @@
    "z-index.off-scale": 1
   },
   "project/DI-School.dc.html": {
-   "type.raw-size": 1,
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 5,
@@ -89,7 +82,6 @@
    "z-index.off-scale": 1
   },
   "project/District-Home.dc.html": {
-   "type.raw-size": 1,
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 3,
@@ -101,7 +93,6 @@
    "z-index.off-scale": 1
   },
   "project/MOD-Interim.dc.html": {
-   "type.raw-size": 4,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 15,
@@ -112,7 +103,6 @@
    "render.contrast": 9
   },
   "project/PA-Interim.dc.html": {
-   "type.raw-size": 4,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 15,
@@ -123,7 +113,6 @@
    "render.contrast": 10
   },
   "project/PA-Overview.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 16,
@@ -139,7 +128,6 @@
    "colour.hardcoded": 1
   },
   "project/PA1-Home.dc.html": {
-   "type.raw-size": 1,
    "type.weight": 1,
    "logo.restyled": 1,
    "spacing.off-scale": 3,
@@ -151,7 +139,6 @@
    "z-index.off-scale": 1
   },
   "project/PA2-Grades.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 18,
@@ -168,7 +155,6 @@
    "render.contrast": 17
   },
   "project/PA2-Subgroups.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 20,
@@ -184,7 +170,6 @@
    "colour.hardcoded": 2
   },
   "project/SA2-Hub.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 16,
@@ -200,7 +185,6 @@
    "colour.hardcoded": 1
   },
   "project/SA2-Schools.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 18,
@@ -217,7 +201,6 @@
    "render.contrast": 14
   },
   "project/SA2-Subgroups.dc.html": {
-   "type.raw-size": 3,
    "type.weight": 4,
    "logo.restyled": 1,
    "spacing.off-scale": 19,
@@ -236,9 +219,6 @@
    "spacing.off-scale": 1,
    "shell.header-missing": 1,
    "shell.footer-missing": 1
-  },
-  "project/CAP-T06-Review.dc.html": {
-   "render.contrast": 1
   },
   "project/STU2-Classroom.dc.html": {
    "shell.footer-missing": 1

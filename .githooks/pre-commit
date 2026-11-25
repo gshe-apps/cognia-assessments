@@ -11,8 +11,8 @@ root=$(git rev-parse --show-toplevel)
 cd "$root" || exit 1
 
 if ! command -v node >/dev/null 2>&1; then
-  echo "Cognia design check skipped: Node is not installed."
-  exit 0
+  echo "Commit stopped: the Cognia design check needs Node. Install Node, then commit again."
+  exit 1
 fi
 
 fail=0

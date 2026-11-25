@@ -102,7 +102,7 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
  board.addEventListener('click',e=>{const button=e.target.closest('[data-edit-item]');if(!button)return;e.preventDefault();const questions=getQuestions(),q=questions.find(q=>q.id===button.dataset.editItem);if(!isManual(q))return;if(window.capItemQuality?.edit){if(prefs.method!=='manual'){prefs.method='manual';persist();showMethod()}window.capItemQuality.edit(q);return}window.capOpenItemEditor({question:q,scope:active(model()),index:questions.indexOf(q),count:questions.length,onSave:updated=>{if(inst.state.written?.[updated.id])inst.setState({written:{...inst.state.written,[updated.id]:updated}});else inst.setState({edits:{...inst.state.edits,[updated.id]:updated}});inst.update()},onClose:()=>board.querySelector('[data-edit-item="'+CSS.escape(q.id)+'"]')?.focus()});});
  const emptyTest=()=>`<div class="qc-empty qc-test-empty empty-state">
    <span class="empty-media" aria-hidden="true">${icon(prefs.method==='manual'?'pen':'file')}</span>
-   <h3 class="empty-title text-subheading font-bold">Build your test</h3>
+   <h3 class="empty-title text-subheading font-semibold">Build your test</h3>
    <p>${prefs.method==='manual'
     ?'Write a question, then choose Add to test.'
     :`Find an item in the item banks and choose <span class="qc-empty-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5v14" /></svg> Add</span>.<br>You can reorder items here.`}</p>

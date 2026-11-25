@@ -93,7 +93,7 @@
    const label = document.createElement('span');
    label.className = 'scoring-assessment-label';
    const title = document.createElement('strong');
-   title.className = 'text-body-base font-bold';
+   title.className = 'text-body-base font-semibold';
    title.textContent = entry.title;
    const grade = document.createElement('span');
    grade.className = 'text-body-small font-normal';

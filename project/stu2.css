@@ -40,7 +40,7 @@
     .opt:hover { box-shadow: var(--shadow-md); }
     .chip:hover { background: var(--accent); }
     .chip.on:hover { background: var(--accent-400); }
-    .nav-arrow:hover, .deck-arrow:hover { box-shadow: var(--shadow-md); background: var(--card); }
+    .nav-arrow:hover, .deck-arrow:hover { box-shadow: none; background: var(--card); }
   }
 }
 
@@ -178,6 +178,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 @media (prefers-reduced-motion: reduce) { .room, .track .tcard { transition: opacity 200ms; } .room { transform: none; } }
 
 /* Arrow buttons: desktop only, so a mouse user can click instead of swiping */
+.nav-arrow.glass, .deck-arrow.glass { box-shadow: none; }
 .nav-arrow, .deck-arrow { display: none; width: 48px; height: 48px; border-radius: var(--rounded-full); border: 0; padding: 0; cursor: pointer; align-items: center; justify-content: center; color: var(--foreground); transition: all 200ms; }
 .nav-arrow svg, .deck-arrow svg { width: 24px; height: 24px; }
 .desk-only { display: none; }

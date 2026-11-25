@@ -1,0 +1,29 @@
+#!/bin/sh
+# Runs the full Cognia design check (rendered layout included) before anything is pushed.
+# This is what catches card borders, input shadows and bold text that only show on the rendered page.
+# Turn it on once per clone:  git config core.hooksPath .githooks
+
+root=$(git rev-parse --show-toplevel)
+cd "$root" || exit 1
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Push stopped: the Cognia design check needs Node. Install Node, then push again."
+  exit 1
+fi
+
+if ! node -e "require('playwright')" >/dev/null 2>&1; then
+  echo "Push stopped: the full Cognia design check needs Playwright. Install it once with:"
+  echo "  npm i --no-save playwright && npx playwright install chromium"
+  exit 1
+fi
+
+fail=0
+node design-system/cognia/checks/check-project.cjs || fail=1
+node scripts/check-design-system.cjs >/dev/null || { node scripts/check-design-system.cjs; fail=1; }
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "Push stopped: fix the issues above against the cognia-design plugin, then push again."
+  echo "Never raise cognia-design.baseline.json to make it pass."
+  exit 1
+fi

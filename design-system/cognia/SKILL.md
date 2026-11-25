@@ -46,6 +46,9 @@ Paths below are relative to this skill folder.
 - Icons: Lucide only, everywhere. No hand-drawn SVG icons, other icon sets, emoji or text symbols used as icons.
 - Tables: only the documented Table (white 48px header, 64px alternating rows, 12px corner radius, no lines, no container background). See Table in `components.md`.
 - Logos: never redraw, recolour or add hover states.
+- Dark surfaces: ghost and icon buttons on a dark or accent-coloured surface are white, with the white 10% hover `--hover-overlay-inverse` (`.on-dark` in plain HTML). See Button in `components.md`.
+- Lists in modals: use `.dialog-list` in a `.dialog-body`, a white card with 12px corners and no border on the dialog's grey background, inside the dialog's padding (no side bleed), with the scrollbar beside the card, with full-width selectable rows, a line between rows and no gaps between them, so a selected row fills the row. See Dialog, Lists in a dialog, in `components.md`.
+- Filters inside a heading or sentence ("Overview of results by [Class]"): use `.select.select-inline`, a white, fully rounded pill with no border, chevron down, in the heading's font. See Select, Inline select, in `components.md`.
 - Never edit a project's `globals.css` by hand. Changes to tokens belong in this plugin.
 
 ## After building

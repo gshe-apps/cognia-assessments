@@ -106,10 +106,10 @@
     let pickedGroups = [];
     const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function drawCards() {
-      choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><p class="dialog-description">Pick one or more groups of item banks. <span data-picked-count aria-live="polite"></span></p></div>
+      choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><span class="sr-only" data-picked-count aria-live="polite"></span></div>
         <div class="dialog-body"><ul class="dialog-list uc-bank-list" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
           const n = banksIn(card.value).length;
-          return `<li><label class="dialog-list-item">${icon(card.icon)}<span class="uc-bank-list-text"><span class="text-body-small font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span></span><span class="badge badge-secondary">${plural(n, 'bank')}</span><input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span></label></li>`;
+          return `<li><label class="dialog-list-item">${icon(card.icon).replace('<svg', '<svg class="icon icon-theme"')}<span class="uc-bank-list-text"><span class="text-body-small font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span><span class="badge badge-secondary">${plural(n, 'bank')}</span></span><input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span></label></li>`;
         }).join('')}</ul></div>
         <div class="dialog-footer"><button type="button" class="btn btn-lg" data-show-items>Continue</button></div>`;
       drawShow();

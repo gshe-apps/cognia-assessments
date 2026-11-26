@@ -614,7 +614,7 @@ Dialogs (modals) interrupt the user to focus on a critical task or confirmation.
 - A destructive confirmation uses the solid destructive button as its main action, with the ghost Cancel to its left.
 
 **Rules**
-- Every dialog must have a title, a description or body, and a clear way to dismiss it (the X, the ghost button and `Esc`).
+- Every dialog must have a title, a body, and a clear way to dismiss it (the X, the ghost button and `Esc`). A `.dialog-description` under the title is optional: add one only when it is asked for or the title cannot stand alone (a destructive confirmation, say), never as filler.
 - A click on the backdrop closes a dialog. An Alert Dialog only closes through its buttons.
 - Destructive dialogs must always have a cancel option.
 - Do not open a dialog from inside another dialog.
@@ -1340,7 +1340,7 @@ One box per character for one-time codes or session codes. Typing moves to the n
 A list row with media (icon or avatar), title, description and actions. Use for simple lists that are not tables. Variants: default, outline, muted. `<Item><ItemMedia /><ItemContent><ItemTitle /><ItemDescription /></ItemContent><ItemActions /></Item>`.
 
 - Icon media (`<ItemMedia variant="icon">`, `.item-media-icon`): a 40px tile in `--secondary` mixed 50% with `--card` (lighter than `bg-secondary`), 8px corners, behind a 24px Lucide icon in `--muted-foreground`. Use it when the icon stands for the row's object, such as a file.
-- Divided list (`.item-group-divided`, marked up with `role="list"` and `role="listitem"`): items with no surface of their own and a 1px `--border` line between them. This is the list exception to the no-grey-lines rule.
+- Divided list (`.item-group-divided`, marked up with `role="list"` and `role="listitem"`): items with no surface of their own and a 1px `--border` line between them. This is the list exception to the no-grey-lines rule. Its rows have square corners, so the lines run edge to edge.
 - Striped list (`.item-group-striped`): a list of selectable or scannable rows (learners, results) that sits straight on the page like a table: rows alternate 50% white and white from the top, no gaps and no lines, 12px corners on the group. Never put it inside a white card, where the stripes disappear.
 - Revealed actions (`.item-actions-reveal`, in an Item or a clickable card): the action appears on hover or keyboard focus (opacity, `duration-200`), and always on touch screens. Use it only when the whole row is also a link to the same place, so the action is never the only way in.
 - Title and description are both Body Small (14px). Put context such as the class or grade in the description, not after a separator.

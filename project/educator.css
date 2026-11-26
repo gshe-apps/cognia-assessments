@@ -6935,4 +6935,10 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-title { display: flex; align-items: center; gap: var(--space-1); }
 
 /* Choose a group (item banks): title and description stack beside the icon; the bank count sits before the checkbox. */
-.uc-bank-list-text { display: grid; gap: var(--space-1); flex: 1; min-width: 0; }
+.uc-bank-list { display: grid; grid-auto-rows: 1fr; }
+.uc-bank-list > li > .dialog-list-item { height: 100%; box-sizing: border-box; }
+.uc-bank-list-text { display: grid; justify-items: start; gap: var(--space-1); flex: 1; min-width: 0; }
+
+/* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right. */
+:where(:root:has(.od-overview)) :is(.od-res-main, .od-res-side) { display: grid; gap: var(--space-8); align-content: start; min-width: 0; }
+:where(:root:has(.od-overview)) .od-res-head-start { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }

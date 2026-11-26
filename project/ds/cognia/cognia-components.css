@@ -1345,6 +1345,7 @@ a.item:hover, button.item:hover { --hover-fade: var(--hover-overlay); }
    <div class="item-group item-group-divided" role="list"><div role="listitem"><a class="item">..</a></div>..</div> */
 .item-group-divided { gap: 0; }
 .item-group-divided > * + * { border-top: 1px solid var(--border); }
+.item-group-divided > .item { border-radius: 0; }
 /* Striped list (components.md, Item): sits on the page like a table, rows alternate 50% white and white, no lines. */
 .item-group-striped { gap: 0; border-radius: var(--radius-xl); overflow: hidden; }
 .item-group-striped > * { border-radius: 0; background-color: var(--card); }

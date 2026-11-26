@@ -49,6 +49,7 @@ Paths below are relative to this skill folder.
 - Dark surfaces: ghost and icon buttons on a dark or accent-coloured surface are white, with the white 10% hover `--hover-overlay-inverse` (`.on-dark` in plain HTML). See Button in `components.md`.
 - Lists in modals: use `.dialog-list` in a `.dialog-body`, a white card with 12px corners and no border on the dialog's grey background, inside the dialog's padding (no side bleed), with the scrollbar beside the card, with full-width selectable rows, a line between rows and no gaps between them, so a selected row fills the row. See Dialog, Lists in a dialog, in `components.md`.
 - Filters inside a heading or sentence ("Overview of results by [Class]"): use `.select.select-inline`, a white, fully rounded pill with no border, chevron down, in the heading's font. See Select, Inline select, in `components.md`.
+- Headings and subtext: do not add a description or subtext under a heading, card title, section title or dialog title by default. Add one only when the brief or the designer asks for it, or when the heading cannot be understood without it.
 - Never edit a project's `globals.css` by hand. Changes to tokens belong in this plugin.
 
 ## After building

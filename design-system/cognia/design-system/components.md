@@ -402,6 +402,8 @@ Search inputs filter or find content on the current screen, for example the rows
 | `md` | 40px (`h-10`) | Body Small 14px | Toolbars beside tabs, filters and buttons |
 | `sm` | 32px (`h-8`) | Body Small 14px | Compact panels, next to 32px tabs and chips |
 
+Text inputs and selects come in the same three sizes: `.input-md` / `.select-md` (40px) and `.input-sm` / `.select-sm` (32px); lg (48px) needs no class. Controls side by side in one toolbar, filter bar or header share one size: a toolbar is a 40px search, 40px selects and default 40px buttons, never a mix with 48px or 32px controls.
+
 **Rules**
 
 - Focus is the standard 3px `--ring` focus ring on the input itself, following its round shape.
@@ -484,6 +486,7 @@ Selects let users choose one option from a list. Every field that opens a list w
 
 **Rules**
 - Use a select when there are 5 or more options. For 4 or fewer, consider radio buttons or a tab picker.
+- Sizes match the search field: 48px by default, `.select-md` (40px, 14px text) in toolbars, `.select-sm` (32px) in compact panels. Match the controls beside it.
 - Never show the browser's own list: plain HTML gets the Cognia list from `assets/components.js`.
 - Always include a default placeholder: "Select an option". The placeholder is not an item in the list.
 - If the list exceeds 20 items, use a searchable combobox instead.

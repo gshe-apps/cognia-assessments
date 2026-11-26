@@ -506,6 +506,59 @@ async function renderedChecks(R) {
         const radius = parseFloat(cs.borderTopLeftRadius) || 0;
         if (sides.length === 4 && radius >= 6 && radius < b.height / 2 - 1 && el.textContent.trim()) layout.push(['render.card-border', label2(el) + ' (card-like box)']);
       }
+      // Composition (components.md, Table and Input field): a table sits straight on the page, never on a card;
+      // controls side by side in one toolbar share a height; column content lines up with its header.
+      const cardRgb = rgba(getComputedStyle(document.documentElement).getPropertyValue('--card').trim() || '#fff');
+      const pageRgb = rgba(getComputedStyle(document.documentElement).getPropertyValue('--background').trim() || '#fff');
+      const sameRgb = (a, b) => a.slice(0, 3).every((v, i) => Math.abs(v - b[i]) < 3);
+      for (const t of document.body.querySelectorAll('table,[role=table]')) {
+        if (!visible(t) || (exempt && t.closest(exempt)) || t.closest('dialog,[role=dialog]')) continue;
+        const start = t.closest('.table-wrap,[data-slot=table-container]') || t;
+        for (let e = start.parentElement; e && e !== document.body; e = e.parentElement) {
+          const c = rgba(getComputedStyle(e).backgroundColor);
+          if (c[3] >= 0.9) { if (sameRgb(c, cardRgb) && !sameRgb(c, pageRgb)) layout.push(['render.table-on-card', label2(t) + ' inside ' + label2(e)]); break; }
+        }
+        // Column alignment: each header's text starts (or, right-aligned, ends) where its cells' content does.
+        const head = t.querySelector('thead tr, [role=row]');
+        const body = [...t.querySelectorAll('tbody tr, [role=rowgroup]:not(:first-child) [role=row]')].filter(visible).slice(0, 3);
+        if (!head || !body.length) continue;
+        const hcells = [...head.children];
+        const range = document.createRange();
+        // The visible ink of a cell: its text and its icons, not the padding of a button around them.
+        const contentBox = cell => {
+          const rs = [];
+          const tw = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+          for (let n; (n = tw.nextNode());) { if (!n.textContent.trim() || !visible(n.parentElement)) continue; range.selectNodeContents(n); rs.push(...[...range.getClientRects()].filter(r => r.width > 2 && r.height > 2)); }
+          // A filled or outlined box inside the cell (a badge, an icon tile, an avatar) is what the eye lines up.
+          for (const e of cell.querySelectorAll('*')) { if (e.closest('svg') || !visible(e)) continue; const ecs = getComputedStyle(e); const fill = rgba(ecs.backgroundColor); const under = e.parentElement && bgOf(e.parentElement); const shows = fill[3] > 0.05 && !(under && sameRgb(blend(fill, under), under)); if (shows || (parseFloat(ecs.borderLeftWidth) > 0 && ecs.borderLeftStyle !== 'none' && rgba(ecs.borderLeftColor)[3] > 0.05)) rs.push(e.getBoundingClientRect()); }
+          for (const g of cell.querySelectorAll('svg,img')) { if (g.parentElement && g.parentElement.closest('svg')) continue; const r = g.getBoundingClientRect(); if (r.width > 2 && visible(g)) rs.push(r); }
+          if (!rs.length) return null; return { l: Math.min(...rs.map(r => r.left)), r: Math.max(...rs.map(r => r.right)) };
+        };
+        hcells.forEach((th, i) => {
+          const hb = contentBox(th); if (!hb || !th.textContent.trim()) return;
+          const right = getComputedStyle(th).textAlign === 'right' || getComputedStyle(th).textAlign === 'end';
+          const off = body.map(tr => tr.children[i] && contentBox(tr.children[i])).filter(Boolean).map(cb => right ? cb.r - hb.r : cb.l - hb.l);
+          if (off.length && off.every(d => Math.abs(d) > 4)) layout.push(['render.column-misaligned', `"${th.textContent.trim().slice(0, 24)}" header vs cells ${Math.round(off[0])}px`]);
+        });
+      }
+      const TOOL = 'input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=hidden]),select,.select-trigger,[role=combobox],button.btn,a.btn';
+      const ctls = [...document.body.querySelectorAll(TOOL)].filter(c => visible(c) && !(exempt && c.closest(exempt)) && !c.closest('table,[role=table],[role=grid],.tabs-list,[role=tablist],[role=menu],.menu,dialog .dialog-list') && c.getBoundingClientRect().height >= 28);
+      const boxFor = c => { let e = c; for (let p = c.parentElement, n = 0; p && n < 2; p = p.parentElement, n++) { if (p.getBoundingClientRect().height <= c.getBoundingClientRect().height + 2 && p.querySelectorAll(TOOL).length === 1) e = p; else break; } return e; };
+      const groups = new Map();
+      for (const c of ctls) {
+        const box = boxFor(c); const b = box.getBoundingClientRect(); const mid = b.top + b.height / 2;
+        for (let p = box.parentElement, n = 0; p && n < 4; p = p.parentElement, n++) {
+          const cs = getComputedStyle(p);
+          if (!/flex|grid/.test(cs.display) || (/flex/.test(cs.display) && /column/.test(cs.flexDirection))) continue;
+          // Side by side only: a button inside a search field (clear, filter) is part of that field.
+          const mates = ctls.filter(o => o !== c && p.contains(o)).map(boxFor).filter(o => { const ob = o.getBoundingClientRect(); return !box.contains(o) && !o.contains(box) && (ob.right <= b.left + 1 || ob.left >= b.right - 1) && Math.abs(ob.top + ob.height / 2 - mid) < Math.min(ob.height, b.height) / 2; });
+          if (mates.length) { if (!groups.has(p)) groups.set(p, new Set()); groups.get(p).add(box); mates.forEach(m => groups.get(p).add(m)); break; }
+        }
+      }
+      for (const [p, set] of groups) {
+        const hs = [...set].map(e => Math.round(e.getBoundingClientRect().height));
+        if (Math.max(...hs) - Math.min(...hs) > 2) layout.push(['render.toolbar-heights', label2(p) + ' ' + [...set].map(e => label2(e).split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().height)).join(', ')]);
+      }
       const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (let n; (n = walk.nextNode());) {
         const p = n.parentElement;

@@ -147,7 +147,7 @@
 
     host.innerHTML = `
       <div class="dropdown dropdown-end">
-        <button type="button" class="btn btn-lg" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
+        <button type="button" class="btn" id="create-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="create-assessment-menu">
           Create assessment
           ${svg('<path d="m6 9 6 6 6-6"/>')}
         </button>

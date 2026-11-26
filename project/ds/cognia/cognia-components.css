@@ -399,6 +399,12 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 }
 .dark .select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F9F9F9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
 .select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Field sizes (components.md, Input field and Select), the same three as the search field:
+   lg 48px is the default; md 40px in toolbars beside tabs, filters and buttons; sm 32px in compact panels. */
+.input-md, .select-md { height: 40px; min-height: 40px; padding-top: 0; padding-bottom: 0; font-size: var(--text-body-small); }
+.input-sm, .select-sm { height: 32px; min-height: 32px; padding-top: 0; padding-bottom: 0; font-size: var(--text-body-small); }
+.select-sm { padding-right: var(--space-8); background-position: right var(--space-2) center; }
 .select-wrap { position: relative; display: block; }
 /* Inline select (components.md, Select, Inline select): a filter that sits inside a heading or sentence,
    e.g. "Overview of results by [Class]". A white pill on every surface (fully rounded), no border, sized to its text and font,

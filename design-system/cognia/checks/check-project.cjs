@@ -286,6 +286,10 @@ function sourceChecks(R) {
       if (cls.includes('font-bold') && !cls.some(c => /^text-title-/.test(c))) add(f, 'type.bold-below-title', `class="${m[1].trim().slice(0, 60)}"`);
     }
   }
+  // components.md, Tabs: secondary chips are for settings in a form (role=group); tabs and view switchers use the primary pill.
+  for (const f of [...screens, ...scripts]) {
+    for (const m of read(f).matchAll(/<[a-z]+\b[^>]*\btabs-list-secondary\b[^>]*>/g)) if (/role=["'\\]*tablist/.test(m[0])) add(f, 'tabs.secondary-as-tabs', m[0].slice(0, 80));
+  }
   // Logos: project copies must be the plugin's files, unchanged.
   for (const [projectFile, pluginFile] of Object.entries(config.logos || {})) {
     const norm = s => s.replace(/\s+/g, ' ').trim();
@@ -467,7 +471,7 @@ async function renderedChecks(R) {
         if (!visible(el) || (exempt && el.closest(exempt))) continue;
         const cs = getComputedStyle(el);
         const sides = ['Top', 'Right', 'Bottom', 'Left'].filter(sd => parseFloat(cs['border' + sd + 'Width']) > 0 && cs['border' + sd + 'Style'] !== 'none' && rgba(cs['border' + sd + 'Color'])[3] > 0.05);
-        if (el.classList.contains('card') || el.dataset.slot === 'card') { const outlined = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && rgba(cs.outlineColor)[3] > 0.05 && !el.matches(':focus-visible'); if (sides.length || outlined) layout.push(['render.card-border', label2(el) + ' ' + sides.concat(outlined ? ['outline'] : []).join('/')]); continue; }
+        if (el.classList.contains('card') || el.dataset.slot === 'card') { const outlined = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && rgba(cs.outlineColor)[3] > 0.05 && !el.matches(':focus-visible'); if (sides.length || outlined) layout.push(['render.card-border', label2(el) + ' ' + sides.concat(outlined ? ['outline'] : []).join('/')]); if (cs.boxShadow !== 'none' && !el.closest('.card-stack') && !el.matches(':hover,:focus-within')) layout.push(['render.card-shadow', label2(el) + ' ' + cs.boxShadow.slice(0, 40)]); continue; }
         if (el.closest(CONTROLS) || el.closest(LISTS)) continue;
         const sep = el.tagName === 'HR' || el.classList.contains('separator') || el.getAttribute('role') === 'separator';
         if (sep || (sides.length && sides.length < 4)) layout.push(['render.divider-line', label2(el) + (sep ? ' separator' : ' border ' + sides.join('/'))]);
@@ -561,6 +565,24 @@ async function renderedChecks(R) {
       for (const [p, set] of groups) {
         const hs = [...set].map(e => Math.round(e.getBoundingClientRect().height));
         if (Math.max(...hs) - Math.min(...hs) > 2) layout.push(['render.toolbar-heights', label2(p) + ' ' + [...set].map(e => label2(e).split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().height)).join(', ')]);
+      }
+      // Icons (components.md, Icon): one Lucide icon in one colour. Never two icons layered into one, never parts in different colours.
+      const SHAPES = 'path,circle,rect,line,polyline,polygon,ellipse';
+      const iconSvgs = [...document.body.querySelectorAll('svg')].filter(g => { const r = g.getBoundingClientRect(); return r.width > 4 && r.width <= 48 && r.height <= 48 && visible(g) && !g.closest('svg svg') && !g.querySelector('image,linearGradient,radialGradient,text') && !g.closest('.logo,[class*=logo],[class*=avatar],[role=progressbar],[class*=progress],[class*=gauge],[class*=ring],[class*=chart]') && !(exempt && g.closest(exempt)); });
+      for (const g of iconSvgs) {
+        const cols = new Set();
+        for (const sh of g.querySelectorAll(SHAPES)) {
+          const sc = getComputedStyle(sh);
+          if (sc.display === 'none' || sc.visibility === 'hidden' || +sc.opacity === 0) continue;
+          if (sc.stroke !== 'none' && parseFloat(sc.strokeWidth) > 0) { const c = rgba(sc.stroke); if (c[3] > 0) cols.add(c.slice(0, 3).join(',')); }
+          if (sc.fill !== 'none' && +sc.fillOpacity > 0) { const c = rgba(sc.fill); if (c[3] > 0) cols.add(c.slice(0, 3).join(',')); }
+        }
+        if (cols.size > 1) layout.push(['render.icon-colours', label2(g.parentElement || g) + ' ' + cols.size + ' colours']);
+      }
+      for (const g of iconSvgs) {
+        const r = g.getBoundingClientRect();
+        const other = iconSvgs.find(o => o !== g && o.parentElement === g.parentElement && (() => { const q = o.getBoundingClientRect(); return q.left < r.right && q.right > r.left && q.top < r.bottom && q.bottom > r.top; })());
+        if (other && iconSvgs.indexOf(other) > iconSvgs.indexOf(g)) layout.push(['render.icon-layered', label2(g.parentElement) + ' two icons drawn on top of each other']);
       }
       const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (let n; (n = walk.nextNode());) {

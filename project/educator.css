@@ -6641,6 +6641,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 /* Review supports (25 Nov): the plugin's dialog with a .dialog-list. The form passes the dialog's column layout on. */
 /* The plugin caps dialogs at 512px; this one is wider so the label and checkbox sit far apart. */
 .assign-b-support-dialog.dialog { width: min(720px, calc(100% - var(--space-8))); max-width: none; }
+.assign-b-support-dialog .dialog-body:has(.dialog-list) { max-height: none; }
 .assign-b-support-form { display: flex; flex-direction: column; gap: var(--space-6); min-height: 0; }
 .assign-b-support-remember { margin-inline-end: auto; }
 @media (max-width: 1023px) {
@@ -6932,3 +6933,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 /* Choose a group modal (24 Nov 2026): the three group cards stacked, Continue bottom right. */
 .uc-page .uc-bank-dialog .uc-bank-cards { grid-template-columns: minmax(0, 1fr); }
 :where(:root:has(.od-overview)) .od-res-title { display: flex; align-items: center; gap: var(--space-1); }
+
+/* Choose a group (item banks): title and description stack beside the icon; the bank count sits before the checkbox. */
+.uc-bank-list-text { display: grid; gap: var(--space-1); flex: 1; min-width: 0; }

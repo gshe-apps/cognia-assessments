@@ -360,7 +360,7 @@
         <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel aria-label="Close review supports">${icon('x')}</button>
       </div>
       <div class="dialog-body">
-        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><ul class="dialog-list dialog-list-columns" data-support-options></ul></fieldset></div>
+        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><ul class="dialog-list" data-support-options></ul></fieldset></div>
       <div class="dialog-footer">
         <label class="check assign-b-support-remember"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
         <button class="btn btn-ghost btn-lg" type="button" data-cancel>Cancel</button><button class="btn btn-lg" type="submit">Save supports</button>
@@ -371,7 +371,7 @@
       supportLearner = learner;
       dialog.querySelector('#assign-b-support-title').textContent = 'Review supports for ' + learner.name;
       const chosen = supportsFor(learner.id);
-      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].sort((a, b) => a.localeCompare(b)).map((o) => `<li><label class="dialog-list-item"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><span>${esc(o)}</span><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}></label></li>`).join('');
+      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].sort((a, b) => a.localeCompare(b)).map((o) => `<li><label class="dialog-list-item"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><span class="text-body-small font-semibold">${esc(o)}</span><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}></label></li>`).join('');
       dialog.querySelector('[name=remember]').checked = Object.hasOwn(remembered, learner.id);
       dialog.showModal();
     }

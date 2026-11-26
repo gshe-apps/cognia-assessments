@@ -203,6 +203,7 @@
    <section class="card card-ghost od-res-trend" aria-labelledby="od-res-trend-title">
     <div class="od-res-section-head">
      <h2 class="text-body-base font-semibold od-res-title" id="od-res-trend-title">Overview of results by <label class="sr-only" for="od-res-group">Group results by</label><span class="text-body-small font-semibold"><select class="select select-inline" id="od-res-group" data-group>${Object.entries(dimensions).map(([key, d]) => `<option value="${key}"${state.dim === key ? ' selected' : ''}>${d.label}</option>`).join('')}</select></span></h2>
+     <p class="od-hero-status od-res-status"><span class="badge ${overall >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overall >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overall}%</span><span class="text-body-small font-semibold text-muted-foreground">${trend[trend.length - 1].completed}% learner completion</span></p>
     </div>
     ${barChart()}
    </section>
@@ -234,7 +235,6 @@
    heroTitle.before(wrap);
    wrap.append(heroTitle);
   }
-  heroTitle?.insertAdjacentHTML('afterend', `<p class="od-hero-status"><span class="badge ${overall >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overall >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overall}%</span><span class="text-body-small font-semibold text-muted-foreground">${latest.completed}% learner completion</span></p>`);
   render(panel);
 
   const select = (name, focus) => {

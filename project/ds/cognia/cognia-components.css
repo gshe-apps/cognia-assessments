@@ -898,11 +898,6 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .dialog-list > * + * { border-top: 1px solid var(--border); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"]) { background-color: var(--accent-100); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"]) + :is(:has(:checked), [aria-selected="true"]) { border-top-color: transparent; }
-/* Two columns (components.md, Lists in a dialog): long option lists fit without scrolling. */
-.dialog-list-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.dialog-list-columns > :nth-child(2) { border-top: 0; }
-.dialog-list-columns > :nth-child(even) { border-left: 1px solid var(--border); }
-.dialog-list-columns .dialog-list-item { font-size: var(--text-body-small); font-weight: 600; }
 .dialog-list-item {
   display: flex;
   align-items: center;

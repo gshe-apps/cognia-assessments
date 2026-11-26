@@ -723,7 +723,7 @@ For a list of things to choose from inside a modal (supports, groups, options).
 - Hover is the shared 10% overlay (`--hover-overlay`).
 - Sort the rows in a sensible order, A to Z unless there is a better one.
 - Put the list in `.dialog-body`. The body scrolls when the screen is too short (`max-height: calc(100dvh - 280px)`), with a thin scrollbar in an 8px gutter to the right of the card, never inside it. Keep the list short enough not to scroll on a normal laptop screen.
-- Long lists: when a list has more than 8 short options, use two columns (`.dialog-list-columns`) in a wider dialog (720px) so it fits a 768px-high laptop screen without scrolling. Labels drop to Body Small Strong (14px semibold); rows stay at least 48px.
+- Long lists stay in one column. Labels can drop to Body Small Strong (14px semibold); rows stay at least 48px. When the list should be read whole (12 supports, say), let the dialog grow to show every row (`max-height: none` on that dialog's body) rather than scrolling inside it.
 
 **Plain HTML**: `.dialog-list` on the `<ul>`, `.dialog-list-item` on the `<label>` in each `<li>`. Row padding is `--space-3` by `--space-4`. Markup order is icon, label, then the checkbox, so the label sits next to the icon and the checkbox is on the far right.
 

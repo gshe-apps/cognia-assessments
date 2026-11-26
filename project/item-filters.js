@@ -107,14 +107,10 @@
     const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function drawCards() {
       choice.innerHTML = `<div class="dialog-header"><h2 class="dialog-title" id="uc-bank-choice-title">Choose a group</h2><p class="dialog-description">Pick one or more groups of item banks. <span data-picked-count aria-live="polite"></span></p></div>
-        <div class="dialog-body"><div class="uc-bank-cards" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
+        <div class="dialog-body"><ul class="dialog-list uc-bank-list" role="group" aria-labelledby="uc-bank-choice-title">${GROUP_CARDS.map((card) => {
           const n = banksIn(card.value).length;
-          return `<label class="uc-bank-option"><span class="card uc-bank-card">
-            <span class="uc-bank-card-icon">${icon(card.icon).replace('<svg', '<svg class="icon icon-theme"')}</span>
-            <span class="uc-bank-card-text"><span class="text-body-base font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span><span class="uc-bank-badges"><span class="badge badge-secondary">${plural(n, 'bank')}</span></span></span>
-            <input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span>
-          </span></label>`;
-        }).join('')}</div></div>
+          return `<li><label class="dialog-list-item">${icon(card.icon)}<span class="uc-bank-list-text"><span class="text-body-small font-semibold">${esc(label('bank', card.value))}</span><span class="text-body-small text-muted-foreground">${esc(card.text)}</span></span><span class="badge badge-secondary">${plural(n, 'bank')}</span><input class="checkbox checkbox-circle" type="checkbox" value="${card.value}" data-pick-group ${pickedGroups.includes(card.value) ? 'checked' : ''} aria-describedby="uc-group-desc-${card.value}"><span class="sr-only" id="uc-group-desc-${card.value}">${plural(n, 'bank')}</span></label></li>`;
+        }).join('')}</ul></div>
         <div class="dialog-footer"><button type="button" class="btn btn-lg" data-show-items>Continue</button></div>`;
       drawShow();
     }

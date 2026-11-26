@@ -1083,6 +1083,8 @@ The Cognia logo assets are in this plugin under `assets/logos/`. In code project
 
 Every screen uses the same shell: the top navigation header, the page on the theme background, and the footer. There is no side navigation.
 
+**Exception: learner full-screen flows.** Screens a young learner uses on their own (sign-in, the classroom, taking a test) may drop the header and footer so nothing competes with the task. They still sit on `--background` and keep the logo visible. List them in the project's `shellExempt`.
+
 **Page background**
 - The screen background is always `bg-background` (`--background`). Never use `bg-card`, `bg-secondary`, an accent or any other colour for the page itself.
 

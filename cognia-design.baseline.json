@@ -1,28 +1,5 @@
 {
  "plugin": "unknown",
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
- "counts": {
-  "project/educator.css": {
-   "shadow.not-a-token": 1
-  },
-  "project/stu2.css": {
-   "shadow.not-a-token": 1
-  },
-  "project/STU2-SignIn.dc.html": {
-   "shell.header-missing": 1,
-   "shell.footer-missing": 1
-  },
-  "project/PA-Interim.dc.html": {
-   "render.contrast": 2
-  },
-  "project/PA2-Grades.dc.html": {
-   "render.contrast": 1
-  },
-  "project/SA2-Schools.dc.html": {
-   "render.contrast": 1
-  },
-  "project/STU2-Classroom.dc.html": {
-   "shell.footer-missing": 1
-  }
- }
+ "counts": {}
 }

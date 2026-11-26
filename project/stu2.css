@@ -98,7 +98,7 @@ button.tcard { font: inherit; color: inherit; text-align: left; cursor: pointer;
 .blank { height: 48px; min-width: 64px; padding: 0 8px; border-radius: var(--radius); border: 2px dashed var(--muted-foreground); background: var(--card); font: inherit; font-size: var(--text-heading); font-weight: 600; cursor: pointer; color: var(--foreground); }
 .blank.active { border: 2px solid var(--accent-400); background: var(--accent-100); }
 .blank.filled { border: 2px solid var(--accent-400); background: var(--accent-400); color: var(--primary-foreground); }
-.blank.filled.active { box-shadow: 0 0 0 3px var(--accent-200); }
+.blank.filled.active { outline: 3px solid var(--accent-200); outline-offset: 0; }
 .tray { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .chip { height: 48px; min-width: 64px; border-radius: var(--radius); border: 1px solid var(--primary); background: var(--card); color: var(--foreground); font: inherit; font-size: var(--text-heading); font-weight: 600; cursor: pointer; }
 .chip.small { font-size: var(--text-body-base); min-width: 0; }

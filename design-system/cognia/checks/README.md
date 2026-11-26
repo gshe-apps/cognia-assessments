@@ -62,6 +62,7 @@
   "profiles": [
     { "name": "Admin screens", "whenContains": "admin-type.css", "typeSizes": [24, 16, 14], "forbidTokens": ["--text-subheading"] }
   ],
+  "shellExempt": ["screens/student-*.html"],
   "shell": {
     "header": "header",
     "footer": "footer",
@@ -72,7 +73,7 @@
 }
 ```
 
-A profile narrows the plugin's rules for a group of screens (it can never widen them). `iconSelectors` names icon classes that are not `svg`, `.icon` or `*-icon`, so they may take the accent or a status colour (components.md, Icon). `chartSelectors` marks text inside scaled charts, whose source sizes are in chart units; their on-screen size is still checked.
+A profile narrows the plugin's rules for a group of screens (it can never widen them). `iconSelectors` names icon classes that are not `svg`, `.icon` or `*-icon`, so they may take the accent or a status colour (components.md, Icon). `shellExempt` lists learner full-screen flows that skip the header and footer (components.md, Navigation shell). The contrast check reads what is painted under the text, so text inside an svg shape such as a gauge circle is measured against the shape. `chartSelectors` marks text inside scaled charts, whose source sizes are in chart units; their on-screen size is still checked.
 
 2. Record the project's existing issues once, from the project root:
 

@@ -74,5 +74,8 @@
     ".appic",
     ".sumic",
     ".bubtr"
+  ],
+  "shellExempt": [
+    "project/STU2-*.dc.html"
   ]
 }

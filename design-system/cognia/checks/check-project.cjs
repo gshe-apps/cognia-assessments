@@ -360,6 +360,32 @@ async function renderedChecks(R) {
         for (const l of layers.reverse()) out = blend(l, out);
         return out;
       };
+      // What is painted under the middle of the text, including svg shapes (a gauge circle behind its value).
+      // Falls back to the ancestor walk when the text is not hit-testable.
+      const bgAt = el => {
+        const b = el.getBoundingClientRect();
+        const stack = document.elementsFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+        const i = stack.indexOf(el);
+        if (i < 0) return bgOf(el);
+        const layers = [];
+        for (const e of stack.slice(i)) {
+          const cs = getComputedStyle(e);
+          let c = null;
+          if (e instanceof SVGGeometryElement) {
+            if (cs.fill === 'none') continue;
+            if (/url\(/.test(cs.fill)) return null; // gradient or pattern: cannot judge
+            c = rgba(cs.fill); c[3] *= (+cs.fillOpacity || 0) * (+cs.opacity);
+          } else if (e instanceof SVGElement) continue;
+          else {
+            if (cs.backgroundImage !== 'none') return null;
+            c = rgba(cs.backgroundColor);
+          }
+          if (c[3] > 0) { layers.push(c); if (c[3] >= 1) break; }
+        }
+        let out = [255, 255, 255, 1];
+        for (const l of layers.reverse()) out = blend(l, out);
+        return out;
+      };
       const visible = el => { const b = el.getBoundingClientRect(); const cs = getComputedStyle(el); return b.width > 1 && b.height > 1 && cs.visibility !== 'hidden' && +cs.opacity > 0; };
 
       const sizes = {}, weights = {}, pairs = {}, fonts = new Set(), contrast = [];
@@ -378,7 +404,7 @@ async function renderedChecks(R) {
         if (!svg && !(shell.header && el.closest(shell.header))) (pairs[k + '/' + cs.fontWeight] = pairs[k + '/' + cs.fontWeight] || []).push(label);
         fonts.add(cs.fontFamily.split(',')[0].replace(/["']/g, '').trim());
         if (!svg && !el.closest('button:disabled,[aria-disabled="true"],input:disabled')) {
-          const bg = bgOf(el);
+          const bg = bgAt(el);
           if (bg) {
             const fg = blend(rgba(cs.color), bg);
             const large = size >= 18 || (size >= 14 && +cs.fontWeight >= 700);
@@ -508,7 +534,8 @@ async function renderedChecks(R) {
     }
     for (const fam of r.fonts) if (!/open sans/i.test(fam)) add(f, 'render.font', fam);
     for (const c of r.contrast) add(f, 'render.contrast', c);
-    for (const [rule, d] of r.shellIssues) add(f, rule, d);
+    // components.md, Navigation shell: full-screen learner flows listed in shellExempt skip the header and footer.
+    for (const [rule, d] of r.shellIssues) if (!(matches(f, config.shellExempt || []) && /^shell\.(?:header|footer|nav)/.test(rule))) add(f, rule, d);
     for (const [rule, d] of [...new Map(r.layout.map(x => [x.join(' '), x])).values()]) add(f, rule, d);
   }
   await browser.close();

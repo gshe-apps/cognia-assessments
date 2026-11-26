@@ -69,5 +69,10 @@
     ".od-timetable-marker",
     ".listline",
     ".os-envchart"
+  ],
+  "iconSelectors": [
+    ".appic",
+    ".sumic",
+    ".bubtr"
   ]
 }

@@ -149,16 +149,25 @@ function checkDeclaration(file, selector, prop, value, R, opts = {}) {
     add(file, 'colour.hardcoded', where);
   }
   if (prop === 'color') {
-    // components.md, Icon: an icon may use --accent-300 (the accent variant on a white container). Text never may.
-    const accentIcon = /--accent-300/.test(value) && /\.icon\b|\bsvg\b/.test(selector);
+    // components.md, Icon: an icon may use the accent (--accent-300, or --accent-400 on a tinted surface) or a status colour. Text never may.
+    // An icon is an svg, .icon or *-icon element, or a class the project lists in iconSelectors; every selector in the list must be one.
+    const iconPart = part => {
+      const bare = part.replace(/:(?:not|has)\((?:[^()]|\([^()]*\))*\)/g, '').trim();
+      const inner = bare.match(/:(?:is|where)\(((?:[^()]|\([^()]*\))*)\)\s*$/);
+      if (inner) return topLevel(inner[1]).every(iconPart);
+      const last = bare.split(/\s*[\s>+~]\s*/).pop() || '';
+      return /^svg\b|\.icon(?![\w-])|-icon(?![\w-])/.test(last) || (config.iconSelectors || []).some(s => last.includes(s));
+    };
+    const isIcon = topLevel(selector).every(iconPart);
+    const accentIcon = /--accent-[34]00/.test(value) && isIcon;
     if (ACCENT_AS_TEXT.test(value) && !accentIcon) add(file, 'colour.accent-text', where);
     else if (SURFACE_AS_TEXT.test(value)) add(file, 'colour.surface-token-as-text', where);
     const status = value.match(/var\(\s*--(success|warning|destructive|info)\s*\)/);
     // Status colours are allowed in badges and alerts, on data values and on destructive buttons (typography.md, Text colour).
     // Data values are recognised by name (value, rate, metric, score, delta); the render check then holds them to contrast.
     const dataValue = /(?:^|[-_.\s])(?:value|rate|metric|score|delta)(?=$|[-_.\s:,)])/i.test(selector);
-    // components.md, Icon: the documented status icon classes, used next to text that states the status.
-    const statusIcon = /\.icon\.icon-(?:success|warning|destructive|info)\b/.test(selector);
+    // components.md, Icon: status icons (any icon, or the documented .icon-* classes), used next to text that states the status.
+    const statusIcon = isIcon || /\.icon\.icon-(?:success|warning|destructive|info)\b/.test(selector);
     if (status && !dataValue && !statusIcon && !/badge|alert|tag|status|pill|chip|toast|error|invalid|destructive/i.test(selector)) add(file, 'colour.status-text-outside-badge', where);
   }
   if (prop === 'opacity' && !/disabled/.test(selector) && /\b(?:p|h[1-6]|span|label|a|li|small|b|strong)\b/.test(selector) && parseFloat(value) < 1) {

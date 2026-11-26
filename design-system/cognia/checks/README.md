@@ -56,6 +56,7 @@
   "logos": { "project/assets/cognia-logo.svg": "logo.svg", "project/assets/cognia-emblem.svg": "C.svg" },
   "logoSelectors": [".logo"],
   "chartSelectors": [".chart-label"],
+  "iconSelectors": [".stat-ic"],
   "ignoreTextIn": [".visually-hidden"],
   "lineExempt": [".timeline-now"],
   "profiles": [
@@ -71,7 +72,7 @@
 }
 ```
 
-A profile narrows the plugin's rules for a group of screens (it can never widen them). `chartSelectors` marks text inside scaled charts, whose source sizes are in chart units; their on-screen size is still checked.
+A profile narrows the plugin's rules for a group of screens (it can never widen them). `iconSelectors` names icon classes that are not `svg`, `.icon` or `*-icon`, so they may take the accent or a status colour (components.md, Icon). `chartSelectors` marks text inside scaled charts, whose source sizes are in chart units; their on-screen size is still checked.
 
 2. Record the project's existing issues once, from the project root:
 

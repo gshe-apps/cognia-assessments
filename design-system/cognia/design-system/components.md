@@ -312,12 +312,12 @@ import { BarChart } from 'lucide-react'
 - In HTML prototypes, paste the Lucide SVG unchanged: `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`, `stroke-width="2"`, round caps and joins, and `aria-hidden="true"` unless it is the only label.
 - Icons larger than 24px keep a 2px line, so they match the icons around them: use Lucide's absolute stroke width (`absoluteStrokeWidth` in code; in HTML set `stroke-width` to 48 divided by the size, so 1.5 at 32px).
 - Default icon colour is always `--muted-foreground`. Use `text-muted-foreground` on all icons unless a specific variant applies.
-- Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context.
+- Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context. On a tinted surface (an `--accent-100` card or selected row), use `--accent-400` so the icon keeps 3:1 contrast.
 - Never hardcode a colour value for icons — always use a CSS variable.
 - Always pair icon-only controls with a tooltip.
 - Do not add a coloured background container to icons. The only permitted container background is `bg-white`, and only for the accent variant.
 - When the icon already sits on a white surface (a card), drop the container and colour the icon itself: `.icon-theme` in plain HTML, `text-[var(--accent-300)]` in code. A white box on a white card shows up as a patch when the card is hovered.
-- Status icons: an icon that marks a status (completed, needs review, failed, in progress) may use the status colour, `.icon-success`, `.icon-warning`, `.icon-destructive` or `.icon-info` (`text-success` and so on in code). Only next to text that states the same status, such as a "Results are in" heading, so colour is never the only cue.
+- Status icons: an icon that marks a status (completed, needs review, failed, in progress) may use the status colour, `.icon-success`, `.icon-warning`, `.icon-destructive` or `.icon-info` (`text-success` and so on in code). Only next to text that states the same status, such as a "Results are in" heading, so colour is never the only cue. Trend arrows count too: a green rising arrow or red falling arrow next to a figure or sentence that says it went up or down. Text never takes the status or accent colour outside a badge, alert or data value.
 
 ---
 

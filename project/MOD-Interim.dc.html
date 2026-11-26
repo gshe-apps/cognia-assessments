@@ -42,7 +42,7 @@ p{margin:0}
 .ai{border:1.5px dashed var(--accent-300);background:var(--accent-100)}
 .tag{display:inline-block;font:400 var(--text-body-small) var(--font-sans);padding:1px 8px;border-radius:var(--radius);border:1px solid var(--ring);color:var(--foreground);text-transform:uppercase;white-space:nowrap}
 .tag.c{border-color:var(--warning);color:var(--warning);background:var(--warning-light)}
-.tag.a{border-color:var(--accent-300);color:var(--accent-400);background:var(--accent-100)}
+.tag.a{border-color:var(--accent-300);color:var(--secondary-foreground);background:var(--accent-100)}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:var(--radius);border:1.5px solid var(--primary);background:var(--card);color:var(--foreground);font:400 var(--text-body-small) var(--font-sans);text-decoration:none;cursor:pointer}
 .btn.p{background:var(--primary);color:var(--primary-foreground)}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -86,7 +86,7 @@ body{background:var(--background)}
 .ilitem .ilend{margin-left:auto;flex-shrink:0}
 .ilitem.illocked:not([aria-pressed="true"]){background:var(--background);border:1px dashed var(--border)}
 .ilitem.illocked[aria-pressed="true"]{background:var(--secondary)}
-.ilitem.illocked .ilname,.ilitem.illocked .ilmeta,.ilitem.illocked .ilic,.ilitem.illocked .illock{color:color-mix(in srgb,var(--foreground) 45%,var(--background))}
+.ilitem.illocked .ilname,.ilitem.illocked .ilmeta,.ilitem.illocked .ilic,.ilitem.illocked .illock{color:var(--muted-foreground)}
 .ilitem{align-items:center}
 .ilpv{display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-6);background:transparent;min-width:0}
 .ilpvhd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4)}
@@ -112,7 +112,7 @@ body{background:var(--background)}
 .illet{flex:0 0 24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--ring);border-radius:var(--radius-full);font:var(--weight-semibold) var(--text-body-small) var(--font-sans)}
 .ilpagend{margin:0;padding-top:var(--space-4);border-top:1px solid var(--border);font-size:var(--text-body-small);text-align:center}
 @media (max-width:900px){.ilmd{grid-template-columns:1fr}}
-.ilmut{color:color-mix(in srgb,var(--muted-foreground) 65%,var(--card))}
+.ilmut{color:var(--muted-foreground)}
 .ilsub{margin:0;font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
 .ilwins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
 .ilwin{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4);background:var(--card);border-radius:var(--radius);font-size:var(--text-body-small)}
@@ -128,7 +128,7 @@ body{background:var(--background)}
 .illib{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4)}
 .ilcard{display:flex;flex-direction:column;gap:var(--space-3);min-height:230px;padding:var(--space-6);background:var(--card);border-radius:var(--radius);box-sizing:border-box}
 .ilcard.na{background:transparent;border:1px dashed var(--ring)}
-.ilic{display:inline-flex;color:var(--accent-400)}.ilic svg{width:28px;height:28px}
+.ilic{display:inline-flex;}.ilic svg{width:28px;height:28px}
 .ilcard.na .ilic{color:var(--foreground)}
 .ilname{font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);color:var(--foreground)}
 .ilmeta{font:var(--weight-regular) var(--text-body-small)/var(--lh-base) var(--font-sans)}
@@ -175,7 +175,7 @@ body{background:var(--background)}
 .ildlg > sc-if{display:contents}
 /* Not purchased: visibly unavailable */
 .ilpk[data-locked="true"],.ilpk[data-locked="true"]:hover{background:var(--background)}
-.ilpk[data-locked="true"] .ilname,.ilpk[data-locked="true"] .ilmeta,.ilpk[data-locked="true"] .illock{color:color-mix(in srgb,var(--foreground) 45%,var(--background))}
+.ilpk[data-locked="true"] .ilname,.ilpk[data-locked="true"] .ilmeta,.ilpk[data-locked="true"] .illock{color:var(--muted-foreground)}
 
 .ildlg .ilfld:has(.ilschl){flex:1 1 auto;min-height:0}
 .ildlg .ilschl{flex:0 1 auto;min-height:0;max-height:none}

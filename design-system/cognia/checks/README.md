@@ -41,6 +41,7 @@
 | A table sits straight on the page, never on a white card; header text lines up with its column's content | `components.md`, Table |
 | Controls side by side in one toolbar or header share a height | `components.md`, Input field |
 | Cards have no shadow (raised card link hover, card stacks and floating sticky or fixed bars excepted) | `components.md`, Card |
+| A field's fill never matches the surface under it (white on the page, `--secondary` on a card) | `components.md`, Input field |
 | Icons are one Lucide icon in one colour, never layered or multicoloured (`.graphic` illustrations excepted) | `components.md`, Icon |
 | Secondary chips (`.tabs-list-secondary`) only on settings (`role=group`), never on tabs | `components.md`, Tabs |
 | No grey lines between content: no separator, `<hr>` or one-sided border outside a list, the shell and form controls (exempt things like a timeline's "now" line with `lineExempt`) | `DESIGN.md`, Global rules |

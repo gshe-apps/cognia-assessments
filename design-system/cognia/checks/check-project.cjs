@@ -566,6 +566,14 @@ async function renderedChecks(R) {
         const hs = [...set].map(e => Math.round(e.getBoundingClientRect().height));
         if (Math.max(...hs) - Math.min(...hs) > 2) layout.push(['render.toolbar-heights', label2(p) + ' ' + [...set].map(e => label2(e).split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().height)).join(', ')]);
       }
+      // Fields (components.md, Input field): the fill shows the field, so it never matches the surface under it.
+      // White fields on the grey page; --secondary fields on a white card.
+      for (const f of document.body.querySelectorAll('.input,.select,.textarea,.search-input,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]):not([type=file]):not([type=color]),select,textarea')) {
+        if (!visible(f) || f.closest('.select-inline') || f.matches('.select-inline,[readonly],:disabled') || (exempt && f.closest(exempt))) continue;
+        const own = rgba(getComputedStyle(f).backgroundColor); if (own[3] < 0.5) continue;
+        const under = f.parentElement && bgOf(f.parentElement); if (!under) continue;
+        if (sameRgb(blend(own, under), under)) layout.push(['render.field-on-same-fill', label2(f) + ' fill matches its surface']);
+      }
       // Icons (components.md, Icon): one Lucide icon in one colour. Never two icons layered into one, never parts in different colours.
       const SHAPES = 'path,circle,rect,line,polyline,polygon,ellipse';
       const iconSvgs = [...document.body.querySelectorAll('svg')].filter(g => { const r = g.getBoundingClientRect(); return r.width > 4 && r.width <= 48 && r.height <= 48 && visible(g) && !g.closest('svg svg') && !g.querySelector('image,linearGradient,radialGradient,text') && !g.closest('.graphic,[data-graphic],.logo,[class*=logo],[class*=avatar],[role=progressbar],[class*=progress],[class*=gauge],[class*=ring],[class*=chart]') && !(exempt && g.closest(exempt)); });

@@ -116,7 +116,7 @@
         <div class="tabs-list" role="group" aria-label="Class" data-classes></div>
         <div class="assign-b-results">
           <div class="assign-b-count"><p class="text-body-base" data-count></p><button type="button" class="btn btn-ghost btn-sm" data-select-all></button></div>
-          <ul class="assign-b-list" data-list aria-label="Learners"></ul>
+          <ul class="assign-b-list item-group item-group-striped" data-list aria-label="Learners"></ul>
         </div>
         <p class="alert alert-destructive" data-error role="alert" tabindex="-1" hidden></p>
         <p class="sr-only" role="status" aria-live="polite" data-live></p>
@@ -360,7 +360,7 @@
         <button class="btn btn-ghost btn-icon dialog-close" type="button" data-cancel aria-label="Close review supports">${icon('x')}</button>
       </div>
       <div class="dialog-body">
-        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><ul class="dialog-list" data-support-options></ul></fieldset></div>
+        <fieldset class="allocation-support-options"><legend class="sr-only">Learner supports</legend><ul class="dialog-list dialog-list-columns" data-support-options></ul></fieldset></div>
       <div class="dialog-footer">
         <label class="check assign-b-support-remember"><input class="checkbox" type="checkbox" name="remember">Save supports for future assignments</label>
         <button class="btn btn-ghost btn-lg" type="button" data-cancel>Cancel</button><button class="btn btn-lg" type="submit">Save supports</button>
@@ -371,7 +371,7 @@
       supportLearner = learner;
       dialog.querySelector('#assign-b-support-title').textContent = 'Review supports for ' + learner.name;
       const chosen = supportsFor(learner.id);
-      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].sort((a, b) => a.localeCompare(b)).map((o) => `<li><label class="dialog-list-item"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><span class="text-body-base font-semibold">${esc(o)}</span><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}></label></li>`).join('');
+      dialog.querySelector('[data-support-options]').innerHTML = [...new Set([...supportOptions, ...chosen])].sort((a, b) => a.localeCompare(b)).map((o) => `<li><label class="dialog-list-item"><svg class="icon icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${supportPaths[supportOptions.indexOf(o)] || ICON.plus}</svg><span>${esc(o)}</span><input class="checkbox checkbox-circle" name="support" type="checkbox" value="${esc(o)}" ${chosen.includes(o) ? 'checked' : ''}></label></li>`).join('');
       dialog.querySelector('[name=remember]').checked = Object.hasOwn(remembered, learner.id);
       dialog.showModal();
     }

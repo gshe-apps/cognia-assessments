@@ -408,6 +408,8 @@ Search inputs filter or find content on the current screen, for example the rows
 
 Text inputs and selects come in the same three sizes: `.input-md` / `.select-md` (40px) and `.input-sm` / `.select-sm` (32px); lg (48px) needs no class. Controls side by side in one toolbar, filter bar or header share one size: a toolbar is a 40px search, 40px selects and default 40px buttons, never a mix with 48px or 32px controls.
 
+Field fill follows the surface: white (`--primary-foreground`) on the grey page and in dialogs, `--secondary` on a white card. Plain `<input>`, `<select>` and `<textarea>` elements follow the same rule. A white panel that holds fields is a `.card`, so its fields switch to `--secondary`; never set a field's fill in a project stylesheet.
+
 **Rules**
 
 - Focus is the standard 3px `--ring` focus ring on the input itself, following its round shape.
@@ -721,6 +723,7 @@ For a list of things to choose from inside a modal (supports, groups, options).
 - Hover is the shared 10% overlay (`--hover-overlay`).
 - Sort the rows in a sensible order, A to Z unless there is a better one.
 - Put the list in `.dialog-body`. The body scrolls when the screen is too short (`max-height: calc(100dvh - 280px)`), with a thin scrollbar in an 8px gutter to the right of the card, never inside it. Keep the list short enough not to scroll on a normal laptop screen.
+- Long lists: when a list has more than 8 short options, use two columns (`.dialog-list-columns`) in a wider dialog (720px) so it fits a 768px-high laptop screen without scrolling. Labels drop to Body Small Strong (14px semibold); rows stay at least 48px.
 
 **Plain HTML**: `.dialog-list` on the `<ul>`, `.dialog-list-item` on the `<label>` in each `<li>`. Row padding is `--space-3` by `--space-4`. Markup order is icon, label, then the checkbox, so the label sits next to the icon and the checkbox is on the far right.
 
@@ -1338,6 +1341,7 @@ A list row with media (icon or avatar), title, description and actions. Use for 
 
 - Icon media (`<ItemMedia variant="icon">`, `.item-media-icon`): a 40px tile in `--secondary` mixed 50% with `--card` (lighter than `bg-secondary`), 8px corners, behind a 24px Lucide icon in `--muted-foreground`. Use it when the icon stands for the row's object, such as a file.
 - Divided list (`.item-group-divided`, marked up with `role="list"` and `role="listitem"`): items with no surface of their own and a 1px `--border` line between them. This is the list exception to the no-grey-lines rule.
+- Striped list (`.item-group-striped`): a list of selectable or scannable rows (learners, results) that sits straight on the page like a table: rows alternate 50% white and white from the top, no gaps and no lines, 12px corners on the group. Never put it inside a white card, where the stripes disappear.
 - Revealed actions (`.item-actions-reveal`, in an Item or a clickable card): the action appears on hover or keyboard focus (opacity, `duration-200`), and always on touch screens. Use it only when the whole row is also a link to the same place, so the action is never the only way in.
 - Title and description are both Body Small (14px). Put context such as the class or grade in the description, not after a separator.
 

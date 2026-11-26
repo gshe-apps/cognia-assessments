@@ -381,6 +381,9 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .textarea { min-height: 96px; resize: vertical; }
 .input::placeholder, .search-input::placeholder, .textarea::placeholder { color: var(--muted-foreground); }
 .card .input, .card .textarea, .card .select { background-color: var(--secondary); }
+/* Plain fields without a field class follow the same fill: white on the page, --secondary on a card. Zero specificity, so any field class wins. */
+:where(input:not([type=checkbox], [type=radio], [type=range], [type=color], [type=file], [type=hidden], [type=submit], [type=button], [type=reset], [type=image]), select, textarea) { background-color: var(--primary-foreground); }
+:where(.card) :where(input:not([type=checkbox], [type=radio], [type=range], [type=color], [type=file], [type=hidden], [type=submit], [type=button], [type=reset], [type=image]), select, textarea) { background-color: var(--secondary); }
 .input[aria-invalid="true"], .textarea[aria-invalid="true"], .select[aria-invalid="true"] {
   outline: 3px solid var(--destructive);
 }
@@ -895,6 +898,11 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .dialog-list > * + * { border-top: 1px solid var(--border); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"]) { background-color: var(--accent-100); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"]) + :is(:has(:checked), [aria-selected="true"]) { border-top-color: transparent; }
+/* Two columns (components.md, Lists in a dialog): long option lists fit without scrolling. */
+.dialog-list-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.dialog-list-columns > :nth-child(2) { border-top: 0; }
+.dialog-list-columns > :nth-child(even) { border-left: 1px solid var(--border); }
+.dialog-list-columns .dialog-list-item { font-size: var(--text-body-small); font-weight: 600; }
 .dialog-list-item {
   display: flex;
   align-items: center;
@@ -1342,6 +1350,10 @@ a.item:hover, button.item:hover { --hover-fade: var(--hover-overlay); }
    <div class="item-group item-group-divided" role="list"><div role="listitem"><a class="item">..</a></div>..</div> */
 .item-group-divided { gap: 0; }
 .item-group-divided > * + * { border-top: 1px solid var(--border); }
+/* Striped list (components.md, Item): sits on the page like a table, rows alternate 50% white and white, no lines. */
+.item-group-striped { gap: 0; border-radius: var(--radius-xl); overflow: hidden; }
+.item-group-striped > * { border-radius: 0; background-color: var(--card); }
+.item-group-striped > :nth-child(odd) { background-color: color-mix(in srgb, var(--card) 50%, transparent); }
 .item-actions-reveal { opacity: 0; transition: opacity var(--duration); }
 :is(.item, a.card-link):is(:hover, :focus-visible, :focus-within) .item-actions-reveal { opacity: 1; }
 @media (hover: none) { .item-actions-reveal { opacity: 1; } }

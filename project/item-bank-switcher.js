@@ -312,7 +312,36 @@
     if(active.matches(tabSelector))document.getElementById(active.id)?.focus({preventScroll:true});
    };
    instance.setState({ibBanks:[...selected]});
+   function addItemToTest(item,trigger){
+    const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))||fallback;}catch{return fallback;}};
+    const entries=read('cogniaAssessmentArchiveV1',[]),current=read('cogniaAssessmentTestsV1',null);
+    const targets=entries.filter(entry=>entry.status==='draft'&&entry.model?.origin!=='library').flatMap(entry=>(entry.model.tests||[]).map(test=>({entry,model:entry.model,test})));
+    const currentSaved=entries.find(entry=>entry.model?.tests?.some(test=>test.id===current?.active));
+    if(current?.origin!=='library'&&(!currentSaved||currentSaved.status==='draft')){
+     for(const test of current?.tests||[]){const target=targets.find(target=>target.test.id===test.id);if(target){target.model=current;target.test=test;}else targets.unshift({model:current,test});}
+    }
+    const contains=test=>(test.questions||[]).some(question=>question.id==='bank-'+item.id||question.stem===item.stem);
+    const dialog=element(`<dialog class="dialog" aria-label="Add item to test"><div class="dialog-header"><h2 class="dialog-title">Add item to test</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close test selection">${icon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>')}</button></div><div class="dialog-body"><p class="text-body-small" role="status" aria-live="polite"></p>${targets.length?`<div class="dialog-list">${targets.map((target,index)=>`<button class="item" type="button" data-item-target="${index}" ${contains(target.test)?'disabled':''}><span class="item-content"><span class="item-title">${esc(target.test.title)}</span><span class="item-description">${esc(target.model.title)}</span></span><span class="badge badge-secondary">${contains(target.test)?'Added':'Draft'}</span></button>`).join('')}</div>`:'<div class="empty-state"><p class="empty-title">No editable tests</p><p>Create an assessment to add this item to a test.</p><a class="btn" href="CAP-T03-Assessments.dc.html">Go to assessments</a></div>'}</div></dialog>`);
+    document.body.append(dialog);
+    dialog.onclose=()=>{dialog.remove();trigger.focus();};
+    dialog.addEventListener('click',event=>{
+     const button=event.target.closest('[data-item-target]');if(!button)return;
+     const {entry,model,test}=targets[Number(button.dataset.itemTarget)];
+     if(contains(test))return;
+     const question={id:'bank-'+item.id,stem:item.stem,type:({'Text':'Text entry','True/False':'Multiple choice','Multi-select':'Multiple choice'}[item.type]||item.type),displayType:item.type,options:item.opts||[],correct:item.correct?.length===1?item.correct[0]:item.correct,standard:item.std,marks:Number(item.req?.match(/worth (\d+) points?/)?.[1]||1),sampleAnswer:item.sample||item.rationale,grade:item.grade,subject:item.subject};
+     test.questions||=[];test.questions.push(question);
+     test.state||={chosen:[],written:{},edits:{}};test.state.chosen||=[];test.state.written||={};test.state.chosen.push(question.id);test.state.written[question.id]=question;
+     try{
+      if(entry){entry.model=model;entry.updatedAt=new Date().toISOString();localStorage.setItem('cogniaAssessmentArchiveV1',JSON.stringify(entries));}
+      if(model===current)localStorage.setItem('cogniaAssessmentTestsV1',JSON.stringify(model));
+      button.disabled=true;button.querySelector('.badge').textContent='Added';dialog.querySelector('[role="status"]').textContent='Item added to '+test.title+'.';
+     }catch{test.questions.pop();test.state.chosen.pop();delete test.state.written[question.id];dialog.querySelector('[role="status"]').textContent='Couldn’t save the item. Please try again.';}
+    });
+    dialog.showModal();
+   }
    document.addEventListener('click',event=>{
+    const add=event.target.closest('[data-add-bank-item]');
+    if(add){const item=instance.ibData().find(item=>item.id===add.dataset.addBankItem);if(item)addItemToTest(item,add);return;}
     const tab=event.target.closest(tabSelector);
     if(tab){selectItemTab(tab);return;}
     const card=event.target.closest('a.ib-associated-card');

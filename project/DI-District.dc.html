@@ -113,7 +113,7 @@ a.sg-btn,a.sg-btn:visited,a.sg-btn:hover{color:var(--primary-foreground);text-de
 .sg-goal{position:relative}
 .sg-focus .sg-col-l{visibility:hidden;height:0;overflow:hidden}
 .sg-main{position:relative}
-.sg-focus .sg-col-r{padding-bottom:228px;gap:var(--space-4)}
+.sg-focus .sg-col-r{--schools-panel-height:228px;padding-bottom:var(--schools-panel-height);gap:var(--space-4)}
 .sg-back{position:absolute;left:calc(-1 * var(--space-2));bottom:100%;margin-bottom:var(--space-1);display:inline-flex;align-items:center;gap:var(--space-1);min-height:32px;padding:0 var(--space-2) 0 var(--space-1);border:0;border-radius:var(--radius);background:none;color:var(--foreground);font:var(--weight-semibold) var(--text-body-small) var(--font-sans);cursor:pointer}
 .sg-back svg{width:16px;height:16px}
 .sg-back:hover{background:var(--hover-overlay)}
@@ -388,7 +388,7 @@ a.sg-school:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
 </div></sc-if>
 </div></div>
 
-<div class="sg-col-r" style="gap: 46px; padding-bottom: 113px">
+<div class="sg-col-r" style="gap: 48px; --legend-height: 113px; padding-bottom: var(--legend-height)">
 <sc-if value="{{notFocus}}" hint-placeholder-val="{{ true }}"><section class="sg-card sg-week" aria-labelledby="wk">
 <h2 id="wk">This week</h2>
 <ul>

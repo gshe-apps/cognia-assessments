@@ -3,44 +3,12 @@
  "note": "Known legacy issues. Counts may only go down. Regenerate with --update-baseline after fixing.",
  "counts": {
   "project/educator.css": {
-   "spacing.off-scale": 3,
    "shadow.not-a-token": 1
   },
   "project/stu2.css": {
    "shadow.not-a-token": 1
   },
-  "project/CAP-T05-Algebra.dc.html": {
-   "spacing.off-scale": 1
-  },
-  "project/CAP-T05-Questions.dc.html": {
-   "spacing.off-scale": 1
-  },
-  "project/CAP-T05-Reading.dc.html": {
-   "spacing.off-scale": 1
-  },
-  "project/CAP-T07-DraftSaved.dc.html": {
-   "spacing.off-scale": 2
-  },
-  "project/DI-District.dc.html": {
-   "spacing.off-scale": 3
-  },
-  "project/DI-School.dc.html": {
-   "spacing.off-scale": 3
-  },
-  "project/District-Home.dc.html": {
-   "spacing.off-scale": 1
-  },
-  "project/PA-Overview.dc.html": {
-   "colour.hardcoded": 1
-  },
-  "project/PA1-Home.dc.html": {
-   "spacing.off-scale": 1
-  },
-  "project/SA2-Hub.dc.html": {
-   "colour.hardcoded": 1
-  },
   "project/STU2-SignIn.dc.html": {
-   "spacing.off-scale": 1,
    "shell.header-missing": 1,
    "shell.footer-missing": 1
   },

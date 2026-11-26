@@ -6932,8 +6932,9 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-bank-list-text { display: grid; justify-items: start; gap: var(--space-1); flex: 1; min-width: 0; }
 
 /* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right.
-   26 Nov (2): assessment results span the width under the chart, six across; the count badge sits beside each list heading. */
-:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+   26 Nov (2): assessment results span the width under the chart, five across (27 Nov); the count badge sits beside each list heading. */
+:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+:where(:root:has(.od-overview)) .od-res-main .od-res-bubble-svg { width: calc(3 * var(--space-12)); height: calc(3 * var(--space-12)); }
 @media (max-width: 1279px) {
   :where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

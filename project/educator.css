@@ -1699,7 +1699,7 @@ html body :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2):not(.v2hero h2){
 html body :is(.cap-root,.wf) :is(h3,h4){font-size:var(--text-subheading);font-weight:400;line-height:1.4;}
 html body .cap-root .ef-form-row h2{font-size:var(--text-subheading);font-weight:400;}
 html body :is(.cap-root,.wf) .btn{border-radius:var(--radius);box-shadow:none;transition-duration:200ms;}
-html body .cap-root .btn:not(.small):not(.iconbtn):not(.btn-sm):not(.ef-form-actions .btn):not(.hubhdr .btn):not(.sj-question-nav button):not(.sf-test-toolbar .btn):not(.reference-draft-row .btn){min-height:48px;padding-left:16px;padding-right:16px;}
+
 html body :is(.cap-root,.wf) :is(.btn.solid,.btn.p){background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);}
 html body .cap-root :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),textarea,select){border-radius:var(--radius);color:var(--foreground);background-color:var(--card);font-size:var(--text-body-base);}
 html body .cap-root :is(.field input:not([type=checkbox]):not([type=radio]),.field select,.sel select){min-height:48px;}

@@ -6798,11 +6798,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 @media (min-width: 640px) {
   :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-view) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
 }
-/* Assessment results and learners below benchmark sit side by side. */
-:where(:root:has(.od-overview)) .od-res-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
-@media (max-width: 1023px) {
-  :where(:root:has(.od-overview)) .od-res-columns { max-width: none; grid-template-columns: 1fr; }
-}
 :where(:root:has(.od-overview)) .od-results :is(h2, p) { margin: 0; }
 :where(:root:has(.od-overview)) .od-res-snap { display: grid; grid-template-columns: minmax(0, 1fr) 364px; gap: var(--space-8); align-items: start; }
 :where(:root:has(.od-overview)) .od-res-trend { display: grid; gap: var(--space-4); min-width: 0; }
@@ -6822,9 +6817,6 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-period .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 /* Assessment results (25 Nov): the admin hub's bubble cards (admin.css .bub*), on tokens. */
 :where(:root:has(.od-overview)) .od-res-bubble-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
-:where(:root:has(.od-overview)) .od-res-columns .od-res-section { grid-template-rows: auto 1fr; }
-/* When both sections are empty, their "Nothing to show" boxes stretch to the same height. */
-:where(:root:has(.od-overview)) .od-res-columns:not(:has(.od-res-bubbles, .od-res-learners)) { align-items: stretch; }
 :where(:root:has(.od-overview)) .od-res-list-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); min-height: var(--space-8); }
 :where(:root:has(.od-overview)) .od-res-list-head > .btn { margin-inline: auto calc(-1 * var(--space-4)); }
 /* The ghost button's 16px side padding is pulled back so "View all" lines up with the right edge of the list. */
@@ -6939,7 +6931,13 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .uc-bank-list > li > .dialog-list-item { height: 100%; box-sizing: border-box; }
 .uc-bank-list-text { display: grid; justify-items: start; gap: var(--space-1); flex: 1; min-width: 0; }
 
-/* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right. */
+/* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right.
+   26 Nov (2): assessment results span the width under the chart, six across; the count badge sits beside each list heading. */
+:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@media (max-width: 1279px) {
+  :where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+:where(:root:has(.od-overview)) .od-res-list-head .od-res-title { gap: var(--space-2); }
 :where(:root:has(.od-overview)) :is(.od-res-main, .od-res-side) { display: grid; gap: var(--space-8); align-content: start; min-width: 0; }
 :where(:root:has(.od-overview)) .od-res-switcher { margin-inline-start: calc(-1 * var(--space-4)); }
 :where(:root:has(.od-overview)) .od-res-side > .od-res-status { justify-content: flex-end; }

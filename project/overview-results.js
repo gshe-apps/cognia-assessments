@@ -33,7 +33,7 @@
   {name:'Grade 6A', grade:'6', at:9, total:24, change:-6},
   {name:'Grade 6B', grade:'6', at:9, total:22, change:-3},
   {name:'Grade 7A', grade:'7', at:12, total:24, change:1},
-  {name:'Grade 7B', grade:'7', at:10, total:22, change:-2}
+  {name:'Grade 7B', grade:'7', at:9, total:22, change:-2}
  ];
  const subjectOf = {Fractions:'Mathematics', Ratios:'Mathematics', Algebra:'Mathematics', Geometry:'Mathematics', Data:'Mathematics',
   'Life science':'Science', 'Physical science':'Science', 'Earth science':'Science'};
@@ -66,7 +66,7 @@
  ].map(([name, cls, avg, below, skill]) => ({name, cls, grade:cls.match(/\d/)[0], avg, below, skill, subject:subjectOf[skill]}));
 
  // 25 Nov: results switch between this week and this month. Sample data: this week is 27 Oct to 2 Nov.
- const weekOf = {'Grade 5A':{at:15, change:3}, 'Grade 5B':{at:12, change:-1}, 'Grade 6A':{at:8, change:-2}, 'Grade 6B':{at:10, change:1}, 'Grade 7A':{at:12, change:0}, 'Grade 7B':{at:9, change:-1}};
+ const weekOf = {'Grade 5A':{at:15, change:3}, 'Grade 5B':{at:13, change:0}, 'Grade 6A':{at:8, change:-2}, 'Grade 6B':{at:10, change:1}, 'Grade 7A':{at:12, change:0}, 'Grade 7B':{at:9, change:-1}};
  const inWeek = date => ['27 Oct','28 Oct','29 Oct','30 Oct','31 Oct','1 Nov','2 Nov'].includes(date);
  const classesFor = () => classes.map(c => state.period === 'week' ? {...c, ...weekOf[c.name]} : c);
  const assessmentsFor = () => assessments.filter(a => state.period === 'month' || inWeek(a.date));
@@ -94,8 +94,10 @@
   };
  }
  const totalLearners = classes.reduce((t, c) => t + c.total, 0);
- const totalAt = classes.reduce((t, c) => t + c.at, 0);
- const overall = Math.round(totalAt / totalLearners * 100);
+ // 26 Nov: the benchmark badge, the chart average and learner completion follow This week / This month.
+ // This week is the latest point on the Home chart; this month averages its weekly completion.
+ const overallFor = () => Math.round(classesFor().reduce((t, c) => t + c.at, 0) / totalLearners * 100);
+ const completionFor = () => state.period === 'week' ? trend[trend.length - 1].completed : Math.round(trend.reduce((t, p) => t + p.completed, 0) / trend.length);
 
  const valueClass = pct => pct >= BENCHMARK ? 'text-success-value' : 'text-destructive-value';
  const state = {dim:'cls', filter:null, period:'week'};
@@ -105,7 +107,7 @@
   const dim = dimensions[state.dim];
   // 25 Nov: the average marker shows the same figure as the "Below benchmark at 48%" badge under the greeting
   // (every learner counted once), so the two never disagree.
-  const avg = overall;
+  const avg = overallFor();
   // 25 Nov (2): the benchmark is the origin. Bars go up when a group is above it and down when below,
   // scaled to the largest gap (rounded up to 10) so small differences are still visible.
   const range = Math.max(10, Math.ceil(Math.max(...dim.items.map(i => Math.abs(i.pct - BENCHMARK)), Math.abs(avg - BENCHMARK)) / 10) * 10);
@@ -132,11 +134,8 @@
  // This week panel (25 Nov): the admin overview's This window card. Read-only rows: icon, label and line below,
  // the large value vertically centred on the right.
  function summary() {
-  // 26 Nov: totals stay the same for every grouping; the two comparison rows follow it.
-  const below = classesFor().reduce((t, c) => t + c.total - c.at, 0);
-  const results = assessmentsFor(), belowResults = results.filter(a => a.pct < BENCHMARK).length;
+  // 26 Nov (2): the totals moved to count badges on the list headings; the two comparison rows follow the grouping.
   const signed = n => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n) + '%';
-  const pct = (n, of) => Math.round(n / of * 100) + '%';
   const row = (status, label, value, sub) => `<div class="od-res-stat is-${status}">
    <span class="od-res-stat-icon" aria-hidden="true">${icon(status === 'success' ? 'trendUp' : 'trendDown', 'icon-' + status)}</span>
    <span class="od-res-stat-label">${esc(label)}</span>
@@ -163,8 +162,6 @@
   }
   return `<aside class="od-res-summary" aria-labelledby="od-res-sum-title">
    <h2 class="od-res-summary-title" id="od-res-sum-title">${state.period === 'week' ? 'This week' : 'This month'}</h2>
-   ${row('destructive', 'Learners below benchmark', pct(below, totalLearners), `${below} of ${totalLearners} learners`)}
-   ${row('destructive', 'Results below benchmark', pct(belowResults, results.length), `${belowResults} of ${results.length} assessments`)}
    ${first}
    ${second}
   </aside>`;
@@ -182,6 +179,8 @@
  // 25 Nov: the Overview shows the first 6 results and 5 learners. View all appears beside the heading only when there are more.
  const MAX_RESULTS = 6, MAX_LEARNERS = 5;
  // A button with no destination yet: it hovers like any ghost button but does not navigate.
+ // 26 Nov: a count badge beside each list heading, the same number View all opens.
+ const count = n => `<span class="badge badge-secondary">${n}</span>`;
  const viewAll = (count, max, label) => count > max ? `<button type="button" class="btn btn-ghost btn-sm" aria-label="${label}">View all</button>` : '';
 
  function assessmentBubbles() {
@@ -230,21 +229,18 @@
     </div>
     ${barChart()}
    </section>
-   <div class="od-res-columns">
    <section class="od-res-section" id="od-res-assessments" aria-labelledby="od-res-assess-title" tabindex="-1">
-   <div class="od-res-list-head od-res-bubble-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results</h2><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().filter(matches).length, MAX_RESULTS, 'View all assessment results')}</div>
+   <div class="od-res-list-head od-res-bubble-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results${count(assessmentsFor().filter(matches).length)}</h2><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().filter(matches).length, MAX_RESULTS, 'View all assessment results')}</div>
    ${assessmentBubbles()}
   </section>
-  <section class="od-res-section" id="od-res-learners" aria-labelledby="od-res-learn-title" tabindex="-1">
-   <div class="od-res-list-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark</h2>${viewAll(learnersFor().filter(matches).length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
-   ${learnerCards()}
-  </section>
-   </div>
-
   </div>
   <div class="od-res-side">
-   <p class="od-hero-status od-res-status"><span class="text-body-small font-semibold text-muted-foreground">${trend[trend.length - 1].completed}% learner completion</span><span class="badge ${overall >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overall >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overall}%</span></p>
+   <p class="od-hero-status od-res-status"><span class="text-body-small font-semibold text-foreground">${completionFor()}% learner completion</span><span class="badge ${overallFor() >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overallFor() >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overallFor()}%</span></p>
    ${summary()}
+  <section class="od-res-section" id="od-res-learners" aria-labelledby="od-res-learn-title" tabindex="-1">
+   <div class="od-res-list-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark${count(learnersFor().filter(matches).length)}</h2>${viewAll(learnersFor().filter(matches).length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
+   ${learnerCards()}
+  </section>
 
   </div>
   </div>`;

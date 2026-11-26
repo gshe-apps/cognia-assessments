@@ -318,8 +318,8 @@ window.capReferenceAssign = page => {
    const errorId = 'allocation-name-error-' + esc(s.id);
    return `<section class="allocation-session card" data-session-card="${esc(s.id)}"><div class="card allocation-session-head">
    <h3 class="allocation-session-name">
-    <button class="btn btn-ghost btn-lg allocation-name-trigger" type="button" data-edit-session-name aria-label="Edit session name: ${esc(s.name || 'Unnamed session')}" ${missing?'hidden':''}><span>${esc(s.name || 'Unnamed session')}</span></button>
-    <span class="allocation-name-field" ${missing?'':'hidden'}><input class="input" aria-label="Session name" required maxlength="80" data-field="name" value="${missing?'':esc(s.name)}" ${missing?`aria-invalid="true" aria-describedby="${errorId}"`:'disabled'}></span>
+    <button class="btn btn-ghost btn-sm allocation-name-trigger" type="button" data-edit-session-name aria-label="Edit session name: ${esc(s.name || 'Unnamed session')}" ${missing?'hidden':''}><span>${esc(s.name || 'Unnamed session')}</span></button>
+    <span class="allocation-name-field" ${missing?'':'hidden'}><input class="input input-sm" aria-label="Session name" required maxlength="80" data-field="name" value="${missing?'':esc(s.name)}" ${missing?`aria-invalid="true" aria-describedby="${errorId}"`:'disabled'}></span>
    </h3>
    ${sessionActions(s)}${iconControl(`data-collapse-session="${esc(s.id)}" aria-expanded="${openSessionId === s.id}" aria-controls="body-${esc(s.id)}"`,(openSessionId !== s.id?'Expand':'Collapse')+' '+s.name,openSessionId !== s.id?'right':'down')}
   </div><p class="field-error allocation-name-error" id="${errorId}" ${missing?'':'hidden'}>${sessionNameWarning}</p><div id="body-${esc(s.id)}" ${openSessionId !== s.id?'hidden':''}>

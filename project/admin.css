@@ -2167,7 +2167,7 @@ body:has(.os-main),.wf:has(.os-main){background:var(--background)}
 .os-strong{font-weight:var(--weight-semibold)}
 
 /* Buttons: solid (primary-cta-hover look), ghost icon */
-.os-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-width:64px;min-height:48px;padding:0 var(--space-4);border-radius:var(--radius);font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);text-decoration:none;white-space:nowrap;cursor:pointer;box-shadow:none;transition:all 200ms}
+.os-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-width:64px;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius);font:var(--weight-semibold) var(--text-body-base)/var(--lh-snug) var(--font-sans);text-decoration:none;white-space:nowrap;cursor:pointer;box-shadow:none;transition:all 200ms}
 .os-main .os-btn-solid{border:1px solid var(--primary);background:var(--primary);color:var(--primary-foreground)}
 .os-main .os-btn-solid:hover{border-color:color-mix(in srgb,var(--primary) 78%,var(--card));background:color-mix(in srgb,var(--primary) 78%,var(--card));color:var(--primary-foreground)}
 .os-btn svg{width:16px;height:16px}

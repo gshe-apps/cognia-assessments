@@ -1699,7 +1699,7 @@ html body :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2):not(.v2hero h2){
 html body :is(.cap-root,.wf) :is(h3,h4){font-size:var(--text-subheading);font-weight:400;line-height:1.4;}
 html body .cap-root .ef-form-row h2{font-size:var(--text-subheading);font-weight:400;}
 html body :is(.cap-root,.wf) .btn{border-radius:var(--radius);box-shadow:none;transition-duration:200ms;}
-html body .cap-root .btn:not(.small):not(.iconbtn):not(.ef-form-actions .btn):not(.hubhdr .btn):not(.sj-question-nav button):not(.sf-test-toolbar .btn):not(.reference-draft-row .btn){min-height:48px;padding-left:16px;padding-right:16px;}
+html body .cap-root .btn:not(.small):not(.iconbtn):not(.btn-sm):not(.ef-form-actions .btn):not(.hubhdr .btn):not(.sj-question-nav button):not(.sf-test-toolbar .btn):not(.reference-draft-row .btn){min-height:48px;padding-left:16px;padding-right:16px;}
 html body :is(.cap-root,.wf) :is(.btn.solid,.btn.p){background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);}
 html body .cap-root :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]),textarea,select){border-radius:var(--radius);color:var(--foreground);background-color:var(--card);font-size:var(--text-body-base);}
 html body .cap-root :is(.field input:not([type=checkbox]):not([type=radio]),.field select,.sel select){min-height:48px;}
@@ -4555,8 +4555,8 @@ html body.item-method-reference .cap-root .btn.solid {
 .allocation-name-trigger, .allocation-name-field .input {
   box-sizing: border-box;
   inline-size: 100%;
-  block-size: var(--space-12);
-  padding-block: var(--space-3);
+  block-size: var(--space-8);
+  padding-block: 0;
   padding-inline: var(--space-3);
   border: 0;
   font-weight: var(--weight-semibold);
@@ -6466,6 +6466,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 .assessments-toolbar > [data-assessment-create-menu] { margin-inline-start:auto; }
 /* Ghost buttons in a table cell start where the column header does (components.md, Table). */
 .assessments-panel .table td > .btn-ghost[data-tests] { margin-inline-start: calc(-1 * var(--space-4) - 1px); }
+.feedback-release-table td:last-child > .btn-ghost { margin-inline-end: calc(-1 * var(--space-4) - 1px); }
 .assessments-workspace .table-wrap { overflow-x:auto; }
 .assessments-workspace .table { min-width:56rem; }
 .assessments-workspace .assessment-name { height:auto; justify-content:flex-start; text-align:start; white-space:normal; padding:0; gap:var(--space-3); }

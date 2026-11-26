@@ -542,7 +542,10 @@ async function renderedChecks(R) {
         });
       }
       const TOOL = 'input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=hidden]),select,.select-trigger,[role=combobox],button.btn,a.btn';
-      const ctls = [...document.body.querySelectorAll(TOOL)].filter(c => visible(c) && !(exempt && c.closest(exempt)) && !c.closest('table,[role=table],[role=grid],.tabs-list,[role=tablist],[role=menu],.menu,dialog .dialog-list') && c.getBoundingClientRect().height >= 28);
+      const within = (a, b) => { const r = a.getBoundingClientRect(), o = b.getBoundingClientRect(); return r.left >= o.left - 2 && r.right <= o.right + 2 && r.top >= o.top - 2 && r.bottom <= o.bottom + 2; };
+      const ctls0 = [...document.body.querySelectorAll(TOOL)].filter(c => visible(c) && !(exempt && c.closest(exempt)) && !c.closest('table,[role=table],[role=grid],.tabs-list,[role=tablist],[role=menu],.menu,dialog .dialog-list') && c.getBoundingClientRect().height >= 28);
+      // A button drawn inside a field (clear, chevron, AI) belongs to that field, not to the toolbar.
+      const ctls = ctls0.filter(c => !ctls0.some(o => o !== c && !o.matches('button,a.btn') && within(c, o)));
       const boxFor = c => { let e = c; for (let p = c.parentElement, n = 0; p && n < 2; p = p.parentElement, n++) { if (p.getBoundingClientRect().height <= c.getBoundingClientRect().height + 2 && p.querySelectorAll(TOOL).length === 1) e = p; else break; } return e; };
       const groups = new Map();
       for (const c of ctls) {

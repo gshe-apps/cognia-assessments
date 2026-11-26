@@ -212,8 +212,8 @@
         const avatar = '<span class="rr-avatar" aria-hidden="true">' + (photo ? '<img src="' + photo + '" alt="" width="32" height="32">' : esc(initials(r.name))) + '</span>';
         return '<tr data-result-row data-status="' + (done ? 'scored' : 'missing') + '"' + (fresh ? ' class="rr-new"' : '') + '>'
           + '<td><span class="rr-student">' + avatar + '<span>' + esc(r.name) + '</span></span></td>'
-          + '<td class="rr-c">Private</td>'
-          + '<td class="rr-c">' + (done ? esc(r.marks) + '/' + esc(r.max) : '–') + '</td>'
+          + '<td>Private</td>'
+          + '<td class="num">' + (done ? esc(r.marks) + '/' + esc(r.max) : '–') + '</td>'
           + '<td class="rr-end"><span class="rr-status badge badge-' + tone + '">' + label + '</span></td></tr>';
       }).join('');
     }

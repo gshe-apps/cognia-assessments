@@ -40,8 +40,8 @@
 | Cards have no border or outline (selected cards use the `--accent-100` fill). This includes anything that looks like a card whatever its class: a rounded box (not a pill) at least 120 by 56px with a border on all four sides | `components.md`, Card |
 | A table sits straight on the page, never on a white card; header text lines up with its column's content | `components.md`, Table |
 | Controls side by side in one toolbar or header share a height | `components.md`, Input field |
-| Cards have no shadow (raised card link hover and card stack excepted) | `components.md`, Card |
-| Icons are one Lucide icon in one colour, never layered or multicoloured | `components.md`, Icon |
+| Cards have no shadow (raised card link hover, card stacks and floating sticky or fixed bars excepted) | `components.md`, Card |
+| Icons are one Lucide icon in one colour, never layered or multicoloured (`.graphic` illustrations excepted) | `components.md`, Icon |
 | Secondary chips (`.tabs-list-secondary`) only on settings (`role=group`), never on tabs | `components.md`, Tabs |
 | No grey lines between content: no separator, `<hr>` or one-sided border outside a list, the shell and form controls (exempt things like a timeline's "now" line with `lineExempt`) | `DESIGN.md`, Global rules |
 | No dot, bullet or pipe between pieces of content on one line | `DESIGN.md`, Global rules |

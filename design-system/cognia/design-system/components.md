@@ -244,7 +244,8 @@ Cards group related content and actions into a single container.
 **Rules**
 - Cards use a 12px corner radius (`rounded-xl`, or `var(--radius-xl)` in plain CSS). Tables share it (see Table). Every other component keeps 8px (`rounded-lg`).
 - Cards never have a border, in any variant or state, including selected and highlighted, and no project stylesheet may add one. All cards have `border-0 ring-0 shadow-none` by default. Do not add a border, outline or ring. Keep the default card surface for emphasis unless the user explicitly requests the themed treatment.
-- Cards have no shadow (`shadow-none`), including sticky action bars built from a card. The only card shadows are the raised card link on hover (`shadow-md`) and the card stack's `--shadow-stack`.
+- Cards have no shadow (`shadow-none`). The exceptions: the raised card link on hover (`shadow-md`), a card stack, and a floating action bar (a sticky or fixed card that floats over the page, such as a step bar at the bottom of a flow), which keeps its shadow so it reads as lifted.
+- Every card stack uses `--shadow-stack`, whether it is `.card-stack` or a hand-built deck, so all stacks look the same. Never draw a stack's shadow with `filter: drop-shadow` or another shadow token.
 - Selected cards fill with `--accent-100`, never a primary border, outline or ring. This applies to every card the user can pick (option cards with a checkbox or radio, single or multi select). The fill re-skins with the product theme. Keep the checkbox or radio visible so the state is not shown by colour alone, and keep the hover treatment on selected cards. In plain HTML, `.card-selected` sets it, and `components.css` applies it automatically when the card's direct child checkbox or radio is checked, or when the card (or its wrapping link or label) has `aria-selected`, `aria-pressed` or `aria-checked="true"`. Keyboard focus still shows the 2px `--ring` focus outline.
 - One primary action per card maximum.
 - Cards stretch to fill their container — never set a fixed width.
@@ -316,6 +317,7 @@ import { BarChart } from 'lucide-react'
 - Only use `--accent-300` when the icon is on a white background and the accent adds meaningful context. On a tinted surface (an `--accent-100` card or selected row), use `--accent-400` so the icon keeps 3:1 contrast.
 - Never hardcode a colour value for icons — always use a CSS variable.
 - One icon, one colour. Every line of an icon takes the same colour (`currentColor`). Never layer two icons into one, add hand-drawn marks (sparkles, dots, rings) to a Lucide icon, or build an icon from filled circles. If the meaning needs more, use a badge or text beside the icon.
+- Exception: a graphic, not an icon. A small illustration that sets the tone of a message (an insight badge, an empty-state picture) may use several colours. Mark it `class="graphic"` and `aria-hidden="true"`, keep it beside text that carries the meaning, and never use one inside a button, field, tab or menu.
 - Always pair icon-only controls with a tooltip.
 - Do not add a coloured background container to icons. The only permitted container background is `bg-white`, and only for the accent variant.
 - When the icon already sits on a white surface (a card), drop the container and colour the icon itself: `.icon-theme` in plain HTML, `text-[var(--accent-300)]` in code. A white box on a white card shows up as a patch when the card is hovered.

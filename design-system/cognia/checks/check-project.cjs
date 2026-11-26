@@ -471,7 +471,7 @@ async function renderedChecks(R) {
         if (!visible(el) || (exempt && el.closest(exempt))) continue;
         const cs = getComputedStyle(el);
         const sides = ['Top', 'Right', 'Bottom', 'Left'].filter(sd => parseFloat(cs['border' + sd + 'Width']) > 0 && cs['border' + sd + 'Style'] !== 'none' && rgba(cs['border' + sd + 'Color'])[3] > 0.05);
-        if (el.classList.contains('card') || el.dataset.slot === 'card') { const outlined = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && rgba(cs.outlineColor)[3] > 0.05 && !el.matches(':focus-visible'); if (sides.length || outlined) layout.push(['render.card-border', label2(el) + ' ' + sides.concat(outlined ? ['outline'] : []).join('/')]); if (cs.boxShadow !== 'none' && !el.closest('.card-stack') && !el.matches(':hover,:focus-within')) layout.push(['render.card-shadow', label2(el) + ' ' + cs.boxShadow.slice(0, 40)]); continue; }
+        if (el.classList.contains('card') || el.dataset.slot === 'card') { const outlined = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 && rgba(cs.outlineColor)[3] > 0.05 && !el.matches(':focus-visible'); if (sides.length || outlined) layout.push(['render.card-border', label2(el) + ' ' + sides.concat(outlined ? ['outline'] : []).join('/')]); if (cs.boxShadow !== 'none' && !el.closest('.card-stack') && !/sticky|fixed/.test(cs.position) && !el.matches(':hover,:focus-within')) layout.push(['render.card-shadow', label2(el) + ' ' + cs.boxShadow.slice(0, 40)]); continue; }
         if (el.closest(CONTROLS) || el.closest(LISTS)) continue;
         const sep = el.tagName === 'HR' || el.classList.contains('separator') || el.getAttribute('role') === 'separator';
         if (sep || (sides.length && sides.length < 4)) layout.push(['render.divider-line', label2(el) + (sep ? ' separator' : ' border ' + sides.join('/'))]);
@@ -568,7 +568,7 @@ async function renderedChecks(R) {
       }
       // Icons (components.md, Icon): one Lucide icon in one colour. Never two icons layered into one, never parts in different colours.
       const SHAPES = 'path,circle,rect,line,polyline,polygon,ellipse';
-      const iconSvgs = [...document.body.querySelectorAll('svg')].filter(g => { const r = g.getBoundingClientRect(); return r.width > 4 && r.width <= 48 && r.height <= 48 && visible(g) && !g.closest('svg svg') && !g.querySelector('image,linearGradient,radialGradient,text') && !g.closest('.logo,[class*=logo],[class*=avatar],[role=progressbar],[class*=progress],[class*=gauge],[class*=ring],[class*=chart]') && !(exempt && g.closest(exempt)); });
+      const iconSvgs = [...document.body.querySelectorAll('svg')].filter(g => { const r = g.getBoundingClientRect(); return r.width > 4 && r.width <= 48 && r.height <= 48 && visible(g) && !g.closest('svg svg') && !g.querySelector('image,linearGradient,radialGradient,text') && !g.closest('.graphic,[data-graphic],.logo,[class*=logo],[class*=avatar],[role=progressbar],[class*=progress],[class*=gauge],[class*=ring],[class*=chart]') && !(exempt && g.closest(exempt)); });
       for (const g of iconSvgs) {
         const cols = new Set();
         for (const sh of g.querySelectorAll(SHAPES)) {

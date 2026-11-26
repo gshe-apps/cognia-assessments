@@ -359,8 +359,8 @@ html body .theme-assessments .btn.ghostbtn.fclear:hover{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.v2wfront,.v2wback,.v2wlvl,.v2dc,.v2dc .v2dcb{animation:none}}
 /* Card stack: every card shares one grid cell; margin-top places it in the stack, the front card is last and open */
 .v2deck{display:grid}
-.v2dc{grid-area:1/1;align-self:start;height:200px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-radius:12px 12px 0 0;box-shadow:var(--shadow-sm);margin-top:var(--to);transform-origin:50% 50%;animation:v2move 200ms ease both}
-.v2dc.on{border-radius:12px;box-shadow:var(--shadow-sm)}
+.v2dc{grid-area:1/1;align-self:start;height:200px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-radius:12px 12px 0 0;box-shadow:var(--shadow-stack);margin-top:var(--to);transform-origin:50% 50%;animation:v2move 200ms ease both}
+.v2dc.on{border-radius:12px;box-shadow:var(--shadow-stack)}
 @keyframes v2move{from{margin-top:var(--from)}to{margin-top:var(--to)}}
 /* Shuffle: the chosen card lifts out of the stack, tilts, then drops into the front slot */
 .v2dc.opening{animation:v2shuffle 200ms ease both}

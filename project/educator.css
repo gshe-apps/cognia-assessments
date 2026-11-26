@@ -6641,7 +6641,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 /* Review supports (25 Nov): the plugin's dialog with a .dialog-list. The form passes the dialog's column layout on. */
 /* The plugin caps dialogs at 512px; this one is wider so the label and checkbox sit far apart. */
 .assign-b-support-dialog.dialog { width: min(720px, calc(100% - var(--space-8))); max-width: none; }
-.assign-b-support-dialog .dialog-body:has(.dialog-list) { max-height: none; }
+.assign-b-support-dialog .dialog-list-item { padding-block: var(--space-4); }
 .assign-b-support-form { display: flex; flex-direction: column; gap: var(--space-6); min-height: 0; }
 .assign-b-support-remember { margin-inline-end: auto; }
 @media (max-width: 1023px) {
@@ -6799,7 +6799,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
   :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-view) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
 }
 /* Assessment results and learners below benchmark sit side by side. */
-:where(:root:has(.od-overview)) .od-res-columns { max-width: calc(100% - 364px - var(--space-8)); display: grid; grid-template-columns: minmax(0, 1fr) 364px; gap: var(--space-8); align-items: start; }
+:where(:root:has(.od-overview)) .od-res-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
 @media (max-width: 1023px) {
   :where(:root:has(.od-overview)) .od-res-columns { max-width: none; grid-template-columns: 1fr; }
 }
@@ -6941,4 +6941,5 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 
 /* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right. */
 :where(:root:has(.od-overview)) :is(.od-res-main, .od-res-side) { display: grid; gap: var(--space-8); align-content: start; min-width: 0; }
-:where(:root:has(.od-overview)) .od-res-head-start { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+:where(:root:has(.od-overview)) .od-res-switcher { margin-inline-start: calc(-1 * var(--space-4)); }
+:where(:root:has(.od-overview)) .od-res-side > .od-res-status { justify-content: flex-end; }

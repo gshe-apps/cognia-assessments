@@ -88,7 +88,7 @@
     const menu = dropdown.querySelector(':scope > [role="menu"]');
     return trigger && menu ? { dropdown, trigger, menu } : null;
   };
-  const itemsOf = (menu) => [...menu.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')];
+  const itemsOf = (menu) => [...menu.querySelectorAll(':is([role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"]):not([aria-disabled="true"])')];
 
   const close = (parts, returnFocus) => {
     if (!parts || parts.menu.hidden) return;

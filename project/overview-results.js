@@ -12,7 +12,9 @@
   x: '<path d="M18 6 6 18" /><path d="m6 6 12 12" />',
   chevron: '<path d="m9 18 6-6-6-6" />',
   info: '<circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />',
-  search: '<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />'
+  search: '<path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" />',
+  chevronsUpDown: '<path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" />',
+  check: '<path d="M20 6 9 17l-5-5" />',
  };
  const icon = (name, cls = '') => `<svg class="icon${cls ? ' ' + cls : ''}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`;
 
@@ -180,7 +182,6 @@
  // 25 Nov: the Overview shows the first 6 results and 5 learners. View all appears beside the heading only when there are more.
  const MAX_RESULTS = 6, MAX_LEARNERS = 5;
  // A button with no destination yet: it hovers like any ghost button but does not navigate.
- const filterChip = () => state.filter ? `<button type="button" class="btn btn-outline btn-sm od-res-filter" data-clear-filter aria-label="Show all groups">${esc(dimensions[state.filter.dim].items.find(i => String(i.key) === String(state.filter.key))?.name || state.filter.key)}${icon('x')}</button>` : '';
  const viewAll = (count, max, label) => count > max ? `<button type="button" class="btn btn-ghost btn-sm" aria-label="${label}">View all</button>` : '';
 
  function assessmentBubbles() {
@@ -222,23 +223,29 @@
   <div class="od-res-main">
    <section class="card card-ghost od-res-trend" aria-labelledby="od-res-trend-title">
     <div class="od-res-section-head">
-     <h2 class="text-body-base font-semibold od-res-title" id="od-res-trend-title">Overview of results by <label class="sr-only" for="od-res-group">Group results by</label><span class="text-body-small font-semibold"><select class="select select-inline" id="od-res-group" data-group>${Object.entries(dimensions).map(([key, d]) => `<option value="${key}"${state.dim === key ? ' selected' : ''}>${d.label}</option>`).join('')}</select></span></h2>
-     <p class="od-hero-status od-res-status"><span class="text-body-small font-semibold text-muted-foreground">${trend[trend.length - 1].completed}% learner completion</span><span class="badge ${overall >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overall >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overall}%</span></p>
+     <h2 class="text-body-base font-semibold od-res-title" id="od-res-trend-title"><span class="dropdown">
+      <button type="button" class="btn btn-ghost text-body-base font-semibold od-res-switcher" id="od-res-group" aria-haspopup="menu" aria-expanded="false" aria-controls="od-res-group-menu">Overview of results by ${esc(dimensions[state.dim].label)}${icon('chevronsUpDown')}</button>
+      <span class="menu" role="menu" id="od-res-group-menu" aria-labelledby="od-res-group" hidden>${Object.entries(dimensions).map(([key, d]) => `<button type="button" class="menu-item${state.dim === key ? ' font-semibold' : ''}" role="menuitemradio" aria-checked="${state.dim === key}" tabindex="-1" data-dim="${key}">${esc(d.label)}${state.dim === key ? icon('check', 'menu-item-check') : ''}</button>`).join('')}</span>
+     </span></h2>
     </div>
     ${barChart()}
    </section>
+   <div class="od-res-columns">
    <section class="od-res-section" id="od-res-assessments" aria-labelledby="od-res-assess-title" tabindex="-1">
-   <div class="od-res-list-head od-res-bubble-head"><div class="od-res-head-start"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results</h2>${filterChip()}</div><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().filter(matches).length, MAX_RESULTS, 'View all assessment results')}</div>
+   <div class="od-res-list-head od-res-bubble-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results</h2><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().filter(matches).length, MAX_RESULTS, 'View all assessment results')}</div>
    ${assessmentBubbles()}
   </section>
+  <section class="od-res-section" id="od-res-learners" aria-labelledby="od-res-learn-title" tabindex="-1">
+   <div class="od-res-list-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark</h2>${viewAll(learnersFor().filter(matches).length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
+   ${learnerCards()}
+  </section>
+   </div>
 
   </div>
   <div class="od-res-side">
+   <p class="od-hero-status od-res-status"><span class="text-body-small font-semibold text-muted-foreground">${trend[trend.length - 1].completed}% learner completion</span><span class="badge ${overall >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overall >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overall}%</span></p>
    ${summary()}
-  <section class="od-res-section" id="od-res-learners" aria-labelledby="od-res-learn-title" tabindex="-1">
-   <div class="od-res-list-head"><div class="od-res-head-start"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark</h2>${filterChip()}</div>${viewAll(learnersFor().filter(matches).length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
-   ${learnerCards()}
-  </section>
+
   </div>
   </div>`;
  }
@@ -300,12 +307,6 @@
   };
   select(new URLSearchParams(location.search).get('view') === 'results' ? 'results' : 'calendar');
 
-  panel.addEventListener('change', event => {
-   if (!event.target.matches('[data-group]')) return;
-   state.dim = event.target.value;
-   rerender('[data-group]');
-   grow();
-  });
   // Benchmark and Average tooltips follow the pointer along their line.
   panel.addEventListener('pointermove', event => {
    const line = event.target.closest('[data-line]');
@@ -314,7 +315,8 @@
   panel.addEventListener('click', event => {
    const card = event.target.closest('[data-card]');
    const period = event.target.closest('[data-period]');
-   if (event.target.closest('[data-clear-filter]')) { state.filter = null; rerender('[data-group]'); return; }
+   const dim = event.target.closest('[data-dim]');
+   if (dim) { if (dim.dataset.dim !== state.dim) { state.dim = dim.dataset.dim; rerender('#od-res-group'); grow(); } return; }
    if (card) {
     const key = card.dataset.card;
     const on = state.filter && state.filter.dim === state.dim && state.filter.key === key;

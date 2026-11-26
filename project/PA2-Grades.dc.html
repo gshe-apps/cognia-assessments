@@ -21,7 +21,7 @@ body{margin:0;background:var(--secondary)}
 a{color:var(--foreground)}a:hover{color:var(--foreground)}
 .wf{font-family:var(--font-sans);color:var(--foreground);background:var(--secondary);font-size:var(--text-body-small);line-height:1.45}
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:12px 32px;background:var(--card);border-bottom:1.5px solid var(--ring)}
-.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:400 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;color:var(--foreground)}
+.logo{width:96px;height:28px;background:var(--secondary);border-radius:var(--radius);font:400 var(--text-body-small) var(--font-sans);display:flex;align-items:center;justify-content:center;}
 .navl{display:flex;gap:24px;flex-wrap:wrap;flex:1}
 .navl a{text-decoration:none;color:var(--foreground);padding:8px 0;border-bottom:2px solid transparent}
 .navl a.on{color:var(--foreground);font-weight:600;border-bottom-color:var(--border)}
@@ -362,8 +362,8 @@ html body .theme-assessments .btn.ghostbtn.fclear:hover{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.v2wfront,.v2wback,.v2wlvl,.v2dc,.v2dc .v2dcb{animation:none}}
 /* Card stack: every card shares one grid cell; margin-top places it in the stack, the front card is last and open */
 .v2deck{display:grid}
-.v2dc{grid-area:1/1;align-self:start;height:200px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-radius:12px 12px 0 0;box-shadow:0 -4px 12px -6px rgba(0,0,18,.18);margin-top:var(--to);transform-origin:50% 50%;animation:v2move 200ms ease both}
-.v2dc.on{border-radius:12px;box-shadow:0 -6px 16px -6px rgba(0,0,18,.22)}
+.v2dc{grid-area:1/1;align-self:start;height:200px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border-radius:12px 12px 0 0;box-shadow:var(--shadow-sm);margin-top:var(--to);transform-origin:50% 50%;animation:v2move 200ms ease both}
+.v2dc.on{border-radius:12px;box-shadow:var(--shadow-sm)}
 @keyframes v2move{from{margin-top:var(--from)}to{margin-top:var(--to)}}
 /* Shuffle: the chosen card lifts out of the stack, tilts, then drops into the front slot */
 .v2dc.opening{animation:v2shuffle 200ms ease both}

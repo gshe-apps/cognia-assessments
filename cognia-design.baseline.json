@@ -4,22 +4,20 @@
  "counts": {
   "project/admin.css": {
    "colour.accent-text": 13,
-   "type.raw-size": 18,
    "logo.restyled": 1,
    "colour.hardcoded": 3,
+   "type.raw-size": 1,
    "colour.opacity-on-text": 1,
    "colour.status-text-outside-badge": 4,
-   "colour.surface-token-as-text": 5,
-   "shadow.not-a-token": 3
+   "colour.surface-token-as-text": 5
   },
   "project/educator.css": {
    "spacing.off-scale": 3,
-   "shadow.not-a-token": 29,
    "colour.opacity-on-text": 1,
    "colour.accent-text": 12,
    "colour.status-text-outside-badge": 7,
    "colour.surface-token-as-text": 5,
-   "colour.hardcoded": 80
+   "shadow.not-a-token": 1
   },
   "project/stu2.css": {
    "shadow.not-a-token": 1,
@@ -38,84 +36,68 @@
    "spacing.off-scale": 2
   },
   "project/DI-District.dc.html": {
-   "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
    "spacing.off-scale": 3
   },
   "project/DI-School.dc.html": {
-   "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
    "spacing.off-scale": 3
   },
   "project/District-Home.dc.html": {
-   "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
    "spacing.off-scale": 1
   },
   "project/MOD-Interim.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "render.contrast": 9
   },
   "project/PA-Interim.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.surface-token-as-text": 3,
    "render.contrast": 10
   },
   "project/PA-Overview.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "colour.hardcoded": 1
   },
   "project/PA1-Home.dc.html": {
-   "logo.restyled": 1,
    "colour.status-text-outside-badge": 2,
    "spacing.off-scale": 1
   },
   "project/PA2-Grades.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 3,
    "colour.status-text-outside-badge": 8,
    "colour.surface-token-as-text": 4,
-   "shadow.not-a-token": 3,
-   "colour.hardcoded": 2,
+   "shadow.not-a-token": 1,
    "render.contrast": 17
   },
   "project/PA2-Subgroups.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 3,
    "colour.status-text-outside-badge": 10,
    "colour.surface-token-as-text": 4,
-   "shadow.not-a-token": 3,
-   "colour.hardcoded": 2
+   "shadow.not-a-token": 1
   },
   "project/SA2-Hub.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 2,
    "colour.status-text-outside-badge": 4,
    "colour.surface-token-as-text": 2,
    "colour.hardcoded": 1
   },
   "project/SA2-Schools.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 3,
    "colour.status-text-outside-badge": 8,
    "colour.surface-token-as-text": 4,
-   "shadow.not-a-token": 3,
-   "colour.hardcoded": 2,
+   "shadow.not-a-token": 1,
    "render.contrast": 14
   },
   "project/SA2-Subgroups.dc.html": {
-   "logo.restyled": 1,
    "colour.accent-text": 3,
    "colour.status-text-outside-badge": 10,
    "colour.surface-token-as-text": 4,
-   "shadow.not-a-token": 3,
-   "colour.hardcoded": 2
+   "shadow.not-a-token": 1
   },
   "project/STU2-SignIn.dc.html": {
    "spacing.off-scale": 1,

@@ -338,7 +338,7 @@ html body .theme-assessments .ai .ln + .ln{margin-top:calc(-1 * var(--space-1));
 .theme-assessments .ph{background:var(--border);border-radius:var(--radius);}
 
 /* Numbers and labels */
-.theme-assessments .n{font:var(--weight-semibold) 30px/1.15 var(--font-sans);color:var(--foreground);}
+.theme-assessments .n{font:var(--weight-semibold) var(--text-heading)/1.15 var(--font-sans);color:var(--foreground);}
 .theme-assessments .lbl{text-transform:none;letter-spacing:0;font-size:var(--text-body-small);font-weight:var(--weight-semibold);color:var(--foreground);}
 
 /* Badges: sentence case, pill */
@@ -909,7 +909,7 @@ html body .tag.st-wip{background:var(--destructive-light) ;color:var(--destructi
 .theme-assessments .sumhd{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;grid-template-areas:"lbl val ch" "sub sub ch";column-gap:var(--space-3);row-gap:1px;align-items:center;width:100%;padding:var(--space-4) var(--space-2);background:none;border:0;text-align:left;cursor:pointer;font-family:var(--font-sans);color:var(--foreground);}
 .theme-assessments .sumhd:hover{background:color-mix(in srgb,var(--foreground) 10%,var(--card));}
 .theme-assessments .sumlbl{grid-area:lbl;font:600 var(--text-body-small) var(--font-sans);}
-.theme-assessments .sumval{grid-area:val;font:700 20px var(--font-sans);font-variant-numeric:tabular-nums;}
+.theme-assessments .sumval{grid-area:val;font:var(--weight-semibold) var(--text-heading) var(--font-sans);font-variant-numeric:tabular-nums;}
 .theme-assessments .sumsub{grid-area:sub;font:400 var(--text-body-small) var(--font-sans);color:var(--foreground);}
 .theme-assessments .sumch{grid-area:ch;display:flex;justify-content:flex-end;}
 .theme-assessments .sumch svg{width:18px;height:18px;transition:transform 200ms;}
@@ -926,7 +926,7 @@ html body .tag.st-wip{background:var(--destructive-light) ;color:var(--destructi
 .theme-assessments .topsch.sumbody{padding:0 var(--space-4) var(--space-4);}
 
 /* Overview: larger, more prominent trend chart */
-.theme-assessments .trendcard .trendh{font:700 20px var(--font-sans) ;}
+.theme-assessments .trendcard .trendh{font:var(--weight-semibold) var(--text-heading) var(--font-sans);}
 html body .theme-assessments .snapmain > .card.tint.trendcard{gap:var(--space-4);}
 html body .theme-assessments .snapmain > .trendcard .n{font:700 var(--text-heading)/1 var(--font-sans);}
 html body .theme-assessments .snapmain > .trendcard svg[role="img"]{min-height:300px;}
@@ -943,7 +943,7 @@ html body .theme-assessments .snapmain > .trendcard svg[role="img"]{min-height:3
 .theme-assessments .tcnm{font:700 var(--text-body-small) var(--font-sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .theme-assessments .tcgr{font:400 var(--text-body-small) var(--font-sans);color:var(--foreground);}
 .theme-assessments .tcn{grid-area:n;font:400 var(--text-body-small) var(--font-sans);color:var(--foreground);padding-top:var(--space-3);}
-.theme-assessments .tcn strong{font:700 20px var(--font-sans);margin-right:4px;}
+.theme-assessments .tcn strong{font:var(--weight-semibold) var(--text-heading) var(--font-sans);margin-right:4px;}
 
 /* Grid / table toggle */
 .theme-assessments .vtog{display:inline-flex;border:1px solid var(--border);}
@@ -969,7 +969,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 /* Teacher clusters */
 .theme-assessments .clsec{display:flex;flex-direction:column;gap:var(--space-4);}
 .theme-assessments .clcard{display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-5,20px);border:1px solid var(--border);background:var(--card);}
-.theme-assessments .clhd h3{margin:0;font:700 20px var(--font-sans);}
+.theme-assessments .clhd h3{margin:0;font:var(--weight-semibold) var(--text-heading) var(--font-sans);}
 .theme-assessments .clhd .sub{margin:4px 0 0;font-size:var(--text-body-small);}
 .theme-assessments .clv{display:block;font:700 var(--text-body-small) var(--font-sans);margin-bottom:8px;}
 .theme-assessments .clbar{display:block;height:8px;width:100%;max-width:180px;background:var(--secondary);}
@@ -1111,7 +1111,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 
 /* Assessment heading + switcher */
 .theme-assessments .clhead{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;}
-.theme-assessments .clh{margin:0;font:700 20px var(--font-sans);}
+.theme-assessments .clh{margin:0;font:var(--weight-semibold) var(--text-heading) var(--font-sans);}
 .theme-assessments .swf{position:relative;}
 .theme-assessments .swbtn{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 8px;border:1px solid var(--border);background:var(--card);color:var(--foreground);cursor:pointer;font:600 var(--text-body-small) var(--font-sans);}
 .theme-assessments .swbtn:hover{background:var(--background);}
@@ -1137,7 +1137,7 @@ html body .theme-assessments .sel.inline{display:inline-flex !important;flex-dir
 .theme-assessments .swscrim{position:absolute;inset:0;background:var(--backdrop-overlay);border:0;padding:0;cursor:default;}
 .theme-assessments .swdlg{position:relative;width:min(560px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow-md);}
 .theme-assessments .swdlghd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 24px;}
-.theme-assessments .swdlghd h2{margin:0 0 1px;font:700 20px var(--font-sans);color:var(--foreground);}
+.theme-assessments .swdlghd h2{margin:0 0 1px;font:var(--weight-semibold) var(--text-heading) var(--font-sans);color:var(--foreground);}
 .theme-assessments .swmlist{list-style:none;margin:0;padding:8px 0;overflow:auto;}
 .theme-assessments .swmopt{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:16px 24px;background:none;border:0;border-bottom:1px solid var(--border);text-align:left;cursor:pointer;font-family:var(--font-sans);color:var(--foreground);}
 .theme-assessments .swmlist li:last-child .swmopt{border-bottom:0;}
@@ -1418,7 +1418,7 @@ html body .hc-badge{border-radius:var(--radius-full) ;}
 .theme-assessments .apppane h3{margin:0;font:700 var(--text-body-small) var(--font-sans);color:var(--foreground);}
 .theme-assessments .appdlg.split .appfoot{margin:0;}
 .theme-assessments .appdlghd.nohd{justify-content:flex-end;}
-.theme-assessments .apphubsh{margin:0 0 var(--space-2);padding:var(--space-1) var(--space-6) var(--space-2);font:700 20px var(--font-sans);color:var(--foreground);}
+.theme-assessments .apphubsh{margin:0 0 var(--space-2);padding:var(--space-1) var(--space-6) var(--space-2);font:var(--weight-semibold) var(--text-heading) var(--font-sans);color:var(--foreground);}
 .theme-assessments .appdlghd.homeleft{justify-content:space-between;}
 .theme-assessments .appdlghd.homeleft .apphome{margin-left:calc(-1 * var(--space-3));}
 .theme-assessments .apphubsep{border:0;margin:var(--space-2) var(--space-6);height:0;}
@@ -1687,7 +1687,7 @@ html body :is(.student-symbol,.assessment-reference-arrow,.assessment-reference-
 :where(input,select,textarea){transition:border-color var(--interaction-duration) var(--interaction-easing),box-shadow var(--interaction-duration) var(--interaction-easing);}
 @media(hover:hover) and (pointer:fine){
  body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.manage-library>a,.draftcard,.journey-links>a,.appt:not(.appdis):not(.applocked)){transition:box-shadow var(--interaction-duration) var(--interaction-easing),border-color var(--interaction-duration) var(--interaction-easing),background-color var(--interaction-duration) var(--interaction-easing);}
- body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.draftcard,.journey-links>a):hover{box-shadow:0 3px 12px color-mix(in srgb,var(--accent-400,#262e67) 10%,transparent);border-color:var(--accent-200,#8690d3);}
+ body :is(.reference-kpi,.reference-recent-row,.assessment-reference-action,.assessment-reference-draft,.assessment-reference-new,.manage-attention-grid>a,.draftcard,.journey-links>a):hover{box-shadow:var(--shadow-sm);border-color:var(--accent-200,#8690d3);}
  body .manage-folder:has(a:hover),body .reference-draft-row:has(a:hover),body .assessment-test-item:has(button:not(:disabled):hover){box-shadow:none;transition:box-shadow var(--interaction-duration) var(--interaction-easing);}
  
  body :is(a.btn,button.btn):not(:disabled):not([aria-disabled=true]):hover{filter:none;box-shadow:none;}
@@ -1695,7 +1695,7 @@ html body :is(.student-symbol,.assessment-reference-arrow,.assessment-reference-
  /* Ghost and icon-only buttons: background change only on hover, no shadow */
  body :is(a.btn,button.btn):is(.ghost,.ghostbtn,.ghosticon,.anicon,.anfbtn,.filtbtn,.plain):not(:disabled):not([aria-disabled=true]):hover{box-shadow:none;}
  body :is(.plain,.iconbtn,.appgrid,.session-remove):not(:disabled):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent);border-radius:var(--radius,8px);}
- body .student-answer:hover{border-color:var(--accent-200,#8690d3);box-shadow:0 1px 5px color-mix(in srgb,var(--accent-400,#262e67) 7%,transparent);}
+ body .student-answer:hover{border-color:var(--accent-200,#8690d3);box-shadow:var(--shadow-sm);}
  body :is(.student-filters button,.assessment-view-tabs a):not([aria-pressed=true]):hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 45%,transparent);}
  body summary:hover{background-color:color-mix(in srgb,var(--accent-100,#d1d5ee) 30%,transparent);}
  body :is(a.btn,button.btn):not(:disabled):active{filter:brightness(.92);box-shadow:none;}
@@ -2301,10 +2301,10 @@ html body .cap-root,html body.student-friendly .sj-root{color:var(--foreground);
 html body,html body.student-friendly,html body.student-friendly .sj-root .student-workspace{background:var(--background);color:var(--foreground);}
 html body .hubhdr,html body.student-friendly .sj-root .hubhdr{background:var(--card);}
 html body .profile-trigger{background:var(--secondary);color:var(--secondary-foreground);font-weight:400;}
-html body .cap-root h1{font-size:48px;font-weight:700;line-height:1.2;color:var(--foreground);letter-spacing:normal;}
+html body .cap-root h1{font-size:var(--text-heading);font-weight:600;line-height:1.2;color:var(--foreground);letter-spacing:normal;}
 html body .cap-root .reference-folder h2{font-size:var(--text-heading);font-weight:600;line-height:1.3;}
 html body .cap-root .reference-sectionhead h2{font-size:var(--text-heading);font-weight:600;line-height:1.3;}
-html body .cap-root .ef-form-row h2{font-size:20px;font-weight:400;line-height:1.4;}
+html body .cap-root .ef-form-row h2{font-size:var(--text-heading);font-weight:400;line-height:1.4;}
 html body .cap-root .reference-heading p,html body .cap-root .reference-folder p{font-size:var(--text-body-base);line-height:1.5;color:var(--muted-foreground);}
 html body .cap-root .reference-kpi b,html body .cap-root .reference-kpi p,html body .cap-root .ef-form-row p{font-size:var(--text-body-small);line-height:1.5;}
 html body .cap-root .reference-kpi{border-color:transparent;box-shadow:none;padding:24px 16px;gap:12px;}
@@ -2315,7 +2315,7 @@ html body .cap-root .ef-form-actions .solid{background:var(--primary);color:var(
 html body .cap-root .ef-form-row{padding:24px;}
 html body .cap-root .ef-form-kind .folder-icon,html body .cap-root .ef-form-kind .reference-icon{background:transparent;color:var(--muted-foreground);}
 html body .cap-root #form-grade,html body .cap-root #form-subject{min-height:48px;font-size:var(--text-body-base);background:var(--card);color:var(--foreground);border-radius:var(--radius);}
-html body.student-friendly .sj-root .student-title h1{font-size:48px;line-height:1.2;font-weight:700;letter-spacing:normal;color:var(--foreground);}
+html body.student-friendly .sj-root .student-title h1{font-size:var(--text-heading);line-height:1.2;font-weight:600;letter-spacing:normal;color:var(--foreground);}
 html body.student-friendly .sj-root .student-title p{font-size:var(--text-body-base);line-height:1.5;color:var(--muted-foreground);}
 html body.student-friendly .sj-root .sj-signin-form>label{font-size:var(--text-body-small);font-weight:600;color:var(--foreground);}
 html body.student-friendly .sj-root .sj-signin-form{gap:24px;}
@@ -2330,8 +2330,8 @@ html body.student-friendly .sj-root .student-support,html body.student-friendly 
 html body :is(.wf,.cap-root,.sj-root){color:var(--foreground);}
 html body :is(.wf>.top,.global-header,.student-header){background:var(--card);}
 html body :is(.cap-root,.wf) :is(h2,.panelhead h2,.formcard h2):not(.v2hero h2){font-size:var(--text-heading);font-weight:600;line-height:1.3;color:var(--foreground);}
-html body :is(.cap-root,.wf) :is(h3,h4){font-size:20px;font-weight:400;line-height:1.4;}
-html body .cap-root .ef-form-row h2{font-size:20px;font-weight:400;}
+html body :is(.cap-root,.wf) :is(h3,h4){font-size:var(--text-heading);font-weight:400;line-height:1.4;}
+html body .cap-root .ef-form-row h2{font-size:var(--text-heading);font-weight:400;}
 html body :is(.cap-root,.wf) .btn{border-radius:var(--radius);box-shadow:none;transition-duration:200ms;}
 html body .cap-root .btn:not(.small):not(.iconbtn):not(.ef-form-actions .btn):not(.hubhdr .btn):not(.sj-question-nav button):not(.sf-test-toolbar .btn):not(.reference-draft-row .btn){min-height:48px;padding-left:16px;padding-right:16px;}
 html body :is(.cap-root,.wf) :is(.btn.solid,.btn.p){background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);}
@@ -2341,7 +2341,7 @@ html body .cap-root :is(.card,.formcard,.student-panel,.student-work-card,.quest
 html body.student-friendly .sj-root :is(.student-panel,.sj-test,.sj-readiness>div,.cf-context,.sj-review-row,.sj-choice,.sj-order label){border-radius:var(--radius);background-color:var(--card);color:var(--foreground);border-color:var(--border);}
 html body.student-friendly .sj-root :is(.sj-test h2,.sj-readiness b,.sj-choice b,.sj-question-content h1){color:var(--foreground);}
 html body.student-friendly .sj-root :is(.sj-test p,.sj-readiness p,.sj-question-body,.sf-timing,.sj-save-status,.kid-answer,.sj-exam-context){color:var(--muted-foreground);}
-html body.student-friendly .sj-root .sj-question-content h1{font-size:30px;line-height:1.3;}
+html body.student-friendly .sj-root .sj-question-content h1{font-size:var(--text-heading);line-height:1.3;}
 html body.student-friendly .sj-root .sj-choice:has(input:checked){background:var(--secondary);border-color:var(--primary);}
 html body.student-friendly .sj-root .sj-choice input{accent-color:var(--primary);}
 html body.student-friendly .sj-root :is(.sj-badge,.student-avatar,.sj-review-number){background:var(--secondary);color:var(--secondary-foreground);}
@@ -2349,8 +2349,8 @@ html body.student-friendly dialog,html body .cf-dialog{border-radius:var(--radiu
 html body.student-friendly dialog .btn{border-radius:var(--radius);}
 html body.student-friendly dialog .btn.solid{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground);}
 /* Preserve user font-size accommodations for answering content. */
-html body.student-friendly .sj-root .sj-question-content h1{font-size:calc(30px * var(--cf-student-scale,1));}
-@media(max-width:767px){html body .cap-root h1,html body.student-friendly .sj-root .student-title h1{font-size:30px;}html body.student-friendly .sj-root .sj-question-content h1{font-size:calc(var(--text-heading) * var(--cf-student-scale,1));}}
+html body.student-friendly .sj-root .sj-question-content h1{font-size:calc(var(--text-heading) * var(--cf-student-scale,1));}
+@media(max-width:767px){html body .cap-root h1,html body.student-friendly .sj-root .student-title h1{font-size:var(--text-heading);}html body.student-friendly .sj-root .sj-question-content h1{font-size:calc(var(--text-heading) * var(--cf-student-scale,1));}}
 @media(prefers-reduced-motion:reduce){html body .btn{transition:none!important;}}
 /* Requested local-only removal of decorative large-tile and banner imagery.
    visibility preserves occupied space; no content or controls are removed. */
@@ -2371,7 +2371,7 @@ html body .assessment-catalogue .ac-row{grid-template-columns:minmax(180px,2.7fr
 /* Cognia visual alignment for assessment collections; existing structure and handlers retained. */
 html body .assessment-catalogue{--ac-border:var(--border);--ac-muted:var(--muted-foreground);font-family:var(--font-sans);color:var(--foreground);}
 html body .assessment-catalogue .ac-section-heading h2{font-size:var(--text-heading);font-weight:600;line-height:1.3;}
-html body .assessment-catalogue :is(.ac-draft-card h3,.ac-row h3,.ac-library-card h3){font-family:var(--font-sans);font-size:20px;font-weight:400;line-height:1.4;color:var(--foreground);}
+html body .assessment-catalogue :is(.ac-draft-card h3,.ac-row h3,.ac-library-card h3){font-family:var(--font-sans);font-size:var(--text-heading);font-weight:400;line-height:1.4;color:var(--foreground);}
 html body .assessment-catalogue :is(.ac-section-heading p,.ac-row-info p,.ac-library-card p,.ac-draft-card>p,.ac-draft-meta,.ac-draft-footer small,.ac-attention-card small,.ac-hero>div>p:last-child){font-size:var(--text-body-small);line-height:1.5;color:var(--muted-foreground);}
 html body .assessment-catalogue :is(.ac-attention-card b,.ac-create,.ac-use,.ac-draft-footer .btn){font-family:var(--font-sans);font-size:var(--text-body-base);font-weight:600;line-height:1.5;}
 html body .assessment-catalogue .ac-attention-card{padding:24px;gap:16px;border-color:transparent;background:var(--card);color:var(--foreground);border-radius:var(--radius);box-shadow:none;transition:box-shadow 200ms;}
@@ -2448,7 +2448,7 @@ html body.student-friendly.student-friendly .sj-root .sj-question-nav [aria-curr
 html body.student-friendly.student-friendly .sj-root .sj-review-row{border:2px solid var(--secondary);color:var(--foreground);}
 html body.student-friendly.student-friendly .sj-root .sj-review-number{background:var(--secondary);color:var(--muted-foreground);}
 html body.student-friendly.student-friendly .sj-root .sj-review-summary{color:var(--muted-foreground);}
-html body.student-friendly.student-friendly dialog{color:var(--foreground);box-shadow:0 20px 80px var(--foreground);}
+html body.student-friendly.student-friendly dialog{color:var(--foreground);box-shadow:var(--shadow-sm);}
 html body.student-friendly.student-friendly dialog::backdrop{background:var(--foreground);}
 html body.student-friendly.student-friendly dialog :is(input,html body.student-friendly textarea,html body.student-friendly select){border:0;}
 html body.student-friendly .student-friendly .kid-answer{color:var(--muted-foreground);}

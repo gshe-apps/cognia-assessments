@@ -143,6 +143,11 @@
    <span class="od-res-stat-value">${esc(value)}</span>
    <span class="od-res-stat-sub">${esc(sub)}</span>
   </div>`;
+  // 27 Nov (3): the two totals are back above the class comparison; like the rest of the card they follow
+  // This week / This month only, never the chart's grouping.
+  const below = classesFor().reduce((t, c) => t + c.total - c.at, 0);
+  const results = assessmentsFor(), belowResults = results.filter(a => a.pct < BENCHMARK).length;
+  const share = (n, of) => (of ? Math.round(n / of * 100) : 0) + '%';
   // 27 Nov (2): the grouping only changes the chart, so this card always compares classes.
   const byChange = dimensions.cls.items.slice().sort((a, b) => b.change - a.change);
   const best = byChange[0], worst = byChange[byChange.length - 1];
@@ -150,6 +155,8 @@
   const second = row(worst.change >= 0 ? 'success' : 'destructive', 'Least improved class', signed(worst.change), worst.name);
   return `<aside class="od-res-summary" aria-labelledby="od-res-sum-title">
    <h2 class="od-res-summary-title" id="od-res-sum-title">${state.period === 'week' ? 'This week' : 'This month'}</h2>
+   ${row('destructive', 'Learners below benchmark', share(below, totalLearners), `${below} of ${totalLearners} learners`)}
+   ${row('destructive', 'Results below benchmark', share(belowResults, results.length), `${belowResults} of ${results.length} assessments`)}
    ${first}
    ${second}
   </aside>`;

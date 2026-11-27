@@ -29,9 +29,12 @@
   const ICON = {
     chevrons: '<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>',
     clipboard: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
-    check: '<path d="M20 6 9 17l-5-5"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'
   };
+  // Solid check circle for the current assessment: one filled shape with the tick cut out, so it stays one colour.
+  const CURRENT = '<svg class="icon icon-theme" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20Zm-1.6 14.2-4.3-4.3 1.4-1.4 2.9 2.9 6.2-6.2 1.4 1.4Z"/></svg>';
+  // Dialogs sit outside the Canvas template, so they take the page's product theme (blue for Assessments) from it.
+  const themeOf = () => [...(document.querySelector('[class*="theme-"]')?.classList || [])].find((c) => c.startsWith('theme-')) || '';
   const svg = (name, cls = 'icon') => '<svg class="' + cls + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[name] + '</svg>';
   const DEFAULT_TITLE = 'Fractions check';
   function mountSwitcher() {
@@ -57,14 +60,15 @@
   }
   function openSwitcher() {
     document.getElementById('rr-switch-dialog')?.remove();
+    // 27 Nov (2): class above the name, date below; the current assessment swaps its icon for a solid check circle.
     const rows = resultEntries().map((r) => '<li><a class="dialog-list-item" href="' + esc(r.href) + '"' + (r.current ? ' aria-current="page"' : '') + '>'
-      + svg('clipboard', 'icon icon-theme')
-      + '<span class="rr-switch-text"><span class="text-body-small font-semibold">' + esc(r.title) + '</span><span class="text-body-small text-muted-foreground">' + esc([r.classLabel, r.when].filter(Boolean).join(', ')) + '</span></span>'
+      + (r.current ? CURRENT : svg('clipboard', 'icon icon-theme'))
+      + '<span class="rr-switch-text"><span class="text-body-small text-muted-foreground">' + esc(r.classLabel) + '</span><span class="text-body-small font-semibold">' + esc(r.title) + (r.current ? '<span class="sr-only">, current assessment</span>' : '') + '</span>'
+      + (r.when ? '<span class="text-body-small text-muted-foreground">' + esc(r.when) + '</span>' : '') + '</span>'
       + (r.live ? '<span class="badge badge-info">Live session</span>' : '<span class="badge ' + (r.avg >= 50 ? 'badge-success' : 'badge-destructive') + '">' + r.avg + '%</span>')
-      + (r.current ? svg('check', 'icon rr-switch-current') + '<span class="sr-only">, current assessment</span>' : '')
       + '</a></li>').join('');
     const wrap = document.createElement('div');
-    wrap.innerHTML = '<dialog class="dialog rr-switch-dialog" id="rr-switch-dialog" aria-labelledby="rr-switch-title">'
+    wrap.innerHTML = '<dialog class="dialog rr-switch-dialog ' + themeOf() + '" id="rr-switch-dialog" aria-labelledby="rr-switch-title">'
       + '<div class="dialog-header"><h2 class="dialog-title" id="rr-switch-title">Assessments with results</h2>'
       + '<button type="button" class="btn btn-ghost btn-icon dialog-close" data-switch-close aria-label="Close">' + svg('x') + '</button></div>'
       + '<div class="dialog-body"><ul class="dialog-list" aria-label="Assessments with results">' + rows + '</ul></div></dialog>';
@@ -299,7 +303,7 @@
     let dlg = document.getElementById('rr-reset-dialog');
     if (!dlg) {
       const wrap = document.createElement('div');
-      wrap.innerHTML = '<dialog class="dialog rr-reset-dialog" id="rr-reset-dialog" aria-labelledby="rr-reset-title" aria-describedby="rr-reset-desc">'
+      wrap.innerHTML = '<dialog class="dialog rr-reset-dialog ' + themeOf() + '" id="rr-reset-dialog" aria-labelledby="rr-reset-title" aria-describedby="rr-reset-desc">'
         + '<div class="dialog-header"><h2 class="dialog-title" id="rr-reset-title">Reset this session?</h2>'
         + '<button type="button" class="btn btn-ghost btn-icon dialog-close" data-live="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>'
         + '<p class="dialog-description" id="rr-reset-desc">This clears every result in this session. Learners will need to hand in again.</p></div>'

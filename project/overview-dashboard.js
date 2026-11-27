@@ -64,11 +64,7 @@
 
   calendar.innerHTML = `
    <div class="od-week-toolbar">
-    <div class="od-date-controls" aria-label="Calendar navigation">
-     ${weekButton(-1,'left','Previous week')}
-     <button type="button" class="btn btn-ghost od-week-range" data-calendar-today aria-label="Return to the current week">${icon('calendar')}<span data-week-range aria-live="polite"></span></button>
-     ${weekButton(1,'right','Next week')}
-    </div>
+    <button type="button" class="btn btn-ghost btn-sm od-week-range" data-calendar-today aria-label="Return to the current week">${icon('calendar')}<span data-week-range aria-live="polite"></span></button>
     <div class="button-group button-group-segmented od-week-view" role="group" aria-label="Calendar view">
      <button type="button" class="btn btn-ghost btn-sm" aria-pressed="true" data-calendar-view="week">Week</button>
      <button type="button" class="btn btn-ghost btn-sm" aria-pressed="false" data-calendar-view="month">Month</button>
@@ -181,13 +177,19 @@
      </div>` : `<span class="od-month-event-title text-body-small">${esc(item.title)}</span>`}
     </a>`;
    };
+   // 27 Nov: the previous and next arrows sit at the two ends of the weekday row; each week row has an empty
+   // cell at either end so the days line up under the weekday names.
+   const spacer = '<div class="od-month-gutter" aria-hidden="true"></div>';
    return `<div class="od-month-grid" aria-label="${monthName.format(start)}">
+    <div class="od-calendar-step">${weekButton(-1,'left','Previous month')}</div>
     ${Array.from({length:workdays},(_,index)=>`<div class="od-month-weekday text-body-small" aria-hidden="true">${dayName.format(addDays(startOfGrid,index))}</div>`).join('')}
+    <div class="od-calendar-step">${weekButton(1,'right','Next month')}</div>
     ${Array.from({length:rowCount * workdays},(_,index)=>{
      const date = addDays(startOfGrid,Math.floor(index / workdays) * 7 + index % workdays);
      const inMonth = date.getMonth() === start.getMonth();
      const items = inMonth ? eventsOn(date) : [];
-     return `<section class="od-month-day${inMonth?'':' od-month-outside'}" aria-label="${longDate.format(date)}">
+     const lead = index % workdays === 0 ? spacer : '', tail = index % workdays === workdays - 1 ? spacer : '';
+     return `${lead}<section class="od-month-day${inMonth?'':' od-month-outside'}" aria-label="${longDate.format(date)}">
       <span class="od-month-date text-body-small" ${+date===+today?'aria-current="date"':''}>${date.getDate()}</span>
       ${items.slice(0,2).map(item => eventTile(item)).join('')}
       ${items.length>2?`<div class="od-month-more">
@@ -197,7 +199,7 @@
         ${items.slice(2).map(item => eventTile(item, true)).join('')}
        </div>
       </div>`:''}
-     </section>`;
+     </section>${tail}`;
     }).join('')}
    </div>`;
   }
@@ -237,10 +239,11 @@
    const markerLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
    return `<div class="od-timetable">
     <div class="od-timetable-head">
-     <div aria-hidden="true"></div>
+     <div class="od-calendar-step">${weekButton(-1,'left','Previous week')}</div>
      ${dates.map(date => `<h3 class="od-timetable-date" ${+date===+today?'aria-current="date"':''}>
       ${dayName.format(date)} ${date.getDate()}
      </h3>`).join('')}
+     <div class="od-calendar-step">${weekButton(1,'right','Next week')}</div>
     </div>
     <div class="od-timetable-body" style="--od-marker-position: ${percentOfDay(minute)}%; --od-hour-count: ${hours.length}">
      <div class="od-timetable-hours" aria-hidden="true">
@@ -260,11 +263,6 @@
    const last = addDays(first,4);
    calendar.querySelector('[data-week-range]').textContent = view==='month' ? monthName.format(first) : shortDate.format(first)+' – '+fullDate.format(last);
    calendar.querySelector('[data-calendar-today]').setAttribute('aria-label','Return to the current '+view);
-   calendar.querySelectorAll('[data-week-step]').forEach(button=>{
-    const label = (Number(button.dataset.weekStep)<0?'Previous ':'Next ')+view;
-    button.setAttribute('aria-label',label);
-    button.nextElementSibling.textContent = label;
-   });
    calendar.querySelectorAll('[data-calendar-view]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.calendarView===view)));
    const days = calendar.querySelector('[data-overview-days]');
    days.dataset.view = view;
@@ -286,6 +284,10 @@
    if (step) {
     const direction = Number(step.dataset.weekStep);
     first = view==='month' ? new Date(first.getFullYear(),first.getMonth()+direction,1) : addDays(first,7*direction);
+    // The arrows are redrawn with the grid, so focus goes back to the one that was used.
+    draw();
+    calendar.querySelector(`[data-week-step="${direction}"]`)?.focus({preventScroll:true, focusVisible:event.detail===0});
+    return;
    } else if (toggle && toggle.dataset.calendarView!==view) {
     const nextView = toggle.dataset.calendarView;
     if (nextView==='week' && first.getDay()!==1) {

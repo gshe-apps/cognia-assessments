@@ -2410,9 +2410,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-4) var(--space-8); }
 .od-overview .od-calendar { display: grid; gap: var(--space-4); min-width: 0; }
 .od-overview-layout > :is(.od-calendar, .od-desk) { grid-row: span 2; grid-template-rows: subgrid; }
-.od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-.od-week-toolbar { justify-content: flex-end; }
-.od-date-controls .btn-ghost { background-color: var(--card); }
+.od-week-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); flex-wrap: wrap; }
+/* 27 Nov: the previous and next arrows sit at the ends of the day row (week) and weekday row (month). */
+.od-calendar-step { display: flex; align-items: center; justify-content: center; }
 .od-week-view .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }
@@ -2421,12 +2421,12 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   --od-time-gutter: var(--space-12);
   --od-day-width: calc(var(--space-24) + var(--space-10));
   --od-slot-gap: var(--space-1);
-  --od-columns: var(--od-time-gutter) repeat(5, minmax(var(--od-day-width), 1fr));
+  --od-columns: var(--od-time-gutter) repeat(5, minmax(var(--od-day-width), 1fr)) var(--od-time-gutter);
   --od-hour-height: calc(var(--space-12) + var(--space-3));
   display: grid;
   grid-template-rows: auto 1fr;
   gap: var(--od-slot-gap);
-  min-inline-size: calc(var(--od-time-gutter) + 5 * (var(--od-day-width) + var(--od-slot-gap)) + 2 * var(--space-3));
+  min-inline-size: calc(2 * var(--od-time-gutter) + 5 * (var(--od-day-width) + var(--od-slot-gap)) + 2 * var(--space-3));
   padding: var(--space-3) var(--space-2);
 }
 .od-desk-progress .progress {
@@ -2449,7 +2449,8 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   font-size: var(--text-body-small);
   font-weight: var(--weight-semibold);
 }
-.od-timetable-date[aria-current="date"] { background-color: var(--secondary); color: var(--secondary-foreground); }
+/* 27 Nov: today in the product accent, and the time marker in its dark shade. */
+.od-timetable-date[aria-current="date"] { background-color: var(--accent-300); color: var(--primary-foreground); }
 .od-timetable-body { isolation: isolate; }
 .od-timetable-hours {
   display: grid;
@@ -2485,9 +2486,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timetable-slot:last-child { margin-block-end: 0; }
 .od-timetable-marker {
   position: absolute;
-  inset: var(--od-marker-position) 0 auto calc(var(--od-time-gutter) + var(--od-slot-gap));
+  inset: var(--od-marker-position) calc(var(--od-time-gutter) + var(--od-slot-gap)) auto calc(var(--od-time-gutter) + var(--od-slot-gap));
   z-index: 10;
-  border-top: 1px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--accent-400) 40%, transparent);
   pointer-events: none;
 }
 .od-timetable-marker span {
@@ -2496,7 +2497,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   transform: translate(50%, -50%);
   padding-inline: var(--space-2);
   border-radius: var(--rounded-full);
-  background-color: var(--primary);
+  background-color: var(--accent-400);
   color: var(--primary-foreground);
   font-weight: var(--weight-semibold);
 }
@@ -2506,7 +2507,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   position: absolute;
   top: var(--od-marker-position);
   z-index: 10;
-  background-color: var(--primary);
+  background-color: var(--accent-400);
   pointer-events: none;
 }
 .od-timetable-day[data-today]::before { inset-inline: 0; height: 3px; transform: translateY(-1px); }
@@ -2565,8 +2566,8 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timed-event:focus-visible .tooltip { opacity: 1; visibility: visible; }
 .od-month-grid {
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  min-inline-size:calc(5 * (var(--space-24) + var(--space-4)));
+  grid-template-columns:var(--space-12) repeat(5,minmax(0,1fr)) var(--space-12);
+  min-inline-size:calc(2 * var(--space-12) + 5 * (var(--space-24) + var(--space-4)));
   gap:var(--space-1);
   padding:var(--space-3) var(--space-2);
 }
@@ -2574,7 +2575,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-month-day { display:grid; align-content:start; gap:var(--space-1); min-block-size:var(--space-24); min-inline-size:0; padding:var(--space-2); border-radius:var(--radius); background-color:var(--card); }
 .od-month-outside { color:var(--muted-foreground); background-color:var(--background); }
 .od-month-date { justify-self:start; padding-inline:var(--space-1); font-weight:var(--weight-semibold); }
-.od-month-date[aria-current="date"] { border-radius:var(--radius); background-color:var(--secondary); color:var(--secondary-foreground); }
+.od-month-date[aria-current="date"] { border-radius:var(--radius); background-color:var(--accent-300); color:var(--primary-foreground); }
 .od-month-event { display:flex; align-items:center; gap:var(--space-1); min-inline-size:0; padding:var(--space-1) var(--space-2); border-radius:var(--radius); }
 .od-month-event .icon { inline-size:var(--space-4); block-size:var(--space-4); }
 .od-month-event-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere; line-height:var(--lh-snug); }
@@ -4900,13 +4901,14 @@ html body.item-method-reference .cap-root .btn.solid {
    sortable headers, a static table (rows open nothing) and a stack of cards on the right where one
    card is open at a time. */
 .rr-review-toolbar { flex-wrap:nowrap; }
-/* 27 Nov: search bar, filter icon and applied filter chips on the left, the learner count on the right.
-   Chips that do not fit wait behind "+X more" on a second row (results-dashboard.js). */
+/* 27 Nov: search bar and filter icon on the left, the learner count on the right. */
 .rr-review-toolbar { gap:var(--space-2); justify-content:flex-start; }
 .rr-review-toolbar > .rr-search { width:240px; flex:none; }
-.rr-filter-chips { position:relative; flex:1; min-width:0; flex-wrap:nowrap; margin-inline-start:var(--space-2); }
 .rr-review-toolbar > .rr-table-note { flex:none; margin-inline-start:auto; }
 .rr-review-panel:has(> .rr-review-toolbar) { gap:var(--space-4); }
+/* 27 Nov (2): applied filters on their own row under the search; "+X more" opens a second row of them. */
+.rr-filter-chips { position:relative; flex-wrap:nowrap; min-width:0; }
+.rr-filter-chips:empty { display:none; }
 .rr-filter-more { margin-block-start:calc(-1 * var(--space-2)); }
 .rr-filter-more[hidden] { display:none; }
 .rr-review-panel :is(th, td).rr-c { text-align:center; }
@@ -6805,7 +6807,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
    behaviour and the panel's controls stay together. On narrow screens it stays in the panel. */
 :where(:root:has(.od-overview)) .od-overview-panel { position: relative; }
 @media (min-width: 640px) {
-  :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-view) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
+  :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-toolbar) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
 }
 :where(:root:has(.od-overview)) .od-results :is(h2, p) { margin: 0; }
 :where(:root:has(.od-overview)) .od-res-snap { display: grid; grid-template-columns: minmax(0, 1fr) 364px; gap: var(--space-8); align-items: start; }
@@ -6912,8 +6914,8 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-name { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
 :where(:root:has(.od-overview)) .od-res-tip { position: absolute; z-index: 30; left: 50%; bottom: calc(50% + var(--space-2)); display: grid; grid-template-columns: auto auto; column-gap: var(--space-6); row-gap: var(--space-1); width: max-content; max-width: 280px; transform: translateX(-50%); text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--duration), visibility var(--duration); }
 :where(:root:has(.od-overview)) .od-res-vfill:hover + .od-res-tip { opacity: 1; visibility: visible; }
-/* 27 Nov: tooltip head (trend icon and name) across both columns; values on the right. */
-:where(:root:has(.od-overview)) .od-res-tip-head { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-2); margin-block-end: var(--space-1); }
+/* 27 Nov: tooltip head (name, trend icon far right) across both columns; values on the right. */
+:where(:root:has(.od-overview)) .od-res-tip-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-block-end: var(--space-1); }
 :where(:root:has(.od-overview)) .od-res-tip-value { text-align: right; font-variant-numeric: tabular-nums; }
 :where(:root:has(.od-overview)) .od-res-col:last-child .od-res-tip { left: auto; right: 0; transform: none; }
 :where(:root:has(.od-overview)) .od-res-line + .od-res-col .od-res-tip { left: 0; transform: none; }

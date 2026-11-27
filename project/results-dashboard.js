@@ -1,9 +1,9 @@
 /* Results (CAP-T13), 27 Nov: the learner table's search bar, filter icon and applied filter chips, in one row
    with the learner count on the right. Works like Add your items (item-filters.js): the filter icon opens a
    Filters modal (filters on the left, the chosen filter's values with learner counts on the right), the icon
-   shows a red dot while filters are applied, and each applied filter is a chip. When the chips no longer fit
-   beside the count, the rest move behind a "+X more" button that opens a second row, closed again with
-   "Show less". Within a filter any ticked value matches; across filters every filter must match.
+   shows a red dot while filters are applied, and each applied filter is a chip on its own row under the
+   search (27 Nov). When the chips no longer fit that row, the rest move behind a "+X more" button that opens
+   a second row, closed again with "Show less". Within a filter any ticked value matches; across filters every filter must match.
    live-results.js draws the rows (data-status, data-score, data-missed) and re-runs this after each redraw. */
 (() => {
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -53,7 +53,7 @@
     drawChips();
   }
 
-  // Applied filters as chips beside the count. The chips that do not fit move to a second row behind "+X more".
+  // Applied filters as chips under the search. The chips that do not fit move to a second row behind "+X more".
   const chip = ({ key, value }) => `<span class="chip">${esc(label(key, value))}<button type="button" class="chip-remove" data-remove="${esc(key)}" data-value="${esc(value)}" aria-label="Remove filter: ${esc(label(key, value))}">${icon(X)}</button></span>`;
   const clearAll = '<button type="button" class="btn btn-ghost btn-sm" data-clear-filters>Clear all</button>';
   let drawn = '';

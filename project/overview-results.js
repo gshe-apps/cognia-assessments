@@ -112,11 +112,11 @@
   const versus = pct => pct > BENCHMARK ? `Above benchmark by ${pct - BENCHMARK}%` : pct < BENCHMARK ? `Below benchmark by ${BENCHMARK - pct}%` : 'At benchmark';
   const bar = item => {
    const side = item.pct > BENCHMARK ? 'is-above' : item.pct < BENCHMARK ? 'is-below' : 'is-at';
-   // 27 Nov: a trend icon in the status colour beside the name, then label and value rows, the values semibold on the right.
+   // 27 Nov: the name with a trend icon in the status colour on the far right, then label and value rows, the values semibold on the right.
    const up = item.pct >= BENCHMARK;
    const gap = item.pct > BENCHMARK ? ['Above benchmark by', (item.pct - BENCHMARK) + '%'] : item.pct < BENCHMARK ? ['Below benchmark by', (BENCHMARK - item.pct) + '%'] : ['At benchmark', BENCHMARK + '%'];
    const rows = [gap, ...(item.below == null ? [] : [['Learners below benchmark', item.below + '%']])];
-   const tip = `<span class="chart-tooltip od-res-tip" aria-hidden="true"><span class="od-res-tip-head font-semibold">${icon(up ? 'trendUp' : 'trendDown', up ? 'icon-success' : 'icon-destructive')}${esc(item.name)}</span>${rows.map(([k, v]) => `<span>${k}</span><span class="od-res-tip-value font-semibold">${v}</span>`).join('')}</span>`;
+   const tip = `<span class="chart-tooltip od-res-tip" aria-hidden="true"><span class="od-res-tip-head font-semibold">${esc(item.name)}${icon(up ? 'trendUp' : 'trendDown', up ? 'icon-success' : 'icon-destructive')}</span>${rows.map(([k, v]) => `<span>${k}</span><span class="od-res-tip-value font-semibold">${v}</span>`).join('')}</span>`;
    const label = `${esc(item.name)}: ${versus(item.pct)}${item.below == null ? '' : `, ${item.below}% of learners below benchmark`}`;
    return `<div class="od-res-col ${side}" role="listitem">
     <span class="od-res-vbar ${side}" style="--size:${(Math.abs(item.pct - BENCHMARK) / range).toFixed(3)}"><span class="od-res-vfill"></span>${tip}<span class="sr-only">${label}</span></span>

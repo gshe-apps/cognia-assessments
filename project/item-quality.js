@@ -616,6 +616,8 @@
    </section>` : ''}`;
   document.body.append(dialog);
   const show = name => {
+   // 27 Nov: the standard's details keep the item preview's size, so the dialog does not jump.
+   if (name !== 'item') { dialog.style.setProperty('--ip-width', dialog.offsetWidth + 'px'); dialog.style.setProperty('--ip-height', dialog.offsetHeight + 'px'); }
    dialog.querySelectorAll('[data-ip-view]').forEach(v => { v.hidden = v.dataset.ipView !== name; });
    dialog.setAttribute('aria-labelledby', name === 'item' ? 'uc-ip-title' : 'uc-ip-standard-title');
    (name === 'item' ? dialog.querySelector('[data-ip-standard]') : dialog.querySelector('#uc-ip-standard-title'))?.focus();

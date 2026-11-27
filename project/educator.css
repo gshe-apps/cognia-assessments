@@ -5600,7 +5600,7 @@ html body .cap-root .workspace > main.main > .tf-page.rj-details { max-width: 13
 .af-item-number{flex:0 0 24px;height:24px;display:grid;place-items:center;border-radius:var(--rounded-full);background:var(--accent-100);font-size:var(--text-body-base);line-height:1;}
 .af-item-body{flex:1;min-width:0;display:flex;flex-direction:column;}
 .af-item-meta{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);color:var(--muted-foreground);}
-.af-item-body p{font-size:var(--text-body-base);line-height:24px;}
+.af-item-body p:not([class]){font-size:var(--text-body-base);line-height:24px;}
 .af-more{align-self:center;}
 .af-page .af-more svg{width:16px;height:16px;}
 .af-more[aria-expanded="true"] svg{transform:rotate(180deg);}
@@ -5782,6 +5782,8 @@ svg:not(.text-muted-foreground):is(:has(> path[d="M12 16v-4"]), :has(> line[x1="
 .uc-page:not(.uc-locked) .question-card .qbottom { gap:var(--space-2); align-items:center; }
 /* Item preview dialog */
 .uc-item-preview.dialog { max-width:640px; }
+/* The standard's details open at the item preview's size (item-quality.js sets both). */
+.uc-item-preview.dialog:has([data-ip-view="standard"]:not([hidden])) { inline-size:var(--ip-width, auto); min-block-size:var(--ip-height, auto); }
 .uc-item-preview.dialog,
 .cf-dialog.dialog[aria-label="Item preview"] { max-height: calc(100dvh - var(--space-8)); }
 @media (prefers-reduced-motion: no-preference) {
@@ -6405,9 +6407,12 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 .rj-details .ad-af-items { margin: 0; }
 .rj-details .ad-af-items .af-item { align-items: flex-start; padding-inline: 0; }
 .rj-details .ad-af-items .af-item-body p { margin: 0; }
-/* 27 Nov: the item number sits above the item type (points on the right of that row), with more room before the question. */
-.rj-details .ad-af-items .af-item-meta { margin-block-end: var(--space-1); }
-.rj-details .ad-af-items .af-item-type { margin-block-end: var(--space-2); }
+/* 27 Nov: the item number on its own row, points on the right of that row. */
+.rj-details .ad-af-items .af-item-meta { margin-block-end: var(--space-2); }
+/* 27 Nov (2): the question (14px semibold) then its type; a light line between items. */
+.rj-details .ad-af-items .af-item-type { margin-block-start: var(--space-1); }
+.rj-details .ad-af-items .af-item { padding-block: var(--space-3); border-bottom: 1px solid var(--border); }
+.rj-details .ad-af-items .af-item:last-child { border-bottom: 0; }
 .lp-inline .lp-top .btn-icon svg { inline-size: 16px; block-size: 16px; }
 .lp-inline .lp-card { overflow: hidden; }
 .lp-inline .lp-body { padding-block-end: var(--space-4); overflow: hidden; }

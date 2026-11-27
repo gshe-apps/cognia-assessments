@@ -11,6 +11,7 @@
   const choice = window.capPrototypeOptions.register({
     id: 'assign',
     title: 'Assign learners step',
+    default: 'b',   // 27 Nov: Option B opens unless the reviewer picks Option A
     options: [
       { key: 'a', name: 'Option A: Learners first', description: 'Choose classes and learners, then put each learner in a session.' },
       { key: 'b', name: 'Option B: Session first', description: 'Pick a test, set up its sessions, then tick the learners who take each one.' },

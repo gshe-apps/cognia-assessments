@@ -8,7 +8,8 @@
        options: [ { key: 'a', name: 'Option A: Learners first', description: '...' },
                   { key: 'b', name: 'Option B: Session first', description: '...' } ]
      });
-   The choice comes from ?option=<key> in the link, then from this browser tab, then the first option.
+   The choice comes from ?option=<key> in the link, then from this browser tab, then the group's
+   default (default: '<key>'), then the first option.
    Choosing another option reloads the screen with it. Remove the losing option and its
    registration as soon as the decision is made. */
 (() => {
@@ -22,7 +23,7 @@
     if (keys.includes(fromLink)) return fromLink;
     let stored = null;
     try { stored = sessionStorage.getItem(storeKey(group.id)); } catch {}
-    return keys.includes(stored) ? stored : keys[0];
+    return keys.includes(stored) ? stored : keys.includes(group.default) ? group.default : keys[0];
   };
   const choose = (group, key) => {
     try { sessionStorage.setItem(storeKey(group.id), key); } catch {}

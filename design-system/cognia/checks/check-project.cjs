@@ -557,8 +557,10 @@ async function renderedChecks(R) {
         for (let p = box.parentElement, n = 0; p && n < 4; p = p.parentElement, n++) {
           const cs = getComputedStyle(p);
           if (!/flex|grid/.test(cs.display) || (/flex/.test(cs.display) && /column/.test(cs.flexDirection))) continue;
-          // Side by side only: a button inside a search field (clear, filter) is part of that field.
-          const mates = ctls.filter(o => o !== c && p.contains(o)).map(boxFor).filter(o => { const ob = o.getBoundingClientRect(); return !box.contains(o) && !o.contains(box) && (ob.right <= b.left + 1 || ob.left >= b.right - 1) && Math.abs(ob.top + ob.height / 2 - mid) < Math.min(ob.height, b.height) / 2; });
+          // Side by side only: a button inside a search field (clear, filter) is part of that field. Controls on
+          // different surfaces (one inside a card, the other on the page or in another card) are not one toolbar.
+          const surface = (e) => e.closest('.card,dialog');
+          const mates = ctls.filter(o => o !== c && p.contains(o)).map(boxFor).filter(o => { const ob = o.getBoundingClientRect(); return !box.contains(o) && !o.contains(box) && surface(o) === surface(box) && (ob.right <= b.left + 1 || ob.left >= b.right - 1) && Math.abs(ob.top + ob.height / 2 - mid) < Math.min(ob.height, b.height) / 2; });
           if (mates.length) { if (!groups.has(p)) groups.set(p, new Set()); groups.get(p).add(box); mates.forEach(m => groups.get(p).add(m)); break; }
         }
       }

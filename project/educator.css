@@ -6877,8 +6877,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-bench-line { right: var(--avg-space); }
 :where(:root:has(.od-overview)) .od-res-avg-line { left: calc(100% - var(--avg-space) + var(--space-2)); right: auto; width: var(--space-6); }
 :where(:root:has(.od-overview)) .od-res-col { display: grid; justify-items: center; gap: var(--space-2); min-width: 0; }
-:where(:root:has(.od-overview)) .od-res-vbar { position: relative; display: block; width: 100%; height: var(--plot); padding: 0; border: 0; border-radius: var(--radius); background: transparent; cursor: pointer; justify-content: center; padding-inline: var(--space-4); transition: background-color var(--duration); }
-:where(:root:has(.od-overview)) span.od-res-vbar { cursor: default; }
+:where(:root:has(.od-overview)) .od-res-vbar { position: relative; display: block; width: 100%; height: var(--plot); padding: 0; border: 0; border-radius: var(--radius); background: transparent; justify-content: center; padding-inline: var(--space-4); }
 /* 25 Nov (2): bars start at the benchmark line (the middle of the plot) and go up when above it, down when below. */
 :where(:root:has(.od-overview)) .od-res-vfill { position: absolute; left: 0; right: 0; margin-inline: auto; width: calc(100% - 2 * var(--space-4)); max-width: calc(2 * var(--space-20)); height: calc(var(--size) * 50%); border-radius: 0; background-color: var(--accent-300); }
 :where(:root:has(.od-overview)) .od-res-vbar.is-above .od-res-vfill { bottom: 50%; transform-origin: bottom; }
@@ -6890,9 +6889,10 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-col .od-res-name { position: absolute; left: 0; right: 0; top: calc(var(--plot) / 2 + var(--space-2)); pointer-events: none; }
 :where(:root:has(.od-overview)) .od-res-col.is-below .od-res-name { transform: translateY(calc(-100% - 2 * var(--space-2))); }
 /* Like eleot: the bar keeps its colour; a grey band behind the column shows hover (light) and selected (darker). */
-:where(:root:has(.od-overview)) .od-res-vbar:hover .od-res-vfill { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
-:where(:root:has(.od-overview)) .od-res-vbar:hover { background-color: var(--hover-overlay); }
-:where(:root:has(.od-overview)) .od-res-vbar[aria-pressed="true"] { background-color: color-mix(in srgb, var(--foreground) 15%, var(--background)); }
+/* 27 Nov: bars no longer filter. Hover sits on the bar itself: it darkens and shows its tooltip. The bar shares the
+   benchmark line's layer and comes after it, so short bars near the benchmark can still be hovered. */
+:where(:root:has(.od-overview)) .od-res-vfill { z-index: 10; }
+:where(:root:has(.od-overview)) .od-res-vfill:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 /* 25 Nov: bars grow out from the benchmark line (transform only, 200ms, per motion.md). */
 @keyframes od-res-grow { from { transform: scaleY(0); } }
 :where(:root:has(.od-overview)) .od-res-vchart.is-growing .od-res-vfill { animation: od-res-grow var(--duration) ease-out; }
@@ -6900,10 +6900,9 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
   :where(:root:has(.od-overview)) .od-res-vchart.is-growing .od-res-vfill { animation: none; }
 }
 :where(:root:has(.od-overview)) .od-res-col:has([aria-pressed="true"]) .od-res-name { font-weight: 600; }
-:where(:root:has(.od-overview)) .od-res-vbar:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 :where(:root:has(.od-overview)) .od-res-name { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
 :where(:root:has(.od-overview)) .od-res-tip { position: absolute; z-index: 30; left: 50%; bottom: calc(50% + var(--space-2)); display: grid; gap: var(--space-1); width: max-content; max-width: 200px; transform: translateX(-50%); text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--duration), visibility var(--duration); }
-:where(:root:has(.od-overview)) .od-res-vbar:is(:hover, :focus-visible) .od-res-tip { opacity: 1; visibility: visible; }
+:where(:root:has(.od-overview)) .od-res-vfill:hover + .od-res-tip { opacity: 1; visibility: visible; }
 :where(:root:has(.od-overview)) .od-res-col:last-child .od-res-tip { left: auto; right: 0; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   :where(:root:has(.od-overview)) :is(.od-res-vbar, .od-res-tip) { transition: none; }

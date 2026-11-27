@@ -100,7 +100,7 @@
  const completionFor = () => state.period === 'week' ? trend[trend.length - 1].completed : Math.round(trend.reduce((t, p) => t + p.completed, 0) / trend.length);
 
  const valueClass = pct => pct >= BENCHMARK ? 'text-success-value' : 'text-destructive-value';
- const state = {dim:'cls', filter:null, period:'week'};
+ const state = {dim:'cls', period:'week'};
  let dimensions = dimensionsFor();
 
  function barChart() {
@@ -113,12 +113,11 @@
   const range = Math.max(10, Math.ceil(Math.max(...dim.items.map(i => Math.abs(i.pct - BENCHMARK)), Math.abs(avg - BENCHMARK)) / 10) * 10);
   const versus = pct => pct > BENCHMARK ? `Above benchmark by ${pct - BENCHMARK}%` : pct < BENCHMARK ? `Below benchmark by ${BENCHMARK - pct}%` : 'At benchmark';
   const bar = item => {
-   const on = state.filter && state.filter.dim === state.dim && state.filter.key === item.key;
    const side = item.pct > BENCHMARK ? 'is-above' : item.pct < BENCHMARK ? 'is-below' : 'is-at';
    const tip = `<span class="chart-tooltip od-res-tip" aria-hidden="true"><span class="font-semibold">${esc(item.name)}</span><span>${versus(item.pct)}</span><span>${esc(item.sub)}</span></span>`;
    const label = `${esc(item.name)}: ${versus(item.pct)}, ${esc(item.sub)}`;
    return `<div class="od-res-col ${side}" role="listitem">
-    <button type="button" class="od-res-vbar ${side}" aria-pressed="${on}" data-card="${esc(item.key)}" aria-label="${label}. ${on ? 'Selected, select again to clear the filter' : 'Filter the results below'}" style="--size:${(Math.abs(item.pct - BENCHMARK) / range).toFixed(3)}"><span class="od-res-vfill"></span>${tip}</button>
+    <span class="od-res-vbar ${side}" style="--size:${(Math.abs(item.pct - BENCHMARK) / range).toFixed(3)}"><span class="od-res-vfill"></span>${tip}<span class="sr-only">${label}</span></span>
     <span class="od-res-name text-body-small">${esc(item.name)}</span>
    </div>`;
   };
@@ -169,7 +168,6 @@
 
  // 26 Nov: rows are labelled by the current grouping (class, grade or subject).
  const groupLabel = row => state.dim === 'grade' ? 'Grade ' + row.grade : state.dim === 'subject' ? row.subject : row.cls;
- const matches = row => !state.filter || String(row[state.filter.dim]) === String(state.filter.key);
  const initials = name => name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
  const empty = (title, text) => `<div class="empty-state"><span class="empty-media">${icon('search')}</span><p class="empty-title">${title}</p><p>${text}</p></div>`;
 
@@ -185,8 +183,8 @@
  const viewAll = (count, max, label) => count > max ? `<button type="button" class="btn btn-ghost btn-sm" aria-label="${label}">View all</button>` : '';
 
  function assessmentBubbles() {
-  const list = assessmentsFor().filter(matches).sort((a, b) => a.pct - b.pct).slice(0, MAX_RESULTS);
-  if (!list.length) return empty('Nothing to show', 'No assessment results match this filter.');
+  const list = assessmentsFor().sort((a, b) => a.pct - b.pct).slice(0, MAX_RESULTS);
+  if (!list.length) return empty('Nothing to show', 'No assessment results for this period.');
   const radius = pct => Math.min(72, Math.max(12, 50 * Math.sqrt(pct / BENCHMARK))).toFixed(1);
   return `<ul class="od-res-bubbles" role="list">${list.map(a => {
    const above = a.pct >= BENCHMARK;
@@ -201,7 +199,7 @@
  // 25 Nov: compact profile cards, photo where there is one, initials otherwise.
  const photos = {'Mason Reed':'learner-jack-alfredo.png', 'Zoe Martinez':'learner-maria-gonzalez.png', 'Ava Johnson':'learner-kathrine-benedict.png'};
  function learnerCards() {
-  const list = learnersFor().filter(matches).slice(0, MAX_LEARNERS);
+  const list = learnersFor().slice(0, MAX_LEARNERS);
   if (!list.length) return empty('Nothing to show', 'No learners in this group are below benchmark.');
   // 25 Nov (2): the plugin's divided list (Item, item-group-divided): no surface, a light line between learners.
   return `<ul class="item-group item-group-divided od-res-learners" role="list">${list.map(l => `<li class="item od-res-learner">
@@ -213,7 +211,6 @@
 
  function render(panel) {
   dimensions = dimensionsFor();
-  if (state.filter && !dimensions[state.filter.dim].items.some(i => i.key === state.filter.key)) state.filter = null;
   panel.innerHTML = `
   <div class="button-group button-group-segmented od-res-period" role="group" aria-label="Results period">
    <button type="button" class="btn btn-ghost btn-sm" aria-pressed="${state.period === 'week'}" data-period="week">This week</button>
@@ -231,7 +228,7 @@
     ${barChart()}
    </section>
    <section class="od-res-section" id="od-res-assessments" aria-labelledby="od-res-assess-title" tabindex="-1">
-   <div class="od-res-list-head od-res-bubble-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results${count(assessmentsFor().filter(matches).length)}</h2><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().filter(matches).length, MAX_RESULTS, 'View all assessment results')}</div>
+   <div class="od-res-list-head od-res-bubble-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-assess-title">Assessment results${count(assessmentsFor().length)}</h2><p class="od-res-bubble-key text-body-small"><span>Benchmark</span><svg viewBox="0 0 56 8" aria-hidden="true"><line x1="0" y1="4" x2="56" y2="4"></line></svg><span>${BENCHMARK}%</span></p>${viewAll(assessmentsFor().length, MAX_RESULTS, 'View all assessment results')}</div>
    ${assessmentBubbles()}
   </section>
   </div>
@@ -239,7 +236,7 @@
    <p class="od-hero-status od-res-status"><span class="text-body-small font-semibold text-foreground">${completionFor()}% learner completion</span><span class="badge ${overallFor() >= BENCHMARK ? 'badge-success' : 'badge-destructive'}">${overallFor() >= BENCHMARK ? 'Above' : 'Below'} benchmark at ${overallFor()}%</span></p>
    ${summary()}
   <section class="od-res-section" id="od-res-learners" aria-labelledby="od-res-learn-title" tabindex="-1">
-   <div class="od-res-list-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark${count(learnersFor().filter(matches).length)}</h2>${viewAll(learnersFor().filter(matches).length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
+   <div class="od-res-list-head"><h2 class="text-body-small font-semibold od-res-title" id="od-res-learn-title">Learners below benchmark${count(learnersFor().length)}</h2>${viewAll(learnersFor().length, MAX_LEARNERS, 'View all learners below benchmark')}</div>
    ${learnerCards()}
   </section>
 
@@ -294,7 +291,7 @@
    if (focusSelector) panel.querySelector(focusSelector)?.focus({preventScroll:true, focusVisible:keyboard});
   };
   // 25 Nov: the bars grow up from the axis each time Results overview opens and when the grouping changes
-  // (Class, Grade, Subject). Not on filter clicks, so picking a bar does not replay it.
+  // (Class, Grade, Subject).
   const grow = () => {
    const chart = panel.querySelector('.od-res-vchart');
    if (!chart) return;
@@ -310,17 +307,10 @@
    if (line) line.style.setProperty('--tip-x', (event.clientX - line.getBoundingClientRect().left) + 'px');
   });
   panel.addEventListener('click', event => {
-   const card = event.target.closest('[data-card]');
    const period = event.target.closest('[data-period]');
    const dim = event.target.closest('[data-dim]');
    if (dim) { if (dim.dataset.dim !== state.dim) { state.dim = dim.dataset.dim; rerender('#od-res-group'); grow(); } return; }
-   if (card) {
-    const key = card.dataset.card;
-    const on = state.filter && state.filter.dim === state.dim && state.filter.key === key;
-    state.filter = on ? null : {dim:state.dim, key};
-    rerender(`[data-card="${CSS.escape(key)}"]`);
-   }
-   else if (period && period.dataset.period !== state.period) {
+   if (period && period.dataset.period !== state.period) {
     state.period = period.dataset.period;
     rerender(`[data-period="${state.period}"]`);
    }

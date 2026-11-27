@@ -2411,7 +2411,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview .od-calendar { display: grid; gap: var(--space-4); min-width: 0; }
 .od-overview-layout > :is(.od-calendar, .od-desk) { grid-row: span 2; grid-template-rows: subgrid; }
 .od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
-.od-week-toolbar { justify-content: flex-end; }
+/* 27 Nov: the date controls are centred over the calendar and sit close to the day row. */
+.od-week-toolbar { justify-content: center; }
+.od-overview .od-calendar { row-gap: 0; }
 .od-week-view .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }

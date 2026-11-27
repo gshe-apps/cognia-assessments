@@ -145,7 +145,7 @@
       page.querySelector('.rr-kicker').textContent = event.type + ' assessment for ' + event.classLabel + ', sample results';
       page.querySelector('[data-stack="live"]')?.remove();
       const date = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(calendar.date(event));
-      const details = [['Class',event.classLabel],['Subject',calendar.subject],['Session date',date],
+      const details = [['Class',event.classLabel],['Subject',event.subject || calendar.subject],['Session date',date],
         ['Learners',total],['Number of items',MAX_Q.length],['Total points',MAX_Q.reduce((a,b)=>a+b,0)]];
       page.querySelector('.rr-details').innerHTML = '<dl>' + details.map(([label,value]) =>
         '<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>').join('') + '</dl>';
@@ -163,7 +163,8 @@
     const badge = page.querySelector('[data-live-avg]');
     if (badge) {
       badge.textContent = avg === null ? 'No scores yet' : avg + '% Average score';
-      badge.className = 'badge ' + (avg === null ? 'badge-secondary' : 'badge-success');
+      // 27 Nov: red below the 50% benchmark, as on Overview, Results overview.
+      badge.className = 'badge ' + (avg === null ? 'badge-secondary' : avg >= 50 ? 'badge-success' : 'badge-destructive');
     }
     const count = page.querySelector('[data-live-submitted]');
     if (count) {

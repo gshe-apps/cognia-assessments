@@ -48,7 +48,7 @@
  const addDays = (date, count) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + count);
  const today = new Date(2026, 10, 18); // Reference date for the prototype scenario.
  const weekStart = addDays(today, -((today.getDay() + 6) % 7));
- const date = event => addDays(weekStart, event.day);
+ const date = event => event.date || addDays(weekStart, event.day);
  const subject = 'Mathematics';
  const assessment = event => {
   const page = 'CAP-T05-Questions.dc.html';
@@ -56,6 +56,56 @@
    state:{chosen:event.questions.map(q=>q.id),written:Object.fromEntries(event.questions.map(q=>[q.id,q])),edits:{}}};
   return {title:event.title,active:test.id,tests:[test],origin:'builder'};
  };
+ /* 27 Nov: assessment results shown on Overview, Results overview. Each opens Results with its own sample scores. */
+ const overviewResults = [
+  {title:'Fractions on a number line', cls:'Grade 6A', skill:'Fractions', date:'2 Nov', pct:29},
+  {title:'Ratios and rates', cls:'Grade 6B', skill:'Ratios', date:'29 Oct', pct:36},
+  {title:'Equivalent fractions', cls:'Grade 5B', skill:'Fractions', date:'26 Oct', pct:41},
+  {title:'Equations quiz', cls:'Grade 7B', skill:'Algebra', date:'22 Oct', pct:41},
+  {title:'Ecosystems check', cls:'Grade 6B', skill:'Life science', date:'20 Oct', pct:45},
+  {title:'Percent and ratio review', cls:'Grade 7A', skill:'Ratios', date:'30 Oct', pct:50},
+  {title:'Data and graphs', cls:'Grade 6A', skill:'Data', date:'15 Oct', pct:54},
+  {title:'Forces and motion', cls:'Grade 7A', skill:'Physical science', date:'28 Oct', pct:56},
+  {title:'Geometry basics', cls:'Grade 5B', skill:'Geometry', date:'13 Oct', pct:58},
+  {title:'Weather and climate', cls:'Grade 5A', skill:'Earth science', date:'8 Oct', pct:62},
+  {title:'Simplifying expressions', cls:'Grade 5A', skill:'Algebra', date:'6 Oct', pct:67}
+ ];
+ const sciences = ['Life science','Physical science','Earth science'];
+ const classSizes = {'Grade 5A':24, 'Grade 5B':24, 'Grade 6A':24, 'Grade 6B':22, 'Grade 7A':24, 'Grade 7B':22};
+ // The learners Overview lists below benchmark come first in their class, then the rest of the roster.
+ const named = {'Grade 6A':['Mason Reed','Lily Chen','Ava Johnson','Sofia Rossi'], 'Grade 6B':['Noah Patel','Zoe Martinez','Oliver Hughes'],
+  'Grade 7B':['Ethan Wright','Isla Nguyen'], 'Grade 7A':['Mia Thompson'], 'Grade 5B':['Liam O’Brien'], 'Grade 5A':['Jack Wilson']};
+ const roster = ['Aiden Brooks','Amara Singh','Ben Clarke','Chloe Martin','Daniel Kim','Emma Lewis','Finn Walker','Grace Lee','Harper Scott','Isaac Turner',
+  'Jade Morgan','Kai Robinson','Leo Adams','Maya Patel','Nina Lopez','Owen Hall','Priya Shah','Quinn Baker','Ruby Evans','Sam Carter',
+  'Tara Young','Uma Reddy','Victor Diaz','Willow Green','Xavier Bell','Yara Hassan'];
+ const slug = text => String(text).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+ const months = {Oct:9, Nov:10};
+ const resultEvent = result => {
+  const id = 'result-' + slug(result.title) + '-' + slug(result.cls);
+  const size = classSizes[result.cls] || 24;
+  const names = [...(named[result.cls] || []), ...roster].slice(0, size);
+  // Five items worth two marks each. Scores spread around the result and add up to it exactly.
+  const items = 5, max = items * 2;
+  const spread = [-4, 4, -2, 2, -3, 3, -1, 1, 0, 0];
+  const scores = names.map((name, i) => Math.max(0, Math.min(max, Math.round(result.pct / 10 + spread[i % spread.length]))));
+  // The learners Overview names score lowest.
+  const low = (named[result.cls] || []).length;
+  for (let i = 0; i < low; i++) scores[i] = Math.min(scores[i], Math.max(0, Math.floor(result.pct / 10) - 1));
+  let gap = Math.round(result.pct * size / 10) - scores.reduce((t, n) => t + n, 0);
+  for (let i = size - 1; gap !== 0 && i >= low; i = i > low ? i - 1 : size - 1) {
+   const step = Math.sign(gap);
+   if (scores[i] + step >= 0 && scores[i] + step <= max) { scores[i] += step; gap -= step; }
+  }
+  // Earlier items are easier: marks fill items in order, one mark at a time.
+  const byItem = total => { const marks = Array(items).fill(0); for (let n = 0; n < total; n++) marks[n % items]++; return marks; };
+  const [day, month] = result.date.split(' ');
+  return {id, title:result.title, classLabel:result.cls, grade:result.cls.match(/\d/)[0], type:'Formative', status:'check',
+   subject:sciences.includes(result.skill) ? 'Science' : 'Mathematics', date:new Date(2026, months[month], Number(day)),
+   questions:Array.from({length:items}, (_, n) => question(id + '-' + (n + 1), result.skill + ', item ' + (n + 1), ['A','B','C','D'], 0, 2)),
+   scores:names.map((name, i) => [name, byItem(scores[i])])};
+ };
+ const overviewEvents = overviewResults.map(resultEvent);
+ overviewResults.forEach((result, i) => { result.id = overviewEvents[i].id; });
  const selected = new URLSearchParams(location.search).get('calendarEvent');
  const results = {
   entries: events.filter(event => event.status === 'check'),
@@ -88,5 +138,6 @@
    localStorage.setItem(seedKey, new Date().toISOString());
   }
  } catch {}
- window.capOverviewCalendar = {events,date,subject,assessment,today,weekStart,addDays,results,event:events.find(event=>event.id===selected)};
+ window.capOverviewCalendar = {events,date,subject,assessment,today,weekStart,addDays,results,overviewResults,
+  event:events.find(event=>event.id===selected) || overviewEvents.find(event=>event.id===selected)};
 })();

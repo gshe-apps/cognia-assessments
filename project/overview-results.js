@@ -37,19 +37,8 @@
  ];
  const subjectOf = {Fractions:'Mathematics', Ratios:'Mathematics', Algebra:'Mathematics', Geometry:'Mathematics', Data:'Mathematics',
   'Life science':'Science', 'Physical science':'Science', 'Earth science':'Science'};
- const assessments = [
-  {title:'Fractions on a number line', cls:'Grade 6A', skill:'Fractions', date:'2 Nov', pct:29},
-  {title:'Ratios and rates', cls:'Grade 6B', skill:'Ratios', date:'29 Oct', pct:36},
-  {title:'Equivalent fractions', cls:'Grade 5B', skill:'Fractions', date:'26 Oct', pct:41},
-  {title:'Equations quiz', cls:'Grade 7B', skill:'Algebra', date:'22 Oct', pct:41},
-  {title:'Ecosystems check', cls:'Grade 6B', skill:'Life science', date:'20 Oct', pct:45},
-  {title:'Percent and ratio review', cls:'Grade 7A', skill:'Ratios', date:'30 Oct', pct:50},
-  {title:'Data and graphs', cls:'Grade 6A', skill:'Data', date:'15 Oct', pct:54},
-  {title:'Forces and motion', cls:'Grade 7A', skill:'Physical science', date:'28 Oct', pct:56},
-  {title:'Geometry basics', cls:'Grade 5B', skill:'Geometry', date:'13 Oct', pct:58},
-  {title:'Weather and climate', cls:'Grade 5A', skill:'Earth science', date:'8 Oct', pct:62},
-  {title:'Simplifying expressions', cls:'Grade 5A', skill:'Algebra', date:'6 Oct', pct:67}
- ].map(a => ({...a, grade:a.cls.match(/\d/)[0], subject:subjectOf[a.skill]}));
+ // 27 Nov: the results live in overview-calendar-data.js, so Results can open each one with its own scores.
+ const assessments = (window.capOverviewCalendar?.overviewResults || []).map(a => ({...a, grade:a.cls.match(/\d/)[0], subject:subjectOf[a.skill]}));
  const learners = [
   ['Mason Reed','Grade 6A',31,'4 of 4','Fractions'],
   ['Lily Chen','Grade 6A',34,'3 of 4','Fractions'],
@@ -188,7 +177,7 @@
   const radius = pct => Math.min(72, Math.max(12, 50 * Math.sqrt(pct / BENCHMARK))).toFixed(1);
   return `<ul class="od-res-bubbles" role="list">${list.map(a => {
    const above = a.pct >= BENCHMARK;
-   return `<li><a class="od-res-bubble" href="CAP-T13-Results.dc.html" aria-label="${esc(a.title)}, ${esc(a.cls)}, ${esc(a.date)}: ${a.pct}% at or above benchmark, ${above ? 'at or above' : 'below'} the ${BENCHMARK}% benchmark. View results">
+   return `<li><a class="od-res-bubble" href="${esc(window.capOverviewCalendar.results.href(a))}" aria-label="${esc(a.title)}, ${esc(a.cls)}, ${esc(a.date)}: ${a.pct}% at or above benchmark, ${above ? 'at or above' : 'below'} the ${BENCHMARK}% benchmark. View results">
     <svg class="od-res-bubble-svg" viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="${radius(a.pct)}" class="od-res-bubble-fill ${above ? 'is-above' : 'is-below'}"></circle><circle cx="80" cy="80" r="50" class="od-res-bubble-ring"></circle><text x="80" y="89" text-anchor="middle" class="od-res-bubble-value">${a.pct}%</text></svg>
     <span class="text-body-small font-semibold">${esc(a.title)}</span>
     <span class="text-body-small">${esc(groupLabel(a))}</span>

@@ -2410,9 +2410,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview-layout { display: grid; grid-template-columns: minmax(0,2.65fr) minmax(0,1fr); gap: var(--space-4) var(--space-8); }
 .od-overview .od-calendar { display: grid; gap: var(--space-4); min-width: 0; }
 .od-overview-layout > :is(.od-calendar, .od-desk) { grid-row: span 2; grid-template-rows: subgrid; }
-.od-week-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); flex-wrap: wrap; }
-/* 27 Nov: the previous and next arrows sit at the ends of the day row (week) and weekday row (month). */
-.od-calendar-step { display: flex; align-items: center; justify-content: center; }
+.od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.od-week-toolbar { justify-content: flex-end; }
+.od-date-controls .btn-ghost { background-color: var(--card); }
 .od-week-view .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }
@@ -2421,12 +2421,12 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   --od-time-gutter: var(--space-12);
   --od-day-width: calc(var(--space-24) + var(--space-10));
   --od-slot-gap: var(--space-1);
-  --od-columns: var(--od-time-gutter) repeat(5, minmax(var(--od-day-width), 1fr)) var(--od-time-gutter);
+  --od-columns: var(--od-time-gutter) repeat(5, minmax(var(--od-day-width), 1fr));
   --od-hour-height: calc(var(--space-12) + var(--space-3));
   display: grid;
   grid-template-rows: auto 1fr;
   gap: var(--od-slot-gap);
-  min-inline-size: calc(2 * var(--od-time-gutter) + 5 * (var(--od-day-width) + var(--od-slot-gap)) + 2 * var(--space-3));
+  min-inline-size: calc(var(--od-time-gutter) + 5 * (var(--od-day-width) + var(--od-slot-gap)) + 2 * var(--space-3));
   padding: var(--space-3) var(--space-2);
 }
 .od-desk-progress .progress {
@@ -2449,7 +2449,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   font-size: var(--text-body-small);
   font-weight: var(--weight-semibold);
 }
-/* 27 Nov: today in the product accent, and the time marker in its dark shade. */
+/* 27 Nov: today and the time marker in the product accent. */
 .od-timetable-date[aria-current="date"] { background-color: var(--accent-300); color: var(--primary-foreground); }
 .od-timetable-body { isolation: isolate; }
 .od-timetable-hours {
@@ -2486,9 +2486,9 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timetable-slot:last-child { margin-block-end: 0; }
 .od-timetable-marker {
   position: absolute;
-  inset: var(--od-marker-position) calc(var(--od-time-gutter) + var(--od-slot-gap)) auto calc(var(--od-time-gutter) + var(--od-slot-gap));
+  inset: var(--od-marker-position) 0 auto calc(var(--od-time-gutter) + var(--od-slot-gap));
   z-index: 10;
-  border-top: 1px solid color-mix(in srgb, var(--accent-400) 40%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--accent-300) 40%, transparent);
   pointer-events: none;
 }
 .od-timetable-marker span {
@@ -2497,7 +2497,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   transform: translate(50%, -50%);
   padding-inline: var(--space-2);
   border-radius: var(--rounded-full);
-  background-color: var(--accent-400);
+  background-color: var(--accent-300);
   color: var(--primary-foreground);
   font-weight: var(--weight-semibold);
 }
@@ -2507,7 +2507,7 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
   position: absolute;
   top: var(--od-marker-position);
   z-index: 10;
-  background-color: var(--accent-400);
+  background-color: var(--accent-300);
   pointer-events: none;
 }
 .od-timetable-day[data-today]::before { inset-inline: 0; height: 3px; transform: translateY(-1px); }
@@ -2566,8 +2566,8 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-timed-event:focus-visible .tooltip { opacity: 1; visibility: visible; }
 .od-month-grid {
   display:grid;
-  grid-template-columns:var(--space-12) repeat(5,minmax(0,1fr)) var(--space-12);
-  min-inline-size:calc(2 * var(--space-12) + 5 * (var(--space-24) + var(--space-4)));
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  min-inline-size:calc(5 * (var(--space-24) + var(--space-4)));
   gap:var(--space-1);
   padding:var(--space-3) var(--space-2);
 }
@@ -6807,7 +6807,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
    behaviour and the panel's controls stay together. On narrow screens it stays in the panel. */
 :where(:root:has(.od-overview)) .od-overview-panel { position: relative; }
 @media (min-width: 640px) {
-  :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-toolbar) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
+  :where(:root:has(.od-overview)) :is(.od-res-period, .od-week-view) { position: absolute; inset-block-start: calc(-1 * (var(--space-8) + var(--space-6))); inset-inline-end: 0; }
 }
 :where(:root:has(.od-overview)) .od-results :is(h2, p) { margin: 0; }
 :where(:root:has(.od-overview)) .od-res-snap { display: grid; grid-template-columns: minmax(0, 1fr) 364px; gap: var(--space-8); align-items: start; }

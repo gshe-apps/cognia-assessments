@@ -67,17 +67,26 @@
  const average = list => Math.round(list.reduce((t, a) => t + a.pct, 0) / list.length);
  const groupBy = (list, key, labelOf) => [...new Set(list.map(a => a[key]))].map(value => {
   const group = list.filter(a => a[key] === value);
-  return {key:value, name:labelOf(value), pct:average(group), sub:`${group.length} assessment${group.length === 1 ? '' : 's'}`};
+  // 27 Nov: learners below benchmark, from each assessment's sample scores (overview-calendar-data.js).
+  const events = window.capOverviewCalendar?.resultEvents || [];
+  let below = 0, taken = 0;
+  group.forEach(a => {
+   const e = events.find(x => x.id === a.id);
+   if (!e) return;
+   const max = e.questions.reduce((t, q) => t + q.marks, 0);
+   e.scores.forEach(([, marks]) => { taken++; if (marks.reduce((t, m) => t + m, 0) / max * 100 < BENCHMARK) below++; });
+  });
+  return {key:value, name:labelOf(value), pct:average(group), below:taken ? Math.round(below / taken * 100) : null, sub:`${group.length} assessment${group.length === 1 ? '' : 's'}`};
  }).sort((a, b) => a.pct - b.pct);
  function dimensionsFor() {
   const cls = classesFor();
   const grades = ['5','6','7'].map(grade => {
    const list = cls.filter(c => c.grade === grade);
    const at = list.reduce((t, c) => t + c.at, 0), total = list.reduce((t, c) => t + c.total, 0);
-   return {key:grade, name:'Grade ' + grade, pct:Math.round(at / total * 100), sub:`${at} of ${total} learners`};
+   return {key:grade, name:'Grade ' + grade, pct:Math.round(at / total * 100), below:Math.round((total - at) / total * 100), sub:`${at} of ${total} learners`};
   });
   return {
-   cls: {label:'Class', items:cls.map(c => ({key:c.name, name:c.name, pct:Math.round(c.at / c.total * 100), sub:`${c.at} of ${c.total} learners`, change:c.change}))},
+   cls: {label:'Class', items:cls.map(c => ({key:c.name, name:c.name, pct:Math.round(c.at / c.total * 100), below:Math.round((c.total - c.at) / c.total * 100), sub:`${c.at} of ${c.total} learners`, change:c.change}))},
    grade: {label:'Grade', items:grades},
    subject: {label:'Subject', items:groupBy(assessmentsFor(), 'subject', v => v)}
   };
@@ -103,8 +112,12 @@
   const versus = pct => pct > BENCHMARK ? `Above benchmark by ${pct - BENCHMARK}%` : pct < BENCHMARK ? `Below benchmark by ${BENCHMARK - pct}%` : 'At benchmark';
   const bar = item => {
    const side = item.pct > BENCHMARK ? 'is-above' : item.pct < BENCHMARK ? 'is-below' : 'is-at';
-   const tip = `<span class="chart-tooltip od-res-tip" aria-hidden="true"><span class="font-semibold">${esc(item.name)}</span><span>${versus(item.pct)}</span><span>${esc(item.sub)}</span></span>`;
-   const label = `${esc(item.name)}: ${versus(item.pct)}, ${esc(item.sub)}`;
+   // 27 Nov: a trend icon in the status colour beside the name, then label and value rows, the values semibold on the right.
+   const up = item.pct >= BENCHMARK;
+   const gap = item.pct > BENCHMARK ? ['Above benchmark by', (item.pct - BENCHMARK) + '%'] : item.pct < BENCHMARK ? ['Below benchmark by', (BENCHMARK - item.pct) + '%'] : ['At benchmark', BENCHMARK + '%'];
+   const rows = [gap, ...(item.below == null ? [] : [['Learners below benchmark', item.below + '%']])];
+   const tip = `<span class="chart-tooltip od-res-tip" aria-hidden="true"><span class="od-res-tip-head font-semibold">${icon(up ? 'trendUp' : 'trendDown', up ? 'icon-success' : 'icon-destructive')}${esc(item.name)}</span>${rows.map(([k, v]) => `<span>${k}</span><span class="od-res-tip-value font-semibold">${v}</span>`).join('')}</span>`;
+   const label = `${esc(item.name)}: ${versus(item.pct)}${item.below == null ? '' : `, ${item.below}% of learners below benchmark`}`;
    return `<div class="od-res-col ${side}" role="listitem">
     <span class="od-res-vbar ${side}" style="--size:${(Math.abs(item.pct - BENCHMARK) / range).toFixed(3)}"><span class="od-res-vfill"></span>${tip}<span class="sr-only">${label}</span></span>
     <span class="od-res-name text-body-small">${esc(item.name)}</span>

@@ -135,7 +135,7 @@
  // This week panel (25 Nov): the admin overview's This window card. Read-only rows: icon, label and line below,
  // the large value vertically centred on the right.
  function summary() {
-  // 26 Nov (2): the totals moved to count badges on the list headings; the two comparison rows follow the grouping.
+  // 26 Nov (2): the totals moved to count badges on the list headings.
   const signed = n => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n) + '%';
   const row = (status, label, value, sub) => `<div class="od-res-stat is-${status}">
    <span class="od-res-stat-icon" aria-hidden="true">${icon(status === 'success' ? 'trendUp' : 'trendDown', 'icon-' + status)}</span>
@@ -143,24 +143,11 @@
    <span class="od-res-stat-value">${esc(value)}</span>
    <span class="od-res-stat-sub">${esc(sub)}</span>
   </div>`;
-  let first, second;
-  if (state.dim === 'subject') {
-   // No week-on-week change for subjects in the sample data, so compare results instead.
-   const items = dimensions.subject.items.slice().sort((a, b) => b.pct - a.pct);
-   const hi = items[0], lo = items[items.length - 1];
-   first = row(hi.pct >= BENCHMARK ? 'success' : 'destructive', 'Highest subject', hi.pct + '%', hi.name);
-   second = row(lo.pct >= BENCHMARK ? 'success' : 'destructive', 'Lowest subject', lo.pct + '%', lo.name);
-  } else {
-   const cls = classesFor();
-   const items = state.dim === 'grade'
-    ? ['5','6','7'].map(g => { const l = cls.filter(c => c.grade === g); const t = l.reduce((n, c) => n + c.total, 0); return {name:'Grade ' + g, change:Math.round(l.reduce((n, c) => n + c.change * c.total, 0) / t)}; })
-    : dimensions.cls.items;
-   const byChange = items.slice().sort((a, b) => b.change - a.change);
-   const best = byChange[0], worst = byChange[byChange.length - 1];
-   const noun = state.dim === 'grade' ? 'grade' : 'class';
-   first = row(best.change >= 0 ? 'success' : 'destructive', 'Most improved ' + noun, signed(best.change), best.name);
-   second = row(worst.change >= 0 ? 'success' : 'destructive', 'Least improved ' + noun, signed(worst.change), worst.name);
-  }
+  // 27 Nov (2): the grouping only changes the chart, so this card always compares classes.
+  const byChange = dimensions.cls.items.slice().sort((a, b) => b.change - a.change);
+  const best = byChange[0], worst = byChange[byChange.length - 1];
+  const first = row(best.change >= 0 ? 'success' : 'destructive', 'Most improved class', signed(best.change), best.name);
+  const second = row(worst.change >= 0 ? 'success' : 'destructive', 'Least improved class', signed(worst.change), worst.name);
   return `<aside class="od-res-summary" aria-labelledby="od-res-sum-title">
    <h2 class="od-res-summary-title" id="od-res-sum-title">${state.period === 'week' ? 'This week' : 'This month'}</h2>
    ${first}
@@ -169,7 +156,8 @@
  }
 
  // 26 Nov: rows are labelled by the current grouping (class, grade or subject).
- const groupLabel = row => state.dim === 'grade' ? 'Grade ' + row.grade : state.dim === 'subject' ? row.subject : row.cls;
+ // The lists name each row's class whatever the chart is grouped by.
+ const groupLabel = row => row.cls;
  const initials = name => name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
  const empty = (title, text) => `<div class="empty-state"><span class="empty-media">${icon('search')}</span><p class="empty-title">${title}</p><p>${text}</p></div>`;
 

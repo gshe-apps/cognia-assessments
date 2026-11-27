@@ -233,6 +233,13 @@
 .btn-lg { height: 48px; min-height: 48px; font-size: var(--text-body-base); }
 .btn-sm { height: 32px; min-height: 32px; }
 .btn-xs { height: 24px; min-height: 24px; }
+/* Heading switcher: a ghost button that is itself a page or section heading and opens a picker (a menu or a
+   dialog listing the other items). The label keeps the heading's Heading size (24px semibold) and the
+   up-down chevrons icon (Lucide chevrons-up-down, 20px) sits at the end. The 8px side padding is pulled back
+   with a negative margin in the layout file so the text lines up with the content below.
+   <h1><button class="btn btn-ghost btn-heading" aria-haspopup="dialog"><span>Fractions check</span> svg</button></h1> */
+.btn-heading { height: auto; min-height: 40px; padding: var(--space-1) var(--space-2); font-size: var(--text-heading); line-height: 1.3; }
+.btn-heading svg { width: 20px; height: 20px; }
 .btn-icon { min-width: 0; width: 40px; padding: 0; }
 .btn-icon.btn-lg { width: 48px; }
 .btn-icon.btn-sm { width: 32px; }
@@ -896,7 +903,7 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
 .dialog-body:has(.dialog-list) { max-height: calc(100dvh - 280px); padding-inline-end: var(--space-2); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 .dialog-list > * { margin: 0; }
 .dialog-list > * + * { border-top: 1px solid var(--border); }
-.dialog-list > :is(:has(:checked), [aria-selected="true"]) { background-color: var(--accent-100); }
+.dialog-list > :is(:has(:checked), [aria-selected="true"], :has(> [aria-current="page"])) { background-color: var(--accent-100); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"]) + :is(:has(:checked), [aria-selected="true"]) { border-top-color: transparent; }
 .dialog-list-item {
   display: flex;
@@ -906,6 +913,9 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
   padding: var(--space-3) var(--space-4);
   cursor: pointer;
 }
+/* A row can also be a link (a list of pages to go to); the current page has aria-current="page" and the selected fill. */
+a.dialog-list-item { color: inherit; text-decoration: none; }
+a.dialog-list-item:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
 .dialog-list-item:hover { background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay)); }
 .dialog-list-item > :is(svg, .icon) { width: var(--space-6); height: var(--space-6); flex: none; }
 .dialog-list-item > :is(.checkbox, .radio, input) { margin-inline-start: auto; flex: none; }

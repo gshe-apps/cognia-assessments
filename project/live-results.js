@@ -25,48 +25,55 @@
   const arrived = {};          // passcode -> time it was first seen submitted (for the highlight)
   let firstLoad = true;
 
-  function updateReviewButton() {
-    if (!event) return;
-    const button = document.querySelector('[data-confirm-result-review]');
-    if (!button) return;
-    const reviewed = calendar.results.isReviewed(event);
-    button.setAttribute('aria-disabled', String(reviewed));
-    button.textContent = reviewed ? 'Reviewed' : 'Mark as reviewed';
+  // 27 Nov: the assessment name is the switcher. It opens a dialog listing every assessment with results.
+  const ICON = {
+    chevrons: '<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>',
+    clipboard: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'
+  };
+  const svg = (name, cls = 'icon') => '<svg class="' + cls + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[name] + '</svg>';
+  const DEFAULT_TITLE = 'Fractions check';
+  function mountSwitcher() {
+    const h1 = document.querySelector('.rr-page .rr-title h1');
+    if (!h1 || h1.querySelector('[data-result-switch]')) return;
+    const title = event ? event.title : (h1.textContent.trim() || DEFAULT_TITLE);
+    h1.innerHTML = '<button type="button" class="btn btn-ghost btn-heading rr-switcher" data-result-switch aria-haspopup="dialog">'
+      + '<span data-result-title>' + esc(title) + '</span>' + svg('chevrons') + '</button>';
   }
-
-  function mountResultMenu() {
-    const title = document.querySelector('.rr-page .rr-title');
-    if (!title || !calendar?.results.entries.length || title.querySelector('[data-result-menu]')) return;
-    title.querySelector('.rr-switch')?.remove();
-    const menu = document.createElement('div');
-    menu.className = 'dropdown';
-    menu.dataset.resultMenu = '';
-    menu.innerHTML = `
-      <button type="button" class="btn btn-ghost btn-sm" id="rr-assessment-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="rr-assessment-menu">
-        Switch assessment
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </button>
-      <div class="menu" id="rr-assessment-menu" role="menu" aria-labelledby="rr-assessment-trigger" hidden>
-        <a class="menu-item" role="menuitem" tabindex="-1" href="CAP-T13-Results.dc.html" ${event?'':'aria-current="page"'}>Fractions check</a>
-        ${calendar.results.entries.map(entry=>`<a class="menu-item" role="menuitem" tabindex="-1" href="${esc(calendar.results.href(entry))}" ${entry===event?'aria-current="page"':''}>${esc(entry.title)}</a>`).join('')}
-      </div>`;
-    const actions = document.createElement('div');
-    actions.className = 'rr-assessment-actions';
-    actions.append(menu);
-    if (event) {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'btn btn-outline btn-sm';
-      button.dataset.confirmResultReview = '';
-      button.addEventListener('click', () => {
-        if (calendar.results.isReviewed(event)) return;
-        calendar.results.markReviewed(event);
-        updateReviewButton();
-      });
-      actions.append(button);
-    }
-    title.append(actions);
-    updateReviewButton();
+  function resultEntries() {
+    if (!calendar) return [];
+    const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const average = (e) => {
+      const max = e.questions.reduce((a, q) => a + q.marks, 0);
+      return Math.round(e.scores.reduce((a, [, marks]) => a + pct(marks.reduce((x, y) => x + y, 0), max), 0) / e.scores.length);
+    };
+    const live = calendar.events.find((e) => e.id === 'fractions-check');
+    const list = [{ title: DEFAULT_TITLE, classLabel: live ? live.classLabel : 'Grade 5A', date: live ? calendar.date(live) : null, href: 'CAP-T13-Results.dc.html', current: !event, live: true }]
+      .concat([...calendar.results.entries, ...(calendar.resultEvents || [])].map((e) => ({
+        title: e.title, classLabel: e.classLabel, date: calendar.date(e), href: calendar.results.href(e), current: e === event, avg: average(e)
+      })));
+    return list.sort((a, b) => (b.date || 0) - (a.date || 0)).map((r) => Object.assign(r, { when: r.date ? fmt.format(r.date) : '' }));
+  }
+  function openSwitcher() {
+    document.getElementById('rr-switch-dialog')?.remove();
+    const rows = resultEntries().map((r) => '<li><a class="dialog-list-item" href="' + esc(r.href) + '"' + (r.current ? ' aria-current="page"' : '') + '>'
+      + svg('clipboard', 'icon icon-theme')
+      + '<span class="rr-switch-text"><span class="text-body-small font-semibold">' + esc(r.title) + '</span><span class="text-body-small text-muted-foreground">' + esc([r.classLabel, r.when].filter(Boolean).join(', ')) + '</span></span>'
+      + (r.live ? '<span class="badge badge-info">Live session</span>' : '<span class="badge ' + (r.avg >= 50 ? 'badge-success' : 'badge-destructive') + '">' + r.avg + '%</span>')
+      + (r.current ? svg('check', 'icon rr-switch-current') + '<span class="sr-only">, current assessment</span>' : '')
+      + '</a></li>').join('');
+    const wrap = document.createElement('div');
+    wrap.innerHTML = '<dialog class="dialog rr-switch-dialog" id="rr-switch-dialog" aria-labelledby="rr-switch-title">'
+      + '<div class="dialog-header"><h2 class="dialog-title" id="rr-switch-title">Assessments with results</h2>'
+      + '<button type="button" class="btn btn-ghost btn-icon dialog-close" data-switch-close aria-label="Close">' + svg('x') + '</button></div>'
+      + '<div class="dialog-body"><ul class="dialog-list" aria-label="Assessments with results">' + rows + '</ul></div></dialog>';
+    const dlg = wrap.firstElementChild;
+    document.body.append(dlg);   // outside the Canvas template, so a redraw never removes it
+    dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.closest('[data-switch-close]')) dlg.close(); });
+    dlg.addEventListener('close', () => { dlg.remove(); document.querySelector('[data-result-switch]')?.focus({ preventScroll: true }); });
+    dlg.showModal();
+    (dlg.querySelector('[aria-current="page"]') || dlg.querySelector('.dialog-list-item'))?.focus({ preventScroll: true });
   }
 
   function sampleRecords() {
@@ -141,8 +148,9 @@
     const avg = submitted.length ? Math.round(submitted.reduce((a, r) => a + pct(r.marks, r.max), 0) / submitted.length) : null;
 
     if (event) {
-      page.querySelector('.rr-title h1').textContent = event.title;
-      page.querySelector('.rr-kicker').textContent = event.type + ' assessment for ' + event.classLabel + ', sample results';
+      const heading = page.querySelector('[data-result-title]');
+      if (heading) heading.textContent = event.title;
+      page.querySelector('.rr-kicker').textContent = event.classLabel;
       page.querySelector('[data-stack="live"]')?.remove();
       const date = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(calendar.date(event));
       const details = [['Class',event.classLabel],['Subject',event.subject || calendar.subject],['Session date',date],
@@ -257,6 +265,7 @@
   }
 
   document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-result-switch]')) { openSwitcher(); return; }
     const b = e.target.closest('[data-live]');
     if (b) {
       const act = b.dataset.live;
@@ -329,17 +338,13 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    mountResultMenu();
+    mountSwitcher();
     if (event) apply(); else live.watch(onData);
     const root = document.querySelector('x-dc');
     // Re-apply after each Canvas redraw (menus, role switcher).
     if (root) new MutationObserver(() => {
-      mountResultMenu();
+      mountSwitcher();
       if (!document.querySelector('[data-live-panel]')) apply();
     }).observe(root, { childList: true });
-  });
-  window.addEventListener('pageshow', updateReviewButton);
-  window.addEventListener('storage', e => {
-    if (event && (!e.key || e.key === calendar.results.reviewKey(event))) updateReviewButton();
   });
 })();

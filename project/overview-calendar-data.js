@@ -138,6 +138,6 @@
    localStorage.setItem(seedKey, new Date().toISOString());
   }
  } catch {}
- window.capOverviewCalendar = {events,date,subject,assessment,today,weekStart,addDays,results,overviewResults,
+ window.capOverviewCalendar = {events,date,subject,assessment,today,weekStart,addDays,results,overviewResults,resultEvents:overviewEvents,
   event:events.find(event=>event.id===selected) || overviewEvents.find(event=>event.id===selected)};
 })();

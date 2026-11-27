@@ -164,6 +164,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 | Medium | `size="default"` | Default for most UI contexts |
 | Small | `size="sm"` | Compact UI, table rows, inline actions |
 | Extra small | `size="xs"` | Tight spaces, toolbars, tag actions |
+| Heading | `.btn-heading` (with Ghost) | A page or section heading that opens a picker, such as the assessment name on Results |
 
 **Rules**
 - Always use `size="lg"` as the default button size. The `lg` size is 48px (`h-12`) and provides the correct touch target for most contexts. Reserve `sm`, `xs`, and icon sizes for compact UI only.
@@ -173,6 +174,7 @@ Buttons trigger actions. Use them for form submissions, confirmations, and decis
 - Destructive is a state applied to any variant, not a separate button type. On a ghost or outline button the label and icon are red: use `--destructive` mixed 80% with `--foreground` (`text-[color-mix(in_srgb,var(--destructive)_80%,var(--foreground))]`) so a 16px label meets 4.5:1 on both the page and card surfaces. The hover stays the variant's usual hover.
 - Labels are always sentence case and at most three words ("Save supports", "Show 5 banks", "Yes, continue"). A count or number counts as a word. Never put a sentence or a confirmation statement on a button: say it in the dialog title or description, and keep the button to a short verb phrase.
 - Never show a hover state on a disabled button.
+- Heading switcher: when a heading itself switches what the page shows (another assessment, class or grouping), make the whole heading one ghost `.btn-heading` with the chevrons-up-down icon at the end. Clicking opens a menu for up to 8 short options, or a dialog list (List in a dialog) for longer lists or rows that need a second line. Never add a separate "Switch" button next to the heading.
 - Icons can appear on the left, right, or both sides of the label.
 - Primary (solid) CTAs must always be active — never disable them preemptively. Show inline validation errors on click for missing required fields instead of disabling the button.
 - Solid buttons and the profile button use `--primary-hover`. Outline, ghost, and destructive buttons use the same 10% black overlay over their own resting surfaces.

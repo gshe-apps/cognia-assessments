@@ -4835,8 +4835,11 @@ html body.item-method-reference .cap-root .btn.solid {
 .rr-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-6); }
 .rr-title { display:flex; flex-direction:column; gap:var(--space-2); }
 .rr-title h1 { display:flex; align-items:center; gap:var(--space-2); font:var(--weight-semibold) var(--text-heading)/var(--lh-snug) var(--font-sans); }
-.rr-title h1 svg { width:24px; height:24px; flex:none; }
-.rr-assessment-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2); margin-block-start:var(--space-2); }
+/* 27 Nov: the assessment name is a heading switcher (.btn-heading); its side padding is pulled back so the
+   text lines up with the class above it. The dialog lists every assessment with results. */
+.rr-title h1 .rr-switcher { margin-inline-start:calc(-1 * var(--space-2)); }
+.rr-switch-text { display:grid; min-width:0; }
+.rr-switch-dialog .dialog-list-item > .badge { margin-inline-start:auto; flex:none; }
 .rr-summary { display:flex; flex-direction:column; align-items:flex-end; gap:var(--space-2); text-align:right; }
 
 /* Two columns: session and charts, then the student table */

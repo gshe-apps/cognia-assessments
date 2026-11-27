@@ -31,8 +31,8 @@
     clipboard: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
     x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'
   };
-  // Solid check circle for the current assessment: one filled shape with the tick cut out, so it stays one colour.
-  const CURRENT = '<svg class="icon icon-theme" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20Zm-1.6 14.2-4.3-4.3 1.4-1.4 2.9 2.9 6.2-6.2 1.4 1.4Z"/></svg>';
+  // Solid check circle for the current assessment, in the text colour (--primary): one filled shape with the tick cut out.
+  const CURRENT = '<svg class="text-foreground" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20Zm-1.6 14.2-4.3-4.3 1.4-1.4 2.9 2.9 6.2-6.2 1.4 1.4Z"/></svg>';
   // Dialogs sit outside the Canvas template, so they take the page's product theme (blue for Assessments) from it.
   const themeOf = () => [...(document.querySelector('[class*="theme-"]')?.classList || [])].find((c) => c.startsWith('theme-')) || '';
   const svg = (name, cls = 'icon') => '<svg class="' + cls + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[name] + '</svg>';

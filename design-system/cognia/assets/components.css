@@ -899,8 +899,11 @@ a.card-link.card-link-raised:is(:hover, :focus-visible) > .card { box-shadow: va
   border-radius: var(--radius-xl);
   background-color: var(--card);
   overflow: hidden;
+  /* Keeps its full height so the dialog body, not the list, is what scrolls. Without it the list shrinks to
+     the body and clips its last rows, and the wheel scrolls the page behind instead. */
+  flex: none;
 }
-.dialog-body:has(.dialog-list) { max-height: calc(100dvh - 280px); padding-inline-end: var(--space-2); scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.dialog-body:has(.dialog-list) { max-height: calc(100dvh - 280px); padding-inline-end: var(--space-2); scrollbar-width: thin; scrollbar-color: var(--border) transparent; overscroll-behavior: contain; }
 .dialog-list > * { margin: 0; }
 .dialog-list > * + * { border-top: 1px solid var(--border); }
 .dialog-list > :is(:has(:checked), [aria-selected="true"], :has(> [aria-current="page"])) { background-color: var(--accent-100); }

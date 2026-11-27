@@ -160,22 +160,14 @@
   const byChange = dimensions.cls.items.slice().sort((a, b) => b.change - a.change);
   const best = byChange[0], worst = byChange[byChange.length - 1];
   const first = row(best.change >= 0 ? 'success' : 'destructive', 'Most improved class', signed(best.change), best.name);
-  // 27 Nov (5): the second comparison is the standard most learners have not understood: the one with the largest
-  // share of learner results below benchmark this week or month (from each assessment's sample scores). The value
-  // is that share, like Learners below benchmark above it; the line under the label is the standard's code.
-  const events = window.capOverviewCalendar?.resultEvents || [];
+  // 27 Nov (6): the second comparison is the lowest scoring standard this week or month: each standard's score is
+  // the average of its assessments' results. The line under the label is the standard's code.
   const standards = [...new Set(results.map(a => a.standard))].map(code => {
-   let under = 0, taken = 0;
-   results.filter(a => a.standard === code).forEach(a => {
-    const e = events.find(x => x.id === a.id);
-    if (!e) return;
-    const max = e.questions.reduce((t, q) => t + q.marks, 0);
-    e.scores.forEach(([, marks]) => { taken++; if (marks.reduce((t, m) => t + m, 0) / max * 100 < BENCHMARK) under++; });
-   });
-   return {code, under, taken};
-  }).filter(x => x.taken).sort((a, b) => b.under / b.taken - a.under / a.taken);
+   const list = results.filter(a => a.standard === code);
+   return {code, pct:Math.round(list.reduce((t, a) => t + a.pct, 0) / list.length)};
+  }).sort((a, b) => a.pct - b.pct);
   const low = standards[0];
-  const second = low ? row(low.under * 2 > low.taken ? 'destructive' : 'success', 'Least understood standard', Math.round(low.under / low.taken * 100) + '%', low.code) : '';
+  const second = low ? row(low.pct >= BENCHMARK ? 'success' : 'destructive', 'Lowest scoring standard', low.pct + '%', low.code) : '';
   return `<aside class="od-res-summary" aria-labelledby="od-res-sum-title">
    <h2 class="od-res-summary-title" id="od-res-sum-title">${state.period === 'week' ? 'This week' : 'This month'}</h2>
    ${row('destructive', 'Learners below benchmark', share(below, totalLearners), `${below} of ${totalLearners} learners`)}

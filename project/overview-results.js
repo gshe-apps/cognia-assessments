@@ -59,10 +59,18 @@
  const inWeek = date => ['27 Oct','28 Oct','29 Oct','30 Oct','31 Oct','1 Nov','2 Nov'].includes(date);
  const classesFor = () => classes.map(c => state.period === 'week' ? {...c, ...weekOf[c.name]} : c);
  const assessmentsFor = () => assessments.filter(a => state.period === 'month' || inWeek(a.date));
- const learnersFor = () => {
-  const taking = new Set(assessmentsFor().map(a => a.cls));
-  return learners.filter(l => state.period === 'month' || taking.has(l.cls));
- };
+ // 27 Nov (3): every learner below benchmark is in the list, so its count matches the This week card and the
+ // chart (each class's learners minus those at or above benchmark). The named learners are the lowest; the rest of
+ // each class is filled with sample names averaging 44 to 49%.
+ const FIRST = ['Aiden','Amara','Ben','Chloe','Daniel','Emma','Finn','Grace','Harper','Isaac','Jade','Kai','Leo','Maya','Nina','Owen','Priya','Quinn','Ruby','Sam','Tara','Uma','Victor','Willow'];
+ const LAST = ['Brooks','Singh','Clarke','Martin','Kim','Lewis','Walker','Lee','Scott','Turner','Morgan','Robinson','Adams','Patel','Lopez','Hall','Shah','Baker','Evans','Carter','Young','Reddy','Diaz','Green'];
+ const learnersFor = () => classesFor().flatMap((c, k) => {
+  const named = learners.filter(l => l.cls === c.name);
+  const extra = Array.from({length:Math.max(0, c.total - c.at - named.length)}, (_, i) => ({
+   name:FIRST[(i + k * 4) % FIRST.length] + ' ' + LAST[(i * 5 + k * 3) % LAST.length], cls:c.name, grade:c.grade, avg:49 - (i % 6)
+  }));
+  return [...named, ...extra];
+ }).sort((a, b) => a.avg - b.avg);
 
  const average = list => Math.round(list.reduce((t, a) => t + a.pct, 0) / list.length);
  const groupBy = (list, key, labelOf) => [...new Set(list.map(a => a[key]))].map(value => {

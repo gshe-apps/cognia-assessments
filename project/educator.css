@@ -4900,12 +4900,14 @@ html body.item-method-reference .cap-root .btn.solid {
    sortable headers, a static table (rows open nothing) and a stack of cards on the right where one
    card is open at a time. */
 .rr-review-toolbar { flex-wrap:nowrap; }
-.rr-tools { display:flex; align-items:center; gap:var(--space-2); }
-.rr-tools .rr-search { width:240px; }
-.rr-tools .rr-search[hidden] { display:none; }
-.rr-filter-check { display:inline-flex; margin-left:auto; }
-.rr-filter-check[hidden] { display:none; }
-.rr-filter-check svg { width:16px; height:16px; }
+/* 27 Nov: search bar, filter icon and applied filter chips on the left, the learner count on the right.
+   Chips that do not fit wait behind "+X more" on a second row (results-dashboard.js). */
+.rr-review-toolbar { gap:var(--space-2); justify-content:flex-start; }
+.rr-review-toolbar > .rr-search { width:240px; flex:none; }
+.rr-filter-chips { position:relative; flex:1; min-width:0; flex-wrap:nowrap; margin-inline-start:var(--space-2); }
+.rr-review-toolbar > .rr-table-note { flex:none; margin-inline-start:auto; }
+.rr-filter-more { margin-block:var(--space-1) var(--space-2); }
+.rr-filter-more[hidden] { display:none; }
 .rr-review-panel :is(th, td).rr-c { text-align:center; }
 .rr-review-panel :is(th, td).rr-end { text-align:right; }
 .rr-sort { display:inline-flex; align-items:center; gap:var(--space-1); padding:0; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
@@ -6689,9 +6691,9 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
    ------------------------------------------------------------ */
 .uc-page .uc-filter-bar { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
 .uc-page .uc-filter-bar > .search { flex: 1; min-width: 0; }
-.uc-page .uc-filter-button { position: relative; }
-.uc-page .uc-filter-button svg { width: var(--space-4); height: var(--space-4); }
-.uc-page .uc-filter-button[data-filters-active]::after { content: ''; position: absolute; inset-block-start: var(--space-1); inset-inline-end: var(--space-1); width: var(--space-2); height: var(--space-2); border-radius: 50%; background: var(--destructive); }
+:is(.uc-page .uc-filter-button, .rr-page .rr-filter-button) { position: relative; }
+:is(.uc-page .uc-filter-button, .rr-page .rr-filter-button) svg { width: var(--space-4); height: var(--space-4); }
+:is(.uc-page .uc-filter-button, .rr-page .rr-filter-button)[data-filters-active]::after { content: ''; position: absolute; inset-block-start: var(--space-1); inset-inline-end: var(--space-1); width: var(--space-2); height: var(--space-2); border-radius: 50%; background: var(--destructive); }
 .uc-page .uc-filter-applied { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
 .uc-page .uc-filter-applied[hidden] { display: none; }
 .uc-page .uc-filter-applied > .btn { flex: none; }

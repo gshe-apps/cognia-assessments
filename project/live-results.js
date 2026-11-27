@@ -17,7 +17,6 @@
   let deck = event ? ['insights', 'details', 'performance'] : ['performance', 'insights', 'details', 'live'];
   let deckPrev = null, deckTimer = 0;
   const STRIP = 44;                  // visible height of each card behind the front one
-  let searchOpen = false;
 
   let records = {};
   let sample = false;          // Shift + D: sample results if the venue connection drops
@@ -223,7 +222,9 @@
         const fresh = done && arrived[r.passcode] && now - arrived[r.passcode] < 4000;
         const photo = PHOTOS[r.name];
         const avatar = '<span class="rr-avatar" aria-hidden="true">' + (photo ? '<img src="' + photo + '" alt="" width="32" height="32">' : esc(initials(r.name))) + '</span>';
-        return '<tr data-result-row data-status="' + (done ? 'scored' : 'missing') + '"' + (fresh ? ' class="rr-new"' : '') + '>'
+        // 27 Nov: the filters (results-dashboard.js) read status, score and the items with marks lost from the row.
+        const missed = done ? MAX_Q.map((m, q) => ((r.byQuestion || [])[q] || 0) < m ? q + 1 : 0).filter(Boolean).join(' ') : '';
+        return '<tr data-result-row data-status="' + esc(r.status) + '" data-score="' + (done ? pct(r.marks, r.max) : '') + '" data-missed="' + missed + '"' + (fresh ? ' class="rr-new"' : '') + '>'
           + '<td><span class="rr-student">' + avatar + '<span>' + esc(r.name) + '</span></span></td>'
           + '<td>Private</td>'
           + '<td class="num">' + (done ? esc(r.marks) + '/' + esc(r.max) : '–') + '</td>'
@@ -247,12 +248,7 @@
       const b = c.querySelector('.rr-stack-body'); if (b) b.inert = !on;
     });
 
-    // Search field shows from the search icon (and stays while it has text)
-    const sbox = page.querySelector('.rr-search'), sinput = document.getElementById('resultSearch');
-    if (sbox) sbox.hidden = !(searchOpen || (sinput && sinput.value));
-    page.querySelector('[data-result-search]')?.setAttribute('aria-pressed', String(!!(sbox && !sbox.hidden)));
-
-    // Let the existing filter and search re-run over the new rows.
+    // Let the search and filters (results-dashboard.js) re-run over the new rows.
     document.getElementById('resultSearch')?.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
@@ -290,12 +286,6 @@
       // Keep focus on the card that came to the front without scrolling the page (no jump).
       document.querySelector('[data-stack-toggle="' + k + '"]')?.focus({ preventScroll: true });
       return;
-    }
-    if (e.target.closest('[data-result-search]')) {
-      const input = document.getElementById('resultSearch');
-      searchOpen = !(searchOpen || (input && input.value));
-      if (!searchOpen && input && input.value) { input.value = ''; input.dispatchEvent(new Event('input', { bubbles: true })); }
-      apply(); if (searchOpen) document.getElementById('resultSearch')?.focus({ preventScroll: true });
     }
   });
   // Reset session (12 Nov): a small confirmation dialog (shared Dialog component) with a ghost Cancel.
@@ -337,7 +327,6 @@
   document.addEventListener('focusout', (e) => { if (e.target.closest?.('.rr-col')) hideTip(); });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && e.target.id === 'resultSearch' && !e.target.value) { searchOpen = false; apply(); document.querySelector('[data-result-search]')?.focus({ preventScroll: true }); return; }
     if (!event && e.shiftKey && (e.key === 'D' || e.key === 'd') && !e.target.closest('input, textarea')) { sample = !sample; apply(); }
   });
 

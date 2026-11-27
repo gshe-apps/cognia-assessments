@@ -56,19 +56,20 @@
    state:{chosen:event.questions.map(q=>q.id),written:Object.fromEntries(event.questions.map(q=>[q.id,q])),edits:{}}};
   return {title:event.title,active:test.id,tests:[test],origin:'builder'};
  };
- /* 27 Nov: assessment results shown on Overview, Results overview. Each opens Results with its own sample scores. */
+ /* 27 Nov: assessment results shown on Overview, Results. Each opens Results with its own sample scores.
+    Standards are Common Core (Mathematics) and NGSS (Science) codes. */
  const overviewResults = [
-  {title:'Fractions on a number line', cls:'Grade 6A', skill:'Fractions', date:'2 Nov', pct:29},
-  {title:'Ratios and rates', cls:'Grade 6B', skill:'Ratios', date:'29 Oct', pct:36},
-  {title:'Equivalent fractions', cls:'Grade 5B', skill:'Fractions', date:'26 Oct', pct:41},
-  {title:'Equations quiz', cls:'Grade 7B', skill:'Algebra', date:'22 Oct', pct:41},
-  {title:'Ecosystems check', cls:'Grade 6B', skill:'Life science', date:'20 Oct', pct:45},
-  {title:'Percent and ratio review', cls:'Grade 7A', skill:'Ratios', date:'30 Oct', pct:50},
-  {title:'Data and graphs', cls:'Grade 6A', skill:'Data', date:'15 Oct', pct:54},
-  {title:'Forces and motion', cls:'Grade 7A', skill:'Physical science', date:'28 Oct', pct:56},
-  {title:'Geometry basics', cls:'Grade 5B', skill:'Geometry', date:'13 Oct', pct:58},
-  {title:'Weather and climate', cls:'Grade 5A', skill:'Earth science', date:'8 Oct', pct:62},
-  {title:'Simplifying expressions', cls:'Grade 5A', skill:'Algebra', date:'6 Oct', pct:67}
+  {title:'Fractions on a number line', cls:'Grade 6A', skill:'Fractions', date:'2 Nov', pct:29, standard:'6.NS.C.6'},
+  {title:'Ratios and rates', cls:'Grade 6B', skill:'Ratios', date:'29 Oct', pct:36, standard:'6.RP.A.3'},
+  {title:'Equivalent fractions', cls:'Grade 5B', skill:'Fractions', date:'26 Oct', pct:41, standard:'5.NF.A.1'},
+  {title:'Equations quiz', cls:'Grade 7B', skill:'Algebra', date:'22 Oct', pct:41, standard:'7.EE.B.4'},
+  {title:'Ecosystems check', cls:'Grade 6B', skill:'Life science', date:'20 Oct', pct:45, standard:'MS-LS2-1'},
+  {title:'Percent and ratio review', cls:'Grade 7A', skill:'Ratios', date:'30 Oct', pct:50, standard:'7.RP.A.3'},
+  {title:'Data and graphs', cls:'Grade 6A', skill:'Data', date:'15 Oct', pct:54, standard:'6.SP.B.4'},
+  {title:'Forces and motion', cls:'Grade 7A', skill:'Physical science', date:'28 Oct', pct:56, standard:'MS-PS2-2'},
+  {title:'Geometry basics', cls:'Grade 5B', skill:'Geometry', date:'13 Oct', pct:58, standard:'5.G.B.3'},
+  {title:'Weather and climate', cls:'Grade 5A', skill:'Earth science', date:'8 Oct', pct:62, standard:'MS-ESS2-5'},
+  {title:'Simplifying expressions', cls:'Grade 5A', skill:'Algebra', date:'6 Oct', pct:67, standard:'5.OA.A.2'}
  ];
  const sciences = ['Life science','Physical science','Earth science'];
  const classSizes = {'Grade 5A':24, 'Grade 5B':24, 'Grade 6A':24, 'Grade 6B':22, 'Grade 7A':24, 'Grade 7B':22};

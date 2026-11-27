@@ -160,7 +160,14 @@
   const byChange = dimensions.cls.items.slice().sort((a, b) => b.change - a.change);
   const best = byChange[0], worst = byChange[byChange.length - 1];
   const first = row(best.change >= 0 ? 'success' : 'destructive', 'Most improved class', signed(best.change), best.name);
-  const second = row(worst.change >= 0 ? 'success' : 'destructive', 'Least improved class', signed(worst.change), worst.name);
+  // 27 Nov (4): the second comparison is the standard with the lowest result this week or month, the one to
+  // reteach. Each standard's result is the average of its assessments.
+  const standards = [...new Set(results.map(a => a.standard))].map(code => {
+   const list = results.filter(a => a.standard === code);
+   return {code, skill:list[0].skill, pct:Math.round(list.reduce((t, a) => t + a.pct, 0) / list.length)};
+  }).sort((a, b) => a.pct - b.pct);
+  const low = standards[0];
+  const second = low ? row(low.pct >= BENCHMARK ? 'success' : 'destructive', low.pct < BENCHMARK ? 'Standard to reteach' : 'Lowest standard', low.pct + '%', `${low.code}, ${low.skill}`) : '';
   return `<aside class="od-res-summary" aria-labelledby="od-res-sum-title">
    <h2 class="od-res-summary-title" id="od-res-sum-title">${state.period === 'week' ? 'This week' : 'This month'}</h2>
    ${row('destructive', 'Learners below benchmark', share(below, totalLearners), `${below} of ${totalLearners} learners`)}

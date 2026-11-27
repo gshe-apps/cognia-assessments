@@ -580,7 +580,8 @@
  new MutationObserver(() => { if (!pending) return; const h = document.querySelector('.uc-page .qc-manual'); if (h && !h.querySelector('.uc-iq')) mount(h); }).observe(document.documentElement, {childList: true, subtree: true});
  /* Item preview (13 Nov): the full question first, then grey cards for Standard, DOK, Points and Question type.
     The Standard card opens the standard's details in the same dialog, with a back chevron, like Set up your
-    assessment. Add item is the only action, and only when the item can still be added. */
+    assessment. Add item is the only action, and only when the item can still be added.
+    27 Nov: the Standard card is grey like the others, and the dialog has no "From" line under the title. */
  function preview(q, {grade = '5', standard = '', bank = '', canAdd = false, onAdd, onClose} = {}) {
   const code = q.standard || standard, found = (STANDARDS[String(grade)] || []).find(s => s[0] === code) || Object.values(STANDARDS).flat().find(s => s[0] === code);
   const dok = dokOf(q);
@@ -592,13 +593,13 @@
   dialog.className = 'dialog uc-item-preview theme-assessments';
   dialog.setAttribute('aria-labelledby', 'uc-ip-title');
   dialog.innerHTML = `<section class="uc-ip-view" data-ip-view="item">
-    <div class="dialog-header"><h2 class="dialog-title" id="uc-ip-title" tabindex="-1">Item preview</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" data-ip-close aria-label="Close item preview">${icon('x')}</button>${bank ? `<p class="dialog-description">From ${esc(bank)}</p>` : ''}</div>
+    <div class="dialog-header"><h2 class="dialog-title" id="uc-ip-title" tabindex="-1">Item preview</h2><button type="button" class="btn btn-ghost btn-icon dialog-close" data-ip-close aria-label="Close item preview">${icon('x')}</button></div>
     <div class="dialog-body">
      <p class="text-body-base">${esc(q.stem)}</p>
      ${opts ? `<div class="cie-option-list" role="list" aria-label="Answer options">${opts}</div>` : ''}
      ${q.explanation ? `<div class="field"><span class="label">Explanation</span><p class="text-body-small">${esc(q.explanation)}</p></div>` : ''}
      <div class="uc-ip-cards">
-      ${code ? `<button type="button" class="item btn-ghost uc-ip-card" data-ip-standard aria-label="Standard ${esc(code)}. View standard details"><span class="item-content"><span class="item-description">Standard</span><span class="item-title"><span class="badge badge-secondary">${esc(code)}${icon('chevronRight')}</span></span></span></button>` : ''}
+      ${code ? `<button type="button" class="item item-muted uc-ip-card" data-ip-standard aria-label="Standard ${esc(code)}. View standard details"><span class="item-content"><span class="item-description">Standard</span><span class="item-title"><span class="badge badge-secondary">${esc(code)}${icon('chevronRight')}</span></span></span></button>` : ''}
       ${card('DOK', 'DOK ' + dok)}
       ${card('Points', q.marks || 1)}
       ${card('Question type', type)}

@@ -33,7 +33,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
  const hero=page.querySelector('.tf-hero'),detailsTop=page.querySelector('.tf-top');
  if(detailsTop){const progress=detailsTop.querySelector('.tf-steps');if(progress)hero.append(progress);detailsTop.remove();}
  hero.querySelector(':scope>div>p')?.remove();
- const heroTitle=hero.querySelector('h1');if(heroTitle)heroTitle.textContent='Test details';
+ const heroTitle=hero.querySelector('h1');if(heroTitle)heroTitle.textContent='Review test details';
  const m=model();let t=active(m);if(!t)return;
  const original=page.querySelector('.reviewgrid aside section'),instructions=original.querySelector('#instructions'),time=original.querySelector('#timeLimit'),reviewed=original.querySelector('#reviewed');
  const svg=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
@@ -74,7 +74,7 @@ window.capReferenceDetails=(page,{model,active,save,esc,node})=>{
   if(view==='preview')return '';
   const d=detailsFor(x),qs=x.questions||[],marks=qs.reduce((n,q)=>n+Number(q.marks||1),0),points=Number(d.points)||marks;
   if(view==='items')return qs.length
-   ?`<ol class="af-item-list ad-af-items">${qs.map((q,n)=>{const pts=Number(q.marks||1);return `<li class="af-item"><span class="af-item-number">${n+1}</span><div class="af-item-body"><div class="af-item-meta"><span class="text-body-small">${esc(kindOf(q))}</span><span class="badge badge-secondary">${pts} ${pts===1?'point':'points'}</span></div><p>${esc(q.stem||'Untitled item')}</p></div></li>`}).join('')}</ol><div class="ad-items-pager"><button type="button" class="btn btn-ghost lp-step" data-items-go="-1">${arrowBack}Back</button><span class="ad-items-range text-body-small" aria-live="polite"></span><button type="button" class="btn btn-ghost lp-step" data-items-go="1">Next${arrowNext}</button></div>`
+   ?`<ol class="af-item-list ad-af-items">${qs.map((q,n)=>{const pts=Number(q.marks||1);return `<li class="af-item"><div class="af-item-body"><div class="af-item-meta"><span class="af-item-number">${n+1}</span><span class="badge badge-secondary">${pts} ${pts===1?'point':'points'}</span></div><span class="af-item-type text-body-small text-muted-foreground">${esc(kindOf(q))}</span><p>${esc(q.stem||'Untitled item')}</p></div></li>`}).join('')}</ol><div class="ad-items-pager"><button type="button" class="btn btn-ghost lp-step" data-items-go="-1">${arrowBack}Back</button><span class="ad-items-range text-body-small" aria-live="polite"></span><button type="button" class="btn btn-ghost lp-step" data-items-go="1">Next${arrowNext}</button></div>`
    :`<div class="ad-empty-state"><h4>No items yet</h4><p>Use the edit button to add items to this test.</p></div>`;
   if(view==='settings'){
    const s={...(window.capAssessmentSetup?.settingDefaults||{}),...m.settings};

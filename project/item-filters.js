@@ -165,22 +165,58 @@
       window.capFilterBuilderQuestions?.();
       const hint = library.querySelector('[data-bank-empty-hint]');
       if (hint) hint.textContent = 'Try another search, or change the filters.';
-      const list = chips.querySelector('.chip-list');
       const active = CATEGORIES.flatMap(({ key }) => applied[key].map((value) => ({ key, value })));
-      list.innerHTML = active.map(({ key, value }) => `<span class="chip" role="listitem">${esc(label(key, value))}<button type="button" class="chip-remove" data-remove="${esc(key)}" data-value="${esc(value)}" aria-label="Remove filter: ${esc(label(key, value))}">${icon(X)}</button></span>`).join('');
       chips.hidden = !active.length;
+      if (!active.length) expanded = false;
+      drawChips(active);
       filterButton.toggleAttribute('data-filters-active', active.length > 0);
       filterButton.setAttribute('aria-label', active.length ? `Filters (${active.length} applied)` : 'Filters');
       persist();
     }
+    // 27 Nov: the chips stay on one row. When they would wrap, the ones that fit show with a "+X more" button;
+    // it opens every chip, with "Show less" at the end to go back to one row.
+    let expanded = false, shownChips = [];
+    const chipHtml = ({ key, value }) => `<span class="chip" role="listitem">${esc(label(key, value))}<button type="button" class="chip-remove" data-remove="${esc(key)}" data-value="${esc(value)}" aria-label="Remove filter: ${esc(label(key, value))}">${icon(X)}</button></span>`;
+    function drawChips(active = shownChips) {
+      shownChips = active;
+      const list = chips.querySelector('.chip-list');
+      list.innerHTML = active.map(chipHtml).join('');
+      list.removeAttribute('data-collapsed');
+      if (chips.hidden || active.length < 2) return;
+      const chipsNow = [...list.children];
+      const wraps = chipsNow[chipsNow.length - 1].offsetTop > chipsNow[0].offsetTop;
+      if (!wraps) { expanded = false; return; }
+      if (expanded) { list.insertAdjacentHTML('beforeend', '<button type="button" class="btn btn-ghost btn-sm" data-less-chips>Show less</button>'); return; }
+      // One row: as many chips as fit, then "+X more".
+      list.setAttribute('data-collapsed', '');
+      list.insertAdjacentHTML('beforeend', '<button type="button" class="btn btn-ghost btn-sm" data-more-chips aria-expanded="false"></button>');
+      const more = list.querySelector('[data-more-chips]');
+      const room = list.clientWidth, fits = (el) => el.offsetLeft + el.offsetWidth <= room;
+      let shown = active.length;
+      for (;;) {
+       more.textContent = `+${active.length - shown} more`;
+       if (shown < active.length && (shown === 1 || fits(more))) break;
+       list.querySelectorAll('.chip')[shown - 1].remove();
+       shown--;
+      }
+    }
+    let chipTimer = 0;
+    window.addEventListener('resize', () => { clearTimeout(chipTimer); chipTimer = setTimeout(() => drawChips(), 100); });
     chips.addEventListener('click', (event) => {
+      if (event.target.closest('[data-more-chips]')) {
+        const seen = chips.querySelectorAll('.chip-list .chip').length;
+        expanded = true; drawChips();
+        chips.querySelectorAll('.chip-list .chip-remove')[seen]?.focus();   // the first chip that was hidden
+        return;
+      }
+      if (event.target.closest('[data-less-chips]')) { expanded = false; drawChips(); chips.querySelector('[data-more-chips]')?.focus(); return; }
       const remove = event.target.closest('[data-remove]');
       if (remove) {
         const index = [...chips.querySelectorAll('[data-remove]')].indexOf(remove);
         applied[remove.dataset.remove] = applied[remove.dataset.remove].filter((v) => v !== remove.dataset.value);
         run();
         const left = chips.querySelectorAll('[data-remove]');
-        (left[Math.min(index, left.length - 1)] || filterButton).focus();
+        (left[Math.min(index, left.length - 1)] || chips.querySelector('[data-more-chips]') || filterButton).focus();
         return;
       }
       if (event.target.closest('[data-clear-filters]')) { applied = empty(); run(); filterButton.focus(); }

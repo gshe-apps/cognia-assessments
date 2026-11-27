@@ -36,7 +36,8 @@ window.cogniaQuestionComposer=function(page,{esc,node,model,active,icon}){
   const tone=({'1':'success','2':'warning','3':'destructive'})[dok]||'secondary';
   const standard=q.standard||(inst.renderVals?.().bank||[]).find(item=>item.id===q.id)?.standard;
   /* 24 Nov: items written in Create manually carry a Manual badge; their edit button shows on hover. */
-  const meta=[type,standard].filter(Boolean).map(value=>`<span>${esc(value)}</span>`).join('')+(isManual(q)?'<span class="badge badge-secondary">Manual</span>':'');
+  /* 27 Nov: the added item shows its type only; the standard is in the item preview. */
+  const meta=[type].filter(Boolean).map(value=>`<span>${esc(value)}</span>`).join('')+(isManual(q)?'<span class="badge badge-secondary">Manual</span>':'');
   return `${dok?`<span class="bank-row-difficulty badge badge-${tone}"><span>DOK</span> <span>${esc(dok)}</span></span>`:''}<div class="qc-item-text"><p class="qc-stem text-body-base font-semibold" title="${esc(q.stem)}">${esc(q.stem)}</p>${meta?`<p class="qc-item-meta text-body-small text-muted-foreground">${meta}</p>`:''}</div>`;
  }
  function updateQuestions(chosen){inst.setState({chosen});inst.update()}

@@ -6405,6 +6405,9 @@ body .ad-card-acc .accordion-trigger:hover { background-color: transparent; back
 .rj-details .ad-af-items { margin: 0; }
 .rj-details .ad-af-items .af-item { align-items: flex-start; padding-inline: 0; }
 .rj-details .ad-af-items .af-item-body p { margin: 0; }
+/* 27 Nov: the item number sits above the item type (points on the right of that row), with more room before the question. */
+.rj-details .ad-af-items .af-item-meta { margin-block-end: var(--space-1); }
+.rj-details .ad-af-items .af-item-type { margin-block-end: var(--space-2); }
 .lp-inline .lp-top .btn-icon svg { inline-size: 16px; block-size: 16px; }
 .lp-inline .lp-card { overflow: hidden; }
 .lp-inline .lp-body { padding-block-end: var(--space-4); overflow: hidden; }
@@ -6750,6 +6753,8 @@ a.assessment-card-stack > .assessment-card-back { position:absolute; top:calc(-1
 .uc-page .uc-filter-applied { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
 .uc-page .uc-filter-applied[hidden] { display: none; }
 .uc-page .uc-filter-applied > .btn { flex: none; }
+.uc-page .uc-filter-applied > .chip-list { position: relative; flex: 1; min-width: 0; }
+.uc-page .uc-filter-applied > .chip-list[data-collapsed] { flex-wrap: nowrap; }
 .uc-filters-dialog { max-width: 760px; }
 /* One height for every filter, so the modal does not jump when switching; long lists scroll. */
 .uc-filters-body { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: var(--space-6); height: min(400px, 60vh); min-height: 0; }
@@ -6996,13 +7001,10 @@ a.assessment-card-stack > .assessment-card-back { position:absolute; top:calc(-1
 .uc-bank-list-text { display: grid; justify-items: start; gap: var(--space-1); flex: 1; min-width: 0; }
 
 /* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right.
-   26 Nov (2): assessment results span the width under the chart, five across (27 Nov); the count badge sits beside each list heading. */
-/* 27 Nov: up to five results share the full width equally, so four (this week) fill it too. */
-:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+   26 Nov (2): assessment results span the width under the chart; the count badge sits beside each list heading. */
+/* 27 Nov: always four results to a row; a fifth starts the second row. */
+:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 :where(:root:has(.od-overview)) .od-res-main .od-res-bubble-svg { width: calc(3 * var(--space-12)); height: calc(3 * var(--space-12)); }
-@media (max-width: 1279px) {
-  :where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: row; }
-}
 :where(:root:has(.od-overview)) .od-res-list-head .od-res-title { gap: var(--space-2); }
 :where(:root:has(.od-overview)) :is(.od-res-main, .od-res-side) { display: grid; gap: var(--space-8); align-content: start; min-width: 0; }
 :where(:root:has(.od-overview)) .od-res-switcher { margin-inline-start: calc(-1 * var(--space-4)); }

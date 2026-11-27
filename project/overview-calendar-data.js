@@ -62,6 +62,8 @@
   {title:'Fractions on a number line', cls:'Grade 6A', skill:'Fractions', date:'2 Nov', pct:29, standard:'6.NS.C.6'},
   {title:'Ratios and rates', cls:'Grade 6B', skill:'Ratios', date:'29 Oct', pct:36, standard:'6.RP.A.3'},
   {title:'Equivalent fractions', cls:'Grade 5B', skill:'Fractions', date:'26 Oct', pct:41, standard:'5.NF.A.1'},
+  {title:'Expressions and equations', cls:'Grade 7B', skill:'Algebra', date:'31 Oct', pct:44, standard:'7.EE.A.1'},
+  {title:'Volume of prisms', cls:'Grade 5A', skill:'Geometry', date:'1 Nov', pct:63, standard:'5.MD.C.5'},
   {title:'Equations quiz', cls:'Grade 7B', skill:'Algebra', date:'22 Oct', pct:41, standard:'7.EE.B.4'},
   {title:'Ecosystems check', cls:'Grade 6B', skill:'Life science', date:'20 Oct', pct:45, standard:'MS-LS2-1'},
   {title:'Percent and ratio review', cls:'Grade 7A', skill:'Ratios', date:'30 Oct', pct:50, standard:'7.RP.A.3'},

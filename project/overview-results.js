@@ -186,9 +186,9 @@
  // 25 Nov: assessment results are folders (class on the tab), learners are profile cards.
  // 25 Nov: assessment results as the admin hub's bubble cards (SA2-Hub "Top five"). The dashed ring is the
  // 50% benchmark; the filled circle's area is the result, green at or above benchmark, red below.
- // 25 Nov: the Overview shows the first 5 results and 5 learners. View all appears beside the heading only when there are more.
- // 27 Nov: five results across, larger bubbles.
- const MAX_RESULTS = 5, MAX_LEARNERS = 5;
+ // 25 Nov: the Overview shows the first 8 results and 5 learners. View all appears beside the heading only when there are more.
+ // 27 Nov: four results to a row, up to two rows; View all opens the rest.
+ const MAX_RESULTS = 8, MAX_LEARNERS = 5;
  // A button with no destination yet: it hovers like any ghost button but does not navigate.
  // 26 Nov: a count badge beside each list heading, the same number View all opens.
  const count = n => `<span class="badge badge-secondary">${n}</span>`;

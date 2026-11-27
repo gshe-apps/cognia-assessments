@@ -2412,7 +2412,6 @@ html body :is(.brand,.hubbrand) :is(.logo,.hublogo) img {
 .od-overview-layout > :is(.od-calendar, .od-desk) { grid-row: span 2; grid-template-rows: subgrid; }
 .od-week-toolbar, .od-overview .od-date-controls { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
 .od-week-toolbar { justify-content: flex-end; }
-.od-date-controls .btn-ghost { background-color: var(--card); }
 .od-week-view .btn:focus-visible { outline-offset: calc(-1 * var(--space-1)); }
 .od-week-viewport { overflow-x: auto; }
 .od-week-grid { display: grid; }

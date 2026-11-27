@@ -6849,7 +6849,7 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 :where(:root:has(.od-overview)) .od-res-bubble-value { font-size: var(--text-heading); font-weight: 600; fill: var(--foreground); }
 /* Learners below benchmark (25 Nov): compact profile cards, 8px apart: photo, name and class, score on the right. */
 :where(:root:has(.od-overview)) .od-res-learners { margin: 0; padding: 0; list-style: none; }
-:where(:root:has(.od-overview)) .od-res-learner { gap: var(--space-3); padding-block: var(--space-2); padding-inline: 0; }
+:where(:root:has(.od-overview)) .od-res-learner { gap: var(--space-3); padding-block: var(--space-2); padding-inline: 0 var(--space-2); }
 :where(:root:has(.od-overview)) .od-res-learner .avatar img { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
 :where(:root:has(.od-overview)) .od-res-vbar.is-above .od-res-tip { bottom: calc(50% + var(--size) * 50% + var(--space-2)); }
 /* A bar that goes down has its name just above the benchmark line, so its tooltip opens below the end of the bar. */
@@ -6950,10 +6950,11 @@ body .cap-setup-modal .cap-settings-disclosure > summary:focus-visible { outline
 
 /* Results overview, option B (26 Nov): chart and assessment results on the left; summary and learners on the right.
    26 Nov (2): assessment results span the width under the chart, five across (27 Nov); the count badge sits beside each list heading. */
-:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+/* 27 Nov: up to five results share the full width equally, so four (this week) fill it too. */
+:where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
 :where(:root:has(.od-overview)) .od-res-main .od-res-bubble-svg { width: calc(3 * var(--space-12)); height: calc(3 * var(--space-12)); }
 @media (max-width: 1279px) {
-  :where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  :where(:root:has(.od-overview)) .od-res-main .od-res-bubbles { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: row; }
 }
 :where(:root:has(.od-overview)) .od-res-list-head .od-res-title { gap: var(--space-2); }
 :where(:root:has(.od-overview)) :is(.od-res-main, .od-res-side) { display: grid; gap: var(--space-8); align-content: start; min-width: 0; }

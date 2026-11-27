@@ -161,7 +161,15 @@ document.addEventListener('DOMContentLoaded',()=>{
    assessment.settings=options.assessmentSettings;
    for(const key of ['description','resource','notes'])test[key]=options[key]||'';
   }
-  assessment.tests.push(test);
+  if(options.tests?.length){
+   const included=options.tests.map((source,index)=>{
+    const questions=JSON.parse(JSON.stringify(source.questions||source.items||[]));
+    return {...test,id:test.id+'-'+index,title:source.title,grade:source.grade||test.grade,subject:source.subject||test.subject,standard:source.standard||test.standard,
+     state:{chosen:questions.map(question=>question.id),written:{},edits:{}},questions};
+   });
+   assessment.tests.push(...included);
+   assessment.active=included[0].id;
+  }else assessment.tests.push(test);
   put('cogniaAssessmentTestsV1',assessment);
   if(delivery)put('cogniaDeliverySessions',delivery);else localStorage.removeItem('cogniaDeliverySessions');
   if(draft){
@@ -346,7 +354,7 @@ document.addEventListener('DOMContentLoaded',()=>{
      </div>
      <ul class="al-tests" id="form-results" aria-label="Ready-to-use tests"></ul>
     </section>
-    <section class="al-detail" id="al-detail" aria-labelledby="al-d-title"></section>
+    <dialog class="dialog test-preview-dialog" id="al-preview-dialog" aria-label="Test preview"><div class="dialog-header"><h2 class="dialog-title">Test preview</h2><button class="btn btn-ghost btn-icon dialog-close" type="button" aria-label="Close test preview">${closeIcon}</button></div><div class="dialog-body"><section class="al-detail" id="al-detail" aria-labelledby="al-d-title"></section></div></dialog>
    </div>`;
   const $=selector=>root.querySelector(selector);
   const search=$('#form-search'),filters=$('#al-filters'),filterButton=$('[data-al-filter]'),panel=$('#al-detail');
@@ -440,12 +448,12 @@ document.addEventListener('DOMContentLoaded',()=>{
    const selected=matches.find(form=>form.id===libState.selected)||matches[0];
    libState.selected=selected?.id||null;
    $('#form-results').innerHTML=matches.length?matches.map(form=>`
-    <li><button class="item al-test" type="button" data-al-select="${escape(form.id)}" aria-controls="al-detail" aria-current="${form===selected}">
-     <span class="item-media icon-accent">${subjectIcons[form.subject]||icon}</span>
+    <li><a class="card-link card-link-raised" href="#test-${escape(form.id)}" data-al-select="${escape(form.id)}" aria-label="Preview test: ${escape(form.title)}" aria-haspopup="dialog"><article class="card test-tile"><div class="card-content test-tile-content">
+     <span class="item-media item-media-icon">${subjectIcons[form.subject]||icon}</span>
      <span class="item-content"><span class="text-body-base font-semibold">${escape(form.title)}</span>
-      <span class="item-description">${scope(form)}, ${itemCount(form.questions.length)}</span></span>
+      <span class="item-description">${scope(form)}</span></span><span class="badge badge-secondary">${itemCount(form.questions.length)}</span>
      <span class="item-actions">${chevron.replace('<svg','<svg class="icon"')}</span>
-    </button></li>`).join(''):`
+    </div></article></a></li>`).join(''):`
     <li><div class="empty-state" role="status"><span class="empty-media">${searchIcon}</span>
      <p class="empty-title">No tests match</p><p>Try a different search or clear your filters.</p>
      <button type="button" class="btn btn-outline" data-clear-library>Clear filters</button>
@@ -458,9 +466,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   root.onclick=event=>{
    const pick=event.target.closest('[data-al-select]');
    if(pick){
+    event.preventDefault();
+    libState.preview=true;
     libState.selected=pick.dataset.alSelect;
     root.querySelectorAll('[data-al-select]').forEach(button=>button.setAttribute('aria-current',String(button===pick)));
     detail(forms.find(form=>form.id===libState.selected));
+    const preview=$('#al-preview-dialog');
+    preview.showModal();
+    preview.onclose=()=>{libState.preview=false;root.querySelector('[data-al-select="'+libState.selected+'"]')?.focus();};
    }
    if(event.target.closest('[data-clear-library]')){
     Object.assign(libState,{term:'',grade:'',subject:'',format:''});
@@ -472,6 +485,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   };
   showFilters();
   draw();
+  const preview=$('#al-preview-dialog');
+  preview.onclose=()=>{libState.preview=false;root.querySelector('[data-al-select="'+libState.selected+'"]')?.focus();};
+  if(libState.preview||libSingle)preview.showModal();
  }
  function renderBank(){if(page!=='CAP-T12-QuestionLibrary.dc.html')return;const root=document.querySelector('main>.page');if(!root)return;
   const m=model(),locked=m?.origin==='library',all=forms.flatMap(f=>(f.items||f.questions).map(q=>({...q,id:'bank-'+f.id+'-'+q.id,grade:f.grade,subject:f.subject,standard:f.standard,origin:'cognia',source:'Cognia item'})));
